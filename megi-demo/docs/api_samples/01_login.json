@@ -1,0 +1,7 @@
+{
+  "username": "demo_medico",
+  "name": "Dra. Demo Ficticia",
+  "role": "admin",
+  "must_change_password": false,
+  "token": "<CREDENCIAL_DE_DEMO_OMITIDA>"
+}

@@ -1,0 +1,2 @@
+{"detail":"consulta no encontrada"}
+HTTP 404

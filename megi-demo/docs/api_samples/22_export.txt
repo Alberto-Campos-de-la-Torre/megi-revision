@@ -1,0 +1,2 @@
+{"consultation_id":"C-DEMO4","content_hash":"sha256:bf5a0e465d5875cf33835ba32c053e6ab578726abbcdc2d26d01b45c88cb531e","signature_status":"mock_not_legal_signature","signed_at":null}
+HTTP 200

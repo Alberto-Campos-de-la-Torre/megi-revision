@@ -1,0 +1,201 @@
+{
+  "PATIENTS": [],
+  "TRANSCRIPT": [
+    {
+      "t": 3,
+      "s": "MED",
+      "text": "Buenos días don Jorge, tome asiento por favor. ¿Cómo se ha sentido desde la última vez?"
+    },
+    {
+      "t": 9,
+      "s": "PAC",
+      "text": "Buenos días doctora. Pues fíjese que he estado sintiendo una molestia aquí en el pecho, como opresión, sobre todo cuando subo las escaleras o cuando camino rápido."
+    },
+    {
+      "t": 19,
+      "s": "MED",
+      "text": "¿Desde hace cuánto tiempo viene notando esta molestia?"
+    },
+    {
+      "t": 23,
+      "s": "PAC",
+      "text": "Como unas tres semanas, al principio era de vez en cuando, pero ya es casi diario."
+    },
+    {
+      "t": 30,
+      "s": "MED",
+      "text": "¿El dolor se le va al brazo, a la mandíbula o a la espalda?"
+    },
+    {
+      "t": 36,
+      "s": "PAC",
+      "text": "No doctora, nada más aquí en el centro del pecho. Se me quita si me siento y descanso tantito."
+    },
+    {
+      "t": 44,
+      "s": "MED",
+      "text": "¿Ha tenido sudoración fría, náusea, o sensación de que se va a desmayar con estos episodios?"
+    },
+    {
+      "t": 52,
+      "s": "PAC",
+      "text": "Sudar sí, un poco. Mareos no. Y pues sí me falta el aire cuando me pasa."
+    },
+    {
+      "t": 60,
+      "s": "MED",
+      "text": "¿Está tomando sus medicamentos como le indiqué? El losartán y la atorvastatina."
+    },
+    {
+      "t": 67,
+      "s": "PAC",
+      "text": "Sí doctora, todos los días. Aunque a veces se me olvida la de la noche, no le voy a mentir."
+    },
+    {
+      "t": 75,
+      "s": "MED",
+      "text": "Vamos a revisarlo. Tensión arterial ciento cuarenta sobre noventa. Frecuencia cardíaca setenta y ocho, regular. Saturación noventa y seis por ciento."
+    },
+    {
+      "t": 88,
+      "s": "MED",
+      "text": "A la auscultación cardiaca ruidos rítmicos, sin soplos. Campos pulmonares ventilados, sin estertores."
+    },
+    {
+      "t": 98,
+      "s": "PAC",
+      "text": "¿Está grave doctora?"
+    },
+    {
+      "t": 101,
+      "s": "MED",
+      "text": "No se preocupe don Jorge. El cuadro sugiere angina estable, pero necesitamos descartar algo más serio. Le voy a pedir un electrocardiograma hoy mismo y una prueba de esfuerzo."
+    },
+    {
+      "t": 115,
+      "s": "MED",
+      "text": "Vamos a ajustar su tratamiento. Agregamos ácido acetilsalicílico cien miligramos diarios y nitroglicerina sublingual para episodios agudos."
+    }
+  ],
+  "SUGGESTED_DX": [
+    {
+      "code": "I20.9",
+      "label": "Angina de pecho, no especificada",
+      "confidence": 0.82,
+      "primary": true,
+      "evidence": [
+        "Dolor torácico opresivo retroesternal de 3 semanas de evolución",
+        "Desencadenado por esfuerzo, alivia con reposo",
+        "Diaforesis y disnea asociadas",
+        "Antecedente de HTA y dislipidemia"
+      ],
+      "source": "GPC IMSS-080-08 · Diagnóstico y tratamiento de la cardiopatía isquémica crónica"
+    },
+    {
+      "code": "I10",
+      "label": "Hipertensión esencial (primaria)",
+      "confidence": 0.94,
+      "primary": false,
+      "evidence": [
+        "Diagnóstico previo documentado",
+        "TA en consulta 140/90 mmHg"
+      ],
+      "source": "GPC IMSS-076-08 · Hipertensión arterial sistémica"
+    },
+    {
+      "code": "E78.5",
+      "label": "Hiperlipidemia no especificada",
+      "confidence": 0.88,
+      "primary": false,
+      "evidence": [
+        "Antecedente bajo tratamiento con estatina"
+      ],
+      "source": "GPC SS-233-09 · Dislipidemias"
+    }
+  ],
+  "SUGGESTED_RX": [
+    {
+      "drug": "Ácido acetilsalicílico",
+      "dose": "100 mg",
+      "freq": "Cada 24 horas",
+      "route": "Vía oral",
+      "duration": "Continuo",
+      "indication": "Antiagregación plaquetaria",
+      "cb": "CB 010.000.0101.00",
+      "note": "Tomar con alimentos. Suspender y acudir si hay sangrado.",
+      "new": true
+    },
+    {
+      "drug": "Nitroglicerina",
+      "dose": "0.4 mg",
+      "freq": "PRN dolor torácico",
+      "route": "Sublingual",
+      "duration": "30 días",
+      "indication": "Crisis anginosa",
+      "cb": "CB 010.000.0591.00",
+      "note": "Sentado. Máximo 3 dosis con 5 min entre cada una. Si persiste, acudir a urgencias.",
+      "new": true
+    },
+    {
+      "drug": "Losartán",
+      "dose": "50 mg",
+      "freq": "Cada 24 horas",
+      "route": "Vía oral",
+      "duration": "Continuo",
+      "indication": "Hipertensión arterial",
+      "cb": "CB 010.000.2520.00",
+      "note": "Continuar tratamiento previo.",
+      "new": false
+    },
+    {
+      "drug": "Atorvastatina",
+      "dose": "40 mg",
+      "freq": "Cada 24 horas, por la noche",
+      "route": "Vía oral",
+      "duration": "Continuo",
+      "indication": "Dislipidemia",
+      "cb": "CB 010.000.5204.00",
+      "note": "Continuar tratamiento previo. Reforzar adherencia.",
+      "new": false
+    }
+  ],
+  "VITALS": {
+    "ta": "140/90 mmHg",
+    "fc": "78 lpm",
+    "fr": "16 rpm",
+    "temp": "36.5 °C",
+    "spo2": "96 %",
+    "peso": "82 kg",
+    "talla": "1.72 m",
+    "imc": "27.7"
+  },
+  "SOAP": {
+    "s": "Masculino de 60 años con antecedente de HTA y dislipidemia, acude por dolor torácico opresivo retroesternal de 3 semanas de evolución, desencadenado por esfuerzo físico (subir escaleras, caminata rápida), de intensidad moderada, que cede con el reposo en 3-5 minutos. Se acompaña de diaforesis y disnea leve. Niega irradiación, síncope o náusea. Refiere adherencia parcial al tratamiento (omisión ocasional de dosis nocturnas).",
+    "o": "Paciente consciente, orientado, sin datos de dificultad respiratoria. TA 140/90 mmHg · FC 78 lpm rítmica · FR 16 rpm · SpO₂ 96% aire ambiente · T 36.5 °C. Ruidos cardiacos rítmicos, sin soplos ni galopes. Campos pulmonares ventilados, sin estertores ni sibilancias. Abdomen blando, no doloroso. Extremidades sin edema, pulsos periféricos presentes y simétricos. Peso 82 kg · Talla 1.72 m · IMC 27.7 (sobrepeso).",
+    "a": "1. Angina de pecho estable (CIE-10 I20.9) — probable, requiere estudios complementarios.\n2. Hipertensión arterial sistémica en descontrol leve (CIE-10 I10).\n3. Dislipidemia en tratamiento (CIE-10 E78.5).\n4. Sobrepeso (CIE-10 E66.9).",
+    "p": "• Solicitar ECG de 12 derivaciones hoy mismo.\n• Programar prueba de esfuerzo en un plazo menor a 7 días.\n• Laboratorios: perfil de lípidos, glucosa, creatinina, troponina I.\n• Iniciar AAS 100 mg VO c/24 h.\n• Nitroglicerina SL 0.4 mg PRN dolor torácico, máx. 3 dosis.\n• Continuar losartán 50 mg c/24 h y atorvastatina 40 mg c/24 h por la noche.\n• Educación: signos de alarma (dolor > 20 min, irradiación, síncope → urgencias).\n• Cita de seguimiento en 7 días con resultados."
+  },
+  "FLAGS": [
+    {
+      "level": "warn",
+      "text": "TA 140/90 en descontrol — considerar titulación si persiste en próxima cita"
+    },
+    {
+      "level": "info",
+      "text": "Adherencia subóptima reportada — reforzar educación farmacológica"
+    },
+    {
+      "level": "ok",
+      "text": "Sin alergias a medicamentos prescritos en el plan actual"
+    }
+  ],
+  "DOCTOR": {
+    "name": "Dra. Claudia Martínez Soto",
+    "specialty": "Medicina Interna",
+    "cedula": "7.845.302",
+    "cedula_esp": "11.204.882",
+    "institution": "Centro Médico San Ángel",
+    "address": "Av. Revolución 1425, Col. San Ángel, CDMX, C.P. 01000",
+    "phone": "55 5616 8420"
+  }
+}

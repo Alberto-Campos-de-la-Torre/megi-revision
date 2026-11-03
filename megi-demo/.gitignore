@@ -1,0 +1,11 @@
+backend/.venv/
+backend/data/megi.sqlite*
+backend/data/megi_secret.key
+backend/data/sessions/
+backend/data/speaker_profiles/
+backend/data/demo_server.log
+docs/api_samples/token.txt
+frontend/node_modules/
+__pycache__/
+.pytest_cache/
+.DS_Store

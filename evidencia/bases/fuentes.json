@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-03T04:56:04.560802+00:00",
+  "files": [
+    {
+      "file": "reglas.html",
+      "url": "https://www.builder.io/hackathon/rules",
+      "sha256": "7955d14531cd91982312818b7210f4fcc2a14171d6902916338e0f42df71f8e9",
+      "downloadedAt": "2026-11-03T04:49:06.509923+00:00"
+    },
+    {
+      "file": "formulario.html",
+      "url": "https://www.builder.io/hackathon/submit",
+      "sha256": "75733699412a4e7df1201cfd03fd5daadc8384fd9e059c04d47bee32384fe840",
+      "downloadedAt": "2026-11-03T04:55:07.814987+00:00"
+    },
+    {
+      "file": "evento.html",
+      "url": "https://www.builder.io/hackathon",
+      "sha256": "ea752e411994f57836f9ccac42c2ba2531a40252cb57a8f6d4ee0be43bdacb99",
+      "downloadedAt": "2026-11-03T04:55:07.605626+00:00"
+    }
+  ]
+}

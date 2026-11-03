@@ -1,0 +1,5 @@
+# Dependencias solo para pruebas (no las necesita el runtime).
+#   cd backend && .venv/bin/python -m pip install -r requirements-dev.txt
+#   cd backend && .venv/bin/python -m pytest -q
+pytest>=7.4
+httpx>=0.24

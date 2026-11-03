@@ -1,0 +1,2 @@
+{"detail":"Verificador FDA no disponible (MEGI_REAL_ASR=false)."}
+HTTP 503

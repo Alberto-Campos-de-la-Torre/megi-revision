@@ -1,0 +1,40 @@
+{
+  "exportedAt": "2026-11-03T05:21:02.779444+00:00",
+  "sourceRepositories": {
+    ".": [
+      "d86372d4f11823e9cab726a89e7e5969d40245bc\t2026-11-02T11:54:03-06:00\tPlanes del hackatón Agent-Native, reparto de trabajo y adaptador MEGI",
+      "e51eb52fd3b70b6c4fcd4fc53da6134bfca0bb72\t2026-11-02T11:57:40-06:00\tEvidencia del recorrido en navegador (capturas y scripts)",
+      "7d30ba5ade426fec3d0ac1ec4e51c2e70c73b844\t2026-11-02T11:57:40-06:00\tESTADO: verificación en navegador y evidencia Git",
+      "ff34a32024d8ffb40ed0c7f3dae8d0beb3c73bcb\t2026-11-02T12:51:39-06:00\tEvidencia del agente en vivo con motor local y estado actualizado",
+      "9e88b874712e704d5a61d1913a006271a13bc426\t2026-11-02T12:55:11-06:00\tVerificación final sobre el código commiteado: smoke CLI y recorrido en navegador",
+      "de7320a5e5218eb460c95e810c3fb66a2f0ac55c\t2026-11-02T13:47:09-06:00\tEvidencia: el agente en vivo respeta la línea bloqueada y lo explica en el chat",
+      "74179afc73d79c49ac106e2008c8660182d296b5\t2026-11-02T13:48:46-06:00\tSonda del 401 de agent-engine/status: solo en la primera carga sin sesión",
+      "fa3560c79980629214527810502556f038209bd6\t2026-11-02T14:20:24-06:00\tEvidencia del agente en vivo con Grok 4.7: propuesta y respeto de la línea bloqueada",
+      "a1ca5a8d830a0245cab372d8a7e579d84cb9890a\t2026-11-02T14:24:58-06:00\tVideo de la demo completa con Grok 4.7 y texto de envío al hackatón",
+      "a6ae4db72fd14cde45834eec408c05eee308253d\t2026-11-02T14:46:04-06:00\tESTADO: Clips y envío en espera del reparto con el equipo"
+    ],
+    "megi-revision": [
+      "c8073caec6fb9980cdaa16c2cae3ea1edca8711a\t2026-11-02T11:23:36-06:00\tInitial commit from agent-native create",
+      "f76b911414cc3e0599590c73a238e19c36ee3253\t2026-11-02T11:54:02-06:00\tMEGI Revisión: mesa de revisión post-consulta sobre Agent-Native",
+      "879ea979ddac3576838d36fa9663ad97c627886c\t2026-11-02T11:57:40-06:00\tTablero: el diálogo de rechazo conserva el título mientras se cierra",
+      "3446b2b8c6d2deb38ca4f486469e03e19b4b267a\t2026-11-02T12:49:34-06:00\tAgente en vivo: plan vacío rechazado, ejemplo de lineas en prompt y skill, tablero con refresco"
+    ],
+    "megi-demo": [
+      "d57d6e16483ca0f1a1a8520b0d5e4b8be737c7d3\t2026-11-02T11:54:02-06:00\tCopia de canvas-megi-ia (MEGI, trabajo previo al hackatón) para la demo",
+      "15a03c67b9752bc79672386d7bfad8026b090474\t2026-11-02T11:54:03-06:00\tHackatón: siembra de demo con pacientes ficticios, scripts de arranque y contrato de API"
+    ]
+  },
+  "packaging": "Snapshot del código de trabajo corregido. Los repositorios locales se integran como carpetas normales, sin gitlinks ni historiales que puedan contener archivos de ejecución.",
+  "excluded": [
+    "evidencia/.DS_Store",
+    "megi-demo/frontend/.env",
+    "megi-demo/frontend/.env.development"
+  ],
+  "publication": "Solo repositorio privado de GitHub; no se publicó Clips ni se envió el formulario del hackatón.",
+  "redactedApiSamples": [
+    {
+      "file": "megi-demo/docs/api_samples/01_login.json",
+      "field": "token"
+    }
+  ]
+}

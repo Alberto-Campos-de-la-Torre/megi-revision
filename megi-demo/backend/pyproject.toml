@@ -1,0 +1,22 @@
+[project]
+name = "megi-backend"
+version = "0.1.0"
+description = "MEGI backend (FastAPI mock) — Sprint 1"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "pydantic>=2.6",
+    "httpx>=0.27",
+    "python-multipart>=0.0.9",
+    # Imágenes del informe radiológico (21-sep-2026): conversión a PNG y DICOM.
+    "pillow>=10",
+    "numpy",
+    "pydicom>=3.0",
+    # Estudios que trae el paciente (11-oct-2026): fotos HEIC del iPhone.
+    "pillow-heif>=0.18",
+    # Texto de los PDF que trae el paciente (laboratorios) para el pre-diagnóstico.
+    "pypdf>=4",
+    # Registros de ECG en señal (.hea/.dat) que trae el paciente.
+    "wfdb>=4.1",
+]

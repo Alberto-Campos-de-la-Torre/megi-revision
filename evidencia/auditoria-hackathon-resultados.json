@@ -1,0 +1,325 @@
+{
+  "executedAt": "2026-11-03T04:53:04.122Z",
+  "appCommit": "3446b2b8c6d2deb38ca4f486469e03e19b4b267a",
+  "uncommittedChanges": true,
+  "isolatedWrites": true,
+  "environment": "Acciones reales, caller=tool, PGlite en memoria, MEGI mock; sin LLM. Con --http agrega lecturas y verificaciones contra el backend de demo local",
+  "results": [
+    {
+      "id": "mock-demo-p1",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "mock-demo-p2",
+      "passed": true,
+      "detail": "advertencia"
+    },
+    {
+      "id": "mock-demo-p3",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "mock-demo-p4",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "id": "propuesta-verificada",
+      "passed": true,
+      "detail": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "bloqueadas": 0,
+        "vigentes": 1
+      }
+    },
+    {
+      "id": "agente-no-bloquea-con-origen-normal",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Solo el médico bloquea líneas."
+      }
+    },
+    {
+      "id": "bloqueo-normal",
+      "passed": true,
+      "detail": {
+        "code": "linea_bloqueada",
+        "message": "La línea \"Amoxicilina\" está bloqueada por el médico; no la toques y díselo."
+      }
+    },
+    {
+      "id": "agente-no-aprueba",
+      "passed": true,
+      "detail": {
+        "code": "ui_only_action",
+        "message": "This action can only be called from the signed-in app UI."
+      }
+    },
+    {
+      "id": "medico-confirma-bloqueos",
+      "passed": true,
+      "detail": "alertas_sin_confirmar"
+    },
+    {
+      "id": "suplantacion-denegada-tool",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-tool",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-http",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-http",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-mcp",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-mcp",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-cli",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-cli",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-automation",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-automation",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-a2a",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-a2a",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-mcp-widget-write",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "id": "aprobacion-denegada-mcp-widget-write",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "id": "suplantacion-denegada-proponer-plan",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Las decisiones del médico solo se realizan desde la interfaz autenticada."
+      }
+    },
+    {
+      "id": "suplantacion-denegada-agregar-linea",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Las decisiones del médico solo se realizan desde la interfaz autenticada."
+      }
+    },
+    {
+      "id": "suplantacion-denegada-reajustar-plan",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Las decisiones del médico solo se realizan desde la interfaz autenticada."
+      }
+    },
+    {
+      "id": "http-exige-prueba-ui-proponer-plan",
+      "passed": true
+    },
+    {
+      "id": "http-exige-prueba-ui-actualizar-linea",
+      "passed": true
+    },
+    {
+      "id": "http-exige-prueba-ui-agregar-linea",
+      "passed": true
+    },
+    {
+      "id": "http-exige-prueba-ui-reajustar-plan",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-solo-ui-fuera-catalogo",
+      "passed": true
+    },
+    {
+      "id": "medico-aprueba-exporta",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-idempotente",
+      "passed": true
+    },
+    {
+      "id": "plan-exportado-cerrado",
+      "passed": true
+    },
+    {
+      "id": "propuesta-fallida-rollback-completo",
+      "passed": true,
+      "detail": {
+        "code": "megi_no_disponible",
+        "message": "No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."
+      }
+    },
+    {
+      "id": "propuesta-reintentable-tras-caida",
+      "passed": true
+    },
+    {
+      "id": "rollback-completo-agregar-linea",
+      "passed": true,
+      "detail": {
+        "code": "megi_no_disponible",
+        "message": "No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."
+      }
+    },
+    {
+      "id": "rollback-completo-actualizar-linea",
+      "passed": true,
+      "detail": {
+        "code": "megi_no_disponible",
+        "message": "No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."
+      }
+    },
+    {
+      "id": "rollback-completo-reajustar-plan",
+      "passed": true,
+      "detail": {
+        "code": "megi_no_disponible",
+        "message": "No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."
+      }
+    },
+    {
+      "id": "verificacion-incompleta-no-guarda",
+      "passed": true,
+      "detail": {
+        "code": "verificacion_incompleta",
+        "message": "MEGI no verificó todos los fármacos. No se guardó ningún cambio."
+      }
+    },
+    {
+      "id": "cambios-duplicados-rechazados",
+      "passed": true
+    },
+    {
+      "id": "aislamiento-otro-usuario",
+      "passed": true
+    },
+    {
+      "id": "cancelacion-sin-escrituras",
+      "passed": true
+    },
+    {
+      "id": "cancelacion-no-bloquea-siguiente-operacion",
+      "passed": true
+    },
+    {
+      "id": "cancelacion-durante-verificacion-revierte",
+      "passed": true
+    },
+    {
+      "id": "concurrencia-respeta-bloqueo",
+      "passed": true,
+      "detail": {
+        "code": "linea_bloqueada",
+        "message": "La línea \"Paracetamol\" está bloqueada por el médico; no la toques y díselo."
+      }
+    },
+    {
+      "id": "descarga-interrumpida-no-cierra-plan-local",
+      "passed": true
+    },
+    {
+      "id": "reintento-recupera-aprobacion-remota",
+      "passed": true
+    },
+    {
+      "id": "soap-coincide-con-plan-revisado",
+      "passed": true,
+      "detail": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Plan revisado por el médico. Paracetamol 500 mg, cada 8 h, 5 días. Pendientes: Control ficticio.</div>"
+    },
+    {
+      "id": "http-recupera-descarga-sin-reaprobar",
+      "passed": true
+    },
+    {
+      "id": "http-no-sobrescribe-aprobacion-distinta",
+      "passed": true
+    },
+    {
+      "id": "http-no-duplica-dosis-al-leer",
+      "passed": true,
+      "detail": {
+        "nombre": "Paracetamol",
+        "dosis": "650 mg",
+        "frecuencia": "cada 8 h"
+      }
+    },
+    {
+      "id": "http-backend-disponible",
+      "passed": true,
+      "detail": {
+        "disponible": true,
+        "modo": "local_mock",
+        "detalle": "build unknown"
+      }
+    },
+    {
+      "id": "http-demo-p1",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "http-demo-p2",
+      "passed": true,
+      "detail": "advertencia"
+    },
+    {
+      "id": "http-demo-p3",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "http-demo-p4",
+      "passed": true,
+      "detail": "ok"
+    }
+  ]
+}

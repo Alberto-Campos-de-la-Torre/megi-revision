@@ -1,0 +1,148 @@
+{
+  "executedAt": "2026-11-03T04:35:55.857Z",
+  "appCommit": "3446b2b8c6d2deb38ca4f486469e03e19b4b267a",
+  "isolatedWrites": true,
+  "environment": "Acciones reales, caller=tool, PGlite en memoria, MEGI mock; sin LLM. Con --http agrega lecturas y verificaciones contra el backend de demo local",
+  "results": [
+    {
+      "id": "mock-demo-p1",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "mock-demo-p2",
+      "passed": true,
+      "detail": "advertencia"
+    },
+    {
+      "id": "mock-demo-p3",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "mock-demo-p4",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "id": "propuesta-verificada",
+      "passed": true,
+      "detail": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "bloqueadas": 0,
+        "vigentes": 1
+      }
+    },
+    {
+      "id": "agente-no-bloquea-con-origen-normal",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Solo el médico bloquea líneas."
+      }
+    },
+    {
+      "id": "bloqueo-normal",
+      "passed": true,
+      "detail": {
+        "code": "linea_bloqueada",
+        "message": "La línea \"Amoxicilina\" está bloqueada por el médico; no la toques y díselo."
+      }
+    },
+    {
+      "id": "aprobacion-con-bloqueo-rechazada",
+      "passed": true,
+      "detail": {
+        "code": "alertas_sin_confirmar",
+        "message": "Hay 1 fármaco(s) con bloqueo de seguridad sin confirmar: Amoxicilina (Amoxicilina 500 mg puede relacionarse con la alergia a Penicilina.). Cámbialos, recházalos o pide al médico que confirme."
+      }
+    },
+    {
+      "id": "confirmacion-agente-normal-rechazada",
+      "passed": true,
+      "detail": {
+        "code": "solo_medico",
+        "message": "Confirmar alertas de seguridad es decisión del médico; pídeselo."
+      }
+    },
+    {
+      "id": "herramienta-no-puede-suplantar-medico-desbloqueo",
+      "passed": false,
+      "detail": {
+        "caller": "tool",
+        "origenEnviado": "medico",
+        "estadoFinal": "editada"
+      }
+    },
+    {
+      "id": "herramienta-no-puede-confirmar-alertas-como-medico",
+      "passed": false,
+      "detail": {
+        "caller": "tool",
+        "origenEnviado": "medico",
+        "estadoFinal": "exportado"
+      }
+    },
+    {
+      "id": "propuesta-fallida-no-deja-escrituras",
+      "passed": false,
+      "detail": {
+        "error": {
+          "message": "MEGI no disponible (fallo inyectado)"
+        },
+        "planPersistido": "5862b215-b9b2-4c2b-8170-dac8f9015c31",
+        "verificacion": "pendiente"
+      }
+    },
+    {
+      "id": "reintento-tras-fallo-no-queda-bloqueado",
+      "passed": false,
+      "detail": {
+        "code": "plan_existente",
+        "message": "Esta consulta ya tiene un plan; usa reajustar-plan o agregar-linea sobre él."
+      }
+    },
+    {
+      "id": "reajuste-fallido-no-deja-escrituras",
+      "passed": false,
+      "detail": {
+        "error": {
+          "message": "MEGI no disponible (fallo inyectado)"
+        },
+        "dosisAnterior": "600 mg",
+        "dosisPersistida": "700 mg",
+        "verificacion": "pendiente"
+      }
+    },
+    {
+      "id": "http-backend-disponible",
+      "passed": true,
+      "detail": {
+        "disponible": true,
+        "modo": "local_mock",
+        "detalle": "build unknown"
+      }
+    },
+    {
+      "id": "http-demo-p1",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "http-demo-p2",
+      "passed": true,
+      "detail": "advertencia"
+    },
+    {
+      "id": "http-demo-p3",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "http-demo-p4",
+      "passed": true,
+      "detail": "ok"
+    }
+  ]
+}

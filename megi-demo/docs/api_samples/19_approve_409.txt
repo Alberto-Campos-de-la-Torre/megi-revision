@@ -1,0 +1,2 @@
+{"detail":"Receta con alerta de seguridad sin confirmar: Amoxicilina 500 mg puede relacionarse con la alergia a Penicilina."}
+HTTP 409
