@@ -3,7 +3,7 @@
  * agente pasan por las acciones, así que la regla vive en un solo sitio.
  */
 import { fail, type ActionRunContext } from "@agent-native/core/action";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, count, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getDb, schema } from "../db/index.js";
@@ -195,6 +195,14 @@ export function exigirAbierto(p: PlanRow): void {
   }
 }
 
+/**
+ * Tope de líneas por plan. Las LECTURAS no truncan en silencio (antes
+ * devolvían 200 y una línea añadida por encima de ese número desaparecía del
+ * tablero y de la receta exportada); son las ESCRITURAS las que se paran antes
+ * de pasarse, con `exigirEspacio`.
+ */
+export const MAX_LINEAS = 400;
+
 export async function lineasDe(
   planId: string,
   db: PlanDb = getDb(),
@@ -204,7 +212,27 @@ export async function lineasDe(
     .from(schema.lineasPlan)
     .where(eq(schema.lineasPlan.planId, planId))
     .orderBy(asc(schema.lineasPlan.orden), asc(schema.lineasPlan.createdAt))
-    .limit(200);
+    .limit(MAX_LINEAS);
+}
+
+/** Se niega a añadir líneas si el plan se pasaría del tope. */
+export async function exigirEspacio(
+  planId: string,
+  nuevas: number,
+  db: PlanDb = getDb(),
+): Promise<void> {
+  if (nuevas <= 0) return;
+  const [fila] = await db
+    .select({ n: count() })
+    .from(schema.lineasPlan)
+    .where(eq(schema.lineasPlan.planId, planId));
+  const hay = Number(fila?.n ?? 0);
+  if (hay + nuevas > MAX_LINEAS) {
+    fail(
+      `El plan ya tiene ${hay} líneas y el tope es ${MAX_LINEAS}. Rechaza o consolida líneas antes de añadir más.`,
+      { errorCode: "plan_demasiado_largo", statusCode: 409 },
+    );
+  }
 }
 
 export async function registrarEvento(
@@ -230,6 +258,15 @@ export async function registrarEvento(
     orgId: input.orgId,
     createdAt: ahora(),
   });
+}
+
+/** Para comparar nombres de fármaco: sin acentos, sin mayúsculas, sin bordes. */
+export function normalizaNombre(s: string): string {
+  return s
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 function comoMedicamento(
@@ -287,13 +324,31 @@ export async function verificarPlan(
       statusCode: 502,
     });
   }
+  // El mismo fármaco dos veces en el plan no lo detecta MEGI: la verificación
+  // va por nombre, así que dos líneas del mismo fármaco reciben el mismo
+  // resultado y la dosis duplicada pasa sin aviso. Se marca aquí.
+  const repetidos = new Map<string, number>();
+  for (const l of vigentes) {
+    const k = normalizaNombre(l.texto);
+    repetidos.set(k, (repetidos.get(k) ?? 0) + 1);
+  }
   for (const l of vigentes) {
     const v = resultado[l.texto];
+    const duplicado = (repetidos.get(normalizaNombre(l.texto)) ?? 0) > 1;
+    const base = v?.resultado ?? "pendiente";
+    const motivo = [
+      duplicado
+        ? `${l.texto} aparece más de una vez en el plan: comprueba que la dosis no quede duplicada.`
+        : "",
+      v?.motivo ?? "",
+    ]
+      .filter(Boolean)
+      .join(" · ");
     await db
       .update(schema.lineasPlan)
       .set({
-        verificacion: v?.resultado ?? "pendiente",
-        motivoVerificacion: v?.motivo ?? null,
+        verificacion: duplicado && base === "ok" ? "advertencia" : base,
+        motivoVerificacion: motivo || null,
         alternativas: JSON.stringify(v?.alternativas ?? []),
         updatedAt: ahora(),
       })

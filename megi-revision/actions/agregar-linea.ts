@@ -6,6 +6,7 @@ import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
+  exigirEspacio,
   lineaInputSchema,
   lineaOut,
   lineaOutputSchema,
@@ -38,6 +39,7 @@ export default defineAction({
     return getDb().transaction(async (tx) => {
       const plan = await planDe(args.planId, email, tx, true);
       exigirAbierto(plan);
+      await exigirEspacio(plan.id, 1, tx);
       const [ultima] = await tx
         .select({ orden: schema.lineasPlan.orden })
         .from(schema.lineasPlan)

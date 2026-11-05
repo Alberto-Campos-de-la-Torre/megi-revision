@@ -6,6 +6,7 @@ import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
+  exigirEspacio,
   lineaOut,
   lineaOutputSchema,
   lineasDe,
@@ -130,6 +131,13 @@ export default defineAction({
           });
         }
       }
+      await exigirEspacio(
+        plan.id,
+        args.cambios.filter(
+          (c) => c.accion === "agregar" || c.accion === "reemplazar",
+        ).length,
+        tx,
+      );
       if (bloqueadas.length) {
         const nombres = bloqueadas.map((id) => porId.get(id)!.texto).join(", ");
         fail(

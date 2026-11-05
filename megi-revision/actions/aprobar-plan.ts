@@ -83,6 +83,11 @@ export default defineAction({
       const bloqueos = vigentes.filter(
         (l) => l.tipo === "farmaco" && l.verificacion === "bloqueado",
       );
+      // Las advertencias no frenan la aprobación, pero tienen que quedar
+      // escritas: si no, no hay rastro de que existían al aprobar.
+      const avisos = vigentes
+        .filter((l) => l.tipo === "farmaco" && l.verificacion === "advertencia")
+        .map((l) => `${l.texto}: ${l.motivoVerificacion ?? "sin motivo"}`);
       if (bloqueos.length && !args.confirmaAlertas) {
         fail(
           `Hay ${bloqueos.length} fármaco(s) con bloqueo de seguridad sin confirmar: ${bloqueos.map((b) => `${b.texto} (${b.motivoVerificacion ?? ""})`).join("; ")}. Cámbialos, recházalos o pide al médico que confirme.`,
@@ -126,7 +131,12 @@ export default defineAction({
             ].join(" "),
           },
           confirmaAlertas: args.confirmaAlertas,
-          notas: args.notas || "Plan revisado con el agente (MEGI Revisión)",
+          notas: [
+            args.notas || "Plan revisado con el agente (MEGI Revisión)",
+            avisos.length ? `Advertencias vigentes: ${avisos.join(" | ")}` : "",
+          ]
+            .filter(Boolean)
+            .join(" · "),
         });
       } catch (e) {
         if (e instanceof MegiError) {
@@ -155,7 +165,7 @@ export default defineAction({
           accion: "aprobar",
           email,
           orgId,
-          detalle: `Exportado a MEGI (${exportacion.formato}) · sello ${exportacion.sello ?? "—"}${args.confirmaAlertas ? " · alertas confirmadas por el médico" : ""}`,
+          detalle: `Exportado a MEGI (${exportacion.formato}) · sello ${exportacion.sello ?? "—"}${args.confirmaAlertas ? " · alertas confirmadas por el médico" : ""}${avisos.length ? ` · ${avisos.length} advertencia(s) vigentes: ${avisos.join(" | ")}` : ""}`,
         },
         tx,
       );

@@ -4,6 +4,7 @@ import { and, asc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getDb, schema } from "../server/db/index.js";
+import { aLogico } from "../server/lib/megi/index.js";
 import {
   eventoOutputSchema, lineaOut, lineaOutputSchema, lineasDe, planDe, planOut, planOutputSchema, requireEmail, resumenVerificacion,
 } from "../server/lib/plan.js";
@@ -34,10 +35,11 @@ export default defineAction({
     let id = planId;
     if (!id) {
       if (!consultaId) fail("Indica planId o consultaId.", { errorCode: "invalid_input" });
+      // El plan se guarda con el id lógico; aceptar también el id real de MEGI.
       const [p] = await getDb()
         .select({ id: schema.planes.id })
         .from(schema.planes)
-        .where(and(eq(schema.planes.consultaId, consultaId), eq(schema.planes.ownerEmail, email)))
+        .where(and(eq(schema.planes.consultaId, aLogico(consultaId)), eq(schema.planes.ownerEmail, email)))
         .limit(1);
       if (!p) fail("Esta consulta todavía no tiene plan; créalo con proponer-plan.", { errorCode: "not_found", statusCode: 404 });
       id = p.id;

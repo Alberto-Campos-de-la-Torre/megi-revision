@@ -46,6 +46,21 @@ export function aLogico(id: string): string {
     : id;
 }
 
+/**
+ * Un id solo puede ser UN segmento de ruta. Sin esto, un id como `../users`
+ * se sale de `/api/consultations/` y convierte cualquier lectura en una
+ * petición arbitraria a MEGI con la sesión del usuario de servicio: incluida
+ * `GET /api/export/consultation/{id}`, que en MEGI escribe.
+ */
+const RE_SEGMENTO = /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/;
+
+export function idSeguro(id: string, que = "id"): string {
+  if (typeof id !== "string" || id.includes("..") || !RE_SEGMENTO.test(id)) {
+    throw new MegiError(`${que} inválido: ${JSON.stringify(id)}`, 400);
+  }
+  return encodeURIComponent(id);
+}
+
 // ----------------------------------------------------------- utilidades
 type Json = Record<string, any>;
 
@@ -127,6 +142,19 @@ function rxAMegi(list: Medicamento[]): Json[] {
     freq: m.frecuencia,
     duration: m.duracion ?? "",
   }));
+}
+
+/**
+ * ¿La alerta habla de este fármaco? MEGI puede nombrarlo con la etiqueta que
+ * le mandamos ("Ibuprofeno 400 mg") o con el nombre del catálogo
+ * ("Ibuprofeno"). Comparar literalmente deja caer la alerta en silencio y el
+ * fármaco se informa como `ok`: se compara normalizado y por nombre.
+ */
+function esElMismo(nombrado: string, nombre: string, etiqueta: string): boolean {
+  const a = normaliza(nombrado).trim();
+  if (!a) return false;
+  const n = normaliza(nombre).trim();
+  return a === normaliza(etiqueta).trim() || a === n || (!!n && a.startsWith(`${n} `));
 }
 
 function normaliza(s: string): string {
@@ -333,11 +361,16 @@ export class MegiHttp implements MegiAdapter {
   }
 
   /** Última receta aprobada del paciente = medicación activa. */
-  private async medicacionActiva(pacienteReal: string): Promise<Medicamento[]> {
-    const lista = await this.call<Json[]>(
-      "GET",
-      `/patients/${pacienteReal}/consultations`,
-    );
+  private async medicacionActiva(
+    pacienteReal: string,
+    yaLeida?: Json[],
+  ): Promise<Medicamento[]> {
+    const lista =
+      yaLeida ??
+      (await this.call<Json[]>(
+        "GET",
+        `/patients/${idSeguro(pacienteReal, "id de paciente")}/consultations`,
+      ));
     const aprobadas = lista.filter(
       (c) => c.status === "approved" || c.status === "exported",
     );
@@ -346,7 +379,10 @@ export class MegiHttp implements MegiAdapter {
       String(b.started_at).localeCompare(String(a.started_at)),
     );
     const ultima = aprobadas[0]!;
-    const c = await this.call<Json>("GET", `/consultations/${ultima.id}`);
+    const c = await this.call<Json>(
+      "GET",
+      `/consultations/${idSeguro(String(ultima.id), "id de consulta")}`,
+    );
     return rxDeMegi(
       parseJson<unknown>(c.prescription, []),
       c.approved_at ?? c.started_at,
@@ -355,8 +391,9 @@ export class MegiHttp implements MegiAdapter {
 
   async verPaciente(pacienteId: string): Promise<Paciente> {
     const real = aReal(pacienteId);
+    const ruta = idSeguro(real, "id de paciente");
     const [p, meds] = await Promise.all([
-      this.call<Json>("GET", `/patients/${real}`),
+      this.call<Json>("GET", `/patients/${ruta}`),
       this.medicacionActiva(real),
     ]);
     return this.pacienteDeMegi(p, meds);
@@ -365,7 +402,7 @@ export class MegiHttp implements MegiAdapter {
   async verConsulta(consultaId: string): Promise<Consulta> {
     const c = await this.call<Json>(
       "GET",
-      `/consultations/${aReal(consultaId)}`,
+      `/consultations/${idSeguro(aReal(consultaId), "id de consulta")}`,
     );
     return this.consultaDeMegi(c);
   }
@@ -376,7 +413,7 @@ export class MegiHttp implements MegiAdapter {
     for (const p of pacientes) {
       const lista = await this.call<Json[]>(
         "GET",
-        `/patients/${p.id}/consultations`,
+        `/patients/${idSeguro(String(p.id), "id de paciente")}/consultations`,
       );
       // Consolidada (finalized) y todavía sin aprobar: es lo que hay que revisar.
       const pendientes = lista.filter(
@@ -384,12 +421,16 @@ export class MegiHttp implements MegiAdapter {
           c.finalized && c.status !== "approved" && c.status !== "exported",
       );
       if (!pendientes.length) continue;
+      // La lista de consultas ya está leída: no se vuelve a pedir.
       const paciente = this.pacienteDeMegi(
         p,
-        await this.medicacionActiva(p.id),
+        await this.medicacionActiva(String(p.id), lista),
       );
       for (const c of pendientes) {
-        const full = await this.call<Json>("GET", `/consultations/${c.id}`);
+        const full = await this.call<Json>(
+          "GET",
+          `/consultations/${idSeguro(String(c.id), "id de consulta")}`,
+        );
         out.push({ ...this.consultaDeMegi(full), paciente });
       }
     }
@@ -430,7 +471,9 @@ export class MegiHttp implements MegiAdapter {
     for (const f of farmacos) {
       const etiqueta = rxAMegi([f])[0]!.drug;
       const mias = alertas.filter(
-        (a) => a.farmaco === etiqueta || a.contra === etiqueta,
+        (a) =>
+          esElMismo(a.farmaco, f.nombre, etiqueta) ||
+          esElMismo(a.contra, f.nombre, etiqueta),
       );
       const bloqueo = mias.some((a) => a.severidad === "bloqueo");
       const v: Verificacion = {
@@ -439,17 +482,21 @@ export class MegiHttp implements MegiAdapter {
       };
       if (mias.length) v.motivo = mias.map((a) => a.mensaje).join(" · ");
       if (bloqueo)
-        v.alternativas = await this.alternativas(pacienteId, f.nombre);
+        v.alternativas = await this.alternativas(pacienteId, f.nombre, paciente);
       out[f.nombre] = v;
     }
     return out;
   }
 
-  async alternativas(pacienteId: string, farmaco: string): Promise<string[]> {
+  async alternativas(
+    pacienteId: string,
+    farmaco: string,
+    yaLeido?: Paciente,
+  ): Promise<string[]> {
     // Primero MEGI (LLM + catálogo). Si el servicio MLX no está arriba
     // responde 503: se cae a una tabla local, declarada como tal.
     try {
-      const paciente = await this.verPaciente(pacienteId);
+      const paciente = yaLeido ?? (await this.verPaciente(pacienteId));
       const r = await this.call<Json>("POST", "/drugs/alternatives", {
         rx_list: [farmaco, ...paciente.medicacionActiva.map((m) => m.nombre)],
         farmaco_a: farmaco,
@@ -474,7 +521,8 @@ export class MegiHttp implements MegiAdapter {
   // ---- cierre -----------------------------------------------------------
   async exportar(consultaId: string, plan: PlanAprobado): Promise<Exportacion> {
     const real = aReal(consultaId);
-    const c = await this.call<Json>("GET", `/consultations/${real}`);
+    const ruta = idSeguro(real, "id de consulta");
+    const c = await this.call<Json>("GET", `/consultations/${ruta}`);
     const paciente = await this.verPaciente(aLogico(c.patient_id));
     const soap =
       plan.soap ??
@@ -525,8 +573,8 @@ export class MegiHttp implements MegiAdapter {
     }
 
     const [sello, fhir] = await Promise.all([
-      this.call<Json>("GET", `/export/consultation/${real}`),
-      this.call<Json>("GET", `/consultations/${real}/fhir`),
+      this.call<Json>("GET", `/export/consultation/${ruta}`),
+      this.call<Json>("GET", `/consultations/${ruta}/fhir`),
     ]);
     return {
       formato: "fhir",

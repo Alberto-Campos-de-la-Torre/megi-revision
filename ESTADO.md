@@ -65,3 +65,43 @@ Cada uno actualiza su bloque al cerrar el día: hecho / bloqueado / necesito.
 - El video anterior se conserva como referencia histórica; no presenta las correcciones de esta auditoría. `ENVIO_HACKATHON.md` se actualizó como borrador, sin dar el envío por realizado.
 
 Validación final: **57/57 regresiones correctas**, `pnpm typecheck` correcto y `pnpm agent-native:doctor` sin hallazgos. Identificación del código, hashes y límites de la verificación en `evidencia/validacion-local.json`.
+
+
+## 4 nov 2026 · revisión independiente y arreglos
+
+Batería nueva de pruebas (`pruebas-hackathon/bateria.mts`, 33 comprobaciones de
+funcionamiento, seguridad y utilidad) sobre el código de `90085a5`: **21 pasaban,
+12 fallaban**. Los ocho fallos detrás de esos 12 están arreglados; detalle y
+evidencia en `pruebas-hackathon/README.md`.
+
+El grave: el id de consulta entraba sin validar en la ruta del adaptador http, y
+ese id lo controla el agente. `verConsulta("../export/consultation/C-DEMO1")`
+salía de `/api/consultations/` y llegaba a un GET que en MEGI **escribe**:
+comprobado contra el backend de demo, dejó `C-DEMO1` en `status="exported"` con
+`approved_at` y `approved_by` nulos — una consulta marcada como exportada sin
+aprobación ni firma, fuera de la lista de pendientes, disparada desde
+`ver-contexto-consulta`, que está declarada `readOnly`. Ahora los ids se validan
+como un único segmento de ruta (`idSeguro`) y lo que no pasa el filtro no llega
+a la red.
+
+Los otros siete: alertas atribuidas por comparación literal de cadena (una
+alerta que MEGI nombre distinto se descartaba en silencio y el fármaco salía
+`ok`); el mismo fármaco dos veces en el plan sin aviso de dosis duplicada;
+`lineasDe` truncaba en 200 y la línea 201 desaparecía del tablero y de la receta
+exportada; el id real y el lógico de una consulta no encontraban el mismo plan;
+las advertencias no dejaban rastro al aprobar; el adaptador repetía peticiones
+dentro de una misma operación (6→4 al verificar, 10→7 al listar tres pacientes);
+y seguían en el catálogo del agente dos acciones de la plantilla, `hello` y
+`provider-api-request` (Slack Web API), esta última una salida al exterior en una
+app con nota clínica y receta — borradas.
+
+Sin tocar, con motivo: el usuario de servicio del adaptador es `role: admin` y
+solo necesita ser médico (bajarlo antes del envío puede dejar la demo sin acceso
+a sus pacientes por el modelo de propiedad de MEGI; hacerlo después); el coste de
+`listarConsultasCerradas`, que necesita un endpoint de MEGI que no existe; y el
+emparejado de alergias por subcadena del mock, no alcanzable con los cuatro
+pacientes de la demo.
+
+Verificación con el backend de demo arriba: **57/57** en la auditoría que ya
+existía, **33/33** en la nueva, `pnpm typecheck` limpio, `pnpm agent-native:doctor`
+limpio, `pnpm build` completo.

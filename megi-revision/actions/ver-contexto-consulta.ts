@@ -49,10 +49,12 @@ export default defineAction({
       throw e;
     }
     const paciente = await adapter.verPaciente(consulta.pacienteId);
+    // `consulta.id` es el id lógico con el que se guarda el plan; el argumento
+    // puede venir con el id real de MEGI.
     const [plan] = await getDb()
       .select({ id: schema.planes.id })
       .from(schema.planes)
-      .where(and(eq(schema.planes.consultaId, consultaId), eq(schema.planes.ownerEmail, email)))
+      .where(and(eq(schema.planes.consultaId, consulta.id), eq(schema.planes.ownerEmail, email)))
       .limit(1);
     return {
       consulta: {

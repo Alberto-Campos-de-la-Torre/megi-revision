@@ -79,6 +79,7 @@ export default function RevisionConsultaRoute() {
   const pendientes = useMemo(() => lineas.filter((l) => l.tipo === "pendiente"), [lineas]);
   const cerrado = plan.data?.plan.estado === "exportado";
   const bloqueos = lineas.filter((l) => l.estado !== "rechazada" && l.tipo === "farmaco" && l.verificacion === "bloqueado");
+  const advertencias = lineas.filter((l) => l.estado !== "rechazada" && l.tipo === "farmaco" && l.verificacion === "advertencia");
 
   if (contexto.isPending) {
     return (
@@ -352,6 +353,18 @@ export default function RevisionConsultaRoute() {
                 <input type="checkbox" className="mt-1" checked={confirmaAlertas} onChange={(e) => setConfirmaAlertas(e.target.checked)} />
                 Confirmo que revisé estas alertas y asumo la decisión clínica.
               </label>
+            </div>
+          ) : null}
+          {advertencias.length ? (
+            <div className="space-y-2 rounded-lg border border-amber-500/50 bg-amber-500/5 p-3 text-sm">
+              <p className="font-medium text-amber-700 dark:text-amber-400">
+                {advertencias.length} advertencia(s) que se exportan con el plan:
+              </p>
+              <ul className="list-disc pl-5 text-xs">
+                {advertencias.map((a) => (
+                  <li key={a.id}>{a.texto}: {a.motivoVerificacion}</li>
+                ))}
+              </ul>
             </div>
           ) : null}
           <AlertDialogFooter>

@@ -102,7 +102,7 @@ export default defineAction({
       .from(schema.planes)
       .where(
         and(
-          eq(schema.planes.consultaId, args.consultaId),
+          eq(schema.planes.consultaId, consulta.id),
           eq(schema.planes.ownerEmail, email),
         ),
       )
