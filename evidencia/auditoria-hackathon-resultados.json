@@ -1,6 +1,6 @@
 {
-  "executedAt": "2026-11-03T04:53:04.122Z",
-  "appCommit": "3446b2b8c6d2deb38ca4f486469e03e19b4b267a",
+  "executedAt": "2026-11-05T06:03:48.480Z",
+  "appCommit": "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1",
   "uncommittedChanges": true,
   "isolatedWrites": true,
   "environment": "Acciones reales, caller=tool, PGlite en memoria, MEGI mock; sin LLM. Con --http agrega lecturas y verificaciones contra el backend de demo local",
@@ -298,7 +298,7 @@
       "detail": {
         "disponible": true,
         "modo": "local_mock",
-        "detalle": "build unknown"
+        "detalle": "build 90085a5"
       }
     },
     {

@@ -267,4 +267,5 @@ git checkout HEAD -- megi-revision
 ```
 
 Por eso ese archivo anota `cambiosSinCommitear: true`: el árbol estaba revertido
-a propósito cuando se ejecutó.
+a propósito cuando se ejecutó. Los dos archivos de resultados lo anotan también,
+porque cuentan como cambios sin commitear ellos mismos mientras se escriben.

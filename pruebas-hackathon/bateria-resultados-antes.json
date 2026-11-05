@@ -1,0 +1,310 @@
+{
+  "ejecutadoEl": "2026-11-05T06:03:12.209Z",
+  "appCommit": "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1",
+  "cambiosSinCommitear": true,
+  "entorno": "Acciones reales, PGlite en memoria, MEGI mock y transporte http simulado; sin LLM. Con --http añade lecturas contra el backend de demo",
+  "resultados": [
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-plan-sin-vigentes-no-exporta",
+      "passed": true,
+      "detail": "invalid_input"
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-farmaco-duplicado-avisa",
+      "passed": false,
+      "detail": [
+        {
+          "texto": "Paracetamol",
+          "v": "ok",
+          "motivo": null
+        },
+        {
+          "texto": "paracetamol",
+          "v": "ok",
+          "motivo": null
+        }
+      ]
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-plan-largo-no-pierde-lineas",
+      "passed": false,
+      "detail": {
+        "lineas": 200,
+        "farmacoVisible": false
+      }
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-plan-largo-verifica-el-farmaco",
+      "passed": false,
+      "detail": null
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-id-real-encuentra-el-plan",
+      "passed": false,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-contexto-ve-el-plan-con-id-real",
+      "passed": false,
+      "detail": null
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-id-real-no-duplica-plan",
+      "passed": true,
+      "detail": "plan_existente"
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-interaccion-con-activo-bloquea",
+      "passed": true,
+      "detail": "Ibuprofeno 400 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Ibuprofeno 400 mg + Warfarina 5 mg (grave): Los AINE inhiben la función plaquetaria y lesionan la mucosa gástrica; potencian el sangrado con anticoagulantes. → Evitar la combinación; usar paracetamol para el dolor. · Ibuprofeno 400 mg + Metoprolol 50 mg (leve): Los AINE pueden atenuar el efecto del betabloqueador. → Vigilar TA si el uso es prolongado."
+    },
+    {
+      "bloque": "1 · funcionamiento",
+      "id": "fn-reactivar-vuelve-a-verificar",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-id-no-se-sale-de-su-ruta",
+      "passed": false,
+      "detail": [
+        {
+          "id": "../users",
+          "rechazado": false,
+          "fuera": [
+            "GET /api/users"
+          ]
+        },
+        {
+          "id": "../../api/patients/P-OTRO",
+          "rechazado": false,
+          "fuera": [
+            "GET /api/patients/P-OTRO"
+          ]
+        },
+        {
+          "id": "../export/consultation/C-DEMO1",
+          "rechazado": false,
+          "fuera": [
+            "GET /api/export/consultation/C-DEMO1"
+          ]
+        },
+        {
+          "id": "demo-c1/../../me",
+          "rechazado": false,
+          "fuera": [
+            "GET /api/me"
+          ]
+        }
+      ]
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-readonly-no-escribe-en-megi",
+      "passed": false,
+      "detail": [
+        "GET /api/export/consultation/C-DEMO1"
+      ]
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-linea-de-otro-medico-no-se-toca",
+      "passed": true,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-plan-de-otro-medico-no-se-lee",
+      "passed": true,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-no-se-agregan-lineas-a-plan-ajeno",
+      "passed": true,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-no-se-reajusta-plan-ajeno",
+      "passed": true,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-credenciales-no-aparecen-en-errores",
+      "passed": true,
+      "detail": "MEGI GET /consultations/C-DEMO1 → 500: fallo interno {\"detail\":\"fallo interno\"} MegiError:"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-inyeccion-no-apaga-la-verificacion",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-inyeccion-no-aprueba-por-tool",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-inyeccion-no-aprueba-haciendose-medico",
+      "passed": true,
+      "detail": "ui_only_action"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-inyeccion-no-bloquea-ni-desbloquea",
+      "passed": true,
+      "detail": "solo_medico"
+    },
+    {
+      "bloque": "2 · seguridad",
+      "id": "seg-alerta-con-otro-nombre-si-bloquea",
+      "passed": false,
+      "detail": "ok"
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-el-bloqueo-trae-alternativas",
+      "passed": true,
+      "detail": [
+        "Azitromicina 500 mg cada 24 h 3 días",
+        "Clindamicina 300 mg cada 8 h 10 días"
+      ]
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-interaccion-moderada-es-advertencia",
+      "passed": true,
+      "detail": "Naproxeno 250 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Naproxeno 250 mg + Losartán 50 mg (moderada): Los AINE reducen el efecto antihipertensivo y aumentan el riesgo de daño renal con ARA II. → Usar el AINE el menor tiempo posible y vigilar TA y función renal."
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-la-advertencia-queda-en-la-bitacora",
+      "passed": false,
+      "detail": [
+        "Exportado a MEGI (fhir) · sello sha256:e2a1e6de1f0e57abad677eff93921ba1a40d8e1187b12a40e0f610f59fb377c1"
+      ]
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-avisa-que-no-hay-registro-de-alergias",
+      "passed": true,
+      "detail": "SIN REGISTRO de alergias: no asumas que no tiene; dilo y pid"
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-peticiones-por-verificacion",
+      "medicion": 6
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-sin-peticiones-repetidas-al-verificar",
+      "passed": false,
+      "detail": [
+        [
+          "GET /api/patients/P-DEMO1",
+          2
+        ],
+        [
+          "GET /api/patients/P-DEMO1/consultations",
+          2
+        ]
+      ]
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-peticiones-para-listar-3-pacientes",
+      "medicion": 10
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-listar-no-pasa-de-3-peticiones-por-paciente",
+      "passed": true,
+      "detail": {
+        "consultas": 3,
+        "peticiones": 10
+      }
+    },
+    {
+      "bloque": "3 · utilidad",
+      "id": "uti-catalogo-sin-acciones-de-plantilla",
+      "passed": false,
+      "detail": [
+        "hello.ts",
+        "provider-api-request.ts"
+      ]
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-backend-en-pie",
+      "passed": true,
+      "detail": {
+        "disponible": true,
+        "modo": "local_mock",
+        "detalle": "build 90085a5"
+      }
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-la-alerta-llega-atribuida",
+      "passed": true,
+      "detail": [
+        "Ibuprofeno 400 mg × hipertension arterial",
+        "Ibuprofeno 400 mg × Warfarina 5 mg",
+        "Ibuprofeno 400 mg × Metoprolol 50 mg"
+      ]
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-como-nombra-megi-el-farmaco",
+      "medicion": "Ibuprofeno 400 mg"
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-megi-tambien-frena-sin-confirmar",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "detalle": "Receta con alerta de seguridad sin confirmar: Amoxicilina 500 mg puede relaciona"
+      }
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-el-409-no-dejo-la-consulta-aprobada",
+      "passed": true,
+      "detail": "pendiente"
+    },
+    {
+      "bloque": "4 · contra el MEGI de demo (solo con --http)",
+      "id": "http-id-rechazado-antes-de-salir-a-la-red",
+      "passed": false,
+      "detail": [
+        {
+          "id": "../me",
+          "e": "NO RECHAZADO"
+        },
+        {
+          "id": "../../api/users",
+          "e": "NO RECHAZADO"
+        },
+        {
+          "id": "../export/consultation/C-DEMO1",
+          "e": "NO RECHAZADO"
+        }
+      ]
+    }
+  ]
+}
