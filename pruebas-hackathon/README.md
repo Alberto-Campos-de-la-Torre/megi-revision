@@ -1,9 +1,9 @@
 # Revisión del producto del hackatón · MEGI Revisión
 
-Revisión hecha el 3-nov-2026 sobre `bluiders.io` en el commit **`90085a5`**
+Revisión hecha el 3 y 4 de noviembre de 2026 sobre `bluiders.io` en el commit **`90085a5`**
 («MEGI Revisión: proyecto Agent-Native y auditoría corregida»).
 
-**Los ocho arreglos de este informe ya están aplicados en el código** (4-nov-2026).
+**Los ocho arreglos de este informe ya están aplicados en el código** (commit `3d3ecb8`).
 Lo que aquí se describe como «fallo» es lo que había en `90085a5`; lo que se
 describe como «arreglo» es lo que hay ahora. La batería queda como regresión:
 vuelve a fallar si alguno de los ocho reaparece.

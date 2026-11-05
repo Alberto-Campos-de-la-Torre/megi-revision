@@ -67,7 +67,7 @@ Cada uno actualiza su bloque al cerrar el día: hecho / bloqueado / necesito.
 Validación final: **57/57 regresiones correctas**, `pnpm typecheck` correcto y `pnpm agent-native:doctor` sin hallazgos. Identificación del código, hashes y límites de la verificación en `evidencia/validacion-local.json`.
 
 
-## 4 nov 2026 · revisión independiente y arreglos
+## 4–5 nov 2026 · revisión independiente y arreglos
 
 Batería nueva de pruebas (`pruebas-hackathon/bateria.mts`, 33 comprobaciones de
 funcionamiento, seguridad y utilidad) sobre el código de `90085a5`: **21 pasaban,
