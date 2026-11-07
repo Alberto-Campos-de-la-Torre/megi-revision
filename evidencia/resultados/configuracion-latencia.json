@@ -1,0 +1,7 @@
+{
+  "appId": "megi-revision",
+  "engine": "ai-sdk:openai",
+  "modeloEnArchivoAntes": "auto",
+  "modeloFinal": "grok-4.20-0309-non-reasoning",
+  "alcance": "archivo de configuración de esta app; credenciales intactas"
+}

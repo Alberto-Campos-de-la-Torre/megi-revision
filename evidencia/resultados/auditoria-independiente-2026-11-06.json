@@ -1,0 +1,41 @@
+{
+  "fecha": "2026-11-07T05:22:40.107Z",
+  "entorno": "Sin red real, sin .env, transporte HTTP sintético, sin escrituras clínicas",
+  "checks": [
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {},
+      "resultado": "ok"
+    },
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {
+        "alerts": []
+      },
+      "resultado": "ok"
+    },
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {
+        "alerts": [
+          {
+            "severity": "blocker",
+            "drug": "",
+            "against": "",
+            "message": "Bloqueo global sin atribución"
+          }
+        ]
+      },
+      "resultado": "ok"
+    },
+    {
+      "id": "sesion-http-compartida",
+      "mismaInstanciaParaDosUsuarios": true
+    },
+    {
+      "id": "rol-medico",
+      "permiteFrontendSinRolClinico": true,
+      "alcance": "Prueba unitaria del gate; el framework autentica la sesión por separado. No prueba una intrusión remota."
+    }
+  ]
+}

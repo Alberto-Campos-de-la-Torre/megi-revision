@@ -1,0 +1,190 @@
+{
+  "fecha": "2026-11-07T06:59:50.992Z",
+  "entorno": "Backend sintético en memoria (1 ms por petición), sin red ni .env; mide el adaptador http real",
+  "escenarios": [
+    {
+      "pacientes": 10,
+      "consultasPendientes": 5,
+      "consultasAprobadas": 30,
+      "coincidenAnteriorYNuevo": true,
+      "mediciones": [
+        {
+          "nombre": "recorrido paciente a paciente (anterior)",
+          "peticiones": 32,
+          "kb": 52,
+          "ms": 44,
+          "maxEnVuelo": 4,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/patients": 1,
+            "GET /api/patients/P-S*/consultations": 10,
+            "GET /api/consultations/C-*": 20
+          }
+        },
+        {
+          "nombre": "primera página de 20 (nuevo)",
+          "peticiones": 3,
+          "kb": 6,
+          "ms": 4,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 1,
+            "POST /api/review/medication-history": 1
+          }
+        },
+        {
+          "nombre": "todas las páginas (nuevo)",
+          "peticiones": 3,
+          "kb": 6,
+          "ms": 4,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 1,
+            "POST /api/review/medication-history": 1
+          }
+        }
+      ],
+      "limitesEsperados": {
+        "anterior": "1 + pacientes + pendientes + aprobadas (≥ 1 petición por consulta)",
+        "primeraPagina": "1 GET /review/pending + ⌈pacientes de la página / 100⌉ × ⌈filas / 200⌉ POST /review/medication-history",
+        "todas": "⌈pendientes / 200⌉ páginas + sus lotes de historial"
+      }
+    },
+    {
+      "pacientes": 100,
+      "consultasPendientes": 50,
+      "consultasAprobadas": 300,
+      "coincidenAnteriorYNuevo": true,
+      "mediciones": [
+        {
+          "nombre": "recorrido paciente a paciente (anterior)",
+          "peticiones": 302,
+          "kb": 517,
+          "ms": 100,
+          "maxEnVuelo": 4,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/patients": 1,
+            "GET /api/patients/P-S*/consultations": 100,
+            "GET /api/consultations/C-*": 200
+          }
+        },
+        {
+          "nombre": "primera página de 20 (nuevo)",
+          "peticiones": 3,
+          "kb": 23,
+          "ms": 4,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 1,
+            "POST /api/review/medication-history": 1
+          }
+        },
+        {
+          "nombre": "todas las páginas (nuevo)",
+          "peticiones": 3,
+          "kb": 58,
+          "ms": 5,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 1,
+            "POST /api/review/medication-history": 1
+          }
+        }
+      ],
+      "limitesEsperados": {
+        "anterior": "1 + pacientes + pendientes + aprobadas (≥ 1 petición por consulta)",
+        "primeraPagina": "1 GET /review/pending + ⌈pacientes de la página / 100⌉ × ⌈filas / 200⌉ POST /review/medication-history",
+        "todas": "⌈pendientes / 200⌉ páginas + sus lotes de historial"
+      }
+    },
+    {
+      "pacientes": 500,
+      "consultasPendientes": 250,
+      "consultasAprobadas": 1500,
+      "coincidenAnteriorYNuevo": true,
+      "mediciones": [
+        {
+          "nombre": "recorrido paciente a paciente (anterior)",
+          "peticiones": 1502,
+          "kb": 2590,
+          "ms": 560,
+          "maxEnVuelo": 4,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/patients": 1,
+            "GET /api/patients/P-S*/consultations": 500,
+            "GET /api/consultations/C-*": 1000
+          }
+        },
+        {
+          "nombre": "primera página de 20 (nuevo)",
+          "peticiones": 3,
+          "kb": 23,
+          "ms": 4,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 1,
+            "POST /api/review/medication-history": 1
+          }
+        },
+        {
+          "nombre": "todas las páginas (nuevo)",
+          "peticiones": 8,
+          "kb": 291,
+          "ms": 15,
+          "maxEnVuelo": 1,
+          "porRuta": {
+            "POST /api/auth/login": 1,
+            "GET /api/review/pending": 2,
+            "POST /api/review/medication-history": 5
+          }
+        }
+      ],
+      "limitesEsperados": {
+        "anterior": "1 + pacientes + pendientes + aprobadas (≥ 1 petición por consulta)",
+        "primeraPagina": "1 GET /review/pending + ⌈pacientes de la página / 100⌉ × ⌈filas / 200⌉ POST /review/medication-history",
+        "todas": "⌈pendientes / 200⌉ páginas + sus lotes de historial"
+      }
+    }
+  ],
+  "expedienteLargo": {
+    "recetasAprobadas": 60,
+    "paginaDelServidor": 25,
+    "cronicoAntiguoConservado": true,
+    "cronicoAntiguoEnAnterior": true,
+    "entradasHistorial": 60,
+    "mediciones": [
+      {
+        "nombre": "paciente con 60 recetas aprobadas, página de 25 (nuevo)",
+        "peticiones": 5,
+        "kb": 15,
+        "ms": 5,
+        "maxEnVuelo": 2,
+        "porRuta": {
+          "POST /api/auth/login": 1,
+          "GET /api/patients/P-S*": 1,
+          "POST /api/review/medication-history": 3
+        }
+      },
+      {
+        "nombre": "mismo paciente, recorrido consulta a consulta (anterior)",
+        "peticiones": 63,
+        "kb": 148,
+        "ms": 22,
+        "maxEnVuelo": 4,
+        "porRuta": {
+          "POST /api/auth/login": 1,
+          "GET /api/patients/P-S*": 1,
+          "GET /api/patients/P-S*/consultations": 1,
+          "GET /api/consultations/C-*": 60
+        }
+      }
+    ]
+  }
+}

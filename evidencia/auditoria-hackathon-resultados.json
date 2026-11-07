@@ -1,6 +1,6 @@
 {
-  "executedAt": "2026-11-05T06:03:48.480Z",
-  "appCommit": "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1",
+  "executedAt": "2026-11-07T07:04:37.739Z",
+  "appCommit": "b631b872117404d6d6b90232bf70c36506d49007",
   "uncommittedChanges": true,
   "isolatedWrites": true,
   "environment": "Acciones reales, caller=tool, PGlite en memoria, MEGI mock; sin LLM. Con --http agrega lecturas y verificaciones contra el backend de demo local",
@@ -289,8 +289,350 @@
       "detail": {
         "nombre": "Paracetamol",
         "dosis": "650 mg",
-        "frecuencia": "cada 8 h"
+        "frecuencia": "cada 8 h",
+        "desde": "",
+        "id": "C-DEMO4-0",
+        "fuente": "C-DEMO4",
+        "fecha": "",
+        "estado": "sin_confirmar"
       }
+    },
+    {
+      "id": "http-verificador-cuerpo-vacio-rechazado",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-alerts-no-lista-rechazado",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-cuerpo-lista-rechazado",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): el cuerpo no es un objeto JSON. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-cuerpo-texto-rechazado",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): el cuerpo no es un objeto JSON. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-severidad-desconocida-rechazada",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): la alerta 0 tiene severidad desconocida \"critical\". La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-alerta-sin-mensaje-rechazada",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): la alerta 0 no tiene mensaje. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-recuento-incoherente-rechazado",
+      "passed": true,
+      "detail": {
+        "codigo": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): `blockers`=1 no coincide con 0 alerta(s) de bloqueo. La receta no se da por segura."
+      }
+    },
+    {
+      "id": "http-verificador-sin-alertas-sigue-ok",
+      "passed": true
+    },
+    {
+      "id": "http-alerta-atribuida-solo-a-su-farmaco",
+      "passed": true,
+      "detail": {
+        "a": "bloqueado",
+        "p": "ok"
+      }
+    },
+    {
+      "id": "http-bloqueo-sin-atribucion-aplica-a-toda-la-receta",
+      "passed": true,
+      "detail": {
+        "a": "bloqueado",
+        "p": "bloqueado"
+      }
+    },
+    {
+      "id": "http-alerta-con-nombres-desconocidos-no-se-pierde",
+      "passed": true,
+      "detail": {
+        "ok": true,
+        "v": {
+          "Amoxicilina": {
+            "resultado": "advertencia",
+            "alertas": [
+              {
+                "severidad": "advertencia",
+                "tipo": "otro",
+                "farmaco": "Fármaco-X",
+                "contra": "Fármaco-Y",
+                "mensaje": "Nombres que la app no reconoce"
+              }
+            ],
+            "motivo": "Nombres que la app no reconoce"
+          },
+          "Paracetamol": {
+            "resultado": "advertencia",
+            "alertas": [
+              {
+                "severidad": "advertencia",
+                "tipo": "otro",
+                "farmaco": "Fármaco-X",
+                "contra": "Fármaco-Y",
+                "mensaje": "Nombres que la app no reconoce"
+              }
+            ],
+            "motivo": "Nombres que la app no reconoce"
+          }
+        }
+      }
+    },
+    {
+      "id": "http-interaccion-entre-activos-no-marca-la-receta-nueva",
+      "passed": true,
+      "detail": {
+        "resultado": "ok",
+        "alertas": []
+      }
+    },
+    {
+      "id": "http-interaccion-propuesto-activo-bloquea",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "accion-verificador-invalido-no-guarda",
+      "passed": true,
+      "detail": {
+        "code": "verificador_invalido",
+        "message": "Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura. No se guardó ningún cambio."
+      }
+    },
+    {
+      "id": "accion-verificador-invalido-no-cierra-el-plan",
+      "passed": true
+    },
+    {
+      "id": "mock-sin-lista-de-medicos-rol-no-exigido",
+      "passed": true
+    },
+    {
+      "id": "rol-clinico-exigido-con-lista-frontend-sin-rol",
+      "passed": true,
+      "detail": "sin_rol_clinico"
+    },
+    {
+      "id": "rol-clinico-lista-insensible-a-mayusculas",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-denegada-frontend-sin-rol-clinico",
+      "passed": true,
+      "detail": "sin_rol_clinico"
+    },
+    {
+      "id": "decision-medica-en-linea-denegada-sin-rol-clinico",
+      "passed": true,
+      "detail": "sin_rol_clinico"
+    },
+    {
+      "id": "agente-sigue-leyendo-con-lista-de-medicos",
+      "passed": true
+    },
+    {
+      "id": "http-sin-lista-de-medicos-falla-cerrado",
+      "passed": true,
+      "detail": {
+        "status": 403,
+        "codigo": "sin_rol_clinico"
+      }
+    },
+    {
+      "id": "http-cuenta-compartida-rechaza-correo-sin-rol",
+      "passed": true,
+      "detail": {
+        "status": 403,
+        "codigo": "sin_rol_clinico"
+      }
+    },
+    {
+      "id": "http-sin-correo-no-obtiene-la-cuenta-compartida",
+      "passed": true,
+      "detail": 403
+    },
+    {
+      "id": "http-conexion-propia-crea-instancia-por-medico",
+      "passed": true
+    },
+    {
+      "id": "http-sin-conexion-propia-ni-lista-denegado",
+      "passed": true,
+      "detail": {
+        "status": 403,
+        "codigo": "sin_rol_clinico"
+      }
+    },
+    {
+      "id": "http-dos-medicos-dos-conexiones-distintas",
+      "passed": true
+    },
+    {
+      "id": "http-identidad-propia-habilita-decision-medica",
+      "passed": true
+    },
+    {
+      "id": "http-identidad-propia-no-basta-fuera-de-la-interfaz",
+      "passed": true
+    },
+    {
+      "id": "http-rotacion-de-credenciales-renueva-la-conexion",
+      "passed": true
+    },
+    {
+      "id": "http-conexion-retirada-deniega-y-olvida-la-sesion",
+      "passed": true,
+      "detail": {
+        "status": 403,
+        "codigo": "sin_rol_clinico"
+      }
+    },
+    {
+      "id": "http-almacen-de-credenciales-caido-es-503-no-rechazo",
+      "passed": true,
+      "detail": {
+        "status": 503,
+        "codigo": "credenciales_no_disponibles"
+      }
+    },
+    {
+      "id": "accion-listar-sin-identidad-clinica-es-403-sin-rol-clinico",
+      "passed": true,
+      "detail": {
+        "code": "sin_rol_clinico",
+        "status": 403
+      }
+    },
+    {
+      "id": "accion-listar-con-almacen-caido-es-503-reintentable",
+      "passed": true,
+      "detail": {
+        "code": "credenciales_no_disponibles",
+        "status": 503
+      }
+    },
+    {
+      "id": "http-sin-conexion-propia-usa-cuenta-de-servicio-si-esta-autorizado",
+      "passed": true
+    },
+    {
+      "id": "http-conexion-propia-prevalece-sobre-la-compartida",
+      "passed": true
+    },
+    {
+      "id": "mock-sandbox-por-correo-intacto-tras-pruebas-http",
+      "passed": true
+    },
+    {
+      "id": "http-expediente-grande-lecturas-en-paralelo-acotadas",
+      "passed": true,
+      "detail": {
+        "maxEnVuelo": 4,
+        "peticiones": 51
+      }
+    },
+    {
+      "id": "http-expediente-grande-resultado-completo",
+      "passed": true,
+      "detail": 12
+    },
+    {
+      "id": "http-consulta-ya-leida-no-se-repite-en-la-accion",
+      "passed": true,
+      "detail": 0
+    },
+    {
+      "id": "http-login-unico-con-lecturas-paralelas",
+      "passed": true,
+      "detail": {
+        "peticiones": 51,
+        "esperadas": "login + sonda /review/pending + /patients + 12 listas + 36 consultas"
+      }
+    },
+    {
+      "id": "http-pendientes-paginadas-sin-duplicados-ni-huecos",
+      "passed": true,
+      "detail": {
+        "total": 12,
+        "ids": 12
+      }
+    },
+    {
+      "id": "http-pagina-trae-historial-de-sus-pacientes",
+      "passed": true,
+      "detail": 2
+    },
+    {
+      "id": "http-listar-una-pagina-no-descarga-todos-los-pacientes",
+      "passed": true,
+      "detail": 7
+    },
+    {
+      "id": "http-coste-por-pagina-acotado-a-dos-peticiones",
+      "passed": true,
+      "detail": {
+        "peticiones": 7,
+        "porPagina": 2,
+        "detalle": "1 GET /review/pending + 1 POST /review/medication-history por página de ≤100 pacientes"
+      }
+    },
+    {
+      "id": "http-listar-todo-recorre-las-paginas-del-servidor",
+      "passed": true,
+      "detail": {
+        "peticiones": 6,
+        "paginas": 3
+      }
+    },
+    {
+      "id": "http-paciente-ajeno-en-historial-es-404-no-respaldo",
+      "passed": true,
+      "detail": 404
+    },
+    {
+      "id": "http-pagina-fallida-aborta-sin-resultado-parcial",
+      "passed": true,
+      "detail": 503
+    },
+    {
+      "id": "http-total-cambiado-entre-paginas-se-rechaza",
+      "passed": true,
+      "detail": "pagina_inconsistente"
+    },
+    {
+      "id": "http-lecturas-paginadas-respetan-concurrencia",
+      "passed": true,
+      "detail": 2
     },
     {
       "id": "http-backend-disponible",
@@ -298,7 +640,7 @@
       "detail": {
         "disponible": true,
         "modo": "local_mock",
-        "detalle": "build 90085a5"
+        "detalle": "build b35cba2"
       }
     },
     {
@@ -320,6 +662,61 @@
       "id": "http-demo-p4",
       "passed": true,
       "detail": "ok"
+    },
+    {
+      "id": "http-vivo-pendientes-paginadas-coinciden-con-el-recorrido",
+      "passed": true,
+      "detail": {
+        "pagina": 2,
+        "total": 4,
+        "recorrido": 4
+      }
+    },
+    {
+      "id": "http-vivo-historial-por-lotes-conserva-fuente-y-fecha",
+      "passed": true,
+      "detail": [
+        "Losartán@C-DEMO2-PREV"
+      ]
+    },
+    {
+      "id": "http-vivo-medica-b-solo-ve-sus-pendientes",
+      "passed": true,
+      "detail": [
+        "C-DEMOB1"
+      ]
+    },
+    {
+      "id": "http-vivo-medico-a-no-ve-pacientes-de-b",
+      "passed": true
+    },
+    {
+      "id": "http-vivo-medica-b-no-ve-pacientes-de-a",
+      "passed": true
+    },
+    {
+      "id": "http-vivo-medica-b-verifica-su-paciente",
+      "passed": true,
+      "detail": "bloqueado"
+    },
+    {
+      "id": "http-vivo-aprobacion-firmada-por-la-identidad-propia",
+      "passed": true,
+      "detail": "Dra. Segunda Ficticia"
+    },
+    {
+      "id": "http-vivo-megi-registra-approved-by-de-b-y-la-nota-con-el-correo",
+      "passed": true,
+      "detail": "Dra. Segunda Ficticia"
+    },
+    {
+      "id": "http-vivo-medico-a-no-lee-la-auditoria-de-b",
+      "passed": true,
+      "detail": 404
+    },
+    {
+      "id": "http-vivo-pendientes-de-b-tras-aprobar",
+      "passed": true
     }
   ]
 }

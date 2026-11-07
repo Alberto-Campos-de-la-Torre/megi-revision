@@ -1,15 +1,18 @@
+// guard:allow-resource-action-access — La autorización privada se aplica con requireEmail y planDe/lineaDe (owner_email) dentro de la transacción; no hay recursos compartidos.
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction, fail } from "@agent-native/core/action";
 import { buildDeepLink } from "@agent-native/core/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { medicacionParaVerificar, conciliacionDe, comprobarVersion, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
-import { megi, MegiError } from "../server/lib/megi/index.js";
-import {
+import { MegiError } from "../server/lib/megi/index.js";
+import { conectarMegi,
   ahora,
   exigirAbierto,
   exigirMedico,
-  lineaOut,
+  lineaOut, lineasOut,
   lineasDe,
   origenAutorizado,
   origenSchema,
@@ -23,11 +26,13 @@ import {
 } from "../server/lib/plan.js";
 
 export default defineAction({
+  changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
   uiOnly: true,
   agentTool: false,
   description:
     "Aprobación final y exportación FHIR: solo el médico desde la interfaz autenticada. El agente debe pedirle que use Aprobar y exportar; las llamadas tool, MCP, CLI y HTTP directo reciben solo_medico (403). Vuelve a verificar y exige confirmar los bloqueos. Reintentar un plan ya exportado devuelve el mismo resultado sin volver a aprobar.",
   schema: z.object({
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
     planId: z.string().describe("Id del plan"),
     confirmaAlertas: z
       .boolean()
@@ -56,11 +61,12 @@ export default defineAction({
     }),
     label: "Ver plan exportado",
   }),
-  run: async (args, ctx) => {
+  run: async (args, ctx) => enPeticionMegi(async () => {
+    const inicio = performance.now();
     const email = requireEmail(ctx);
-    exigirMedico(ctx);
+    await exigirMedico(ctx);
     const orgId = ctx?.orgId ?? null;
-    const origen = origenAutorizado(args.origen, ctx);
+    const origen = await origenAutorizado(args.origen, ctx);
     return getDb().transaction(async (tx) => {
       const plan = await planDe(args.planId, email, tx, true);
       if (plan.estado === "exportado") {
@@ -73,8 +79,15 @@ export default defineAction({
         };
       }
       exigirAbierto(plan);
+      comprobarVersion(plan, args.versionEsperada);
+      const sinConfirmar = conciliacionDe(plan).filter(m => m.estado === "sin_confirmar");
+      if (sinConfirmar.length) fail("Confirma la medicación histórica con el paciente antes de aprobar.", { errorCode: "medicacion_sin_conciliar", statusCode: 409 });
+      const alertasVistas = (await lineasDe(plan.id, tx)).filter(l => l.estado !== "rechazada" && l.verificacion === "bloqueado").map(l => `${l.id}:${l.motivoVerificacion}`).sort();
       await verificarPlan(plan.id, plan.pacienteId, tx);
-      const lineas = (await lineasDe(plan.id, tx)).map(lineaOut);
+      const [vivo] = await tx.select().from(schema.planes).where(eq(schema.planes.id, plan.id));
+      if (conciliacionDe(vivo!).some(m => m.estado === "sin_confirmar")) fail("Hay medicación nueva en MEGI. Vuelve a preparar la aprobación y concíliala.", { errorCode: "medicacion_sin_conciliar", statusCode: 409 });
+      plan.conciliacion = vivo!.conciliacion;
+      const lineas = lineasOut(await lineasDe(plan.id, tx), plan);
       const vigentes = lineas.filter((l) => l.estado !== "rechazada");
       if (!vigentes.length)
         fail("El plan no tiene líneas vigentes.", {
@@ -99,11 +112,14 @@ export default defineAction({
         );
       }
 
-      const adapter = await megi();
+      if (args.confirmaAlertas && JSON.stringify(bloqueos.map(l => `${l.id}:${l.motivoVerificacion}`).sort()) !== JSON.stringify(alertasVistas)) fail("Las alertas cambiaron en MEGI. Vuelve a abrir la revisión de aprobación para leerlas y confirmarlas.", { errorCode: "alertas_actualizadas", statusCode: 409 });
+      if (bloqueos.length && args.versionEsperada === undefined) fail("La confirmación debe indicar la versión revisada del plan.", { errorCode: "version_desactualizada", statusCode: 409 });
+      const adapter = await conectarMegi(ctx?.userEmail ?? undefined);
       const consulta = await adapter.verConsulta(plan.consultaId);
       let exportacion;
       try {
         exportacion = await adapter.exportar(plan.consultaId, {
+          medicacionConciliada: medicacionParaVerificar(plan),
           farmacos: vigentes
             .filter((l) => l.tipo === "farmaco")
             .map((l) => ({
@@ -133,6 +149,11 @@ export default defineAction({
           confirmaAlertas: args.confirmaAlertas,
           notas: [
             args.notas || "Plan revisado con el agente (MEGI Revisión)",
+            // En modo http MEGI registra `approved_by` con la cuenta de
+            // servicio; la identidad real de quien aprobó viaja en la nota y
+            // queda en la auditoría de MEGI (H2).
+            `Aprobado en MEGI Revisión por ${email}`,
+            `Versión revisada: ${plan.version}. Medicación conciliada: ${conciliacionDe(plan).map(m => `${m.nombre} ${m.dosis}: ${m.estado}`).join("; ") || "sin registros históricos"}`,
             avisos.length ? `Advertencias vigentes: ${avisos.join(" | ")}` : "",
           ]
             .filter(Boolean)
@@ -169,6 +190,7 @@ export default defineAction({
         },
         tx,
       );
+      await guardarVersion(plan.id, origen, "aprobar", args.notas || "Aprobación y exportación", inicio, tx, ctx);
       const [actualizado] = await tx
         .select()
         .from(schema.planes)
@@ -184,5 +206,5 @@ export default defineAction({
         message: `Plan aprobado y exportado: ${resumen.vigentes} líneas, sello ${exportacion.sello ?? "—"}.`,
       };
     });
-  },
+  }),
 });

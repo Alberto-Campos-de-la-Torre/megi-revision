@@ -1,0 +1,253 @@
+{
+  "fecha": "2026-11-07T04:03:35.918Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "propuesta y explicación tras respuesta de alergias",
+      "ms": 88692,
+      "objetivoMs": 35000,
+      "cumpleObjetivo": false
+    }
+  ],
+  "exploratorio": true,
+  "n": 1,
+  "inicioPropuesta": 1794024081063,
+  "finTurno": 1794024169755,
+  "visibleMs": 119846,
+  "etapas": [
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024029558-grhmj6",
+      "fecha": 1794024030196
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024029558-grhmj6",
+      "runId": "run-1794024030250-7vo621",
+      "fecha": 1794024030313
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024029558-grhmj6",
+      "runId": "run-1794024030250-7vo621",
+      "fecha": 1794024030314
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024029558-grhmj6",
+      "runId": "run-1794024030250-7vo621",
+      "fecha": 1794024030336
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "fecha": 1794024033961
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024034006-6s5zkv",
+      "fecha": 1794024034066
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024034006-6s5zkv",
+      "fecha": 1794024034066
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024034006-6s5zkv",
+      "fecha": 1794024034093
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024034006-6s5zkv",
+      "fecha": 1794024046925
+    },
+    {
+      "argsKeys": [
+        "slug"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "docs-search",
+      "phase": "start",
+      "tabId": "chat-1794024033817-csmzsy",
+      "fecha": 1794024047050
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "tabId": "chat-1794024033817-csmzsy",
+      "completedSideEffect": false,
+      "isError": false,
+      "fecha": 1794024047051
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024034006-6s5zkv",
+      "fecha": 1794024065902
+    },
+    {
+      "argsKeys": [
+        "question",
+        "options",
+        "header",
+        "allowMultiple",
+        "allowFreeText"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "ask-question",
+      "phase": "start",
+      "tabId": "chat-1794024033817-csmzsy",
+      "fecha": 1794024065928
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "tabId": "chat-1794024033817-csmzsy",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794024065929
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "fecha": 1794024081158
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024081210-8hzxmz",
+      "fecha": 1794024081284
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024081210-8hzxmz",
+      "fecha": 1794024081285
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024081210-8hzxmz",
+      "fecha": 1794024081318
+    },
+    {
+      "paso": "Preparando propuesta\nVer agente y control de detener",
+      "fecha": 1794024081398
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024081210-8hzxmz",
+      "fecha": 1794024166367
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794024033817-csmzsy",
+      "runId": "run-1794024081210-8hzxmz",
+      "fecha": 1794024169755
+    },
+    {
+      "argsKeys": [
+        "consultaId",
+        "lineas",
+        "explicacion"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "proponer-plan",
+      "phase": "start",
+      "tabId": "chat-1794024033817-csmzsy",
+      "fecha": 1794024169817
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [
+        "id",
+        "plan",
+        "change"
+      ],
+      "evento": "agent-native:tool-done",
+      "tool": "proponer-plan",
+      "tabId": "chat-1794024033817-csmzsy",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794024169817
+    }
+  ]
+}

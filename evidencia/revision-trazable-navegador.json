@@ -1,0 +1,32 @@
+{
+  "fecha": "2026-11-07T04:52:43.146799+00:00",
+  "metodo": "Playwright versionado, Chromium, backend sintético y modelo conectado",
+  "reproducir": "evidencia/README.md",
+  "resultados": {
+    "edicion_exportacion": "resultados/recorrido.json",
+    "advertencias_conciliacion": "resultados/advertencias.json",
+    "agente_real": "resultados/agente.json",
+    "tiempos": "resultados/latencia.json",
+    "checks": "resultados/verificacion.json",
+    "diagnostico_api": "resultados/diagnostico-latencia.json"
+  },
+  "alcance": "Los JSON registran códigos reales de salida; observaciones manuales anteriores no acreditan la versión actual.",
+  "app_commit": "b631b872117404d6d6b90232bf70c36506d49007",
+  "comprobaciones_correctas": {
+    "recorrido": 33,
+    "advertencias": 7,
+    "agente": 15,
+    "demo-final": 2,
+    "sugerencias": 1
+  },
+  "limites": [
+    "Plan visible y turno completo son medidas distintas; la serie completa conserva la variabilidad y no acredita una garantía de latencia.",
+    "API del modelo medida con spans llm_call, incluyendo red y reintentos; no equivale al cómputo puro del modelo. Las versiones miden operaciones del servidor.",
+    "Build local completo; configuración de producción pendiente (secreto de autenticación y Postgres persistente).",
+    "Los recorridos conservan avisos conocidos del framework y distinguen la sonda 401 inicial sin sesión.",
+    "Datos sintéticos, sin validación clínica, despliegue, GitHub ni Clips.",
+    "El intento solicitado como Qwen ejecutó Grok 4.7; está marcado como comparación inválida y no acredita rendimiento de Qwen."
+  ],
+  "modelo_efectivo": "grok-4.20-0309-non-reasoning",
+  "objetivo_35s_verificado": true
+}

@@ -29,22 +29,29 @@ const { getPgliteClient, closePgliteClients } = await import(
   new URL("client.js", pathToFileURL(req.resolve("@agent-native/core/db"))).href
 );
 const client = await getPgliteClient(process.env.DATABASE_URL);
-const migracion = readFileSync(new URL("server/plugins/db.ts", app), "utf8").match(/sql: `([\s\S]*?)`,/);
-if (!migracion) throw new Error("No se encontró la migración de la app");
-await client.exec(migracion[1]);
+const migraciones = [...readFileSync(new URL("server/plugins/db.ts", app), "utf8").matchAll(/sql: `([\s\S]*?)`,/g)];
+if (!migraciones.length) throw new Error("No se encontraron migraciones");
+for (const m of migraciones) await client.exec(m[1]);
 
 const acciones: Record<string, any> = {};
-for (const n of ["proponer-plan", "obtener-plan", "actualizar-linea", "reajustar-plan", "aprobar-plan", "agregar-linea", "ver-contexto-consulta", "listar-consultas"]) {
+for (const n of ["proponer-plan", "obtener-plan", "actualizar-linea", "reajustar-plan", "aprobar-plan", "agregar-linea", "ver-contexto-consulta", "listar-consultas", "conciliar-medicacion"]) {
   acciones[n] = (await load(`actions/${n}.ts`)).default;
 }
 const { megi, MegiError } = await load("server/lib/megi/index.ts");
 const { MegiHttp } = await load("server/lib/megi/megi-http.ts");
-const adapter = await megi();
+const adapter = await megi("agente@prueba.local");
 
 const agente = { caller: "tool", userEmail: "agente@prueba.local", orgId: null };
 const medico = { caller: "frontend", userEmail: "agente@prueba.local", orgId: null };
 const otro = { caller: "frontend", userEmail: "otro.medico@prueba.local", orgId: null };
-const call = (n: string, args: unknown, ctx: any = agente) => acciones[n].run(args, ctx);
+const call = async (n: string, input: any, context = agente) => {
+  let args = input;
+  if (["actualizar-linea", "agregar-linea", "reajustar-plan"].includes(n) && context.caller !== "frontend" && args.versionEsperada === undefined) {
+    const r = args.planId ? await client.query("SELECT version FROM planes WHERE id = $1 AND owner_email = $2", [args.planId, context.userEmail]) : await client.query("SELECT p.version FROM planes p JOIN lineas_plan l ON l.plan_id = p.id WHERE l.id = $1 AND p.owner_email = $2", [args.lineaId, context.userEmail]);
+    if (r.rows[0]) args = {...args, versionEsperada: r.rows[0].version};
+  }
+  return acciones[n].run(args, context);
+};
 const falla = async (n: string, args: unknown, ctx: any = agente) => {
   try { await call(n, args, ctx); return null; } catch (e: any) { return { code: e.errorCode, status: e.statusCode, message: e.message }; }
 };
@@ -68,7 +75,10 @@ function transporte(tabla: (path: string, init: any) => any) {
     const path = new URL(String(url)).pathname;
     const metodo = init?.method ?? "GET";
     if (!path.endsWith("/auth/login")) vistas.push({ metodo, path });
-    const r = path.endsWith("/auth/login") ? { token: "tok", name: "Dra. Demo Ficticia" } : tabla(path, init);
+    let r = path.endsWith("/auth/login") ? { token: "tok", name: "Dra. Demo Ficticia" } : tabla(path, init);
+    // Lecturas paginadas de revisión (I3): si la tabla no las define, el transporte
+    // simula un backend anterior (404 Not Found) y el adaptador recorre pacientes.
+    if (/\/review\/(pending|medication-history)$/.test(path) && (r === undefined || (r && typeof r === "object" && !("items" in r) && !("__status" in r)))) r = { __status: 404, __body: { detail: "Not Found" } };
     if (r === undefined) throw new Error(`Ruta no prevista en el transporte: ${metodo} ${path}`);
     const status = r?.__status ?? 200;
     return new Response(JSON.stringify(r?.__body ?? r), { status, headers: { "content-type": "application/json" } });
@@ -264,7 +274,9 @@ seccion("3 · utilidad");
   const yoMedico = { ...medico, userEmail: "adv@prueba.local" };
   const p = await call("proponer-plan", { consultaId: "demo-c2", lineas: [{ tipo: "farmaco", texto: "Naproxeno", dosis: "250 mg", frecuencia: "cada 12 h" }], explicacion: "Prueba" }, yo);
   anota("uti-interaccion-moderada-es-advertencia", p.lineas[0].verificacion === "advertencia", p.lineas[0].motivoVerificacion);
-  await call("aprobar-plan", { planId: p.id, origen: "medico" }, yoMedico);
+  const pendiente = await call("obtener-plan", { planId: p.id }, yo);
+  await call("conciliar-medicacion", { planId: p.id, versionEsperada: pendiente.plan.version, decisiones: pendiente.conciliacion.map((m: any) => ({ id: m.id, estado: "activo" })) }, yoMedico);
+  await call("aprobar-plan", { planId: p.id, versionEsperada: pendiente.plan.version + 1, origen: "medico" }, yoMedico);
   const plan = await call("obtener-plan", { planId: p.id }, yo);
   const aprobar = plan.eventos.filter((e: any) => e.accion === "aprobar");
   anota("uti-la-advertencia-queda-en-la-bitacora", aprobar.some((e: any) => /advertencia/i.test(e.detalle)), aprobar.map((e: any) => e.detalle));
@@ -307,7 +319,8 @@ seccion("3 · utilidad");
   const http = new MegiHttp({ url: "http://megi.invalido", user: "u", password: "p", fetchImpl });
   const lista = await http.listarConsultasCerradas();
   mide("uti-peticiones-para-listar-3-pacientes", vistas.length);
-  anota("uti-listar-no-pasa-de-3-peticiones-por-paciente", lista.length === 3 && vistas.length <= 1 + 3 * pacientes.length, { consultas: lista.length, peticiones: vistas.length });
+  // 1 sonda de /review/pending (backend sin paginación) + 1 lista de pacientes + ≤3 por paciente.
+  anota("uti-listar-no-pasa-de-3-peticiones-por-paciente", lista.length === 3 && vistas.length <= 2 + 3 * pacientes.length, { consultas: lista.length, peticiones: vistas.length });
 }
 
 // 3.6 El catálogo que ve el agente no arrastra acciones de la plantilla.

@@ -1,0 +1,45 @@
+✔ lista: 4 consultas pendientes
+✔ indicador de conexión con MEGI
+✔ caso 2 muestra «Sin registro de alergias»
+✔ panel vacío usa las sugerencias en español sin reemplazo dinámico en inglés
+✔ ficha muestra la alergia a penicilina
+✔ botón que delega al agente visible
+✔ plan en blanco creado
+✔ amoxicilina añadida con chip «Bloqueo de seguridad»
+✔ motivo del bloqueo visible
+✔ alternativas visibles
+✔ botón «Pedir reemplazo al agente»
+✔ aprobar deshabilitado hasta marcar la confirmación
+✔ alternativa automática queda pendiente sin tocar la línea fijada
+✔ línea bloqueada no se puede editar
+✔ desbloqueada: vuelve a ser editable
+✔ edición inline guardada y marcada como editada por el médico
+✔ edición en ámbar con dosis antes y después
+✔ paracetamol añadido con chip «Sin alertas detectadas»
+✔ pendiente añadido
+✔ rechazada con motivo y botón de reactivar
+✔ selección explica el límite de dos líneas
+✔ comparación muestra retiradas rojas y adiciones verdes
+✔ comparación de versiones disponible
+✔ tablero sin desbordamiento horizontal a 390 px
+✔ bitácora con 14 eventos (médico)
+✔ sin bloqueos pendientes en el diálogo
+✔ plan aprobado y exportado
+✔ FHIR con MedicationRequest y sello sha256 visibles
+✔ plan cerrado: sin botones de edición
+✔ demo-c1 desaparece de pendientes
+✔ consulta exportada accesible en el archivo
+✔ caso 2 avisa que no hay registro de alergias
+✔ comparación exploratoria distingue servidor y API del modelo sin atribuirle el total
+
+red con error (no esperados): 0
+consola con error: 7
+  Failed to load resource: the server responded with a status of 401 ()
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+  Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozill
+
+recorrido completo correcto · capturas en /Users/davidmedinastudio/Desktop/bluiders.io/evidencia/capturas/

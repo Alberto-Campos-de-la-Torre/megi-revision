@@ -1,0 +1,451 @@
+{
+  "app_commit": "b631b872117404d6d6b90232bf70c36506d49007",
+  "requisitos": [
+    {
+      "id": "A1",
+      "requisito": "Historial vivo fusionado; lo nuevo exige conciliación",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/plan.ts",
+        "megi-revision/server/lib/revision.ts",
+        "megi-revision/server/lib/megi/megi-http.ts"
+      ],
+      "pruebas": [
+        "receta-aprobada-despues-del-plan-cruza-por-adaptador-http",
+        "nueva-medicacion-viva-entra-y-frena-aprobacion"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A2",
+      "requisito": "Versión obligatoria para el agente con o sin alcance",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/revision.ts"
+      ],
+      "pruebas": [
+        "version-obligatoria-sin-alcance",
+        "no-omite-version-en-edicion-acotada",
+        "no-edita-version-antigua"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A3",
+      "requisito": "Caché por paciente/adaptador solo durante la acción; coste medido",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/megi/peticion.ts",
+        "megi-revision/server/lib/megi/megi-http.ts",
+        "pruebas-hackathon/bateria-resultados.json"
+      ],
+      "pruebas": [
+        "cache-solo-peticion-y-aislado-por-adaptador",
+        "historial-incluye-cronico-antiguo-y-distingue-tratamiento-finalizado"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A4",
+      "requisito": "Hidratación legacy falla con 502 tipado",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/plan.ts"
+      ],
+      "pruebas": [
+        "legacy-hidratacion-fallida-es-502-tipado"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A5",
+      "requisito": "Contexto mínimo sin transcripción y parseo por conjunto",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/revision.ts",
+        "megi-revision/server/lib/plan.ts",
+        "megi-revision/actions/proponer-plan.ts"
+      ],
+      "pruebas": [
+        "contexto-conservado-minimo-sin-transcripcion",
+        "contexto-se-parsea-una-vez-por-accion-y-no-se-reusa-entre-peticiones"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A6",
+      "requisito": "Exportadas antiguas con fuentes neutras",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/lib/plan.ts"
+      ],
+      "pruebas": [
+        "exportadas-antiguas-neutras-y-listadas-sin-backend"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "A7",
+      "requisito": "Diálogo se abre después de recibir la versión refrescada",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/routes/revision.$consultaId.tsx",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "A8",
+      "requisito": "Filtro Exportadas accesible",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/actions/listar-consultas.ts",
+        "megi-revision/app/routes/revision._index.tsx",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "A9",
+      "requisito": "Numeración, importación y dependencias limpiadas",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/.agents/skills/revision-clinica/SKILL.md",
+        "megi-revision/actions/proponer-plan.ts",
+        "megi-revision/app/components/revision/MedicionesRevision.tsx"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "A10",
+      "requisito": "Foco y 60 s como respaldo",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/routes/revision.$consultaId.tsx"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "B1",
+      "requisito": "Recorrido actualizado y capturas",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/recorrido.mjs",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "B2",
+      "requisito": "Conciliar Losartán antes de aprobar; botón antes deshabilitado",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/advertencias.mjs",
+        "evidencia/resultados/advertencias.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "B3",
+      "requisito": "Motivo abierto, compositor actual y espera del fin de turno",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/agente.mjs",
+        "evidencia/resultados/agente.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "B4",
+      "requisito": "Build y pruebas reproducibles con JSON/capturas",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/verificar.mjs",
+        "evidencia/backend.mjs",
+        "evidencia/resultados/verificacion.json",
+        "ESTADO.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "B5",
+      "requisito": "Restaurar únicamente casos propios y comprobar cuatro pendientes",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/finalizar.mjs",
+        "evidencia/resultados/demo-final.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C1",
+      "requisito": "Motivo abierto tras un cambio del agente",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/routes/revision.$consultaId.tsx",
+        "evidencia/resultados/agente.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C2",
+      "requisito": "Diff rojo, verde y ámbar; dosis antes y después",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/components/revision/ComparacionPlan.tsx",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C3",
+      "requisito": "Selección explica alcance y ofrece orden acotada",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/routes/revision.$consultaId.tsx",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C4",
+      "requisito": "Tres pasos en el estado sin plan",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/routes/revision.$consultaId.tsx",
+        "evidencia/capturas/02-consulta-sin-plan.png"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C5",
+      "requisito": "Marca, chat y espacio local de demo en español",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/lib/app-config.ts",
+        "megi-revision/app/components/layout/AgentInspector.tsx",
+        "megi-revision/server/plugins/agent-native-email-branding.ts",
+        "megi-revision/app/root.tsx",
+        "evidencia/comun.mjs",
+        "evidencia/resultados/sugerencias.json",
+        "evidencia/capturas/sugerencias-espanol.png"
+      ],
+      "pruebas": [],
+      "notas": "El inspector desactiva las sugerencias dinámicas genéricas y conserva las clínicas en español; comprobado con el panel vacío abierto."
+    },
+    {
+      "id": "C6",
+      "requisito": "Pasos derivados de eventos reales; sin temporizadores de progreso",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/components/revision/EstadoAgente.tsx",
+        "megi-revision/app/components/revision/TrabajoAgente.tsx",
+        "evidencia/resultados/agente.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "C7",
+      "requisito": "Fuentes cerradas, conciliación por incertidumbre e iconos por actor",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/components/revision/LineaPlan.tsx",
+        "megi-revision/app/components/revision/ConciliacionMedicacion.tsx",
+        "megi-revision/app/components/revision/Bitacora.tsx"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "D1",
+      "requisito": "Alternativa automática vinculada a una línea, sin sobrescribir la receta fijada",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/components/revision/agente.ts",
+        "megi-revision/actions/sugerir-reemplazo.ts",
+        "megi-revision/actions/resolver-sugerencia.ts",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [
+        "sugerencia-acotada-no-toca-fijada-y-medico-resuelve",
+        "alternativa-se-cruza-con-otros-farmacos-del-plan"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "D2",
+      "requisito": "Pregunta estructurada de alergias antes de proponer",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/plugins/agent-chat.ts",
+        "megi-revision/.agents/skills/revision-clinica/SKILL.md",
+        "evidencia/resultados/agente.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "D3",
+      "requisito": "Comparación exploratoria manual/agente; servidor y modelo distinguidos",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/components/revision/MedicionesRevision.tsx",
+        "megi-revision/actions/metricas-revision.ts"
+      ],
+      "pruebas": [
+        "mediciones-reales-y-aisladas",
+        "traza-del-modelo-vinculada-desde-contexto-del-servidor-y-aislada"
+      ],
+      "notas": "Operaciones del servidor y API del modelo medidas por separado. API incluye red/reintentos y se lee bajo demanda mediante el hook público, con acceso por propietario. No se estima restando servidor al total."
+    },
+    {
+      "id": "D4",
+      "requisito": "Skill reducida, herramientas diferidas y medición de latencia",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/server/plugins/agent-chat.ts",
+        "megi-revision/.agents/skills/revision-clinica/SKILL.md",
+        "evidencia/resultados/latencia.json",
+        "evidencia/resultados/latencia-serie.json",
+        "megi-revision/actions/proponer-plan.ts",
+        "evidencia/resultados/configuracion-latencia.json",
+        "evidencia/resultados/comparacion-modelos.json"
+      ],
+      "pruebas": [],
+      "notas": "Recorrido canónico desde un navegador nuevo con Grok 4.20 Non-Reasoning configurado para esta app. Se exige tanto plan visible como turno completo por debajo de 35 s; muestra exploratoria, sin garantía de SLA.",
+      "medicion": {
+        "visibleMs": 4228,
+        "turnoMs": 3659,
+        "n": 1
+      }
+    },
+    {
+      "id": "E1",
+      "requisito": "Invalidación dirigida sin acumular planes de llamadas anteriores",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/lib/revision-sync.ts",
+        "megi-revision/app/root.tsx",
+        "megi-revision/actions/actualizar-linea.ts"
+      ],
+      "pruebas": [
+        "invalidacion-de-un-plan-no-despierta-otro",
+        "entrega-pausada-refresca-su-recurso-sin-marca-de-efecto"
+      ],
+      "notas": ""
+    },
+    {
+      "id": "E2",
+      "requisito": "Versión y alcance en current-screen, validación en servidor",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/app/hooks/use-navigation-state.ts",
+        "megi-revision/app/routes/revision.$consultaId.tsx",
+        "megi-revision/actions/view-screen.ts",
+        "evidencia/resultados/recorrido.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "E3",
+      "requisito": "Página de aprobación HTTP incluida diez segundos en el guion",
+      "estado": "verificado",
+      "fuentes": [
+        "PLAN_HACKATHON_AGENT_NATIVE.md",
+        "megi-revision/server/plugins/agent-chat.ts"
+      ],
+      "pruebas": [],
+      "notas": "Solo guion: vídeo y Clips siguen fuera del encargo actual."
+    },
+    {
+      "id": "E4",
+      "requisito": "Manifiesto MCP con lecturas y exclusiones; enlace README",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/revision-trazable-mcp.json",
+        "megi-revision/README.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "DOC_ENVIO",
+      "requisito": "Documento actualizado",
+      "estado": "verificado",
+      "fuentes": [
+        "ENVIO_HACKATHON.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "DOC_GUION",
+      "requisito": "Documento actualizado",
+      "estado": "verificado",
+      "fuentes": [
+        "PLAN_HACKATHON_AGENT_NATIVE.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "DOC_README",
+      "requisito": "Documento actualizado",
+      "estado": "verificado",
+      "fuentes": [
+        "megi-revision/README.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "DOC_ESTADO",
+      "requisito": "Documento actualizado",
+      "estado": "verificado",
+      "fuentes": [
+        "ESTADO.md"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "GATES",
+      "requisito": "Typecheck, doctor, build y tres regresiones",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/resultados/verificacion.json",
+        "evidencia/auditoria-hackathon-resultados.json",
+        "pruebas-hackathon/bateria-resultados.json",
+        "pruebas-hackathon/revision-trazable-resultados.json"
+      ],
+      "pruebas": [],
+      "notas": ""
+    },
+    {
+      "id": "COMMIT",
+      "requisito": "Commit local de la aplicación",
+      "estado": "verificado",
+      "fuentes": [
+        "evidencia/revision-trazable-validacion.json"
+      ],
+      "pruebas": [],
+      "notas": "El usuario excluyó el commit del repositorio raíz; documentación y evidencia se conservan en el árbol de trabajo."
+    }
+  ],
+  "pendientes": []
+}

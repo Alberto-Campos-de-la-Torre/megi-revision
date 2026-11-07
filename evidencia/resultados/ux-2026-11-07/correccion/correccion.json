@@ -1,0 +1,127 @@
+{
+  "fecha": "2026-11-07T17:40:28.276564+00:00",
+  "responde_a": "evidencia/resultados/ux-2026-11-07/dictamen.json (90/100, hallazgos UX1–UX3)",
+  "entorno": "App en 127.0.0.1:8091; MEGI mock; PGlite temporal en el scratchpad de la sesión; misma secuencia de scripts del auditor copiada a correccion/ (solo cambió la ruta de importación de Playwright).",
+  "correcciones": [
+    {
+      "id": "UX1",
+      "archivo": "megi-revision/app/global.css",
+      "cambio": "En el estado vacío con compositor centrado, el transcript pasa a overflow-y:auto dentro de .lienzo-chat (el toolkit lo dejaba visible y la bienvenida se derramaba bajo el compositor). Bienvenida algo más compacta en móvil (gaps y padding) en ChatRouteContent.tsx.",
+      "verificacion": {
+        "movil_390x844": {
+          "antes_libre": true,
+          "clicable": true,
+          "scroller": "agentkit-transcript"
+        },
+        "seguimiento": [
+          {
+            "id": "sugerencia-1-clicable-en-movil",
+            "passed": true
+          },
+          {
+            "id": "sugerencia-2-clicable-en-movil",
+            "passed": true
+          },
+          {
+            "id": "sugerencia-3-clicable-en-movil",
+            "passed": true
+          }
+        ],
+        "movil_360x640": [
+          {
+            "id": "sugerencia-1-clicable-360x640",
+            "passed": true,
+            "detail": {
+              "libre": true,
+              "target": "bienvenida-agente__chip",
+              "y": 180
+            }
+          },
+          {
+            "id": "sugerencia-2-clicable-360x640",
+            "passed": true,
+            "detail": {
+              "libre": true,
+              "target": "bienvenida-agente__chip",
+              "y": 242
+            }
+          },
+          {
+            "id": "sugerencia-3-clicable-360x640",
+            "passed": true,
+            "detail": {
+              "libre": true,
+              "target": "bienvenida-agente__chip",
+              "y": 304
+            }
+          },
+          {
+            "id": "chat-360-sin-overflow-horizontal",
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "UX2",
+      "archivo": "megi-revision/app/global.css",
+      "cambio": ".agent-sidebar-panel redefine --agent-kit-nav-surface a hsl(var(--background)): el inspector deja de heredar el fondo de la barra de navegación y conserva el texto de la página.",
+      "verificacion": {
+        "claro": {
+          "tag": "SECTION",
+          "cls": "w-full min-w-0 overflow-hidden px-3 py-2 agentkit-host-suggestions",
+          "bg": "rgb(255, 255, 255)",
+          "color": "rgb(26, 26, 26)"
+        },
+        "contraste": [
+          {
+            "id": "inspector-claro-contraste>=4.5",
+            "passed": true,
+            "detail": {
+              "text": "rgb(26, 26, 26)",
+              "bg": "rgb(255, 255, 255)",
+              "vacio": "rgb(26, 26, 26)",
+              "ratio": 17.4
+            }
+          },
+          {
+            "id": "inspector-oscuro-contraste>=4.5",
+            "passed": true,
+            "detail": {
+              "text": "rgb(230, 230, 230)",
+              "bg": "rgb(33, 33, 33)",
+              "vacio": "rgb(230, 230, 230)",
+              "ratio": 12.9
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "UX3",
+      "archivo": "megi-revision/app/global.css",
+      "cambio": ".dark .bienvenida-agente__seccion usa #9BA8AB.",
+      "verificacion": {
+        "id": "para-empezar-oscuro",
+        "text": "rgb(155, 168, 171)",
+        "background": "rgb(33, 33, 33)"
+      }
+    }
+  ],
+  "resultado": {
+    "seguimiento": {
+      "pasan": 6,
+      "total": 6
+    },
+    "extra": {
+      "pasan": 6,
+      "total": 6
+    },
+    "typecheck": "exit 0"
+  },
+  "no_repetido": "Las 195 regresiones históricas y el backend vivo no se repitieron: los cambios son de hoja de estilos y clases de la bienvenida; no tocan acciones, adaptador ni servidor.",
+  "codigo_sha256": {
+    "megi-revision/app/global.css": "579f6f6f74c4180f74b0205c61a33901a42ce6de5b4fc571efd04b7d501d9314",
+    "megi-revision/app/components/chat/ChatRouteContent.tsx": "a935532aaed9acd8ec04d70f6ba5328af43c46d143402415944d9f08910c3888"
+  }
+}

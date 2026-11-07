@@ -1,0 +1,28 @@
+{
+  "fecha": "2026-11-07T17:38:56.989Z",
+  "antes": {
+    "rect": {
+      "y": 424,
+      "height": 34
+    },
+    "target": "bienvenida-agente__chip",
+    "libre": true
+  },
+  "despues": {
+    "rect": {
+      "y": 424,
+      "height": 34
+    },
+    "target": "bienvenida-agente__chip",
+    "libre": true
+  },
+  "scrollers": [
+    {
+      "class": "agentkit-transcript",
+      "top": 350,
+      "scroll": 948,
+      "client": 598
+    }
+  ],
+  "clicableConDesplazamientoAdicional": true
+}

@@ -1,4 +1,4 @@
-import { IconRobot, IconUser } from "@tabler/icons-react";
+import { IconMessage, IconUser } from "@tabler/icons-react";
 
 export type Evento = {
   id: string;
@@ -21,6 +21,11 @@ const ETIQUETAS: Record<string, string> = {
   rechazar: "Rechazó",
   reactivar: "Reactivó",
   aprobar: "Aprobó y exportó",
+  conciliar: "Concilió medicación",
+  alcance: "Definió el alcance",
+  verificar: "Actualizó la verificación",
+  sugerir: "Propuso una alternativa",
+  "resolver-sugerencia": "Resolvió la alternativa",
 };
 
 function hora(iso: string) {
@@ -36,7 +41,7 @@ export function Bitacora({ eventos }: { eventos: Evento[] }) {
   return (
     <ol className="divide-y divide-border">
       {[...eventos].reverse().map((e) => {
-        const Icono = e.actor === "medico" ? IconUser : IconRobot;
+        const Icono = e.actor === "medico" ? IconUser : IconMessage;
         return (
           <li key={e.id} className="flex gap-3 px-1 py-2.5 text-sm">
             <Icono className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />

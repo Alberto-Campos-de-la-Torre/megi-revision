@@ -1,0 +1,54 @@
+{
+  "fecha": "2026-11-07T18:06:51.282204+00:00",
+  "calificacion": 91,
+  "rubrica": {
+    "utilidad_ejecucion": 38,
+    "creatividad_diseno": 17,
+    "innovacion": 17,
+    "agent_native": 19
+  },
+  "verificacion": {
+    "ux": "12/12 nuevas comprobaciones, incluidos hit-test y clic de prueba en 390x844 y 360x640, contraste del inspector claro/oscuro y ausencia de excepciones JavaScript",
+    "typecheck": "exit 0",
+    "doctor": "exit 0, clean",
+    "contraste_inspector": {
+      "claro": 17.404,
+      "oscuro": 12.902
+    },
+    "contraste_para_empezar_oscuro": 6.581,
+    "limite": "No se repitieron las regresiones históricas del servidor ni se modificaron planes. La primera medición durante el cambio de tema se conserva en resultados-durante-transicion.json; la repetición espera 400 ms antes de medir."
+  },
+  "hallazgos_previos": {
+    "UX1": "cerrado en ambos tamaños comprobados",
+    "UX2": "cerrado en claro y oscuro",
+    "UX3": "cerrado"
+  },
+  "para_aspirar_al_100": [
+    {
+      "criterio": "Utilidad y ejecución",
+      "puntos_hasta_maximo": 2,
+      "evidencia_pendiente": "Sesiones con médicos comparando revisión manual/agente y puesta en marcha con cuentas individuales en la instalación destino."
+    },
+    {
+      "criterio": "Creatividad y diseño",
+      "puntos_hasta_maximo": 3,
+      "evidencia_pendiente": "Observar usuarios nuevos, corregir fricción, comprobar teclado, zoom y estados de error/espera/vacío de los flujos principales. Cerrar hallazgos concretos con capturas y recorridos."
+    },
+    {
+      "criterio": "Innovación",
+      "puntos_hasta_maximo": 3,
+      "evidencia_pendiente": "Demostrar valor diferencial del flujo con selección, bloqueos, fuentes y conciliación usando resultados comparables, sin afirmar reducción de errores clínicos no medida."
+    },
+    {
+      "criterio": "Uso de Agent-Native",
+      "puntos_hasta_maximo": 1,
+      "evidencia_pendiente": "Demo del código final que muestre continuidad UI–agente sobre el mismo registro, alcance y recuperación, respaldada por las pruebas existentes; puntuación final subjetiva del jurado."
+    }
+  ],
+  "entrega": "Clips público, equipo, aceptación, formulario y recibo siguen pendientes y detenidos; son condiciones de entrega, no puntos adicionales garantizados. Repo público y despliegue opcionales.",
+  "limite_de_nota": "91 es una evaluación independiente. No hay un checklist cuya ejecución garantice el 100 del jurado. La ausencia de validación clínica formal no se presenta como requisito oficial del hackatón.",
+  "codigo_sha256": {
+    "megi-revision/app/global.css": "579f6f6f74c4180f74b0205c61a33901a42ce6de5b4fc571efd04b7d501d9314",
+    "megi-revision/app/components/chat/ChatRouteContent.tsx": "a935532aaed9acd8ec04d70f6ba5328af43c46d143402415944d9f08910c3888"
+  }
+}

@@ -1,14 +1,18 @@
+// guard:allow-resource-action-access — Crea un recurso nuevo con ownerEmail derivado de requireEmail; consulta de MEGI y unicidad por propietario antes de insertar.
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction, fail } from "@agent-native/core/action";
+import { ACTION_CHAT_UI_RECORD_CHANGE_RENDERER } from "@agent-native/core/action-ui";
 import { buildDeepLink } from "@agent-native/core/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { contextoMinimo, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
-import { megi, MegiError } from "../server/lib/megi/index.js";
-import {
+import { MegiError } from "../server/lib/megi/index.js";
+import { conectarMegi,
   ahora,
   lineaInputSchema,
-  lineaOut,
+  lineasOut,
   lineaOutputSchema,
   lineasDe,
   origenAutorizado,
@@ -21,11 +25,32 @@ import {
   verificarPlan,
 } from "../server/lib/plan.js";
 
+const reciboSchema = z.object({
+  verb: z.literal("created"), kind: z.literal("plan"),
+  title: z.string(), detail: z.string(), url: z.string(),
+});
+
 export default defineAction({
+  // Creation finishes at the medical handoff: explanation and verified lines
+  // are already persisted. Other edit actions continue to use the agent loop.
+  endsTurn: true,
+  // Direct MCP callers receive the complete result and deep link; no in-app
+  // answer is needed to complete creation. Medical approval stays UI-only.
+  mcpTool: true,
+  chatUI: {
+    renderer: ACTION_CHAT_UI_RECORD_CHANGE_RENDERER,
+    // Keep the resource ids used by directed invalidation, without copying
+    // clinical lines or sources into the chat widget's recovery payload.
+    projectResult: (_args, result) => z.object({
+      id: z.string(), plan: z.object({ id: z.string(), consultaId: z.string() }),
+      change: reciboSchema,
+    }).parse(result),
+  },
+  changeResource: (_input, result) => ({ resourceType: `consulta:${result.plan.consultaId}`, resourceId: result.id }),
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
-    'Crea el plan de revisión de una consulta con las líneas propuestas y verifica cada fármaco contra alergias, crónicos y medicación activa en MEGI. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:"farmaco", texto, dosis, frecuencia, duracion, justificacion} y cada pendiente como {tipo:"pendiente", texto}. El agente nunca manda `lineas` vacío. Falla con plan_existente (409) si la consulta ya tiene plan: entonces usa reajustar-plan.',
+    'Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:"farmaco", texto, dosis, frecuencia, duracion, justificacion} y cada pendiente como {tipo:"pendiente", texto}. Nunca envíes `lineas` vacío. Falla con plan_existente (409) si ya hay plan: usa reajustar-plan. La revisión y aprobación finales son médicas.',
   schema: z.object({
     consultaId: z.string().describe("Id de la consulta (de listar-consultas)"),
     lineas: z
@@ -38,7 +63,7 @@ export default defineAction({
       .string()
       .default("")
       .describe(
-        "Dos o tres frases: en qué te basaste y qué decisiones tomaste",
+        "Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada línea.",
       ),
     origen: origenSchema,
   }),
@@ -53,6 +78,7 @@ export default defineAction({
       vigentes: z.number(),
     }),
     message: z.string(),
+    change: reciboSchema,
   }),
   link: ({ args }) => ({
     url: buildDeepLink({
@@ -62,11 +88,12 @@ export default defineAction({
     }),
     label: "Abrir plan",
   }),
-  run: async (args, ctx) => {
+  run: async (args, ctx) => enPeticionMegi(async () => {
+    const inicio = performance.now();
     const email = requireEmail(ctx);
     const orgId = ctx?.orgId ?? null;
-    const origen = origenAutorizado(args.origen, ctx);
-    const adapter = await megi();
+    const origen = await origenAutorizado(args.origen, ctx);
+    const adapter = await conectarMegi(ctx?.userEmail ?? undefined);
     let consulta;
     try {
       consulta = await adapter.verConsulta(args.consultaId);
@@ -131,6 +158,7 @@ export default defineAction({
           motivo: consulta.motivo,
           estado: "borrador",
           explicacion: args.explicacion || null,
+          contextoFuente: JSON.stringify(contextoMinimo(consulta, paciente)),
           ownerEmail: email,
           orgId,
           createdAt: t,
@@ -181,22 +209,30 @@ export default defineAction({
         tx,
       );
 
+      await guardarVersion(planId, origen, "proponer", args.explicacion || "Plan inicial", inicio, tx, ctx);
       const [plan] = await tx
         .select()
         .from(schema.planes)
         .where(eq(schema.planes.id, planId))
         .limit(1);
       if (!plan) throw new Error("Plan no encontrado tras crear.");
-      const lineas = (await lineasDe(planId, tx)).map(lineaOut);
+      const lineas = lineasOut(await lineasDe(planId, tx), plan);
       const resumen = resumenVerificacion(lineas);
+      const message = `Plan creado con ${lineas.length} líneas: ${resumen.bloqueos} bloqueo(s), ${resumen.advertencias} advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.`;
       ctx?.signal?.throwIfAborted();
       return {
         id: planId,
         plan: planOut(plan),
         lineas,
         resumen,
-        message: `Plan creado con ${lineas.length} líneas: ${resumen.bloqueos} bloqueo(s), ${resumen.advertencias} advertencia(s).`,
+        message,
+        change: {
+          verb: "created" as const, kind: "plan" as const,
+          title: "Plan listo para revisión médica",
+          detail: message,
+          url: buildDeepLink({ view: "revision", to: `/revision/${encodeURIComponent(consulta.id)}`, params: { consultaId: consulta.id } }),
+        },
       };
     });
-  },
+  }),
 });

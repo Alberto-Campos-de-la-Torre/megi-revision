@@ -1,0 +1,389 @@
+{
+  "fecha": "2026-11-07T03:57:19.471Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "la UI impide un envío solapado durante el turno",
+      "pasa": true
+    },
+    {
+      "prueba": "cancelar antes de proponer no deja un plan parcial",
+      "pasa": true
+    },
+    {
+      "prueba": "nuevo intento tras cancelar llega a la pregunta estructurada",
+      "pasa": true
+    },
+    {
+      "prueba": "el agente está conectado (no aparece «Conectar IA»)",
+      "pasa": true
+    },
+    {
+      "prueba": "tablero muestra etapas del runtime durante la propuesta",
+      "pasa": true
+    },
+    {
+      "prueba": "recibo de creación visible en el chat al entregar el control al médico",
+      "pasa": true
+    },
+    {
+      "prueba": "plan visible en 4.3 s; turno completo en 3.5 s",
+      "pasa": true
+    },
+    {
+      "prueba": "plan visible tras guardar sin esperar el respaldo de sincronización de 60 s",
+      "pasa": true
+    },
+    {
+      "prueba": "líneas marcadas «Propuesta por el agente»",
+      "pasa": true
+    },
+    {
+      "prueba": "motivo del agente abierto en el tablero",
+      "pasa": true
+    },
+    {
+      "prueba": "duración de API del modelo medida desde su traza, separada de las herramientas",
+      "pasa": true
+    },
+    {
+      "prueba": "el plan tiene 5 líneas",
+      "pasa": true
+    },
+    {
+      "prueba": "la bitácora registra al agente como actor",
+      "pasa": true
+    },
+    {
+      "prueba": "la línea bloqueada (Naproxeno) sigue intacta tras pedir al agente que la quite",
+      "pasa": true
+    },
+    {
+      "prueba": "el agente explica que no puede tocar la línea bloqueada",
+      "pasa": true
+    }
+  ],
+  "fallos": 0,
+  "fallosComprobacion": 0,
+  "etapas": [
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "fecha": 1794023792272
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792388
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792388
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792414
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023796075
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796184
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796184
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796217
+    },
+    {
+      "argsKeys": [
+        "slug"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "docs-search",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023797224
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": false,
+      "isError": false,
+      "fecha": 1794023797225
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023798265
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023798266
+    },
+    {
+      "argsKeys": [
+        "question",
+        "options",
+        "header",
+        "allowMultiple"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "ask-question",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": false,
+      "isError": false,
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023798320
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023814049
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814168
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814168
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814202
+    },
+    {
+      "paso": "Preparando propuesta\nVer agente y control de detener",
+      "fecha": 1794023814270
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023815439
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023817492
+    },
+    {
+      "argsKeys": [
+        "consultaId",
+        "lineas",
+        "explicacion"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "proponer-plan",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023817557
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [
+        "id",
+        "plan",
+        "change"
+      ],
+      "evento": "agent-native:tool-done",
+      "tool": "proponer-plan",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023817557
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023835200
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023835305-9dd67u",
+      "fecha": 1794023835370
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023835305-9dd67u",
+      "fecha": 1794023835370
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023835305-9dd67u",
+      "fecha": 1794023835404
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023835305-9dd67u",
+      "fecha": 1794023836614
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023835305-9dd67u",
+      "fecha": 1794023839092
+    }
+  ],
+  "sondaSinSesion": [
+    "401 GET http://localhost:8082/_agent-native/agent-engine/status"
+  ],
+  "red": [],
+  "consola": [
+    "Failed to load resource: the server responded with a status of 401 ()"
+  ]
+}

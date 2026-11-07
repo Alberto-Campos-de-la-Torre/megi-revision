@@ -1,3 +1,4 @@
+import { enCacheDePeticion } from "./peticion.js";
 /**
  * Adaptador REAL: habla con el backend MEGI (FastAPI) por HTTP.
  *
@@ -9,7 +10,11 @@
  * Hace login al primer uso y guarda el token (HMAC firmado por MEGI, 7 días).
  * Si una petición devuelve 401, reintenta UNA vez tras volver a entrar.
  *
- * Qué endpoint usa cada método está en docs/api_megi_para_adaptador.md.
+ * Lecturas de revisión (I3): `GET /review/pending` (pendientes paginadas,
+ * filtradas por médico en el servidor, con la ficha del paciente) y
+ * `POST /review/medication-history` (recetas aprobadas de varios pacientes,
+ * paginadas). Si el backend es anterior y responde 404 «Not Found», se cae
+ * al recorrido paciente a paciente; cualquier otro error se propaga.
  */
 import {
   MegiError,
@@ -21,6 +26,7 @@ import {
   type Medicamento,
   type MegiAdapter,
   type Paciente,
+  type PaginaPendientes,
   type PlanAprobado,
   type Soap,
   type Verificacion,
@@ -164,6 +170,106 @@ function normaliza(s: string): string {
     .toLowerCase();
 }
 
+/**
+ * Contrato de `POST /safety/rx-check`: `{ alerts: [{severity: "blocker"|"warn",
+ * type, drug, against, message}], blockers, warnings }`. Cualquier otra cosa
+ * (un `{}`, `alerts` que no es lista, severidades desconocidas, alertas sin
+ * mensaje o recuentos que no cuadran) NO es «sin alertas»: es un verificador
+ * roto y la receta no puede darse por segura. Se rechaza con 502 y código
+ * `verificador_invalido`; la capa de acción no guarda nada.
+ */
+export const CODIGO_VERIFICADOR_INVALIDO = "verificador_invalido";
+
+function respuestaInvalida(motivo: string, respuesta: unknown): MegiError {
+  return new MegiError(
+    `Respuesta inválida del verificador de MEGI (/safety/rx-check): ${motivo}. La receta no se da por segura.`,
+    502,
+    { codigo: CODIGO_VERIFICADOR_INVALIDO, motivo, respuesta },
+  );
+}
+
+export function alertasDeMegi(r: unknown): Alerta[] {
+  if (!r || typeof r !== "object" || Array.isArray(r)) {
+    throw respuestaInvalida("el cuerpo no es un objeto JSON", r);
+  }
+  const { alerts, blockers, warnings } = r as Json;
+  if (!Array.isArray(alerts)) {
+    throw respuestaInvalida("falta la lista `alerts`", r);
+  }
+  const alertas = alerts.map((a: unknown, i: number): Alerta => {
+    if (!a || typeof a !== "object" || Array.isArray(a)) {
+      throw respuestaInvalida(`la alerta ${i} no es un objeto`, r);
+    }
+    const x = a as Json;
+    if (x.severity !== "blocker" && x.severity !== "warn") {
+      throw respuestaInvalida(
+        `la alerta ${i} tiene severidad desconocida ${JSON.stringify(x.severity)}`,
+        r,
+      );
+    }
+    if (typeof x.message !== "string" || !x.message.trim()) {
+      throw respuestaInvalida(`la alerta ${i} no tiene mensaje`, r);
+    }
+    return {
+      severidad: x.severity === "blocker" ? "bloqueo" : "advertencia",
+      tipo: (["alergia", "cronico", "interaccion"] as const).includes(x.type)
+        ? x.type
+        : "otro",
+      farmaco: typeof x.drug === "string" ? x.drug : "",
+      contra: typeof x.against === "string" ? x.against : "",
+      mensaje: x.message.trim(),
+    };
+  });
+  // Los recuentos son redundantes, pero si vienen tienen que cuadrar: una
+  // respuesta truncada o mezclada no debe pasar como completa.
+  const nBloqueos = alertas.filter((a) => a.severidad === "bloqueo").length;
+  if (blockers !== undefined && blockers !== nBloqueos) {
+    throw respuestaInvalida(`\`blockers\`=${JSON.stringify(blockers)} no coincide con ${nBloqueos} alerta(s) de bloqueo`, r);
+  }
+  if (warnings !== undefined && warnings !== alertas.length - nBloqueos) {
+    throw respuestaInvalida(`\`warnings\`=${JSON.stringify(warnings)} no coincide con ${alertas.length - nBloqueos} advertencia(s)`, r);
+  }
+  return alertas;
+}
+
+/**
+ * Límite de peticiones en vuelo compartido por TODA una operación de lectura
+ * (pacientes y sus consultas incluidos): el tope no se multiplica al anidar.
+ * Solo envuelve peticiones HTTP sueltas (hojas); una tarea que a su vez
+ * espera otras limitadas no debe ocupar un turno, o se bloquea la cola.
+ */
+export type Limitador = <R>(tarea: () => Promise<R>) => Promise<R>;
+
+export function limitador(limite: number): Limitador {
+  let activos = 0;
+  const cola: Array<() => void> = [];
+  const turno = () => new Promise<void>((r) => (activos < limite ? (activos++, r()) : cola.push(() => { activos++; r(); })));
+  const soltar = () => {
+    activos--;
+    cola.shift()?.();
+  };
+  return async (tarea) => {
+    await turno();
+    try {
+      return await tarea();
+    } finally {
+      soltar();
+    }
+  };
+}
+
+/** Ejecuta `fn` sobre `items` respetando `limitar`, conservando el orden. */
+export function enLotes<T, R>(
+  items: readonly T[],
+  limitar: Limitador,
+  fn: (item: T, i: number) => Promise<R>,
+): Promise<R[]> {
+  return Promise.all(items.map((item, i) => limitar(() => fn(item, i))));
+}
+
+/** Peticiones simultáneas a MEGI por operación de lectura (H3: expedientes grandes). */
+const CONCURRENCIA = 4;
+
 /** Reemplazos deterministas cuando el servicio LLM de MEGI no está (503). */
 const ALTERNATIVAS_LOCALES: Array<{ cuando: RegExp; sugerir: string[] }> = [
   {
@@ -203,12 +309,17 @@ export type MegiHttpConfig = {
 };
 
 export class MegiHttp implements MegiAdapter {
+  private readonly cacheId = crypto.randomUUID();
   private readonly base: string;
   private readonly user: string;
   private readonly password: string;
   private readonly timeoutMs: number;
   private readonly fetchImpl: typeof fetch;
   private token: string | null = null;
+  /** null = sin comprobar; false = el backend no tiene las lecturas paginadas de revisión. */
+  private revisionPaginada: boolean | null = null;
+  /** Lecturas en paralelo sin token comparten UN login en vuelo. */
+  private loginEnVuelo: Promise<string> | null = null;
   private nombreMedico = "";
 
   constructor(cfg: MegiHttpConfig = {}) {
@@ -282,8 +393,17 @@ export class MegiHttp implements MegiAdapter {
     return data as T;
   }
 
-  private async sesion(): Promise<string> {
-    if (this.token) return this.token;
+  private sesion(): Promise<string> {
+    if (this.token) return Promise.resolve(this.token);
+    if (!this.loginEnVuelo) {
+      this.loginEnVuelo = this.entrar().finally(() => {
+        this.loginEnVuelo = null;
+      });
+    }
+    return this.loginEnVuelo;
+  }
+
+  private async entrar(): Promise<string> {
     const r = await this.raw(
       "POST",
       "/auth/login",
@@ -360,11 +480,17 @@ export class MegiHttp implements MegiAdapter {
     };
   }
 
-  /** Última receta aprobada del paciente = medicación activa. */
+  /** Recetas aprobadas longitudinales: cada pauta conserva fuente, fecha y estado pendiente de conciliación. */
   private async medicacionActiva(
     pacienteReal: string,
     yaLeida?: Json[],
-  ): Promise<Medicamento[]> {
+    limitar: Limitador = limitador(CONCURRENCIA),
+  ): Promise<NonNullable<Paciente["historialMedicacion"]>> {
+    if (!yaLeida) {
+      // Lectura por lotes (una petición por página, no una por consulta).
+      const porLotes = await this.historialPorLotes([pacienteReal], limitar);
+      if (porLotes) return porLotes.get(pacienteReal) ?? [];
+    }
     const lista =
       yaLeida ??
       (await this.call<Json[]>(
@@ -378,62 +504,223 @@ export class MegiHttp implements MegiAdapter {
     aprobadas.sort((a, b) =>
       String(b.started_at).localeCompare(String(a.started_at)),
     );
-    const ultima = aprobadas[0]!;
-    const c = await this.call<Json>(
-      "GET",
-      `/consultations/${idSeguro(String(ultima.id), "id de consulta")}`,
+    const historial: NonNullable<Paciente["historialMedicacion"]> = [];
+    const vistos = new Set<string>();
+    // Las lecturas van en lotes acotados (no una a una) y se deduplican dentro
+    // de la acción; el orden cronológico se conserva al recorrer el resultado.
+    const completas = await enLotes(aprobadas, limitar, (resumen) =>
+      this.leerConsultaReal(String(resumen.id)),
     );
-    return rxDeMegi(
-      parseJson<unknown>(c.prescription, []),
-      c.approved_at ?? c.started_at,
-    );
+    for (const [k, resumen] of aprobadas.entries()) {
+      const c = completas[k]!;
+      const fecha = String(c.approved_at ?? c.started_at ?? "");
+      for (const [i, m] of rxDeMegi(parseJson<unknown>(c.prescription, []), fecha).entries()) {
+        const clave = `${normaliza(m.nombre)}|${normaliza(m.dosis)}|${normaliza(m.frecuencia)}`;
+        if (vistos.has(clave)) continue;
+        vistos.add(clave);
+        const dias = /^(\d+)\s*d[ií]as?$/i.exec(m.duracion?.trim() ?? "");
+        const fin = dias && Number.isFinite(Date.parse(fecha)) ? Date.parse(fecha) + Number(dias[1]) * 86400000 : null;
+        historial.push({ ...m, id: `${String(c.id ?? resumen.id)}-${i}`, fuente: String(c.id ?? resumen.id), fecha, estado: fin !== null && fin < Date.now() ? "finalizado" : "sin_confirmar" });
+      }
+    }
+    return historial;
   }
 
   async verPaciente(pacienteId: string): Promise<Paciente> {
+    return enCacheDePeticion(`paciente:${this.cacheId}:${pacienteId}`, () => this.leerPaciente(pacienteId));
+  }
+
+  private async leerPaciente(pacienteId: string): Promise<Paciente> {
     const real = aReal(pacienteId);
     const ruta = idSeguro(real, "id de paciente");
-    const [p, meds] = await Promise.all([
+    const [p, historial] = await Promise.all([
       this.call<Json>("GET", `/patients/${ruta}`),
       this.medicacionActiva(real),
     ]);
-    return this.pacienteDeMegi(p, meds);
+    return { ...this.pacienteDeMegi(p, historial.filter(m => m.estado !== "finalizado")), historialMedicacion: historial };
+  }
+
+  /** `GET /consultations/{id}` (id real) una sola vez por acción. */
+  private leerConsultaReal(real: string): Promise<Json> {
+    const ruta = idSeguro(real, "id de consulta");
+    return enCacheDePeticion(`consulta:${this.cacheId}:${real}`, () =>
+      this.call<Json>("GET", `/consultations/${ruta}`),
+    );
   }
 
   async verConsulta(consultaId: string): Promise<Consulta> {
-    const c = await this.call<Json>(
-      "GET",
-      `/consultations/${idSeguro(aReal(consultaId), "id de consulta")}`,
-    );
-    return this.consultaDeMegi(c);
+    return this.consultaDeMegi(await this.leerConsultaReal(aReal(consultaId)));
+  }
+
+  /** ¿El backend responde «no existe la ruta»? (FastAPI: 404 {"detail":"Not Found"}). */
+  private static rutaInexistente(e: unknown): boolean {
+    return e instanceof MegiError && e.status === 404 && /^not found$/i.test(String((e.detalle as Json | null)?.detail ?? ""));
+  }
+
+  /** Recorre todas las páginas de una lectura paginada; una página incompleta o fallida aborta todo (nunca un resultado truncado). */
+  private async paginas<T>(
+    leer: (desde: number) => Promise<Json>,
+    que: string,
+  ): Promise<T[]> {
+    const items: T[] = [];
+    let desde = 0;
+    let total: number | null = null;
+    for (let vueltas = 0; ; vueltas++) {
+      const r = await leer(desde);
+      if (!r || typeof r !== "object" || !Array.isArray(r.items) || typeof r.total !== "number") {
+        throw new MegiError(`Respuesta inválida de ${que}: página sin \`items\` o \`total\``, 502, { codigo: "pagina_invalida", respuesta: r });
+      }
+      if (total !== null && r.total !== total) {
+        throw new MegiError(`${que} cambió durante la lectura (total ${total} → ${r.total}); vuelve a intentarlo`, 409, { codigo: "pagina_inconsistente" });
+      }
+      total = r.total;
+      items.push(...(r.items as T[]));
+      if (r.next_offset === null || r.next_offset === undefined) break;
+      if (typeof r.next_offset !== "number" || r.next_offset <= desde || vueltas > 10_000) {
+        throw new MegiError(`Respuesta inválida de ${que}: \`next_offset\` no avanza`, 502, { codigo: "pagina_invalida" });
+      }
+      desde = r.next_offset;
+    }
+    if (items.length !== total) {
+      throw new MegiError(`${que} devolvió ${items.length} elementos de ${total}; lectura incompleta`, 502, { codigo: "pagina_incompleta" });
+    }
+    return items;
+  }
+
+  /**
+   * Recetas aprobadas de varios pacientes en lotes paginados. Devuelve null si
+   * el backend no tiene el endpoint (se usará el recorrido por consulta).
+   */
+  private async historialPorLotes(
+    pacientesReales: string[],
+    limitar: Limitador,
+  ): Promise<Map<string, NonNullable<Paciente["historialMedicacion"]>> | null> {
+    if (this.revisionPaginada === false || !pacientesReales.length) return this.revisionPaginada === false ? null : new Map();
+    const ids = [...new Set(pacientesReales)].map((id) => { idSeguro(id, "id de paciente"); return id; });
+    const filas: Json[] = [];
+    try {
+      for (let i = 0; i < ids.length; i += 100) {
+        const lote = ids.slice(i, i + 100);
+        filas.push(...await this.paginas<Json>(
+          (desde) => limitar(() => this.call<Json>("POST", "/review/medication-history", { patient_ids: lote, limit: 200, offset: desde })),
+          "POST /review/medication-history",
+        ));
+      }
+    } catch (e) {
+      if (MegiHttp.rutaInexistente(e)) { this.revisionPaginada = false; return null; }
+      throw e;
+    }
+    this.revisionPaginada = true;
+    const out = new Map<string, NonNullable<Paciente["historialMedicacion"]>>();
+    const vistos = new Map<string, Set<string>>();
+    for (const c of filas) {
+      const pid = String(c.patient_id ?? "");
+      if (!out.has(pid)) { out.set(pid, []); vistos.set(pid, new Set()); }
+      const historial = out.get(pid)!;
+      const fecha = String(c.approved_at ?? c.started_at ?? "");
+      for (const [i, m] of rxDeMegi(parseJson<unknown>(c.prescription, []), fecha).entries()) {
+        const clave = `${normaliza(m.nombre)}|${normaliza(m.dosis)}|${normaliza(m.frecuencia)}`;
+        if (vistos.get(pid)!.has(clave)) continue;
+        vistos.get(pid)!.add(clave);
+        const dias = /^(\d+)\s*d[ií]as?$/i.exec(m.duracion?.trim() ?? "");
+        const fin = dias && Number.isFinite(Date.parse(fecha)) ? Date.parse(fecha) + Number(dias[1]) * 86400000 : null;
+        historial.push({ ...m, id: `${String(c.id)}-${i}`, fuente: String(c.id), fecha, estado: fin !== null && fin < Date.now() ? "finalizado" : "sin_confirmar" });
+      }
+    }
+    return out;
+  }
+
+  async listarPendientes(pagina: { limite: number; desde: number }): Promise<PaginaPendientes> {
+    const limite = Math.max(1, Math.min(200, Math.floor(pagina.limite)));
+    const desde = Math.max(0, Math.floor(pagina.desde));
+    if (this.revisionPaginada !== false) {
+      let r: Json | null = null;
+      try {
+        r = await this.call<Json>("GET", `/review/pending?limit=${limite}&offset=${desde}`);
+      } catch (e) {
+        if (!MegiHttp.rutaInexistente(e)) throw e;
+        this.revisionPaginada = false;
+      }
+      if (r) {
+        if (!Array.isArray(r.items) || typeof r.total !== "number") {
+          throw new MegiError("Respuesta inválida de GET /review/pending: faltan `items` o `total`", 502, { codigo: "pagina_invalida", respuesta: r });
+        }
+        this.revisionPaginada = true;
+        const limitar = limitador(CONCURRENCIA);
+        const items = r.items as Json[];
+        const idsPacientes = [...new Set(items.map((it) => String(it.patient?.id ?? it.consultation?.patient_id ?? "")))].filter(Boolean);
+        const historiales = (await this.historialPorLotes(idsPacientes, limitar)) ?? new Map<string, NonNullable<Paciente["historialMedicacion"]>>();
+        const consultas = items.map((it): ConsultaConPaciente => {
+          const c = it.consultation as Json;
+          const p = (it.patient as Json | null) ?? { id: c.patient_id };
+          const historial = historiales.get(String(p.id)) ?? [];
+          const paciente = { ...this.pacienteDeMegi(p, historial.filter((m) => m.estado !== "finalizado")), historialMedicacion: historial };
+          return { ...this.consultaDeMegi(c), paciente };
+        });
+        const siguiente = typeof r.next_offset === "number" ? r.next_offset : null;
+        return { consultas, total: r.total, siguiente };
+      }
+    }
+    // Backend sin lecturas paginadas: recorrido completo y paginación local.
+    const todas = await this.listarRecorriendoPacientes();
+    const consultas = todas.slice(desde, desde + limite);
+    const siguiente = desde + consultas.length;
+    return { consultas, total: todas.length, siguiente: siguiente < todas.length ? siguiente : null };
   }
 
   async listarConsultasCerradas(): Promise<ConsultaConPaciente[]> {
+    // Si el total cambia entre páginas (alguien aprobó mientras leíamos) el
+    // recorrido podría saltar o repetir una consulta: se reinicia desde cero;
+    // tras tres intentos se informa en vez de devolver una lista dudosa.
+    for (let intento = 0; intento < 3; intento++) {
+      const out: ConsultaConPaciente[] = [];
+      let desde: number | null = 0;
+      let total: number | null = null;
+      let reiniciar = false;
+      while (desde !== null) {
+        const pagina: PaginaPendientes = await this.listarPendientes({ limite: 200, desde });
+        if (total !== null && pagina.total !== total) { reiniciar = true; break; }
+        total = pagina.total;
+        out.push(...pagina.consultas);
+        if (pagina.siguiente !== null && pagina.siguiente <= desde) {
+          throw new MegiError("La paginación de pendientes no avanza", 502, { codigo: "pagina_invalida" });
+        }
+        desde = pagina.siguiente;
+      }
+      if (!reiniciar) return out;
+    }
+    throw new MegiError("Las consultas pendientes cambiaron mientras se leían; vuelve a intentarlo", 409, { codigo: "pagina_inconsistente" });
+  }
+
+  /**
+   * Recorrido anterior (paciente a paciente, consulta a consulta). Sigue
+   * disponible como respaldo para backends sin `/review/pending` y para medir
+   * el coste frente a la lectura paginada.
+   */
+  async listarRecorriendoPacientes(): Promise<ConsultaConPaciente[]> {
     const pacientes = await this.call<Json[]>("GET", "/patients");
-    const out: ConsultaConPaciente[] = [];
-    for (const p of pacientes) {
-      const lista = await this.call<Json[]>(
+    // Pacientes en paralelo; las peticiones hoja comparten UN límite de concurrencia.
+    const limitar = limitador(CONCURRENCIA);
+    const porPaciente = await Promise.all(pacientes.map(async (p) => {
+      const lista = await limitar(() => this.call<Json[]>(
         "GET",
         `/patients/${idSeguro(String(p.id), "id de paciente")}/consultations`,
-      );
+      ));
       // Consolidada (finalized) y todavía sin aprobar: es lo que hay que revisar.
       const pendientes = lista.filter(
         (c) =>
           c.finalized && c.status !== "approved" && c.status !== "exported",
       );
-      if (!pendientes.length) continue;
+      if (!pendientes.length) return [];
       // La lista de consultas ya está leída: no se vuelve a pedir.
-      const paciente = this.pacienteDeMegi(
-        p,
-        await this.medicacionActiva(String(p.id), lista),
+      const historial = await this.medicacionActiva(String(p.id), lista, limitar);
+      const paciente = { ...this.pacienteDeMegi(p, historial.filter(m => m.estado !== "finalizado")), historialMedicacion: historial };
+      const completas = await enLotes(pendientes, limitar, (c) =>
+        this.leerConsultaReal(String(c.id)),
       );
-      for (const c of pendientes) {
-        const full = await this.call<Json>(
-          "GET",
-          `/consultations/${idSeguro(String(c.id), "id de consulta")}`,
-        );
-        out.push({ ...this.consultaDeMegi(full), paciente });
-      }
-    }
+      return completas.map((full): ConsultaConPaciente => ({ ...this.consultaDeMegi(full), paciente }));
+    }));
+    const out = porPaciente.flat();
     out.sort((a, b) => b.fecha.localeCompare(a.fecha));
     return out;
   }
@@ -442,12 +729,14 @@ export class MegiHttp implements MegiAdapter {
   async verificarReceta(
     pacienteId: string,
     farmacos: Medicamento[],
+    medicacionConciliada?: Medicamento[],
+    pacienteLeido?: Paciente,
   ): Promise<Record<string, Verificacion>> {
-    const paciente = await this.verPaciente(pacienteId);
+    const paciente = pacienteLeido ?? await this.verPaciente(pacienteId);
     // La receta se cruza también contra lo que YA toma: así una interacción
     // propuesto×activo (ibuprofeno × warfarina) sale aunque la warfarina no
     // esté en la receta de hoy.
-    const activos = paciente.medicacionActiva.filter(
+    const activos = (medicacionConciliada ?? paciente.historialMedicacion?.filter(m => m.estado !== "finalizado" && m.estado !== "suspendido") ?? paciente.medicacionActiva).filter(
       (a) => !farmacos.some((f) => normaliza(f.nombre) === normaliza(a.nombre)),
     );
     const rx = [...rxAMegi(farmacos), ...rxAMegi(activos)];
@@ -457,24 +746,36 @@ export class MegiHttp implements MegiAdapter {
       chronic: paciente.cronicos,
     });
 
-    const alertas: Alerta[] = (r.alerts ?? []).map((a: Json) => ({
-      severidad: a.severity === "blocker" ? "bloqueo" : "advertencia",
-      tipo: (["alergia", "cronico", "interaccion"] as const).includes(a.type)
-        ? a.type
-        : "otro",
-      farmaco: a.drug ?? "",
-      contra: a.against ?? "",
-      mensaje: a.message ?? "",
+    const alertas = alertasDeMegi(r);
+
+    // Una alerta que no se puede atribuir a NINGÚN fármaco enviado (sin
+    // `drug`/`against`, o con nombres que no reconocemos) no se descarta: se
+    // aplica a todos los fármacos propuestos. Antes caía en silencio y un
+    // bloqueo global terminaba en `ok`. Las que sí se atribuyen pero solo a
+    // la medicación activa (activo × activo) siguen fuera de la receta de hoy.
+    const enviados = [...farmacos, ...activos].map((m) => ({
+      nombre: m.nombre,
+      etiqueta: rxAMegi([m])[0]!.drug,
     }));
+    const atribuible = (a: Alerta) =>
+      enviados.some(
+        (m) =>
+          esElMismo(a.farmaco, m.nombre, m.etiqueta) ||
+          esElMismo(a.contra, m.nombre, m.etiqueta),
+      );
+    const sinAtribuir = alertas.filter((a) => !atribuible(a));
 
     const out: Record<string, Verificacion> = {};
     for (const f of farmacos) {
       const etiqueta = rxAMegi([f])[0]!.drug;
-      const mias = alertas.filter(
-        (a) =>
-          esElMismo(a.farmaco, f.nombre, etiqueta) ||
-          esElMismo(a.contra, f.nombre, etiqueta),
-      );
+      const mias = [
+        ...alertas.filter(
+          (a) =>
+            esElMismo(a.farmaco, f.nombre, etiqueta) ||
+            esElMismo(a.contra, f.nombre, etiqueta),
+        ),
+        ...sinAtribuir,
+      ];
       const bloqueo = mias.some((a) => a.severidad === "bloqueo");
       const v: Verificacion = {
         resultado: bloqueo ? "bloqueado" : mias.length ? "advertencia" : "ok",
@@ -522,7 +823,7 @@ export class MegiHttp implements MegiAdapter {
   async exportar(consultaId: string, plan: PlanAprobado): Promise<Exportacion> {
     const real = aReal(consultaId);
     const ruta = idSeguro(real, "id de consulta");
-    const c = await this.call<Json>("GET", `/consultations/${ruta}`);
+    const c = await this.leerConsultaReal(real);
     const paciente = await this.verPaciente(aLogico(c.patient_id));
     const soap =
       plan.soap ??

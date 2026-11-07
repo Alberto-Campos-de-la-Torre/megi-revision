@@ -19,13 +19,13 @@ Este documento prepara una entrega futura; no acredita una inscripción. Nombre,
 
 ## Project description (copiar tal cual, ajustando nombres del equipo)
 
-MEGI Revisión is a post-consultation review desk where a physician and an agent prepare the prescription and follow-ups of a consultation together. The agent proposes a plan verified against the patient's allergies, chronic conditions and active medication; the physician edits, locks or rejects lines from the UI; the agent re-adjusts only what is not locked and explains every change; the physician approves and exports a sealed FHIR note to MEGI. UI and agent call the same Agent-Native actions on the same records: the rules (a locked line is untouchable, a safety block cannot be approved without explicit physician confirmation) live in the actions, not in the prompt or the screen.
+MEGI Revisión is a post-consultation review desk where a physician and an agent prepare the prescription and follow-ups of a consultation together. The agent proposes a plan verified against the patient's allergies, chronic conditions and active medication; the physician edits, locks or rejects lines from the UI; the agent re-adjusts only what is not locked and explains every change; the physician reconciles historical medication before approving and exporting a sealed FHIR note to MEGI. Every change has an atomic version and a source per line; selection scopes are enforced on the server. Safety-blocked lines trigger an alternative suggestion for physician review while locked lines remain protected. UI and agent call the same Agent-Native actions on the same records: the rules (a locked line is untouchable, a safety block cannot be approved without explicit physician confirmation) live in the actions, not in the prompt or the screen.
 
 Team: [nombres].
 
 Prior work: the MEGI clinical backend (FastAPI, Python) with patient records, SOAP notes, prescription safety checker, approval and FHIR export, built by the team before October 27, 2026. Agent-Native Chat template (MIT).
 
-Built during the hackathon: the Agent-Native application and its domain workflow: data model (plans, plan lines, review log), eight domain actions with schemas and error codes (seven available to the agent and physician-only final approval), mock and HTTP adapters to MEGI, the review board UI, the agent prompt and skill, demo seed and automated verification (CLI, browser and live agent with Grok 4.7).
+Built during the hackathon: the Agent-Native application and its domain workflow: data model (plans, plan lines, review log), seventeen domain actions with schemas and error codes (shared clinical actions and read tools, plus physician-only UI decisions), mock and HTTP adapters to MEGI, the review board UI, the agent prompt and skill, demo seed and automated verification (CLI, browser and live agent with Grok 4.7).
 
 All patients shown are fictitious. The app is decision support; the final approval is always the physician's.
 

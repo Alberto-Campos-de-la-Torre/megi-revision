@@ -1,0 +1,452 @@
+{
+  "fecha": "2026-11-07T00:31:25.513Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lectura autenticada de metadatos de trazas propias",
+      "pasa": true
+    }
+  ],
+  "trazas": [
+    {
+      "runId": "run-1794011021852-317r6f",
+      "modelo": "grok-4.7",
+      "totalMs": 39580,
+      "llamadasModelo": 1,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 39580,
+          "inputTokens": 26107,
+          "outputTokens": 164,
+          "cacheReadTokens": 7168,
+          "estado": "paused",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state",
+            "terminal_code",
+            "terminal_message"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 39563,
+          "inputTokens": 26107,
+          "outputTokens": 164,
+          "cacheReadTokens": 7168,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 5,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010961471-puokm6",
+      "modelo": "grok-4.7",
+      "totalMs": 58654,
+      "llamadasModelo": 3,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 58654,
+          "inputTokens": 66153,
+          "outputTokens": 593,
+          "cacheReadTokens": 41984,
+          "estado": "success",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 38834,
+          "inputTokens": 17477,
+          "outputTokens": 408,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 46,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 17655,
+          "inputTokens": 23522,
+          "outputTokens": 128,
+          "cacheReadTokens": 17408,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 2093,
+          "inputTokens": 25154,
+          "outputTokens": 57,
+          "cacheReadTokens": 23424,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010929919-2hqjjo",
+      "modelo": "grok-4.7",
+      "totalMs": 15838,
+      "llamadasModelo": 2,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 15838,
+          "inputTokens": 33487,
+          "outputTokens": 106,
+          "cacheReadTokens": 16768,
+          "estado": "paused",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state",
+            "terminal_code",
+            "terminal_message"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 7507,
+          "inputTokens": 15646,
+          "outputTokens": 32,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 57,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 8246,
+          "inputTokens": 17841,
+          "outputTokens": 74,
+          "cacheReadTokens": 15616,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 6,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010926619-g65dcu",
+      "modelo": "grok-4.7",
+      "totalMs": 158,
+      "llamadasModelo": 1,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 158,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "error",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 147,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010732635-dqjodi",
+      "modelo": "grok-4.7",
+      "totalMs": 81520,
+      "llamadasModelo": 2,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 81520,
+          "inputTokens": 45517,
+          "outputTokens": 358,
+          "cacheReadTokens": 21888,
+          "estado": "success",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 66639,
+          "inputTokens": 20815,
+          "outputTokens": 171,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 9,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 14855,
+          "inputTokens": 24702,
+          "outputTokens": 187,
+          "cacheReadTokens": 20736,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010656747-fk5jev",
+      "modelo": "grok-4.7",
+      "totalMs": 74056,
+      "llamadasModelo": 3,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 74056,
+          "inputTokens": 56244,
+          "outputTokens": 307,
+          "cacheReadTokens": 36864,
+          "estado": "success",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 19881,
+          "inputTokens": 16852,
+          "outputTokens": 41,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 42,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 16346,
+          "inputTokens": 19063,
+          "outputTokens": 166,
+          "cacheReadTokens": 16768,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 9,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 37754,
+          "inputTokens": 20329,
+          "outputTokens": 100,
+          "cacheReadTokens": 18944,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010555275-9vlov2",
+      "modelo": "grok-4.7",
+      "totalMs": 34375,
+      "llamadasModelo": 3,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 34375,
+          "inputTokens": 66705,
+          "outputTokens": 288,
+          "cacheReadTokens": 44032,
+          "estado": "success",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 13364,
+          "inputTokens": 20853,
+          "outputTokens": 174,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 12,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 17327,
+          "inputTokens": 22176,
+          "outputTokens": 78,
+          "cacheReadTokens": 20736,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 3647,
+          "inputTokens": 23676,
+          "outputTokens": 36,
+          "cacheReadTokens": 22144,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    },
+    {
+      "runId": "run-1794010514479-x6ibbp",
+      "modelo": "grok-4.7",
+      "totalMs": 39031,
+      "llamadasModelo": 3,
+      "spans": [
+        {
+          "tipo": "agent_run",
+          "ms": 39031,
+          "inputTokens": 56343,
+          "outputTokens": 357,
+          "cacheReadTokens": 21376,
+          "estado": "success",
+          "metadataKeys": [
+            "modelSelectionSource",
+            "reasoningEffortRequested",
+            "contextPrefetchStatus",
+            "screenContextStatus",
+            "terminal_state"
+          ]
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 7212,
+          "inputTokens": 16875,
+          "outputTokens": 40,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 67,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 9829,
+          "inputTokens": 19073,
+          "outputTokens": 160,
+          "cacheReadTokens": 1152,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "tool_call",
+          "ms": 10,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cacheReadTokens": 0,
+          "estado": "success",
+          "metadataKeys": []
+        },
+        {
+          "tipo": "llm_call",
+          "ms": 21887,
+          "inputTokens": 20395,
+          "outputTokens": 157,
+          "cacheReadTokens": 19072,
+          "estado": "success",
+          "metadataKeys": []
+        }
+      ]
+    }
+  ]
+}

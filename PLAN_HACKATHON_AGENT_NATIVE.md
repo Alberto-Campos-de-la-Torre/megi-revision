@@ -213,15 +213,18 @@ Las reglas aceptan "trabajo original o desarrollo nuevo significativo realizado 
 
 ## 10. Guion del video (3 a 4 minutos)
 
-1. (20 s) Quién es el usuario y el problema: después de cada consulta el médico arma receta y pendientes a mano y revisa alergias de memoria.
-2. (20 s) Datos de entrada: paciente ficticio, expediente con alergias, consulta cerrada con SOAP.
-3. (60 s) Pedir al agente el plan. Mostrar que verifica cada fármaco y el tablero que aparece.
-4. (45 s) Editar, bloquear y rechazar desde la interfaz, sin el agente.
-5. (45 s) Pedir reajuste. Mostrar que respeta lo bloqueado y explica cambios.
-6. (20 s) Aprobar y exportar.
-7. (20 s) Qué es previo y qué se construyó en el hackatón.
+1. (15 s) Usuario y problema: el médico revisa receta y pendientes tras una consulta consolidada.
+2. (15 s) Paciente ficticio, nota SOAP, alergias y procedencia de cada línea.
+3. (40 s) Pedir propuesta. Mostrar los pasos reales del agente; si faltan alergias, responder la pregunta estructurada. Mostrar «Motivo del último cambio» abierto y los límites de «Sin alertas detectadas».
+4. (15 s) Conciliar medicación: confirmar Losartán activo. Antes de hacerlo, la aprobación permanece deshabilitada.
+5. (25 s) Fijar una línea. Si tiene bloqueo de seguridad, aparece una alternativa pendiente de revisión; la pauta fijada permanece intacta.
+6. (30 s) Seleccionar dos líneas y solicitar reajuste acotado. Mostrar el alcance en pantalla y el rechazo del servidor si intenta tocar otra línea.
+7. (15 s) Comparar versiones: retiradas rojas, añadidas verdes y antes → después de las ediciones; pauta fijada conservada.
+8. (10 s) Mostrar la página de aprobación del framework para una acción HTTP con `needsApproval`. Esa regla pertenece a la acción. La aprobación clínica final sigue siendo exclusiva de la UI del médico.
+9. (20 s) Revisar alertas, aprobar y exportar FHIR sellado. Abrir la pestaña Exportadas.
+10. (15 s) Trabajo previo vs nuevo; mediciones exploratorias con n pequeño, tiempo de servidor separado del modelo.
 
-Una sola toma por paso del flujo. Nada que no funcione en vivo.
+Una toma por paso. La espera real se mide; no afirmar que cumple 35 s sin el resultado de `evidencia/resultados/latencia.json`. Este documento prepara el guion; no autoriza publicar ni crear Clips.
 
 ---
 
@@ -243,3 +246,5 @@ Una sola toma por paso del flujo. Nada que no funcione en vivo.
 - Si Clips graba sin problema una app en `localhost:8080` (probar el día 1, no el día 8).
 - Duración máxima permitida del clip (la página no lo indica).
 - Si la plantilla Chat trae `useDbSync` listo para el tablero o hay que habilitarlo por página.
+
+Validación local para el guion (6 nov): con Grok 4.20 Non-Reasoning, el recorrido canónico registró 4,228 s hasta el plan y 3,659 s hasta el fin del turno, tras responder alergias. Muestra exploratoria n=1, sin garantía de latencia máxima. Referencia: `evidencia/resultados/latencia.json`; mantener esa distinción al grabar.

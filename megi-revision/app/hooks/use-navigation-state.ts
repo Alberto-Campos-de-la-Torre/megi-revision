@@ -19,6 +19,10 @@ export interface NavigationState {
   publicPath?: string;
   threadId?: string;
   consultaId?: string;
+  planId?: string | null;
+  version?: number;
+  alcanceAgente?: string[] | null;
+  alcanceSugerencias?: string[];
 }
 
 export function useNavigationState() {
@@ -96,7 +100,7 @@ function pathForView(view?: string): string {
     case "ask":
       return NEW_CHAT_PATH;
     case "home":
-      return HOME_PATH;
+      return "/revision";
     case "revision":
       return "/revision";
     case "database":
@@ -112,7 +116,7 @@ function pathForView(view?: string): string {
     case "team":
       return "/settings/organization";
     default:
-      return HOME_PATH;
+      return "/revision";
   }
 }
 

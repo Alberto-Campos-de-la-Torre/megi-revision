@@ -1,0 +1,105 @@
+{
+  "fecha": "2026-11-07T19:12:57.478683+00:00",
+  "responde_a": "evidencia/resultados/ux-2026-11-07/reverificacion/dictamen.json (91/100)",
+  "frentes": {
+    "creatividad_diseno": {
+      "script": "evidencia/friccion-ui.mjs",
+      "pasan": [
+        40,
+        40
+      ],
+      "fallos": 0,
+      "capturas": "evidencia/capturas-friccion/",
+      "correcciones": [
+        "F1 barra lateral acotada al viewport",
+        "F2 mensaje de vacío de exportadas",
+        "F3 cuadrícula por ancho de contenido",
+        "F4 chip de alergias envuelve",
+        "F5 formulario de nueva línea por contenedor",
+        "F6 un solo <main>",
+        "R1 aviso y reintento cuando el turno termina sin guardar plan",
+        "R2 aviso cuando el turno no cambió el plan",
+        "R3 sin avisos si el turno terminó con ask-question"
+      ],
+      "pendiente": "Observar usuarios nuevos (I4, sin participantes por decisión de David)."
+    },
+    "innovacion": {
+      "script": "evidencia/valor-diferencial.mts",
+      "pasan": [
+        20,
+        20
+      ],
+      "comparacion": {
+        "alertasVisiblesAntesDeAprobar": 3,
+        "intentosSobreLineasFijadasRechazados": "12/12",
+        "intentosFueraDeAlcanceRechazados": "12/12",
+        "aprobacionesDetenidasPorConciliacion": 2,
+        "aprobacionesDetenidasPorBloqueo": 2,
+        "lineasConFuente": "7/11",
+        "versiones": 26,
+        "eventosBitacora": 30,
+        "exportacionesSelladas": 4
+      },
+      "resumen": "evidencia/valor-diferencial.md",
+      "limite": "Cuenta mecanismos observables sobre cuatro casos sintéticos con la misma receta inicial. No mide errores clínicos ni tiempo de médicos; esa evidencia sigue pendiente de sesiones con usuarios (PENDIENTE_VALIDACION_USUARIOS.md)."
+    },
+    "agent_native": {
+      "script": "evidencia/continuidad.mjs",
+      "pasan": [
+        18,
+        18
+      ],
+      "fallos": 0,
+      "guion": "evidencia/demo-continuidad.md",
+      "capturas": "evidencia/capturas-continuidad/",
+      "respaldo": {
+        "recorrido": [
+          33,
+          33
+        ],
+        "advertencias": [
+          7,
+          7
+        ],
+        "agente": [
+          15,
+          15
+        ],
+        "servidor": "195/195 (sin cambios de servidor; no repetidas)"
+      }
+    },
+    "utilidad_ejecucion": {
+      "estado": "detenido por decisión de David (7 nov): sin sesiones con médicos ni cuentas individuales reales",
+      "referencia": "PENDIENTE_VALIDACION_USUARIOS.md"
+    },
+    "entrega": {
+      "estado": "detenida por decisión de David (7 nov)"
+    }
+  },
+  "reverificacion_auditor_repetida": {
+    "carpeta": "evidencia/resultados/ux-2026-11-07/reverificacion-final/",
+    "pasan": [
+      12,
+      12
+    ]
+  },
+  "verificacion_estatica": {
+    "typecheck": 0,
+    "doctor": 0,
+    "build": 0
+  },
+  "codigo_sha256": {
+    "megi-revision/app/global.css": "263bf04031666474d7f376295a8e48968429240b3fa8b5fd776a37eba245a673",
+    "megi-revision/app/routes/revision._index.tsx": "a87e9136ae3c181f92ce90344ae97871b8b7141ac708dfab319657958900dd97",
+    "megi-revision/app/routes/revision.$consultaId.tsx": "703eb7e6a541fab1c8b278f3caf46cae96eb0bab916079fc2eb6425b88edbf70",
+    "megi-revision/app/components/revision/Chips.tsx": "4bbfeb893a1fc7c013b21d8e1e63a2b50870a48265bd5946736633aacea4190a",
+    "megi-revision/app/components/revision/TrabajoAgente.tsx": "8fd508b6b2bcc31bfa66ce98783075b6bb9efa392507b002268ccc81f6bcbe7f",
+    "megi-revision/app/components/revision/agente.ts": "0c4a268e2856187d70d1baad3997007826588942afa33301422fd072526e24b3",
+    "megi-revision/app/components/chat/ChatRouteContent.tsx": "a935532aaed9acd8ec04d70f6ba5328af43c46d143402415944d9f08910c3888",
+    "megi-revision/server/plugins/agent-chat.ts": "c46a761adc9f46b36b52b296c6697b4a2498df2684327f8520b91860b6357004",
+    "evidencia/friccion-ui.mjs": "b9cf628abfc85337e1ee462192c1aa40b7fd0eae72ea3daaaf1ee54159947a97",
+    "evidencia/valor-diferencial.mts": "aa56cda1577bae7d990720dc3907458ed8b794bee942a35d45e98f8fabeaad0e",
+    "evidencia/continuidad.mjs": "05bc862641c0136e381993f73634e13656f854edd910238f1683749b0d161332"
+  },
+  "limite_de_nota": "La nota la pone el jurado; estos resultados acreditan trabajo verificable, no una puntuación."
+}

@@ -1,0 +1,83 @@
+{
+  "fecha": "2026-11-07T17:32:44.666608+00:00",
+  "calificacion": 90,
+  "calificacion_anterior": 91,
+  "rubrica": {
+    "utilidad_ejecucion": 38,
+    "creatividad_diseno": 16,
+    "innovacion": 17,
+    "agent_native": 19
+  },
+  "verificacion": {
+    "typecheck": "exit 0",
+    "doctor": "exit 0, clean",
+    "entorno": "App en 127.0.0.1:8091; MEGI mock; PGlite temporal /tmp/megi-audit-ux-20261107; modelo configurado, dos turnos breves",
+    "pasan": [
+      "Lista de cuatro casos y dos columnas en escritorio",
+      "/home redirige a /revision; retirada de Inicio",
+      "Alergias registradas y ausencia conocida distinguibles",
+      "Lista y chat sin desbordamiento horizontal a 390px",
+      "Sugerencia de bienvenida envía mensaje en escritorio",
+      "Cancelación y nuevo envío con respuesta real",
+      "Prevención de envío solapado",
+      "Bloqueo médico impide edición",
+      "Tablero móvil sin desbordamiento",
+      "Aprobación y exportación FHIR con sello"
+    ],
+    "limitacion": "No se repitieron las 195 regresiones históricas ni el backend vivo: los cambios de esta revisión son de interfaz. Los archivos clínicos contenidos en el manifiesto previo conservan sus hashes."
+  },
+  "hallazgos": [
+    {
+      "id": "UX1",
+      "severidad": "media",
+      "hecho": "A 390x844 el compositor se superpone a la primera sugerencia de bienvenida e intercepta su clic. Dos intentos independientes lo reproducen; no basta que isVisible sea true.",
+      "fuente": "megi-revision/app/components/chat/ChatRouteContent.tsx:1245",
+      "evidencia": [
+        "seguimiento.json",
+        "movil.json",
+        "14-movil-interceptado.png",
+        "15-movil-desplazado.png"
+      ],
+      "recomendacion": "Reservar espacio para el compositor o compactar la bienvenida en móvil; verificar por hit-testing/clic, además de overflow y visibilidad."
+    },
+    {
+      "id": "UX2",
+      "severidad": "media",
+      "hecho": "Las sugerencias del inspector heredan rgb(26,26,26) sobre rgb(17,32,44); contraste calculado 1.05:1.",
+      "fuentes": [
+        "megi-revision/app/global.css",
+        "megi-revision/app/components/layout/AgentInspector.tsx:32"
+      ],
+      "evidencia": [
+        "seguimiento.json",
+        "11-inspector-claro.png"
+      ],
+      "recomendacion": "Separar tokens de barra izquierda e inspector, o definir explícitamente texto, sugerencias y enlaces del inspector sobre su fondo."
+    },
+    {
+      "id": "UX3",
+      "severidad": "baja",
+      "hecho": "PARA EMPEZAR conserva #4a5c6a en modo oscuro sobre fondo #212121, contraste nominal 2.32:1.",
+      "fuente": "megi-revision/app/global.css:377",
+      "evidencia": [
+        "10-chat-oscuro.png",
+        "seguimiento.json"
+      ],
+      "recomendacion": "Usar un token de texto que se adapte al tema."
+    }
+  ],
+  "intento_inicial": "resultados.json conserva un timeout esperando networkidle tras el chat. La vista ya estaba renderizada sin errores de red/JavaScript. seguimiento.json usa domcontentloaded y espera de controles; el flujo clínico pasó. No se contabiliza ese timeout como fallo del producto.",
+  "cambios_aplicacion": "Ninguno. Se guardaron únicamente scripts, resultados y capturas de verificación.",
+  "codigo_sha256": {
+    "megi-revision/agent-native.config.ts": "fc0ce8ece6197068b06848b6c73e85182ff91b11a454c1c6396290fa649c7012",
+    "megi-revision/app/components/chat/ChatRouteContent.tsx": "75c4169da2e1070ef5d77fbcdefd646189a11f4cafe48fd86588a48c9eee5870",
+    "megi-revision/app/components/layout/Sidebar.tsx": "da4d1b8f084c03d3bc6d569a016cde161aad75fc57e74e6d175145fd592ecb99",
+    "megi-revision/app/global.css": "9fe72b84d3fcd772f2fde369e08ed38348e5b707cda5d0e6514d79f5b0b1cc29",
+    "megi-revision/app/hooks/use-navigation-state.ts": "66725c6961d1a8e6e2646f07eb206604c3dcc2669118466413895eb1731222b6",
+    "megi-revision/app/i18n/en-US.ts": "3a064d7e46ad74b78512fed8aa27192cd3496b8f145b94ba548c698247c80db6",
+    "megi-revision/app/i18n/es-ES.ts": "654e8ecc37b682a4a8e7f747d630e4c3206a593b699269a83794f5b783b1c0d0",
+    "megi-revision/app/root.tsx": "d9d73e15f5c154651a1e6fe733c45359716a6df6016720b1394f1b86bdb933db",
+    "megi-revision/app/routes/home.tsx": "eb49d34019b4803e0326db1fb537ce56d81050535c81af06e07f9301152a8450",
+    "megi-revision/app/routes/revision._index.tsx": "d2bc2d789013d0d2c134ddc925476443b51270f10af4988da6b70c4d8a5726e8"
+  }
+}

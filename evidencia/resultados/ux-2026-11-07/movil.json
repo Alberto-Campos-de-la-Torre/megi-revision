@@ -1,0 +1,28 @@
+{
+  "fecha": "2026-11-07T17:31:43.569Z",
+  "antes": {
+    "rect": {
+      "y": 810,
+      "height": 34
+    },
+    "target": "agent-composer-area min-w-0 shrink-0 py-2 text-start px-0",
+    "libre": false
+  },
+  "despues": {
+    "rect": {
+      "y": 630,
+      "height": 34
+    },
+    "target": "agent-composer-area min-w-0 shrink-0 py-2 text-start px-0",
+    "libre": false
+  },
+  "scrollers": [
+    {
+      "class": "agentkit-chat h-full",
+      "top": 16,
+      "scroll": 1024,
+      "client": 796
+    }
+  ],
+  "clicableConDesplazamientoAdicional": false
+}

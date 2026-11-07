@@ -1,0 +1,35 @@
+{
+  "fecha": "2026-11-07T18:48:58.897Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "naproxeno: advertencia por interacción con losartán visible",
+      "pasa": true
+    },
+    {
+      "prueba": "paracetamol duplicado: las dos líneas avisan de dosis duplicada",
+      "pasa": true
+    },
+    {
+      "prueba": "medicación sin conciliar impide aprobar",
+      "pasa": true
+    },
+    {
+      "prueba": "diálogo de aprobación lista las advertencias",
+      "pasa": true
+    },
+    {
+      "prueba": "cuenta 3 advertencias (naproxeno + 2 paracetamol)",
+      "pasa": true
+    },
+    {
+      "prueba": "sin casilla de bloqueo: las advertencias no frenan",
+      "pasa": true
+    },
+    {
+      "prueba": "bitácora: el evento aprobar deja escritas las advertencias",
+      "pasa": true
+    }
+  ],
+  "fallos": 0
+}

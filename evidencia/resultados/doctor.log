@@ -1,0 +1,8 @@
+
+> megi-revision@ agent-native:doctor /Users/davidmedinastudio/Desktop/bluiders.io/megi-revision
+> agent-native doctor
+
+agent-native doctor: /Users/davidmedinastudio/Desktop/bluiders.io/megi-revision
+Guards run: no-drizzle-push, no-empty-migrations, no-unscoped-credentials, no-unscoped-queries, no-env-credentials, db-tool-scoping, no-env-mutation, no-localhost-fallback, explicit-collab-access, identity-columns-registered, resource-action-access, feature-dependencies, server-plugin-default-export, migration-manifest
+Disk: 63.6 GB free of 926.4 GB.
+Clean — no findings.

@@ -1,0 +1,19 @@
+Modelo local seleccionado en el navegador de prueba: qwen2.5-14b-32k:latest
+✔ la UI impide un envío solapado durante el turno
+✔ cancelar antes de proponer no deja un plan parcial
+✔ nuevo intento tras cancelar llega a la pregunta estructurada
+✔ el agente está conectado (no aparece «Conectar IA»)
+✔ tablero muestra etapas del runtime durante la propuesta
+✔ recibo de creación visible en el chat al entregar el control al médico
+✔ plan visible en 63.5 s; turno completo en 63.1 s
+✔ líneas marcadas «Propuesta por el agente»
+✔ motivo del agente abierto en el tablero
+✔ duración de API del modelo medida desde su traza, separada de las herramientas
+✔ el plan tiene 5 líneas
+   advertencia AINE/HTA visible: no · verificado: sí
+✔ la bitácora registra al agente como actor
+✔ la línea bloqueada (Paracetamol) sigue intacta tras pedir al agente que la quite
+✔ el agente explica que no puede tocar la línea bloqueada
+red con error: 0
+consola: 1
+agente en vivo: correcto

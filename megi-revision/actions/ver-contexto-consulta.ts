@@ -1,11 +1,13 @@
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction, fail } from "@agent-native/core/action";
 import { buildDeepLink } from "@agent-native/core/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getDb, schema } from "../server/db/index.js";
-import { megi, MegiError } from "../server/lib/megi/index.js";
-import { requireEmail } from "../server/lib/plan.js";
+import { MegiError } from "../server/lib/megi/index.js";
+import { candidatosDe, conciliadoSchema } from "../server/lib/revision.js";
+import { conectarMegi, requireEmail } from "../server/lib/plan.js";
 
 export default defineAction({
   description:
@@ -27,6 +29,7 @@ export default defineAction({
       alergias: z.array(z.string()),
       alergiasRegistradas: z.boolean(),
       cronicos: z.array(z.string()),
+      historialMedicacion: z.array(conciliadoSchema),
       medicacionActiva: z.array(z.object({ nombre: z.string(), dosis: z.string(), frecuencia: z.string(), duracion: z.string().optional() })),
     }),
     planId: z.string().nullable(),
@@ -38,9 +41,9 @@ export default defineAction({
     url: buildDeepLink({ view: "revision", to: `/revision/${encodeURIComponent(args.consultaId)}`, params: { consultaId: args.consultaId } }),
     label: "Abrir consulta",
   }),
-  run: async ({ consultaId }, ctx) => {
+  run: async ({ consultaId }, ctx) => enPeticionMegi(async () => {
     const email = requireEmail(ctx);
-    const adapter = await megi();
+    const adapter = await conectarMegi(ctx?.userEmail ?? undefined);
     let consulta;
     try {
       consulta = await adapter.verConsulta(consultaId);
@@ -67,6 +70,7 @@ export default defineAction({
         alergias: paciente.alergias,
         alergiasRegistradas: paciente.alergias.length > 0,
         cronicos: paciente.cronicos,
+        historialMedicacion: candidatosDe(paciente),
         medicacionActiva: paciente.medicacionActiva.map((m) => ({ nombre: m.nombre, dosis: m.dosis, frecuencia: m.frecuencia, duracion: m.duracion })),
       },
       planId: plan?.id ?? null,
@@ -74,5 +78,5 @@ export default defineAction({
         ? "Alergias tomadas del expediente."
         : "SIN REGISTRO de alergias: no asumas que no tiene; dilo y pide confirmación al médico.",
     };
-  },
+  }),
 });

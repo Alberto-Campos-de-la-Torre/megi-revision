@@ -269,3 +269,15 @@ git checkout HEAD -- megi-revision
 Por eso ese archivo anota `cambiosSinCommitear: true`: el árbol estaba revertido
 a propósito cuando se ejecutó. Los dos archivos de resultados lo anotan también,
 porque cuentan como cambios sin commitear ellos mismos mientras se escriben.
+
+## Revisión trazable · cierre PARA_EL_100
+
+`revision-trazable.mts` contiene **42 comprobaciones** aisladas sobre las cuatro migraciones de la app con PGlite en memoria. Incluye versión obligatoria aun sin alcance, medicación viva nueva que frena aprobación, conservación de decisiones/manuales, caché por petición y adaptador, fuentes mínimas sin transcripción, legado con fallo 502, exportadas neutras, sugerencias autorizadas que nunca cambian una pauta fijada y aceptación exclusiva del médico. También conserva concurrencia, rollback y cancelación de la revisión previa.
+
+```bash
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/revision-trazable.mts
+```
+
+Resultados vigentes: `revision-trazable-resultados.json` 42/42, auditoría `--http` 57/57 y batería `--http` 33/33. El backend HTTP se inicia con `node evidencia/backend.mjs`, exclusivamente sobre una base sintética aislada en :8123. No lee `.env` ni llama modelos en esas regresiones.
+
+La reproducción completa, capturas Playwright y prueba con agente real están documentadas en [evidencia/README.md](../evidencia/README.md). Los JSON de `evidencia/resultados/` registran fallos y resultados, sin sustituirlos por comprobaciones manuales. No se realizó un estudio clínico ni un despliegue público.

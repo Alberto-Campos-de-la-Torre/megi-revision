@@ -1,17 +1,15 @@
-import HomePage from "@/components/home/HomePage";
+import { redirect } from "react-router";
+
 import { APP_TITLE } from "@/lib/app-config";
 
-const SEO_TITLE = `${APP_TITLE} - Open Source AI app starter with actions`;
+const SEO_TITLE = `${APP_TITLE} - Revisión clínica de recetas con MEGI`;
 const SEO_DESCRIPTION =
-  "Open Source starter for agent-native apps with durable chat, shared actions, UI state, tools, and a backend your agent can extend.";
+  "Mesa de revisión clínica: el agente propone el plan y el médico lo revisa, bloquea o aprueba antes de exportarlo a MEGI.";
 
 export function meta() {
   return [
     { title: SEO_TITLE },
-    {
-      name: "description",
-      content: SEO_DESCRIPTION,
-    },
+    { name: "description", content: SEO_DESCRIPTION },
     { property: "og:title", content: SEO_TITLE },
     { property: "og:description", content: SEO_DESCRIPTION },
     { name: "twitter:card", content: "summary" },
@@ -20,6 +18,12 @@ export function meta() {
   ];
 }
 
+// «Inicio» era la portada genérica del framework (Get started, documentación,
+// Discord). La entrada de MEGI Revisión es la mesa de revisión.
+export function loader() {
+  return redirect("/revision");
+}
+
 export default function HomeRoute() {
-  return <HomePage />;
+  return null;
 }

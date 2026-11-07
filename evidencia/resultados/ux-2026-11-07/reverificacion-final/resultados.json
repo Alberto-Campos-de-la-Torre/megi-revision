@@ -1,0 +1,89 @@
+{
+  "fecha": "2026-11-07T18:53:01.603Z",
+  "url": "http://localhost:8082",
+  "alcance": "Lectura de interfaz en contexto de navegador nuevo, sin enviar mensajes ni modificar planes. Contraste calculado con colores computados, sin afirmar certificación de accesibilidad.",
+  "checks": [
+    {
+      "id": "UX1-390-sugerencia-1",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "UX1-390-sugerencia-2",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "UX1-390-sugerencia-3",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "chat-390-sin-overflow",
+      "passed": true
+    },
+    {
+      "id": "UX1-360-sugerencia-1",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "UX1-360-sugerencia-2",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "UX1-360-sugerencia-3",
+      "passed": true,
+      "detail": {
+        "hitTest": true
+      }
+    },
+    {
+      "id": "chat-360-sin-overflow",
+      "passed": true
+    },
+    {
+      "id": "UX3-para-empezar-oscuro",
+      "passed": true,
+      "detail": {
+        "text": "rgb(155, 168, 171)",
+        "bg": "rgb(33, 33, 33)",
+        "ratio": 6.58105780864007
+      }
+    },
+    {
+      "id": "UX2-inspector-claro",
+      "passed": true,
+      "detail": {
+        "text": "rgb(26, 26, 26)",
+        "bg": "rgb(255, 255, 255)",
+        "ratio": 17.40432753274219
+      }
+    },
+    {
+      "id": "UX2-inspector-oscuro",
+      "passed": true,
+      "detail": {
+        "text": "rgb(230, 230, 230)",
+        "bg": "rgb(33, 33, 33)",
+        "ratio": 12.901657824564982
+      }
+    },
+    {
+      "id": "sin-excepciones-javascript",
+      "passed": true,
+      "detail": []
+    }
+  ]
+}

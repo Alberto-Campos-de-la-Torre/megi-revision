@@ -26,15 +26,22 @@
   --input: 0 0% 90%;
   --ring: 0 0% 40%;
   --radius: 0.5rem;
-  --sidebar-background: 0 0% 97%;
-  --sidebar-foreground: 0 0% 43%;
-  --sidebar-primary: 0 0% 15%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 0 0% 95%;
-  --sidebar-accent-foreground: 0 0% 15%;
-  --sidebar-border: 0 0% 90%;
-  --sidebar-ring: 0 0% 40%;
-  --chat-sidebar-width: 17.5rem;
+  /* Paleta de la barra lateral (misma en claro y oscuro):
+     #06141B panel de chats · #11212D fondo · #253745 hover/activo ·
+     #4A5C6A bordes/secundario · #9BA8AB texto de chats · #CCD0CF navegación */
+  --sidebar-background: 206 45% 12%;        /* #11212D */
+  --sidebar-foreground: 191 9% 64%;         /* #9BA8AB */
+  --sidebar-primary: 165 4% 81%;           /* #CCD0CF */
+  --sidebar-primary-foreground: 200 64% 6%; /* #06141B */
+  --sidebar-accent: 206 30% 21%;            /* #253745 */
+  --sidebar-accent-foreground: 165 4% 81%; /* #CCD0CF */
+  --sidebar-border: 206 18% 35%;            /* #4A5C6A */
+  --sidebar-ring: 165 4% 81%;              /* #CCD0CF */
+  --sidebar-panel: 200 64% 6%;              /* #06141B */
+  --sidebar-chat-foreground: 191 9% 64%;    /* #9BA8AB */
+  /* Acotada al viewport: con texto al 200 % (17.5rem = 560 px) la barra dejaba
+     335 px al contenido en 1280 px. */
+  --chat-sidebar-width: min(17.5rem, 28vw);
   --chat-sidebar-content-inset: 0.5rem;
   --chat-sidebar-row-padding: 0.75rem;
   --chat-sidebar-title-fade: 1.25rem;
@@ -90,19 +97,28 @@
   box-shadow: var(--agentkit-elevation);
 }
 
+/* «Mis chats» vive en un panel más oscuro (#06141B) que lo separa de la
+   navegación (Inicio · Revisión · Nuevo chat), que va en menta sobre #11212D. */
+.chat-sidebar-history {
+  margin-inline: 0.5rem;
+  border: 1px solid hsl(var(--sidebar-accent));
+  border-radius: calc(var(--radius) + 4px);
+  background: hsl(var(--sidebar-panel));
+}
+
 .chat-sidebar-history .an-chat-history__list {
-  padding-top: 0;
+  padding-top: 0.25rem;
 }
 
 .chat-sidebar-history .an-chat-history__section-label {
   padding: 8px
     calc(var(--chat-sidebar-content-inset) + var(--chat-sidebar-row-padding))
     5px;
-  color: hsl(var(--sidebar-foreground));
+  color: hsl(var(--sidebar-chat-foreground));
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .chat-sidebar-history.an-chat-history--rail .an-chat-history-row {
@@ -120,7 +136,11 @@
   min-height: 32px;
   padding-block: 6px;
   padding-inline: var(--chat-sidebar-row-padding);
-  color: hsl(var(--sidebar-foreground));
+  color: hsl(var(--sidebar-chat-foreground));
+}
+
+.chat-sidebar-history.an-chat-history--rail .an-chat-history-row__button:hover {
+  background: hsl(var(--sidebar-accent) / 0.6);
 }
 
 /* The ⋯ trigger sits 3px in from the row edge and is 24px wide, so it
@@ -144,7 +164,7 @@
 
 .chat-sidebar-history .an-chat-history-row__title {
   flex: 1 1 auto;
-  color: hsl(var(--sidebar-accent-foreground));
+  color: hsl(var(--sidebar-chat-foreground));
   font-size: 13px;
   font-weight: 400;
   text-overflow: clip;
@@ -228,6 +248,38 @@
   color: hsl(var(--sidebar-accent-foreground));
 }
 
+.chat-sidebar-history.an-chat-history--rail
+  .an-chat-history-row--active
+  .an-chat-history-row__title {
+  color: hsl(var(--sidebar-accent-foreground));
+}
+
+.chat-sidebar-history .an-chat-history-row__unread {
+  background: hsl(var(--sidebar-primary));
+}
+
+/* Chats no leídos: el toolkit usa el --foreground de la página (casi negro),
+   ilegible sobre el panel oscuro. Van en blanco roto y algo más marcados. */
+.chat-sidebar-history.an-chat-history--rail
+  .an-chat-history-row--unread:not(.an-chat-history-row--active)
+  .an-chat-history-row__title {
+  color: hsl(var(--sidebar-primary));
+  font-weight: 500;
+}
+
+/* «Mostrar todo» dentro del panel */
+.chat-sidebar-history .an-chat-history-rail__section-toggle {
+  margin-inline: var(--chat-sidebar-content-inset);
+  color: hsl(var(--sidebar-chat-foreground));
+}
+.chat-sidebar-history .an-chat-history-rail__section-toggle:hover {
+  background: hsl(var(--sidebar-accent) / 0.6);
+  color: hsl(var(--sidebar-primary));
+}
+.chat-sidebar-history .an-chat-history-row__menu-trigger {
+  color: hsl(var(--sidebar-chat-foreground));
+}
+
 .dark {
   --background: 0 0% 13%;
   --foreground: 0 0% 90%;
@@ -249,14 +301,208 @@
   --input: 0 0% 24%;
   --ring: 0 0% 60%;
   --radius: 0.5rem;
-  --sidebar-background: 0 0% 10%;
-  --sidebar-foreground: 0 0% 60%;
-  --sidebar-primary: 0 0% 75%;
-  --sidebar-primary-foreground: 0 0% 10%;
-  --sidebar-accent: 0 0% 16%;
-  --sidebar-accent-foreground: 0 0% 90%;
-  --sidebar-border: 0 0% 20%;
-  --sidebar-ring: 0 0% 60%;
+  /* Paleta de la barra lateral (misma en claro y oscuro):
+     #06141B panel de chats · #11212D fondo · #253745 hover/activo ·
+     #4A5C6A bordes/secundario · #9BA8AB texto de chats · #CCD0CF navegación */
+  --sidebar-background: 206 45% 12%;        /* #11212D */
+  --sidebar-foreground: 191 9% 64%;         /* #9BA8AB */
+  --sidebar-primary: 165 4% 81%;           /* #CCD0CF */
+  --sidebar-primary-foreground: 200 64% 6%; /* #06141B */
+  --sidebar-accent: 206 30% 21%;            /* #253745 */
+  --sidebar-accent-foreground: 165 4% 81%; /* #CCD0CF */
+  --sidebar-border: 206 18% 35%;            /* #4A5C6A */
+  --sidebar-ring: 165 4% 81%;              /* #CCD0CF */
+  --sidebar-panel: 200 64% 6%;              /* #06141B */
+  --sidebar-chat-foreground: 191 9% 64%;    /* #9BA8AB */
+}
+
+/* Tarjetas de «Consultas pendientes de revisión»: fondo #253745 de la paleta.
+   Se re-escopan las variables del tema para que texto, chips y bordes sigan
+   legibles sobre el fondo oscuro, en modo claro y oscuro por igual. */
+.tarjeta-consulta,
+.superficie-megi {
+  --card: 206 30% 21%;                 /* #253745 */
+  --card-foreground: 165 4% 81%;       /* #CCD0CF */
+  --foreground: 165 4% 81%;            /* #CCD0CF */
+  --muted-foreground: 191 9% 64%;      /* #9BA8AB */
+  --border: 206 18% 35%;               /* #4A5C6A */
+  --secondary: 206 18% 35%;            /* #4A5C6A */
+  --secondary-foreground: 165 4% 81%;  /* #CCD0CF */
+  --primary: 165 4% 81%;               /* #CCD0CF */
+  --primary-foreground: 200 64% 6%;    /* #06141B */
+  --accent: 206 28% 25%;               /* un paso más claro que #253745 al pasar el ratón */
+  --ring: 165 4% 81%;
+  color: hsl(var(--card-foreground));
+}
+
+.superficie-megi {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+}
+
+/* Bienvenida del chat: orden visual con la paleta de la barra lateral. */
+.bienvenida-agente {
+  text-align: center;
+}
+.bienvenida-agente__etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: #253745;
+  color: #ccd0cf;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bienvenida-agente__punto {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #ccd0cf;
+}
+.bienvenida-agente__paso {
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #06141b;
+  color: #ccd0cf;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.bienvenida-agente__seccion {
+  color: #4a5c6a;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.dark .bienvenida-agente__seccion {
+  color: #9ba8ab;
+}
+.bienvenida-agente__chip {
+  padding: 0.375rem 0.875rem;
+  border: 1px solid #4a5c6a;
+  border-radius: 9999px;
+  background: transparent;
+  color: #11212d;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  text-align: left;
+  transition: background-color 150ms, color 150ms, border-color 150ms;
+}
+.bienvenida-agente__chip:hover:not(:disabled) {
+  background: #253745;
+  border-color: #253745;
+  color: #ccd0cf;
+}
+.bienvenida-agente__chip:disabled {
+  opacity: 0.6;
+}
+.bienvenida-agente__chip:focus-visible {
+  outline: 2px solid #4a5c6a;
+  outline-offset: 2px;
+}
+.dark .bienvenida-agente__chip {
+  color: #ccd0cf;
+}
+.bienvenida-agente__nota {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #253745;
+  border-radius: 0.5rem;
+  background: #06141b;
+  color: #9ba8ab;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  text-align: left;
+}
+.bienvenida-agente__nota a {
+  color: #ccd0cf;
+}
+
+/* Chips de alergia y «sin alergias» sobre el fondo oscuro: tonos más claros
+   para conservar el contraste (rojo = alergia registrada, verde = negada). */
+.tarjeta-consulta .text-red-700 { color: #fca5a5; }
+.tarjeta-consulta .border-red-500\/40 { border-color: rgb(252 165 165 / 0.55); }
+.tarjeta-consulta .text-emerald-700 { color: #86efac; }
+.tarjeta-consulta .border-emerald-500\/40 { border-color: rgb(134 239 172 / 0.55); }
+
+/* Lienzo del chat: un halo difuminado de #253745 detrás de la conversación,
+   más denso hacia el compositor, para que la zona se lea como chat y no como
+   una página más. El compositor conserva fondo claro para escribir. */
+.lienzo-chat {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgb(37 55 69 / 0.28), transparent 72%),
+    radial-gradient(ellipse 90% 40% at 50% 0%, rgb(37 55 69 / 0.10), transparent 70%),
+    hsl(var(--background));
+}
+.dark .lienzo-chat {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgb(37 55 69 / 0.75), transparent 72%),
+    radial-gradient(ellipse 90% 40% at 50% 0%, rgb(37 55 69 / 0.35), transparent 70%),
+    hsl(var(--background));
+}
+/* La sección interior pinta blanco; se deja transparente para ver el halo. */
+.lienzo-chat > .agent-kit-chat-canvas-body .agentkit-chat {
+  background: transparent;
+}
+/* Burbuja del médico en #253745: se distingue de la respuesta del agente. */
+.lienzo-chat .agentkit-message:has(.agentkit-user-message-text) .agentkit-message-content {
+  background: #253745;
+  color: #ccd0cf;
+}
+/* El toolkit pinta un velo blanco de 24 px sobre el pie del chat que corta el
+   halo con una línea recta. El propio halo ya hace de fundido, así que sobra. */
+.lienzo-chat .agentkit-chat-footer::before {
+  display: none;
+}
+.lienzo-chat .agent-composer-root.agentkit-composer {
+  border-color: rgb(74 92 106 / 0.6);
+  box-shadow:
+    0 12px 40px -8px rgb(37 55 69 / 0.45),
+    0 0 0 6px rgb(37 55 69 / 0.08);
+}
+.lienzo-chat .agent-composer-root.agentkit-composer:focus-within {
+  border-color: #4a5c6a;
+  box-shadow:
+    0 12px 40px -8px rgb(37 55 69 / 0.55),
+    0 0 0 6px rgb(37 55 69 / 0.14);
+}
+
+/* UX1 · Bienvenida en pantallas bajas. En el estado vacío con compositor
+   centrado, el toolkit deja el transcript con overflow visible y la bienvenida
+   se derrama bajo el compositor, que intercepta el clic de la primera
+   sugerencia (390×844). Con desplazamiento propio, las sugerencias quedan
+   siempre alcanzables y el compositor nunca las tapa. Sin efecto cuando el
+   contenido cabe (escritorio). */
+.lienzo-chat
+  .agentkit-chat[data-empty="true"][data-empty-composer-placement="center"]
+  .agentkit-transcript {
+  overflow-y: auto;
+  overscroll-behavior-block: contain;
+}
+.lienzo-chat
+  .agentkit-chat[data-empty="true"][data-empty-composer-placement="center"]
+  .agentkit-transcript-content {
+  padding-block-end: 0.75rem;
+}
+
+/* UX2 · El inspector (panel derecho del agente en el tablero) tomaba el fondo
+   de la barra de navegación (#11212D) a través de --agent-kit-nav-surface,
+   pero su texto seguía siendo el de la página (1.05:1). El inspector es una
+   superficie de trabajo, no navegación: conserva el fondo de la página para
+   que mensajes, sugerencias y enlaces mantengan su contraste en claro y oscuro. */
+.agent-sidebar-panel {
+  --agent-kit-nav-surface: hsl(var(--background));
 }
 
 @layer base {

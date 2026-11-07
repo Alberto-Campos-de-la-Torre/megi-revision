@@ -1,0 +1,103 @@
+{
+  "fecha": "2026-11-07T03:28:49.064Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "la UI impide un envío solapado durante el turno",
+      "pasa": true
+    },
+    {
+      "prueba": "cancelar antes de proponer no deja un plan parcial",
+      "pasa": true
+    },
+    {
+      "prueba": "excepción",
+      "pasa": false,
+      "detalle": "locator.waitFor: Timeout 120000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('¿Confirmas que no tiene alergias conocidas?', { exact: true }).first() to be visible\u001b[22m\n"
+    }
+  ],
+  "fallos": 2,
+  "fallosComprobacion": 1,
+  "etapas": [
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022005001-s2ic7g",
+      "fecha": 1794022005626
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022005001-s2ic7g",
+      "runId": "run-1794022005683-5n9s6a",
+      "fecha": 1794022005796
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022005001-s2ic7g",
+      "runId": "run-1794022005683-5n9s6a",
+      "fecha": 1794022005796
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022005001-s2ic7g",
+      "runId": "run-1794022005683-5n9s6a",
+      "fecha": 1794022005820
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022008997-03f6ik",
+      "fecha": 1794022009155
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022008997-03f6ik",
+      "runId": "run-1794022009299-7bur85",
+      "fecha": 1794022009382
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022008997-03f6ik",
+      "runId": "run-1794022009299-7bur85",
+      "fecha": 1794022009382
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794022008997-03f6ik",
+      "runId": "run-1794022009299-7bur85",
+      "fecha": 1794022009413
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794022008997-03f6ik",
+      "runId": "run-1794022009299-7bur85",
+      "fecha": 1794022010133
+    }
+  ],
+  "sondaSinSesion": [
+    "401 GET http://localhost:8082/_agent-native/agent-engine/status"
+  ],
+  "red": [
+    "502 POST http://localhost:8082/_agent-native/agent-chat/generate-title"
+  ],
+  "consola": [
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "Failed to load resource: the server responded with a status of 502 ()"
+  ]
+}

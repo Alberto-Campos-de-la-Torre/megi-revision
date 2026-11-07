@@ -1,0 +1,35 @@
+{
+  "fecha": "2026-11-07T07:04:45.608Z",
+  "resultados": [
+    {
+      "nombre": "typecheck",
+      "codigo": 0,
+      "duracionMs": 1316
+    },
+    {
+      "nombre": "doctor",
+      "codigo": 0,
+      "duracionMs": 785
+    },
+    {
+      "nombre": "build",
+      "codigo": 0,
+      "duracionMs": 16917
+    },
+    {
+      "nombre": "auditoria-http",
+      "codigo": 0,
+      "duracionMs": 3626
+    },
+    {
+      "nombre": "bateria-http",
+      "codigo": 0,
+      "duracionMs": 4431
+    },
+    {
+      "nombre": "revision-trazable",
+      "codigo": 0,
+      "duracionMs": 3362
+    }
+  ]
+}

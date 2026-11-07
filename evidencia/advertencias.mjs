@@ -1,0 +1,64 @@
+// Comprueba en la UI los arreglos U1 (advertencias en el diálogo y bitácora) y F3 (fármaco duplicado) con demo-c2.
+import { chromium } from "playwright";
+import { mkdirSync } from "node:fs";
+import { BASE, restaurar, finAgente, resultado } from "./comun.mjs";
+const OUT = new URL("./capturas-advertencias/", import.meta.url).pathname;
+mkdirSync(OUT, { recursive: true });
+const resultados = [];
+let fallos = 0;
+const ok = (c, m) => { console.log(`${c ? "✔" : "✘"} ${m}`); resultados.push({ prueba: m, pasa: Boolean(c) }); if (!c) fallos++; };
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, locale: "es-MX" });
+let n = 0;
+const foto = async (nombre) => { n++; await page.screenshot({ path: `${OUT}${String(n).padStart(2, "0")}-${nombre}.png`, fullPage: true }); };
+try {
+  await restaurar(page);
+  await page.goto(`${BASE}/revision`, { waitUntil: "networkidle" });
+  const dev = page.getByRole("button", { name: /local dev|desarrollador local/i });
+  if (await dev.count()) { await dev.first().click(); await page.waitForURL(/\/revision/, { timeout: 20000 }).catch(() => {}); await page.goto(`${BASE}/revision`, { waitUntil: "networkidle" }); }
+  await page.getByText("Consultas pendientes de revisión").waitFor({ timeout: 30000 });
+  await page.getByRole("link", { name: /Mateo/ }).click();
+  await page.getByText("Pedir propuesta al agente").waitFor({ timeout: 30000 });
+  await page.getByRole("button", { name: "Plan en blanco" }).click();
+  await page.getByRole("button", { name: /Aprobar y exportar/ }).waitFor({ timeout: 30000 });
+  const add = async (f, d, fr, du) => {
+    await page.getByLabel("Fármaco", { exact: true }).fill(f);
+    await page.getByLabel("Dosis", { exact: true }).fill(d);
+    await page.getByLabel("Frecuencia", { exact: true }).fill(fr);
+    await page.getByLabel("Duración", { exact: true }).fill(du);
+    await page.getByRole("button", { name: "Añadir", exact: true }).click();
+  };
+  await add("Naproxeno", "250 mg", "cada 12 h", "5 días");
+  await page.getByText("Advertencia", { exact: true }).first().waitFor({ timeout: 30000 });
+  ok(await page.getByText(/Losartán/).count() > 0, "naproxeno: advertencia por interacción con losartán visible");
+  await add("Paracetamol", "1 g", "cada 8 h", "5 días");
+  await page.getByText("Sin alertas detectadas").first().waitFor({ timeout: 30000 });
+  await add("Paracetamol", "500 mg", "cada 6 h", "3 días");
+  await page.getByText(/aparece más de una vez en el plan/).first().waitFor({ timeout: 30000 });
+  ok(await page.getByText(/aparece más de una vez en el plan/).count() >= 2, "paracetamol duplicado: las dos líneas avisan de dosis duplicada");
+  await page.getByRole("button", { name: /Aprobar y exportar/ }).click();
+  await page.getByText("Aprobar y exportar a MEGI").waitFor();
+  ok(await page.getByRole("button", { name: /^Aprobar y exportar$/ }).last().isDisabled(), "medicación sin conciliar impide aprobar");
+  await page.getByRole("button", { name: "Volver", exact: true }).click();
+  await page.getByLabel(/Estado de Losartán/).selectOption("activo");
+  await page.getByRole("button", { name: "Guardar conciliación", exact: true }).click();
+  await page.getByText("Medicación conciliada y plan verificado").waitFor();
+  await foto("plan-con-advertencias");
+  await page.getByRole("button", { name: /Aprobar y exportar/ }).click();
+  await page.getByText("Aprobar y exportar a MEGI").waitFor({ timeout: 10000 });
+  const bloque = page.getByText(/advertencia\(s\) que se exportan con el plan/);
+  ok(await bloque.count() === 1, "diálogo de aprobación lista las advertencias");
+  ok(await page.getByText(/^3 advertencia/).count() === 1, "cuenta 3 advertencias (naproxeno + 2 paracetamol)");
+  ok(await page.getByText(/con bloqueo de seguridad:/).count() === 0, "sin casilla de bloqueo: las advertencias no frenan");
+  await foto("dialogo-advertencias");
+  await page.getByRole("button", { name: /^Aprobar y exportar$/ }).last().click();
+  await page.getByText("Aprobado y exportado", { exact: true }).first().waitFor({ timeout: 60000 });
+  await page.getByRole("tab", { name: /Cambios/ }).click();
+  await page.getByText(/advertencia\(s\) vigentes/).first().waitFor({ timeout: 15000 });
+  ok(await page.getByText(/3 advertencia\(s\) vigentes: Naproxeno/).count() > 0, "bitácora: el evento aprobar deja escritas las advertencias");
+  await foto("bitacora-advertencias");
+} catch (e) { fallos++; console.log("✘ excepción:", e.message.slice(0, 300)); await foto("error"); }
+resultado("advertencias", resultados, { fallos });
+await browser.close();
+console.log(fallos ? `${fallos} fallos` : "comprobación de advertencias correcta");
+process.exit(fallos ? 1 : 0);

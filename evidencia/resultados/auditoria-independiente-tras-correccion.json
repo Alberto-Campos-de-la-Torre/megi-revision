@@ -1,0 +1,64 @@
+{
+  "fecha": "2026-11-07T07:04:45.537Z",
+  "entorno": "Sin red real, sin .env, transporte HTTP sintético, sin escrituras clínicas",
+  "referencia": "Reproducción de evidencia/resultados/auditoria-independiente-2026-11-06.json tras corregir H1 y H2",
+  "checks": [
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {},
+      "resultado": "rechazado",
+      "status": 502,
+      "codigo": "verificador_invalido",
+      "error": "Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura."
+    },
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {
+        "alerts": []
+      },
+      "resultado": "ok"
+    },
+    {
+      "id": "respuesta-verificador",
+      "respuestaSimulada": {
+        "alerts": [
+          {
+            "severity": "blocker",
+            "drug": "",
+            "against": "",
+            "message": "Bloqueo global sin atribución"
+          }
+        ]
+      },
+      "resultado": "bloqueado",
+      "motivo": "Bloqueo global sin atribución"
+    },
+    {
+      "id": "sesion-http-compartida",
+      "sinListaDeMedicos": {
+        "medico-a": {
+          "denegado": 403,
+          "codigo": "sin_rol_clinico"
+        },
+        "medico-b": {
+          "denegado": 403,
+          "codigo": "sin_rol_clinico"
+        }
+      }
+    },
+    {
+      "id": "sesion-http-con-lista",
+      "correoAjeno": {
+        "denegado": 403,
+        "codigo": "sin_rol_clinico"
+      },
+      "alcance": "No se instancia el adaptador para el correo autorizado: no hay red."
+    },
+    {
+      "id": "rol-medico",
+      "permiteFrontendSinRolClinico": false,
+      "codigo": "sin_rol_clinico",
+      "alcance": "Prueba unitaria del gate; el framework autentica la sesión por separado. No prueba una intrusión remota."
+    }
+  ]
+}

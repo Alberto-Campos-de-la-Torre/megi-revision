@@ -1,0 +1,122 @@
+[
+  {
+    "fecha": "2026-11-06T23:39:26.936Z",
+    "visibleMs": 30533,
+    "turnoMs": 51747,
+    "objetivoMs": 35000,
+    "n": 1
+  },
+  {
+    "fecha": "2026-11-06T23:43:39.318Z",
+    "visibleMs": 34422,
+    "turnoMs": 58982,
+    "objetivoMs": 35000,
+    "n": 1
+  },
+  {
+    "fecha": "2026-11-07T00:02:24.733Z",
+    "visibleMs": 30500,
+    "turnoMs": 53623,
+    "objetivoMs": 35000,
+    "n": 1
+  },
+  {
+    "fecha": "2026-11-07T00:08:06.832Z",
+    "visibleMs": 94821,
+    "turnoMs": 157870,
+    "objetivoMs": 35000,
+    "n": 1
+  },
+  {
+    "fecha": "2026-11-07T00:23:40.757Z",
+    "visibleMs": 40493,
+    "turnoMs": 58953,
+    "objetivoMs": 35000,
+    "n": 1
+  },
+  {
+    "fecha": "2026-11-07T00:42:32.320Z",
+    "visibleMs": 82651,
+    "turnoMs": 109107,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "contexto-y-acciones-diferidos; corpus-inicial"
+  },
+  {
+    "fecha": "2026-11-07T00:48:01.774Z",
+    "visibleMs": 30430,
+    "turnoMs": 50170,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "contexto-acciones-y-corpus-diferidos"
+  },
+  {
+    "fecha": "2026-11-07T03:01:01.118Z",
+    "visibleMs": 110595,
+    "turnoMs": 79258,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "recibo-sin-alcance; fallo-de-sincronizacion"
+  },
+  {
+    "fecha": "2026-11-07T03:08:10.042Z",
+    "visibleMs": 77448,
+    "turnoMs": 46237,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "recibo-con-ids; respaldo-de-evento-aun-pendiente"
+  },
+  {
+    "fecha": "2026-11-07T03:15:56.192Z",
+    "visibleMs": 43497,
+    "turnoMs": 42924,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "entrega-al-medico; sincronizacion-de-escrituras-pausadas"
+  },
+  {
+    "fecha": "2026-11-07T03:34:22.802Z",
+    "visibleMs": 63508,
+    "turnoMs": 63095,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "intento local: el motor forzado terminó usando Grok 4.7; no compara Qwen",
+    "modeloSolicitado": "qwen2.5-14b-32k:latest",
+    "modeloEfectivo": "grok-4.7",
+    "comparacionValida": false
+  },
+  {
+    "fecha": "2026-11-07T03:51:23.709Z",
+    "visibleMs": 35200,
+    "turnoMs": 3800,
+    "precision": "tiempos redondeados a 0,1 s conservados en el resultado del recorrido",
+    "fuente": "evidencia/resultados/intentos/agente-grok-420-refresco-tardio.json",
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "primera comparación Grok 4.20; refresco tardío detectado"
+  },
+  {
+    "fecha": "2026-11-07T03:57:13.294Z",
+    "visibleMs": 4343,
+    "turnoMs": 3547,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "grok-4.20 comparado; entrega y refresco directo"
+  },
+  {
+    "fecha": "2026-11-07T04:03:35.918Z",
+    "visibleMs": 119846,
+    "turnoMs": 88692,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "grok-4.7 forzado por configuración anterior; espera de sincronización"
+  },
+  {
+    "fecha": "2026-11-07T04:26:39.550Z",
+    "visibleMs": 4228,
+    "turnoMs": 3659,
+    "objetivoMs": 35000,
+    "n": 1,
+    "configuracion": "predeterminado real de demo: grok-4.20; proceso reiniciado"
+  }
+]

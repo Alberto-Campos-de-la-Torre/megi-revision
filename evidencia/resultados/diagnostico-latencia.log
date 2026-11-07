@@ -1,0 +1,126 @@
+[
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 4088,
+    "llamadasModelo": 3,
+    "modeloMs": [
+      2180,
+      1453,
+      430
+    ],
+    "herramientasMs": [
+      9
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 4705,
+    "llamadasModelo": 4,
+    "modeloMs": [
+      1144,
+      1226,
+      970,
+      1288
+    ],
+    "herramientasMs": [
+      42,
+      10
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 5635,
+    "llamadasModelo": 4,
+    "modeloMs": [
+      1350,
+      1453,
+      1438,
+      1311
+    ],
+    "herramientasMs": [
+      44,
+      11
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 7130,
+    "llamadasModelo": 3,
+    "modeloMs": [
+      4380,
+      1269,
+      1424
+    ],
+    "herramientasMs": [
+      18
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 3370,
+    "llamadasModelo": 1,
+    "modeloMs": [
+      3329
+    ],
+    "herramientasMs": [
+      23
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 1830,
+    "llamadasModelo": 2,
+    "modeloMs": [
+      854,
+      880
+    ],
+    "herramientasMs": [
+      53,
+      10
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 84,
+    "llamadasModelo": 1,
+    "modeloMs": [
+      54
+    ],
+    "herramientasMs": []
+  },
+  {
+    "modelo": "grok-4.7",
+    "totalMs": 47990,
+    "llamadasModelo": 2,
+    "modeloMs": [
+      30653,
+      17291
+    ],
+    "herramientasMs": [
+      5,
+      6
+    ]
+  },
+  {
+    "modelo": "grok-4.20-0309-non-reasoning",
+    "totalMs": 3233,
+    "llamadasModelo": 1,
+    "modeloMs": [
+      3202
+    ],
+    "herramientasMs": [
+      16
+    ]
+  },
+  {
+    "modelo": "grok-4.7",
+    "totalMs": 62723,
+    "llamadasModelo": 1,
+    "modeloMs": [
+      62689
+    ],
+    "herramientasMs": [
+      17
+    ]
+  }
+]

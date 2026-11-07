@@ -1,0 +1,358 @@
+{
+  "fecha": "2026-11-07T04:38:36.706Z",
+  "tipo": "Manifiesto WebMCP leído del servidor autenticado",
+  "primarias_presentes": {
+    "listar-consultas": true,
+    "ver-contexto-consulta": true,
+    "obtener-plan": true,
+    "proponer-plan": true,
+    "reajustar-plan": true,
+    "historial-plan": true,
+    "metricas-revision": true,
+    "sugerir-reemplazo": true
+  },
+  "decisiones_ui_fuera_catalogo": {
+    "aprobar-plan": true,
+    "preparar-aprobacion": true,
+    "definir-alcance": true,
+    "conciliar-medicacion": true,
+    "medir-revision": true,
+    "restaurar-demo": true,
+    "resolver-sugerencia": true
+  },
+  "herramientas": [
+    {
+      "name": "historial-plan",
+      "title": "Historial plan",
+      "description": "Versiones del plan, autores, motivos y tiempos de operación del servidor. Página de 20; usa antes para continuar. Las instantáneas contienen las fuentes de cada línea.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "planId": {
+            "type": "string"
+          },
+          "antes": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "planId"
+        ]
+      },
+      "readOnly": true
+    },
+    {
+      "name": "listar-consultas",
+      "title": "Listar consultas",
+      "description": "Lista las consultas consolidadas en MEGI que están pendientes de revisión (sin receta aprobada), con paciente, alergias y el plan de revisión si ya existe.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "default": "pendientes",
+            "type": "string",
+            "enum": [
+              "pendientes",
+              "exportadas"
+            ]
+          }
+        }
+      },
+      "readOnly": true
+    },
+    {
+      "name": "metricas-revision",
+      "title": "Metricas revision",
+      "description": "Últimas 30 mediciones exploratorias del usuario para un caso: modalidad, tiempo hasta señal de plan visible y duración total. No son resultados de un estudio clínico.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "consultaId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "consultaId"
+        ]
+      },
+      "readOnly": true
+    },
+    {
+      "name": "obtener-plan",
+      "title": "Obtener plan",
+      "description": "Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "planId": {
+            "description": "Id del plan",
+            "type": "string"
+          },
+          "consultaId": {
+            "description": "O bien el id de la consulta (p. ej. demo-c3)",
+            "type": "string"
+          }
+        }
+      },
+      "readOnly": true
+    },
+    {
+      "name": "proponer-plan",
+      "title": "Proponer plan",
+      "description": "Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:\"farmaco\", texto, dosis, frecuencia, duracion, justificacion} y cada pendiente como {tipo:\"pendiente\", texto}. Nunca envíes `lineas` vacío. Falla con plan_existente (409) si ya hay plan: usa reajustar-plan. La revisión y aprobación finales son médicas.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "consultaId": {
+            "type": "string",
+            "description": "Id de la consulta (de listar-consultas)"
+          },
+          "lineas": {
+            "maxItems": 40,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tipo": {
+                  "type": "string",
+                  "enum": [
+                    "farmaco",
+                    "pendiente"
+                  ],
+                  "description": "\"farmaco\" (receta) o \"pendiente\" (estudio, control, indicación)"
+                },
+                "texto": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Fármaco (\"Amoxicilina\") o texto del pendiente (\"Radiografía de rodilla AP y lateral\")"
+                },
+                "dosis": {
+                  "default": "",
+                  "description": "Solo fármacos: \"500 mg\"",
+                  "type": "string"
+                },
+                "frecuencia": {
+                  "default": "",
+                  "description": "Solo fármacos: \"cada 8 h\"",
+                  "type": "string"
+                },
+                "duracion": {
+                  "default": "",
+                  "description": "Solo fármacos: \"7 días\", \"continuo\"",
+                  "type": "string"
+                },
+                "justificacion": {
+                  "default": "",
+                  "description": "Una frase: por qué va en el plan",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "tipo",
+                "texto"
+              ]
+            },
+            "description": "Todas las líneas del plan en orden, p. ej. [{\"tipo\":\"farmaco\",\"texto\":\"Paracetamol\",\"dosis\":\"1 g\",\"frecuencia\":\"cada 8 h\",\"duracion\":\"5 días\",\"justificacion\":\"Analgesia\"},{\"tipo\":\"pendiente\",\"texto\":\"Control en 2 semanas\"}]. Solo la interfaz (origen medico) puede mandarlo vacío"
+          },
+          "explicacion": {
+            "default": "",
+            "description": "Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada línea.",
+            "type": "string"
+          },
+          "origen": {
+            "default": "agente",
+            "description": "Quién hace el cambio: \"agente\" (tú) o \"medico\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.",
+            "type": "string",
+            "enum": [
+              "agente",
+              "medico"
+            ]
+          }
+        },
+        "required": [
+          "consultaId",
+          "lineas"
+        ]
+      },
+      "readOnly": false
+    },
+    {
+      "name": "reajustar-plan",
+      "title": "Reajustar plan",
+      "description": "Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médico, NO se aplica nada y responde linea_bloqueada (409) con los ids; explícaselo al médico en vez de reintentar. Las líneas rechazadas tampoco se tocan (reactívalas con actualizar-linea).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "versionEsperada": {
+            "description": "Versión leída antes de editar; relectura obligatoria tras conflicto",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "planId": {
+            "type": "string",
+            "description": "Id del plan"
+          },
+          "cambios": {
+            "minItems": 1,
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "accion": {
+                  "type": "string",
+                  "enum": [
+                    "reemplazar",
+                    "quitar",
+                    "editar",
+                    "agregar"
+                  ],
+                  "description": "\"reemplazar\": rechaza lineaId y añade la nueva línea en su lugar · \"quitar\": rechaza lineaId · \"editar\": cambia campos de lineaId · \"agregar\": nueva línea"
+                },
+                "lineaId": {
+                  "description": "Línea afectada (todas menos agregar)",
+                  "type": "string"
+                },
+                "tipo": {
+                  "description": "Para agregar/reemplazar; por defecto el tipo de la línea reemplazada o farmaco",
+                  "type": "string",
+                  "enum": [
+                    "farmaco",
+                    "pendiente"
+                  ]
+                },
+                "texto": {
+                  "description": "Nuevo fármaco o texto",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dosis": {
+                  "type": "string"
+                },
+                "frecuencia": {
+                  "type": "string"
+                },
+                "duracion": {
+                  "type": "string"
+                },
+                "motivo": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Una frase: por qué este cambio (se muestra al médico)"
+                }
+              },
+              "required": [
+                "accion",
+                "motivo"
+              ]
+            },
+            "description": "Todos los cambios de este reajuste"
+          },
+          "explicacion": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Resumen de dos o tres frases de lo que cambiaste y por qué"
+          },
+          "origen": {
+            "default": "agente",
+            "description": "Quién hace el cambio: \"agente\" (tú) o \"medico\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.",
+            "type": "string",
+            "enum": [
+              "agente",
+              "medico"
+            ]
+          }
+        },
+        "required": [
+          "planId",
+          "cambios",
+          "explicacion"
+        ]
+      },
+      "readOnly": false
+    },
+    {
+      "name": "sugerir-reemplazo",
+      "title": "Sugerir reemplazo",
+      "description": "Propone una alternativa para una línea autorizada en alcanceSugerencias. Guarda una sugerencia revisable sin tocar la receta, aunque la línea esté fijada o rechazada. Solo el médico puede aceptarla; una fijada debe desbloquearse primero.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "farmaco",
+              "pendiente"
+            ],
+            "description": "\"farmaco\" (receta) o \"pendiente\" (estudio, control, indicación)"
+          },
+          "texto": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Fármaco (\"Amoxicilina\") o texto del pendiente (\"Radiografía de rodilla AP y lateral\")"
+          },
+          "dosis": {
+            "default": "",
+            "description": "Solo fármacos: \"500 mg\"",
+            "type": "string"
+          },
+          "frecuencia": {
+            "default": "",
+            "description": "Solo fármacos: \"cada 8 h\"",
+            "type": "string"
+          },
+          "duracion": {
+            "default": "",
+            "description": "Solo fármacos: \"7 días\", \"continuo\"",
+            "type": "string"
+          },
+          "justificacion": {
+            "default": "",
+            "description": "Una frase: por qué va en el plan",
+            "type": "string"
+          },
+          "planId": {
+            "type": "string"
+          },
+          "lineaId": {
+            "type": "string"
+          },
+          "versionEsperada": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "tipo",
+          "texto",
+          "planId",
+          "lineaId",
+          "versionEsperada"
+        ]
+      },
+      "readOnly": false
+    },
+    {
+      "name": "ver-contexto-consulta",
+      "title": "Ver contexto consulta",
+      "description": "Todo lo que hay que leer ANTES de proponer un plan: nota SOAP consolidada, diagnósticos, fármacos y pendientes que menciona la nota, y la ficha del paciente (alergias, crónicos, medicación activa). Devuelve también el planId si ya hay plan.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "consultaId": {
+            "type": "string",
+            "description": "Id de la consulta, de listar-consultas (p. ej. demo-c3)"
+          }
+        },
+        "required": [
+          "consultaId"
+        ]
+      },
+      "readOnly": true
+    }
+  ]
+}

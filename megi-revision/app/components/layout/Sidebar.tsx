@@ -1,8 +1,8 @@
+import { useEstadoAgente } from "@/components/revision/EstadoAgente";
 import { appPath } from "@agent-native/core/client/api-path";
 import { useT } from "@agent-native/core/client/i18n";
 import {
   navigateWithAgentChatViewTransition,
-  useAgentChatRunningThreads,
   useChatThreads,
 } from "@agent-native/toolkit/app/chat/agentkit-chat/rail";
 import {
@@ -15,7 +15,6 @@ import { openCommandMenu } from "@agent-native/toolkit/app/shared";
 import { AgentNativeIcon } from "@agent-native/toolkit/app/shared/AgentNativeIcon";
 import {
   IconEdit,
-  IconHome,
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
   IconLoader2,
@@ -32,7 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { APP_TITLE } from "@/lib/app-config";
-import { chatThreadPath, HOME_PATH, threadIdFromPath } from "@/lib/chat-paths";
+import { chatThreadPath, threadIdFromPath } from "@/lib/chat-paths";
 import { cn } from "@/lib/utils";
 
 const CHAT_STORAGE_KEY = "chat";
@@ -118,42 +117,6 @@ function persistActiveThreadId(threadId: string) {
   } catch {}
 }
 
-function HomeNavLink({ collapsed }: { collapsed: boolean }) {
-  const t = useT();
-  const location = useLocation();
-  const active = location.pathname === HOME_PATH;
-  const link = (
-    <Link
-      to={HOME_PATH}
-      aria-current={active ? "page" : undefined}
-      aria-label={collapsed ? t("navigation.home") : undefined}
-      className={cn(
-        "flex items-center text-sidebar-accent-foreground transition-colors hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-        active && "bg-sidebar-accent",
-        collapsed
-          ? "size-8 justify-center rounded-md"
-          : "h-8 w-full gap-3 rounded-lg px-3 text-sm font-medium",
-      )}
-    >
-      <IconHome className="size-4 shrink-0" strokeWidth={1.8} />
-      <span className={collapsed ? "sr-only" : "truncate"}>
-        {t("navigation.home")}
-      </span>
-    </Link>
-  );
-
-  if (collapsed) {
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>{link}</TooltipTrigger>
-        <TooltipContent side="right">{t("navigation.home")}</TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  return <div className="px-2">{link}</div>;
-}
-
 function RevisionNavLink({ collapsed }: { collapsed: boolean }) {
   const location = useLocation();
   const active = location.pathname.startsWith("/revision");
@@ -204,7 +167,7 @@ function ChatThreadsSection({ collapsed }: { collapsed: boolean }) {
     restoreActiveThread: false,
   });
   const { workingThreadIds, observedThreadStarts } =
-    useAgentChatRunningThreads();
+    useEstadoAgente();
 
   const localMineRows = ownDraftRows({
     threads,
@@ -440,7 +403,6 @@ export function Sidebar({
           collapsed ? "items-center gap-1 px-1 py-2" : "pt-1",
         )}
       >
-        <HomeNavLink collapsed={collapsed} />
         <RevisionNavLink collapsed={collapsed} />
         <ChatThreadsSection collapsed={collapsed} />
       </nav>

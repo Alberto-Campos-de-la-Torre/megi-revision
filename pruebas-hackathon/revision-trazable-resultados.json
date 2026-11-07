@@ -1,0 +1,186 @@
+{
+  "fecha": "2026-11-07T07:04:45.571Z",
+  "entorno": "PGlite en memoria, pacientes sintéticos, sin LLM",
+  "resultados": [
+    {
+      "id": "propuesta-entrega-recibo-verificado-sin-ocultar-alertas-ni-cerrar-mcp",
+      "passed": true
+    },
+    {
+      "id": "version-inicial-y-fuentes-reales",
+      "passed": true
+    },
+    {
+      "id": "alcance-exclusivo-del-medico",
+      "passed": true
+    },
+    {
+      "id": "seleccion-guardada-en-servidor",
+      "passed": true
+    },
+    {
+      "id": "no-edita-otra-linea",
+      "passed": true
+    },
+    {
+      "id": "no-agrega-para-evadir-alcance",
+      "passed": true
+    },
+    {
+      "id": "no-omite-version-en-edicion-acotada",
+      "passed": true
+    },
+    {
+      "id": "no-edita-version-antigua",
+      "passed": true
+    },
+    {
+      "id": "snapshot-muestra-antes-y-despues",
+      "passed": true
+    },
+    {
+      "id": "historial-aislado-por-usuario",
+      "passed": true
+    },
+    {
+      "id": "fallo-no-guarda-linea-ni-version",
+      "passed": true
+    },
+    {
+      "id": "bloqueo-intacto-dentro-del-alcance",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-rechaza-vista-desactualizada",
+      "passed": true
+    },
+    {
+      "id": "antecedente-no-se-convierte-en-confirmado",
+      "passed": true
+    },
+    {
+      "id": "medicacion-sin-conciliar-frena-aprobacion",
+      "passed": true
+    },
+    {
+      "id": "agente-no-concilia",
+      "passed": true
+    },
+    {
+      "id": "conciliacion-reverifica-y-conserva-fuente",
+      "passed": true
+    },
+    {
+      "id": "fuente-ausente-reconoce-incertidumbre",
+      "passed": true
+    },
+    {
+      "id": "mediciones-reales-y-aisladas",
+      "passed": true
+    },
+    {
+      "id": "restaurar-demo-solo-casos-propios-y-conserva-mediciones",
+      "passed": true
+    },
+    {
+      "id": "reemplazo-hereda-alcance-sin-abrir-otras-lineas",
+      "passed": true
+    },
+    {
+      "id": "conciliar-suspension-se-respeta-tambien-al-exportar",
+      "passed": true
+    },
+    {
+      "id": "dos-ediciones-de-la-misma-version-no-pierden-cambios",
+      "passed": true
+    },
+    {
+      "id": "cancelacion-no-deja-version-ni-cambio-parcial",
+      "passed": true
+    },
+    {
+      "id": "alertas-distintas-no-heredan-confirmacion-previa",
+      "passed": true
+    },
+    {
+      "id": "comparacion-distingue-pauta-fijada-de-alerta-recalculada",
+      "passed": true
+    },
+    {
+      "id": "restauracion-rechaza-http-antes-de-contactar-backend",
+      "passed": true
+    },
+    {
+      "id": "medicion-interrumpida-no-se-presenta-como-finalizada",
+      "passed": true
+    },
+    {
+      "id": "plan-anterior-se-puede-leer-sin-backend",
+      "passed": true
+    },
+    {
+      "id": "exportacion-anterior-se-recupera-sin-backend",
+      "passed": true
+    },
+    {
+      "id": "historial-incluye-cronico-antiguo-y-distingue-tratamiento-finalizado",
+      "passed": true
+    },
+    {
+      "id": "version-obligatoria-sin-alcance",
+      "passed": true
+    },
+    {
+      "id": "contexto-conservado-minimo-sin-transcripcion",
+      "passed": true
+    },
+    {
+      "id": "legacy-hidratacion-fallida-es-502-tipado",
+      "passed": true
+    },
+    {
+      "id": "exportadas-antiguas-neutras-y-listadas-sin-backend",
+      "passed": true
+    },
+    {
+      "id": "nueva-medicacion-viva-entra-y-frena-aprobacion",
+      "passed": true
+    },
+    {
+      "id": "cambio-de-pauta-no-hereda-suspension-y-conserva-manuales",
+      "passed": true
+    },
+    {
+      "id": "cache-solo-peticion-y-aislado-por-adaptador",
+      "passed": true
+    },
+    {
+      "id": "sugerencia-acotada-no-toca-fijada-y-medico-resuelve",
+      "passed": true
+    },
+    {
+      "id": "alternativa-se-cruza-con-otros-farmacos-del-plan",
+      "passed": true
+    },
+    {
+      "id": "receta-aprobada-despues-del-plan-cruza-por-adaptador-http",
+      "passed": true
+    },
+    {
+      "id": "contexto-se-parsea-una-vez-por-accion-y-no-se-reusa-entre-peticiones",
+      "passed": true
+    },
+    {
+      "id": "traza-del-modelo-vinculada-desde-contexto-del-servidor-y-aislada",
+      "passed": true
+    },
+    {
+      "id": "entrega-pausada-refresca-su-recurso-sin-marca-de-efecto",
+      "passed": true
+    },
+    {
+      "id": "invalidacion-de-un-plan-no-despierta-otro",
+      "passed": true
+    }
+  ]
+}

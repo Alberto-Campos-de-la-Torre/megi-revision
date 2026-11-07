@@ -4,7 +4,7 @@
  * el plan en curso, sus líneas con estado y bloqueo, y la bitácora de cambios.
  */
 import { sql } from "drizzle-orm";
-import { integer, pgTable, text } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 
 export const PLAN_ESTADOS = ["borrador", "exportado"] as const;
 export const LINEA_TIPOS = ["farmaco", "pendiente"] as const;
@@ -28,6 +28,13 @@ export const planes = pgTable("planes", {
   orgId: text("org_id"),
   createdAt: text("created_at").notNull().default(sql`now()`),
   updatedAt: text("updated_at").notNull().default(sql`now()`),
+  version: integer("version").notNull().default(0),
+  contextoFuente: text("contexto_fuente"),
+  alcanceAgente: text("alcance_agente"),
+  conciliacion: text("conciliacion"),
+  conciliacionConfirmada: boolean("conciliacion_confirmada").notNull().default(false),
+  alcanceSugerencias: text("alcance_sugerencias").notNull().default("[]"),
+  sugerencias: text("sugerencias").notNull().default("[]"),
 });
 
 export const lineasPlan = pgTable("lineas_plan", {
@@ -68,3 +75,32 @@ export const eventosRevision = pgTable("eventos_revision", {
 export type PlanRow = typeof planes.$inferSelect;
 export type LineaRow = typeof lineasPlan.$inferSelect;
 export type EventoRow = typeof eventosRevision.$inferSelect;
+
+/** Instantáneas del dominio, capturadas en la misma transacción que el cambio. */
+export const versionesPlan = pgTable("versiones_plan", {
+  id: text("id").primaryKey(),
+  planId: text("plan_id").notNull(),
+  version: integer("version").notNull(),
+  actor: text("actor", { enum: ORIGENES }).notNull(),
+  accion: text("accion").notNull(),
+  motivo: text("motivo").notNull().default(""),
+  snapshot: text("snapshot").notNull(),
+  operacionMs: integer("operacion_ms").notNull().default(0),
+  agenteRunId: text("agente_run_id"),
+  ownerEmail: text("owner_email").notNull(),
+  orgId: text("org_id"),
+  createdAt: text("created_at").notNull(),
+});
+
+export const medicionesRevision = pgTable("mediciones_revision", {
+  id: text("id").primaryKey(),
+  planId: text("plan_id"),
+  consultaId: text("consulta_id").notNull(),
+  modalidad: text("modalidad", { enum: ["manual", "agente"] }).notNull(),
+  inicio: text("inicio").notNull(),
+  fin: text("fin"),
+  planVisibleMs: integer("plan_visible_ms"),
+  resultado: text("resultado", { enum: ["finalizada", "interrumpida"] }),
+  ownerEmail: text("owner_email").notNull(),
+  orgId: text("org_id"),
+});

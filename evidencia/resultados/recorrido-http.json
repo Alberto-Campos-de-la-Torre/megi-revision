@@ -1,0 +1,125 @@
+{
+  "fecha": "2026-11-07T07:03:37.250Z",
+  "modo": "http",
+  "backend": {
+    "status": "ok",
+    "mode": "local_mock",
+    "build": "b35cba2"
+  },
+  "appCommit": "b631b872117404d6d6b90232bf70c36506d49007",
+  "appConCambiosSinCommit": true,
+  "fallos": 0,
+  "resultados": [
+    {
+      "prueba": "A · lista http: 4 pendientes del médico de servicio",
+      "pasa": true
+    },
+    {
+      "prueba": "A · indicador «MEGI conectado (local_mock)» con el modo real del backend",
+      "pasa": true
+    },
+    {
+      "prueba": "A · la lista indica página y total del servidor",
+      "pasa": true
+    },
+    {
+      "prueba": "A · «Ninguna conocida» se muestra como registro (verde), distinto de «sin registro»",
+      "pasa": true
+    },
+    {
+      "prueba": "A · lista sin desbordamiento horizontal a 390 px",
+      "pasa": true
+    },
+    {
+      "prueba": "A · bloqueo por alergia verificado por el backend real",
+      "pasa": true
+    },
+    {
+      "prueba": "A · línea fijada por el médico no editable",
+      "pasa": true
+    },
+    {
+      "prueba": "A · tablero sin desbordamiento horizontal a 390 px",
+      "pasa": true
+    },
+    {
+      "prueba": "A · la acción principal (Aprobar y exportar) es visible en móvil",
+      "pasa": true
+    },
+    {
+      "prueba": "A · MEGI aprobó con la cuenta de servicio (approved_by = cuenta compartida)",
+      "pasa": true,
+      "detalle": "Dra. Demo Ficticia"
+    },
+    {
+      "prueba": "A · la auditoría de MEGI conserva el correo real del aprobador en la nota",
+      "pasa": true,
+      "detalle": "Plan revisado con el agente (MEGI Revisión) · Aprobado en MEGI Revisión por dev@"
+    },
+    {
+      "prueba": "A · ninguna credencial aparece en pantalla",
+      "pasa": true
+    },
+    {
+      "prueba": "B · el médico guarda su conexión propia en la superficie de secretos (ámbito usuario)",
+      "pasa": true
+    },
+    {
+      "prueba": "B · con conexión propia solo ve SUS pendientes (1), no los del otro médico",
+      "pasa": true
+    },
+    {
+      "prueba": "B · la medicación del expediente del paciente de B (Losartán) llega por el historial por lotes",
+      "pasa": true
+    },
+    {
+      "prueba": "B · MEGI firma la aprobación con la identidad PROPIA del médico (approved_by = su cuenta)",
+      "pasa": true,
+      "detalle": "Dra. Segunda Ficticia"
+    },
+    {
+      "prueba": "B · la nota de auditoría conserva además la sesión de la app",
+      "pasa": true
+    },
+    {
+      "prueba": "B · el otro médico no lee ni audita esa consulta en MEGI (404)",
+      "pasa": true
+    },
+    {
+      "prueba": "B · la pestaña Exportación muestra al firmante real (la identidad propia, no la cuenta de servicio)",
+      "pasa": true
+    },
+    {
+      "prueba": "B · el médico retira su conexión",
+      "pasa": true
+    },
+    {
+      "prueba": "B · sin conexión propia vuelve a la cuenta compartida (solo porque MEGI_MEDICOS lo autoriza): 3 pendientes restantes de A",
+      "pasa": true
+    },
+    {
+      "prueba": "B · el plan exportado con identidad propia sigue en el archivo local del médico tras retirar la conexión",
+      "pasa": true
+    },
+    {
+      "prueba": "C · la UI recibe 403 sin_rol_clinico de listar-consultas sin lista ni conexión",
+      "pasa": true,
+      "detalle": {
+        "status": 403,
+        "errorCode": "sin_rol_clinico"
+      }
+    },
+    {
+      "prueba": "C · la pantalla explica el acceso denegado y cómo resolverlo, sin exponer credenciales",
+      "pasa": true
+    },
+    {
+      "prueba": "C · el backend no recibió ninguna llamada clínica durante la denegación",
+      "pasa": true,
+      "detalle": {
+        "antes": 123,
+        "despues": 123
+      }
+    }
+  ]
+}

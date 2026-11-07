@@ -32,8 +32,9 @@ export type Paciente = {
   /** Lista VACÍA = sin registro de alergias (no «sin alergias»). */
   alergias: string[];
   cronicos: string[];
-  /** Última receta aprobada del expediente. */
+  /** Última receta: referencia histórica, no conciliación confirmada. */
   medicacionActiva: Medicamento[];
+  historialMedicacion?: (Medicamento & { id: string; fuente: string; fecha: string; estado: "activo" | "suspendido" | "finalizado" | "sin_confirmar" })[];
 };
 
 export type Diagnostico = { cie10?: string | undefined; texto: string };
@@ -61,6 +62,9 @@ export type Consulta = {
 
 export type ConsultaConPaciente = Consulta & { paciente: Paciente };
 
+/** Página de consultas pendientes: `siguiente` es el desplazamiento de la página posterior o null si no hay más. */
+export type PaginaPendientes = { consultas: ConsultaConPaciente[]; total: number; siguiente: number | null };
+
 export type Verificacion = {
   resultado: "ok" | "advertencia" | "bloqueado";
   /** "Alergia registrada a penicilinas", "Interacción grave con warfarina…" */
@@ -82,6 +86,7 @@ export type Alerta = {
 /** Lo que la app manda al exportar: el plan ya revisado por el médico. */
 export type PlanAprobado = {
   farmacos: Medicamento[];
+  medicacionConciliada?: Medicamento[] | undefined;
   pendientes: string[];
   diagnosticos: Diagnostico[];
   /** Nota final (si el médico la editó); si falta, se usa la consolidada. */
@@ -100,15 +105,17 @@ export type Exportacion = {
 };
 
 export interface MegiAdapter {
-  /** Consultas consolidadas pendientes de revisión, con su paciente. */
+  /** TODAS las consultas consolidadas pendientes de revisión, con su paciente (recorre las páginas). */
   listarConsultasCerradas(): Promise<ConsultaConPaciente[]>;
+  /** Una página de pendientes, filtrada por el médico en el servidor; no descarga el expediente de todos los pacientes. */
+  listarPendientes(pagina: { limite: number; desde: number }): Promise<PaginaPendientes>;
   verConsulta(consultaId: string): Promise<Consulta>;
   verPaciente(pacienteId: string): Promise<Paciente>;
   /**
    * Verifica una receta propuesta contra alergias, crónicos y medicación
    * activa del paciente. Clave del resultado = `nombre` del fármaco enviado.
    */
-  verificarReceta(pacienteId: string, farmacos: Medicamento[]): Promise<Record<string, Verificacion>>;
+  verificarReceta(pacienteId: string, farmacos: Medicamento[], medicacionConciliada?: Medicamento[], pacienteLeido?: Paciente): Promise<Record<string, Verificacion>>;
   /** Reemplazos sugeridos para un fármaco problemático en este paciente. */
   alternativas(pacienteId: string, farmaco: string): Promise<string[]>;
   /** Aprueba en MEGI y devuelve el documento exportado. */

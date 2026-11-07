@@ -1,0 +1,17 @@
+{
+  "fecha": "2026-11-07T03:36:01.671Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "catálogo del proveedor configurado consultado sin exponer credenciales",
+      "pasa": true
+    }
+  ],
+  "catalogo": {
+    "ok": false,
+    "provider": "openai",
+    "code": "missing-key",
+    "modelos": [],
+    "checkedAt": 1794022561669
+  }
+}

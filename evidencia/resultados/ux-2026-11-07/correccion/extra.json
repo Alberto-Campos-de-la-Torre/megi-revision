@@ -1,0 +1,56 @@
+{
+  "fecha": "2026-11-07T17:39:54.278Z",
+  "checks": [
+    {
+      "id": "inspector-claro-contraste>=4.5",
+      "passed": true,
+      "detail": {
+        "text": "rgb(26, 26, 26)",
+        "bg": "rgb(255, 255, 255)",
+        "vacio": "rgb(26, 26, 26)",
+        "ratio": 17.4
+      }
+    },
+    {
+      "id": "inspector-oscuro-contraste>=4.5",
+      "passed": true,
+      "detail": {
+        "text": "rgb(230, 230, 230)",
+        "bg": "rgb(33, 33, 33)",
+        "vacio": "rgb(230, 230, 230)",
+        "ratio": 12.9
+      }
+    },
+    {
+      "id": "sugerencia-1-clicable-360x640",
+      "passed": true,
+      "detail": {
+        "libre": true,
+        "target": "bienvenida-agente__chip",
+        "y": 180
+      }
+    },
+    {
+      "id": "sugerencia-2-clicable-360x640",
+      "passed": true,
+      "detail": {
+        "libre": true,
+        "target": "bienvenida-agente__chip",
+        "y": 242
+      }
+    },
+    {
+      "id": "sugerencia-3-clicable-360x640",
+      "passed": true,
+      "detail": {
+        "libre": true,
+        "target": "bienvenida-agente__chip",
+        "y": 304
+      }
+    },
+    {
+      "id": "chat-360-sin-overflow-horizontal",
+      "passed": true
+    }
+  ]
+}

@@ -1,13 +1,16 @@
+// guard:allow-resource-action-access — La autorización privada se aplica con requireEmail y planDe/lineaDe (owner_email) dentro de la transacción; no hay recursos compartidos.
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction, fail } from "@agent-native/core/action";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { comprobarAlcance, comprobarVersion, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
   exigirEspacio,
-  lineaOut,
+  lineaOut, lineasOut,
   lineaOutputSchema,
   lineasDe,
   origenAutorizado,
@@ -46,11 +49,13 @@ const cambioSchema = z.object({
 });
 
 export default defineAction({
+  changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
     "Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médico, NO se aplica nada y responde linea_bloqueada (409) con los ids; explícaselo al médico en vez de reintentar. Las líneas rechazadas tampoco se tocan (reactívalas con actualizar-linea).",
   schema: z.object({
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
     planId: z.string().describe("Id del plan"),
     cambios: z
       .array(cambioSchema)
@@ -75,13 +80,16 @@ export default defineAction({
     }),
     message: z.string(),
   }),
-  run: async (args, ctx) => {
+  run: async (args, ctx) => enPeticionMegi(async () => {
+    const inicio = performance.now();
     const email = requireEmail(ctx);
     const orgId = ctx?.orgId ?? null;
-    const origen = origenAutorizado(args.origen, ctx);
+    const origen = await origenAutorizado(args.origen, ctx);
     return getDb().transaction(async (tx) => {
       const plan = await planDe(args.planId, email, tx, true);
       exigirAbierto(plan);
+      comprobarVersion(plan, args.versionEsperada, origen);
+      comprobarAlcance(plan, origen, args.cambios.flatMap(c => c.lineaId ? [c.lineaId] : []), args.cambios.some(c => c.accion === "agregar"));
       const actuales = await lineasDe(plan.id, tx);
       const porId = new Map(actuales.map((l) => [l.id, l]));
 
@@ -193,6 +201,11 @@ export default defineAction({
             createdAt: t,
             updatedAt: t,
           });
+          if (plan.alcanceAgente && c.accion === "reemplazar") {
+            const ids: string[] = JSON.parse(plan.alcanceAgente);
+            plan.alcanceAgente = JSON.stringify([...ids.filter(x => x !== l!.id), id]);
+            await tx.update(schema.planes).set({ alcanceAgente: plan.alcanceAgente }).where(eq(schema.planes.id, plan.id));
+          }
           eventos.push({
             lineaId: id,
             accion: c.accion === "reemplazar" ? "reemplazar" : "agregar",
@@ -258,7 +271,8 @@ export default defineAction({
         );
       await verificarPlan(plan.id, plan.pacienteId, tx);
 
-      const lineas = (await lineasDe(plan.id, tx)).map(lineaOut);
+      await guardarVersion(plan.id, origen, "reajustar", args.explicacion, inicio, tx, ctx);
+      const lineas = lineasOut(await lineasDe(plan.id, tx), plan);
       const resumen = resumenVerificacion(lineas);
       ctx?.signal?.throwIfAborted();
       return {
@@ -269,5 +283,5 @@ export default defineAction({
         message: `Reajuste aplicado (${args.cambios.length} cambios). Ahora: ${resumen.bloqueos} bloqueo(s), ${resumen.advertencias} advertencia(s), ${resumen.bloqueadas} línea(s) bloqueada(s) intactas.`,
       };
     });
-  },
+  }),
 });

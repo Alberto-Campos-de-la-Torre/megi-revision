@@ -1,0 +1,427 @@
+{
+  "fecha": "2026-11-07T18:28:14.404Z",
+  "entorno": "acciones reales + PGlite en memoria + MEGI mock; sin LLM",
+  "casos": [
+    {
+      "caso": "demo-c1",
+      "nombre": "Alba (alergia a penicilina)",
+      "lineasPropuestas": 3,
+      "alergiasRegistradas": true,
+      "historialSinConfirmar": 0,
+      "alertasVisiblesAntesDeAprobar": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "motivos": [
+          "Amoxicilina: Amoxicilina 500 mg puede relacionarse con la alergia a Penicilina."
+        ]
+      },
+      "fuentes": {
+        "conFuenteEnNotaOMedicacion": 2,
+        "sinRespaldo": 1
+      },
+      "intentosSobreFijada": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      },
+      "alcance": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      },
+      "aprobacion": {
+        "medicacionSinConfirmar": 0,
+        "frenoConciliacion": null,
+        "bloqueosVigentes": 1,
+        "frenoBloqueo": "alertas_sin_confirmar",
+        "exportado": true,
+        "sello": "sha256:43dc2bee8"
+      },
+      "trazabilidad": {
+        "versiones": 6,
+        "eventos": 7,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "caso": "demo-c2",
+      "nombre": "Mateo (HTA con losartán; alergias sin registro)",
+      "lineasPropuestas": 3,
+      "alergiasRegistradas": false,
+      "historialSinConfirmar": 1,
+      "alertasVisiblesAntesDeAprobar": {
+        "bloqueos": 0,
+        "advertencias": 1,
+        "motivos": [
+          "Naproxeno: Naproxeno 250 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Naproxeno 250 mg + Losartán 50 mg (moderada): Los AINE reducen el efecto antihipertensivo y aumentan el riesgo de daño renal con ARA II. → Usar el AINE el menor tiempo posible y vigilar TA y función renal."
+        ]
+      },
+      "fuentes": {
+        "conFuenteEnNotaOMedicacion": 1,
+        "sinRespaldo": 2
+      },
+      "intentosSobreFijada": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      },
+      "alcance": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      },
+      "aprobacion": {
+        "medicacionSinConfirmar": 1,
+        "frenoConciliacion": "medicacion_sin_conciliar",
+        "bloqueosVigentes": 0,
+        "frenoBloqueo": null,
+        "exportado": true,
+        "sello": "sha256:1f461f336"
+      },
+      "trazabilidad": {
+        "versiones": 7,
+        "eventos": 8,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "caso": "demo-c3",
+      "nombre": "Rosa (FA con warfarina; alergia a sulfas)",
+      "lineasPropuestas": 3,
+      "alergiasRegistradas": true,
+      "historialSinConfirmar": 2,
+      "alertasVisiblesAntesDeAprobar": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "motivos": [
+          "Ibuprofeno: Ibuprofeno 400 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Ibuprofeno 400 mg + Warfarina 5 mg (grave): Los AINE inhiben la función plaquetaria y lesionan la mucosa gástrica; potencian el sangrado con anticoagulantes. → Evitar la combinación; usar paracetamol para el dolor. · Ibuprofeno 400 mg + Metoprolol 50 mg (leve): Los AINE pueden atenuar el efecto del betabloqueador. → Vigilar TA si el uso es prolongado."
+        ]
+      },
+      "fuentes": {
+        "conFuenteEnNotaOMedicacion": 3,
+        "sinRespaldo": 0
+      },
+      "intentosSobreFijada": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      },
+      "alcance": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      },
+      "aprobacion": {
+        "medicacionSinConfirmar": 2,
+        "frenoConciliacion": "medicacion_sin_conciliar",
+        "bloqueosVigentes": 1,
+        "frenoBloqueo": "alertas_sin_confirmar",
+        "exportado": true,
+        "sello": "sha256:5f4ce0e87"
+      },
+      "trazabilidad": {
+        "versiones": 7,
+        "eventos": 8,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "caso": "demo-c4",
+      "nombre": "Luis (sin alergias, sin medicación)",
+      "lineasPropuestas": 2,
+      "alergiasRegistradas": true,
+      "historialSinConfirmar": 0,
+      "alertasVisiblesAntesDeAprobar": {
+        "bloqueos": 0,
+        "advertencias": 0,
+        "motivos": []
+      },
+      "fuentes": {
+        "conFuenteEnNotaOMedicacion": 1,
+        "sinRespaldo": 1
+      },
+      "intentosSobreFijada": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      },
+      "alcance": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      },
+      "aprobacion": {
+        "medicacionSinConfirmar": 0,
+        "frenoConciliacion": null,
+        "bloqueosVigentes": 0,
+        "frenoBloqueo": null,
+        "exportado": true,
+        "sello": "sha256:eaad181be"
+      },
+      "trazabilidad": {
+        "versiones": 6,
+        "eventos": 7,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 2
+      }
+    }
+  ],
+  "comparacion": {
+    "mesaDeRevision": {
+      "alertasVisiblesAntesDeAprobar": 3,
+      "intentosSobreLineasFijadasRechazados": "12/12",
+      "intentosFueraDeAlcanceRechazados": "12/12",
+      "aprobacionesDetenidasPorConciliacion": 2,
+      "aprobacionesDetenidasPorBloqueo": 2,
+      "lineasConFuente": "7/11",
+      "versiones": 26,
+      "eventosBitacora": 30,
+      "exportacionesSelladas": 4
+    },
+    "chatSinMesa": {
+      "alertasVisiblesAntesDeAprobar": 0,
+      "intentosSobreLineasFijadasRechazados": "no existe el concepto de línea fijada: una nueva respuesta sustituye toda la receta",
+      "intentosFueraDeAlcanceRechazados": "no existe alcance: el texto completo es editable",
+      "aprobacionesDetenidasPorConciliacion": 0,
+      "aprobacionesDetenidasPorBloqueo": 0,
+      "lineasConFuente": "0: el texto no enlaza con la nota ni con la medicación registrada",
+      "versiones": 0,
+      "eventosBitacora": 0,
+      "exportacionesSelladas": 0
+    },
+    "nota": "Cuenta mecanismos observables sobre cuatro casos sintéticos con la misma receta inicial. No mide errores clínicos ni tiempo de médicos; esa evidencia sigue pendiente de sesiones con usuarios (PENDIENTE_VALIDACION_USUARIOS.md)."
+  },
+  "checks": [
+    {
+      "id": "demo-c1-alertas-visibles-antes-de-aprobar",
+      "passed": true,
+      "detail": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "motivos": [
+          "Amoxicilina: Amoxicilina 500 mg puede relacionarse con la alergia a Penicilina."
+        ]
+      }
+    },
+    {
+      "id": "demo-c1-linea-fijada-intocable",
+      "passed": true,
+      "detail": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      }
+    },
+    {
+      "id": "demo-c1-alcance-respetado",
+      "passed": true,
+      "detail": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      }
+    },
+    {
+      "id": "demo-c1-aprobacion-con-frenos",
+      "passed": true,
+      "detail": {
+        "medicacionSinConfirmar": 0,
+        "frenoConciliacion": null,
+        "bloqueosVigentes": 1,
+        "frenoBloqueo": "alertas_sin_confirmar",
+        "exportado": true,
+        "sello": "sha256:43dc2bee8"
+      }
+    },
+    {
+      "id": "demo-c1-trazabilidad",
+      "passed": true,
+      "detail": {
+        "versiones": 6,
+        "eventos": 7,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "id": "demo-c2-alertas-visibles-antes-de-aprobar",
+      "passed": true,
+      "detail": {
+        "bloqueos": 0,
+        "advertencias": 1,
+        "motivos": [
+          "Naproxeno: Naproxeno 250 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Naproxeno 250 mg + Losartán 50 mg (moderada): Los AINE reducen el efecto antihipertensivo y aumentan el riesgo de daño renal con ARA II. → Usar el AINE el menor tiempo posible y vigilar TA y función renal."
+        ]
+      }
+    },
+    {
+      "id": "demo-c2-linea-fijada-intocable",
+      "passed": true,
+      "detail": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      }
+    },
+    {
+      "id": "demo-c2-alcance-respetado",
+      "passed": true,
+      "detail": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      }
+    },
+    {
+      "id": "demo-c2-aprobacion-con-frenos",
+      "passed": true,
+      "detail": {
+        "medicacionSinConfirmar": 1,
+        "frenoConciliacion": "medicacion_sin_conciliar",
+        "bloqueosVigentes": 0,
+        "frenoBloqueo": null,
+        "exportado": true,
+        "sello": "sha256:1f461f336"
+      }
+    },
+    {
+      "id": "demo-c2-trazabilidad",
+      "passed": true,
+      "detail": {
+        "versiones": 7,
+        "eventos": 8,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "id": "demo-c3-alertas-visibles-antes-de-aprobar",
+      "passed": true,
+      "detail": {
+        "bloqueos": 1,
+        "advertencias": 0,
+        "motivos": [
+          "Ibuprofeno: Ibuprofeno 400 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Ibuprofeno 400 mg + Warfarina 5 mg (grave): Los AINE inhiben la función plaquetaria y lesionan la mucosa gástrica; potencian el sangrado con anticoagulantes. → Evitar la combinación; usar paracetamol para el dolor. · Ibuprofeno 400 mg + Metoprolol 50 mg (leve): Los AINE pueden atenuar el efecto del betabloqueador. → Vigilar TA si el uso es prolongado."
+        ]
+      }
+    },
+    {
+      "id": "demo-c3-linea-fijada-intocable",
+      "passed": true,
+      "detail": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      }
+    },
+    {
+      "id": "demo-c3-alcance-respetado",
+      "passed": true,
+      "detail": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      }
+    },
+    {
+      "id": "demo-c3-aprobacion-con-frenos",
+      "passed": true,
+      "detail": {
+        "medicacionSinConfirmar": 2,
+        "frenoConciliacion": "medicacion_sin_conciliar",
+        "bloqueosVigentes": 1,
+        "frenoBloqueo": "alertas_sin_confirmar",
+        "exportado": true,
+        "sello": "sha256:5f4ce0e87"
+      }
+    },
+    {
+      "id": "demo-c3-trazabilidad",
+      "passed": true,
+      "detail": {
+        "versiones": 7,
+        "eventos": 8,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 3
+      }
+    },
+    {
+      "id": "demo-c4-alertas-visibles-antes-de-aprobar",
+      "passed": true,
+      "detail": {
+        "bloqueos": 0,
+        "advertencias": 0,
+        "motivos": []
+      }
+    },
+    {
+      "id": "demo-c4-linea-fijada-intocable",
+      "passed": true,
+      "detail": {
+        "intentos": 3,
+        "rechazados": 3,
+        "planIntacto": true
+      }
+    },
+    {
+      "id": "demo-c4-alcance-respetado",
+      "passed": true,
+      "detail": {
+        "intentosFuera": 3,
+        "rechazados": 3,
+        "cambioDentroAplicado": true
+      }
+    },
+    {
+      "id": "demo-c4-aprobacion-con-frenos",
+      "passed": true,
+      "detail": {
+        "medicacionSinConfirmar": 0,
+        "frenoConciliacion": null,
+        "bloqueosVigentes": 0,
+        "frenoBloqueo": null,
+        "exportado": true,
+        "sello": "sha256:eaad181be"
+      }
+    },
+    {
+      "id": "demo-c4-trazabilidad",
+      "passed": true,
+      "detail": {
+        "versiones": 6,
+        "eventos": 7,
+        "actores": [
+          "agente",
+          "medico"
+        ],
+        "lineasConEstadoPropio": 2
+      }
+    }
+  ],
+  "pasan": 20,
+  "total": 20
+}

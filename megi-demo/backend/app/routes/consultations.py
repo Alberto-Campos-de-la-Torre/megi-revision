@@ -301,7 +301,18 @@ def consultation_audit(consultation_id: str, user: dict = Depends(require_user))
             safety = {"alerts": pl.get("safety_alerts") or [], "ack": pl.get("safety_ack")}
             break
 
-    timeline = [{"at": e["created_at"], "kind": e["kind"], "actor": e["actor"]} for e in events]
+    # La nota de la aprobación (quién aprobó desde la mesa de revisión, versión
+    # revisada, advertencias vigentes) forma parte de la auditoría visible, no
+    # solo del payload almacenado: así la identidad real queda a la vista aunque
+    # `approved_by` sea una cuenta de servicio.
+    def _nota(e):
+        if e["kind"] != "approve":
+            return None
+        pl = _J(e["payload"]) or {}
+        n = pl.get("notes")
+        return n if isinstance(n, str) and n.strip() else None
+    timeline = [{"at": e["created_at"], "kind": e["kind"], "actor": e["actor"],
+                 **({"note": _nota(e)} if _nota(e) else {})} for e in events]
     for e in exports:
         timeline.append({"at": e["signed_at"], "kind": "sello_exportacion", "actor": None,
                          "hash": e["content_hash"]})

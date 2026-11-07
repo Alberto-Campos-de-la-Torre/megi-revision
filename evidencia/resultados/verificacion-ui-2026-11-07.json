@@ -1,0 +1,35 @@
+{
+  "fecha": "2026-11-07T19:11:02.003275+00:00",
+  "alcance": "Verificación estática del código final tras la respuesta al dictamen de 91/100 (cambios de interfaz y texto del prompt).",
+  "typecheck": {
+    "comando": "npx agent-native typecheck",
+    "exit": 0
+  },
+  "doctor": {
+    "comando": "npx agent-native doctor",
+    "exit": 0,
+    "resultado": "Clean — no findings.",
+    "guards": [
+      "no-drizzle-push",
+      "no-empty-migrations",
+      "no-unscoped-credentials",
+      "no-unscoped-queries",
+      "no-env-credentials",
+      "db-tool-scoping",
+      "no-env-mutation",
+      "no-localhost-fallback",
+      "explicit-collab-access",
+      "identity-columns-registered",
+      "resource-action-access",
+      "feature-dependencies",
+      "server-plugin-default-export",
+      "migration-manifest"
+    ]
+  },
+  "build": {
+    "comando": "npx agent-native build",
+    "exit": 0,
+    "duracionS": 18.6,
+    "nota": "Build local; no acredita despliegue (sin configuración de producción de autenticación ni Postgres persistente)."
+  }
+}

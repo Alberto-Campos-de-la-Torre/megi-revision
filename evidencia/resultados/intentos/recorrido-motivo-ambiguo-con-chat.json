@@ -1,0 +1,160 @@
+{
+  "fecha": "2026-11-07T04:27:21.111Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lista: 4 consultas pendientes",
+      "pasa": true
+    },
+    {
+      "prueba": "indicador de conexión con MEGI",
+      "pasa": true
+    },
+    {
+      "prueba": "caso 2 muestra «Sin registro de alergias»",
+      "pasa": true
+    },
+    {
+      "prueba": "panel vacío usa las sugerencias en español sin reemplazo dinámico en inglés",
+      "pasa": true
+    },
+    {
+      "prueba": "ficha muestra la alergia a penicilina",
+      "pasa": true
+    },
+    {
+      "prueba": "botón que delega al agente visible",
+      "pasa": true
+    },
+    {
+      "prueba": "plan en blanco creado",
+      "pasa": true
+    },
+    {
+      "prueba": "amoxicilina añadida con chip «Bloqueo de seguridad»",
+      "pasa": true
+    },
+    {
+      "prueba": "motivo del bloqueo visible",
+      "pasa": true
+    },
+    {
+      "prueba": "alternativas visibles",
+      "pasa": true
+    },
+    {
+      "prueba": "botón «Pedir reemplazo al agente»",
+      "pasa": true
+    },
+    {
+      "prueba": "aprobar deshabilitado hasta marcar la confirmación",
+      "pasa": true
+    },
+    {
+      "prueba": "alternativa automática queda pendiente sin tocar la línea fijada",
+      "pasa": true
+    },
+    {
+      "prueba": "línea bloqueada no se puede editar",
+      "pasa": true
+    },
+    {
+      "prueba": "desbloqueada: vuelve a ser editable",
+      "pasa": true
+    },
+    {
+      "prueba": "edición inline guardada y marcada como editada por el médico",
+      "pasa": true
+    },
+    {
+      "prueba": "edición en ámbar con dosis antes y después",
+      "pasa": true
+    },
+    {
+      "prueba": "paracetamol añadido con chip «Sin alertas detectadas»",
+      "pasa": true
+    },
+    {
+      "prueba": "pendiente añadido",
+      "pasa": true
+    },
+    {
+      "prueba": "excepción",
+      "pasa": false,
+      "detalle": "locator.fill: Error: strict mode violation: getByLabel('Motivo') resolved to 2 elements:\n    1) <button type=\"button\" id=\"radix-_r_a_\" data-state=\"closed\" aria-haspopup=\"menu\" aria-expanded=\"false\" class=\"an-chat-history-row__menu-trigger\" aria-label=\"Opciones de chat para **Demo-C2 Consulta Plan** **Paciente:** Mateo Ejemplo Demo **Motivo de consulta:\">…</button> aka getByLabel('Opciones de chat para **Demo-C2 Consulta Plan** **Paciente:** Mateo Ejemplo')\n    2) <textarea id=\"motivo-rechazo\" placeholder=\"Paciente alérgica; prefiero otro antibiótico\" class=\"flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50\"></textarea> aka getByRole('textbox', { name: 'Motivo' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel('Motivo')\u001b[22m\n"
+    }
+  ],
+  "fallos": 1,
+  "redInesperada": [],
+  "avisosFramework": [
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template)."
+  ],
+  "sondaSinSesion": [
+    "401 GET http://localhost:8082/_agent-native/agent-engine/status"
+  ],
+  "navegacion": [
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 1,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 2,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 3,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 4,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 5,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 6,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 7,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 8,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 9,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "c715781e-d941-4b2a-b7cb-1068172920a1",
+      "version": 10,
+      "alcanceAgente": null
+    }
+  ]
+}

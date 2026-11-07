@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "appId": "megi-revision",
+  "engine": "ai-sdk:openai",
+  "model": "grok-4.20-0309-non-reasoning",
+  "updatedAt": 1794023984092,
+  "updatedBy": "dev@local.test",
+  "scope": "org",
+  "source": "org",
+  "canUpdate": true
+}

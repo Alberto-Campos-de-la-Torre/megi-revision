@@ -1,0 +1,117 @@
+PASS mock-demo-p1: "bloqueado"
+PASS mock-demo-p2: "advertencia"
+PASS mock-demo-p3: "bloqueado"
+PASS mock-demo-p4: "ok"
+PASS propuesta-verificada: {"bloqueos":1,"advertencias":0,"bloqueadas":0,"vigentes":1}
+PASS agente-no-bloquea-con-origen-normal: {"code":"solo_medico","message":"Solo el médico bloquea líneas."}
+PASS bloqueo-normal: {"code":"linea_bloqueada","message":"La línea \"Amoxicilina\" está bloqueada por el médico; no la toques y díselo."}
+PASS agente-no-aprueba: {"code":"ui_only_action","message":"This action can only be called from the signed-in app UI."}
+PASS medico-confirma-bloqueos: "alertas_sin_confirmar"
+PASS suplantacion-denegada-tool: "solo_medico"
+PASS aprobacion-denegada-tool: "ui_only_action"
+PASS suplantacion-denegada-http: "solo_medico"
+PASS aprobacion-denegada-http: "ui_only_action"
+PASS suplantacion-denegada-mcp: "solo_medico"
+PASS aprobacion-denegada-mcp: "ui_only_action"
+PASS suplantacion-denegada-cli: "solo_medico"
+PASS aprobacion-denegada-cli: "ui_only_action"
+PASS suplantacion-denegada-automation: "solo_medico"
+PASS aprobacion-denegada-automation: "ui_only_action"
+PASS suplantacion-denegada-a2a: "solo_medico"
+PASS aprobacion-denegada-a2a: "ui_only_action"
+PASS suplantacion-denegada-mcp-widget-write: "solo_medico"
+PASS aprobacion-denegada-mcp-widget-write: "ui_only_action"
+PASS suplantacion-denegada-proponer-plan: {"code":"solo_medico","message":"Las decisiones del médico solo se realizan desde la interfaz autenticada."}
+PASS suplantacion-denegada-agregar-linea: {"code":"solo_medico","message":"Las decisiones del médico solo se realizan desde la interfaz autenticada."}
+PASS suplantacion-denegada-reajustar-plan: {"code":"solo_medico","message":"Las decisiones del médico solo se realizan desde la interfaz autenticada."}
+PASS http-exige-prueba-ui-proponer-plan: undefined
+PASS http-exige-prueba-ui-actualizar-linea: undefined
+PASS http-exige-prueba-ui-agregar-linea: undefined
+PASS http-exige-prueba-ui-reajustar-plan: undefined
+PASS aprobacion-solo-ui-fuera-catalogo: undefined
+PASS medico-aprueba-exporta: undefined
+PASS aprobacion-idempotente: undefined
+PASS plan-exportado-cerrado: undefined
+PASS propuesta-fallida-rollback-completo: {"code":"megi_no_disponible","message":"No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."}
+PASS propuesta-reintentable-tras-caida: undefined
+PASS rollback-completo-agregar-linea: {"code":"megi_no_disponible","message":"No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."}
+PASS rollback-completo-actualizar-linea: {"code":"megi_no_disponible","message":"No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."}
+PASS rollback-completo-reajustar-plan: {"code":"megi_no_disponible","message":"No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible."}
+PASS verificacion-incompleta-no-guarda: {"code":"verificacion_incompleta","message":"MEGI no verificó todos los fármacos. No se guardó ningún cambio."}
+PASS cambios-duplicados-rechazados: undefined
+PASS aislamiento-otro-usuario: undefined
+PASS cancelacion-sin-escrituras: undefined
+PASS cancelacion-no-bloquea-siguiente-operacion: undefined
+PASS cancelacion-durante-verificacion-revierte: undefined
+PASS concurrencia-respeta-bloqueo: {"code":"linea_bloqueada","message":"La línea \"Paracetamol\" está bloqueada por el médico; no la toques y díselo."}
+PASS descarga-interrumpida-no-cierra-plan-local: undefined
+PASS reintento-recupera-aprobacion-remota: undefined
+PASS soap-coincide-con-plan-revisado: "<div xmlns=\"http://www.w3.org/1999/xhtml\">Plan revisado por el médico. Paracetamol 500 mg, cada 8 h, 5 días. Pendientes: Control ficticio.</div>"
+PASS http-recupera-descarga-sin-reaprobar: undefined
+PASS http-no-sobrescribe-aprobacion-distinta: undefined
+PASS http-no-duplica-dosis-al-leer: {"nombre":"Paracetamol","dosis":"650 mg","frecuencia":"cada 8 h","desde":"","id":"C-DEMO4-0","fuente":"C-DEMO4","fecha":"","estado":"sin_confirmar"}
+PASS http-verificador-cuerpo-vacio-rechazado: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura."}
+PASS http-verificador-alerts-no-lista-rechazado: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura."}
+PASS http-verificador-cuerpo-lista-rechazado: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): el cuerpo no es un objeto JSON. La receta no se da por segura."}
+PASS http-verificador-cuerpo-texto-rechazado: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): el cuerpo no es un objeto JSON. La receta no se da por segura."}
+PASS http-verificador-severidad-desconocida-rechazada: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): la alerta 0 tiene severidad desconocida \"critical\". La receta no se da por segura."}
+PASS http-verificador-alerta-sin-mensaje-rechazada: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): la alerta 0 no tiene mensaje. La receta no se da por segura."}
+PASS http-verificador-recuento-incoherente-rechazado: {"codigo":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): `blockers`=1 no coincide con 0 alerta(s) de bloqueo. La receta no se da por segura."}
+PASS http-verificador-sin-alertas-sigue-ok: undefined
+PASS http-alerta-atribuida-solo-a-su-farmaco: {"a":"bloqueado","p":"ok"}
+PASS http-bloqueo-sin-atribucion-aplica-a-toda-la-receta: {"a":"bloqueado","p":"bloqueado"}
+PASS http-alerta-con-nombres-desconocidos-no-se-pierde: {"ok":true,"v":{"Amoxicilina":{"resultado":"advertencia","alertas":[{"severidad":"advertencia","tipo":"otro","farmaco":"Fármaco-X","contra":"Fármaco-Y","mensaje":"Nombres que la app no reconoce"}],"motivo":"Nombres que la app no reconoce"},"Paracetamol":{"resultado":"advertencia","alertas":[{"severidad":"advertencia","tipo":"otro","farmaco":"Fármaco-X","contra":"Fármaco-Y","mensaje":"Nombres que la app no reconoce"}],"motivo":"Nombres que la app no reconoce"}}}
+PASS http-interaccion-entre-activos-no-marca-la-receta-nueva: {"resultado":"ok","alertas":[]}
+PASS http-interaccion-propuesto-activo-bloquea: "bloqueado"
+PASS accion-verificador-invalido-no-guarda: {"code":"verificador_invalido","message":"Respuesta inválida del verificador de MEGI (/safety/rx-check): falta la lista `alerts`. La receta no se da por segura. No se guardó ningún cambio."}
+PASS accion-verificador-invalido-no-cierra-el-plan: undefined
+PASS mock-sin-lista-de-medicos-rol-no-exigido: undefined
+PASS rol-clinico-exigido-con-lista-frontend-sin-rol: "sin_rol_clinico"
+PASS rol-clinico-lista-insensible-a-mayusculas: undefined
+PASS aprobacion-denegada-frontend-sin-rol-clinico: "sin_rol_clinico"
+PASS decision-medica-en-linea-denegada-sin-rol-clinico: "sin_rol_clinico"
+PASS agente-sigue-leyendo-con-lista-de-medicos: undefined
+PASS http-sin-lista-de-medicos-falla-cerrado: {"status":403,"codigo":"sin_rol_clinico"}
+PASS http-cuenta-compartida-rechaza-correo-sin-rol: {"status":403,"codigo":"sin_rol_clinico"}
+PASS http-sin-correo-no-obtiene-la-cuenta-compartida: 403
+PASS http-conexion-propia-crea-instancia-por-medico: undefined
+PASS http-sin-conexion-propia-ni-lista-denegado: {"status":403,"codigo":"sin_rol_clinico"}
+PASS http-dos-medicos-dos-conexiones-distintas: undefined
+PASS http-identidad-propia-habilita-decision-medica: undefined
+PASS http-identidad-propia-no-basta-fuera-de-la-interfaz: undefined
+PASS http-rotacion-de-credenciales-renueva-la-conexion: undefined
+PASS http-conexion-retirada-deniega-y-olvida-la-sesion: {"status":403,"codigo":"sin_rol_clinico"}
+PASS http-almacen-de-credenciales-caido-es-503-no-rechazo: {"status":503,"codigo":"credenciales_no_disponibles"}
+PASS accion-listar-sin-identidad-clinica-es-403-sin-rol-clinico: {"code":"sin_rol_clinico","status":403}
+PASS accion-listar-con-almacen-caido-es-503-reintentable: {"code":"credenciales_no_disponibles","status":503}
+PASS http-sin-conexion-propia-usa-cuenta-de-servicio-si-esta-autorizado: undefined
+PASS http-conexion-propia-prevalece-sobre-la-compartida: undefined
+PASS mock-sandbox-por-correo-intacto-tras-pruebas-http: undefined
+PASS http-expediente-grande-lecturas-en-paralelo-acotadas: {"maxEnVuelo":4,"peticiones":51}
+PASS http-expediente-grande-resultado-completo: 12
+PASS http-consulta-ya-leida-no-se-repite-en-la-accion: 0
+PASS http-login-unico-con-lecturas-paralelas: {"peticiones":51,"esperadas":"login + sonda /review/pending + /patients + 12 listas + 36 consultas"}
+PASS http-pendientes-paginadas-sin-duplicados-ni-huecos: {"total":12,"ids":12}
+PASS http-pagina-trae-historial-de-sus-pacientes: 2
+PASS http-listar-una-pagina-no-descarga-todos-los-pacientes: 7
+PASS http-coste-por-pagina-acotado-a-dos-peticiones: {"peticiones":7,"porPagina":2,"detalle":"1 GET /review/pending + 1 POST /review/medication-history por página de ≤100 pacientes"}
+PASS http-listar-todo-recorre-las-paginas-del-servidor: {"peticiones":6,"paginas":3}
+PASS http-paciente-ajeno-en-historial-es-404-no-respaldo: 404
+PASS http-pagina-fallida-aborta-sin-resultado-parcial: 503
+PASS http-total-cambiado-entre-paginas-se-rechaza: "pagina_inconsistente"
+PASS http-lecturas-paginadas-respetan-concurrencia: 2
+PASS http-backend-disponible: {"disponible":true,"modo":"local_mock","detalle":"build b35cba2"}
+PASS http-demo-p1: "bloqueado"
+PASS http-demo-p2: "advertencia"
+PASS http-demo-p3: "bloqueado"
+PASS http-demo-p4: "ok"
+PASS http-vivo-pendientes-paginadas-coinciden-con-el-recorrido: {"pagina":2,"total":4,"recorrido":4}
+PASS http-vivo-historial-por-lotes-conserva-fuente-y-fecha: ["Losartán@C-DEMO2-PREV"]
+PASS http-vivo-medica-b-solo-ve-sus-pendientes: ["C-DEMOB1"]
+PASS http-vivo-medico-a-no-ve-pacientes-de-b: undefined
+PASS http-vivo-medica-b-no-ve-pacientes-de-a: undefined
+PASS http-vivo-medica-b-verifica-su-paciente: "bloqueado"
+PASS http-vivo-aprobacion-firmada-por-la-identidad-propia: "Dra. Segunda Ficticia"
+PASS http-vivo-megi-registra-approved-by-de-b-y-la-nota-con-el-correo: "Dra. Segunda Ficticia"
+PASS http-vivo-medico-a-no-lee-la-auditoria-de-b: 404
+PASS http-vivo-pendientes-de-b-tras-aprobar: undefined

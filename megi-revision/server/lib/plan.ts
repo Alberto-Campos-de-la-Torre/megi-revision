@@ -8,8 +8,27 @@ import { z } from "zod";
 
 import { getDb, schema } from "../db/index.js";
 import type { LineaRow, PlanRow } from "../db/schema.js";
-import { megi } from "./megi/index.js";
+import { CODIGO_VERIFICADOR_INVALIDO, MegiError, megi, identidadClinica, type MegiAdapter } from "./megi/index.js";
+import { contextoFuenteDe, contextoMinimo, evidenciaDe, fusionarConciliacion, leerJson, medicacionParaVerificar, type ContextoFuente } from "./revision.js";
 import type { Medicamento, Verificacion } from "./megi/types.js";
+
+/**
+ * Adaptador MEGI de este correo con el contrato de error de las acciones: sin
+ * identidad clínica → 403 `sin_rol_clinico`; almacén de credenciales caído →
+ * 503 `credenciales_no_disponibles`. Un MegiError sin código (backend caído,
+ * 404 clínico…) se propaga tal cual para que cada acción lo trate como ya hace.
+ */
+export async function conectarMegi(email?: string | null): Promise<MegiAdapter> {
+  try {
+    return await megi(email ?? undefined);
+  } catch (e) {
+    const codigo = e instanceof MegiError ? (e.detalle as any)?.codigo : undefined;
+    if (codigo === "sin_rol_clinico" || codigo === "credenciales_no_disponibles") {
+      fail((e as Error).message, { errorCode: codigo, statusCode: codigo === "sin_rol_clinico" ? 403 : 503 });
+    }
+    throw e;
+  }
+}
 
 export const origenSchema = z
   .enum(["agente", "medico"])
@@ -21,10 +40,10 @@ export const origenSchema = z
 type PlanDb = ReturnType<typeof getDb>;
 
 /** El caller lo establece el framework en el servidor, nunca el modelo. */
-export function origenAutorizado(
+export async function origenAutorizado(
   origen: "agente" | "medico",
   ctx?: ActionRunContext,
-): "agente" | "medico" {
+): Promise<"agente" | "medico"> {
   ctx?.signal?.throwIfAborted();
   if (origen === "medico" && ctx?.caller !== "frontend") {
     fail(
@@ -32,16 +51,39 @@ export function origenAutorizado(
       { errorCode: "solo_medico", statusCode: 403 },
     );
   }
+  if (origen === "medico") await exigirIdentidadClinica(ctx);
   return ctx?.caller === "frontend" ? "medico" : "agente";
 }
 
-export function exigirMedico(ctx?: ActionRunContext): void {
+/**
+ * Identidad clínica de la sesión: conexión propia con MEGI, correo autorizado
+ * para la cuenta de servicio (MEGI_MEDICOS) o sandbox mock. Sin ella no hay
+ * decisión médica válida (403 `sin_rol_clinico`); si la conexión no se pudo
+ * leer, 503 `credenciales_no_disponibles` (reintentable, no es un rechazo).
+ */
+export async function exigirIdentidadClinica(ctx?: ActionRunContext): Promise<void> {
+  const id = await identidadClinica(ctx?.userEmail);
+  if (!id.ok) {
+    fail(`Solo una cuenta con rol clínico puede tomar esta decisión. ${id.motivo}`, {
+      errorCode: id.codigo,
+      statusCode: id.codigo === "credenciales_no_disponibles" ? 503 : 403,
+    });
+  }
+}
+
+/**
+ * Decisión médica: interfaz autenticada (caller `frontend`) Y identidad clínica
+ * de la cuenta (conexión propia con MEGI, o correo autorizado en `MEGI_MEDICOS`
+ * para la cuenta de servicio). Ninguna de las dos cosas la decide el modelo.
+ */
+export async function exigirMedico(ctx?: ActionRunContext): Promise<void> {
   if (ctx?.caller !== "frontend") {
     fail(
       "La aprobación final debe confirmarla el médico desde la interfaz autenticada.",
       { errorCode: "solo_medico", statusCode: 403 },
     );
   }
+  await exigirIdentidadClinica(ctx);
 }
 
 export const lineaInputSchema = z.object({
@@ -84,6 +126,7 @@ export const lineaOutputSchema = z.object({
   alternativas: z.array(z.string()),
   origen: z.enum(["agente", "medico"]),
   justificacion: z.string().nullable(),
+  fuentes: z.array(z.object({ tipo: z.enum(["nota", "medicacion", "sin_respaldo"]), referencia: z.string(), fecha: z.string(), fragmento: z.string() })),
   orden: z.number(),
   updatedAt: z.string(),
 });
@@ -96,6 +139,9 @@ export const planOutputSchema = z.object({
   pacienteNombre: z.string(),
   motivo: z.string(),
   estado: z.enum(["borrador", "exportado"]),
+  version: z.number(),
+  alcanceAgente: z.array(z.string()).nullable(),
+  alcanceSugerencias: z.array(z.string()),
   explicacion: z.string().nullable(),
   sello: z.string().nullable(),
   aprobadoPor: z.string().nullable(),
@@ -111,7 +157,7 @@ export const eventoOutputSchema = z.object({
   createdAt: z.string(),
 });
 
-export function lineaOut(r: LineaRow): LineaOut {
+export function lineaOut(r: LineaRow, contextoFuente: ContextoFuente | null = null): LineaOut {
   let alternativas: string[] = [];
   try {
     const v = JSON.parse(r.alternativas || "[]");
@@ -133,9 +179,15 @@ export function lineaOut(r: LineaRow): LineaOut {
     alternativas,
     origen: r.origen,
     justificacion: r.justificacion,
+    fuentes: evidenciaDe(r, contextoFuente),
     orden: r.orden,
     updatedAt: String(r.updatedAt),
   };
+}
+
+export function lineasOut(rows: LineaRow[], plan: PlanRow): LineaOut[] {
+  const contexto = contextoFuenteDe(plan);
+  return rows.map(r => ({ ...lineaOut(r, contexto), ...(plan.estado === "exportado" && !contexto ? { fuentes: [] } : {}) }));
 }
 
 export function planOut(p: PlanRow) {
@@ -146,6 +198,9 @@ export function planOut(p: PlanRow) {
     pacienteNombre: p.pacienteNombre,
     motivo: p.motivo,
     estado: p.estado,
+    version: p.version,
+    alcanceAgente: leerJson<string[] | null>(p.alcanceAgente, null),
+    alcanceSugerencias: leerJson<string[]>(p.alcanceSugerencias, []),
     explicacion: p.explicacion,
     sello: p.sello,
     aprobadoPor: p.aprobadoPor,
@@ -183,6 +238,17 @@ export async function planDe(
   const [p] = await (bloquear ? query.for("update") : query);
   if (!p)
     fail("Plan no encontrado.", { errorCode: "not_found", statusCode: 404 });
+  // Compatibilidad con planes anteriores a la migración de trazabilidad.
+  // Una mutación abierta conserva la fuente en su transacción. Leer el historial
+  // o recuperar una exportación ya guardada no depende de que MEGI esté disponible.
+  if (bloquear && p.estado === "borrador" && !p.contextoFuente) {
+    const adapter = await conectarMegi(p.ownerEmail);
+    try {
+      const [consulta, paciente] = await Promise.all([adapter.verConsulta(p.consultaId), adapter.verPaciente(p.pacienteId)]);
+      p.contextoFuente = JSON.stringify(contextoMinimo(consulta, paciente));
+    } catch { fail("No se pudo hidratar el plan anterior con MEGI. No se guardaron cambios.", { errorCode: "megi_no_disponible", statusCode: 502 }); }
+    if (bloquear) await db.update(schema.planes).set({ contextoFuente: p.contextoFuente }).where(eq(schema.planes.id, p.id));
+  }
   return p;
 }
 
@@ -294,15 +360,30 @@ export async function verificarPlan(
   const vigentes = lineas.filter(
     (l) => l.tipo === "farmaco" && l.estado !== "rechazada",
   );
-  if (!vigentes.length) return {};
-  const adapter = await megi();
+  const [planActual] = await db.select().from(schema.planes).where(eq(schema.planes.id, planId));
+  const adapter = await conectarMegi(planActual!.ownerEmail);
   let resultado: Record<string, Verificacion>;
   try {
+    const vivo = await adapter.verPaciente(pacienteId);
+    const conciliacion = fusionarConciliacion(planActual!, vivo);
+    await db.update(schema.planes).set({ conciliacion: JSON.stringify(conciliacion), ...(conciliacion.some(m => m.estado === "sin_confirmar") ? { conciliacionConfirmada: false } : {}) }).where(eq(schema.planes.id, planId));
+    planActual!.conciliacion = JSON.stringify(conciliacion);
+    if (!vigentes.length) return {};
     resultado = await adapter.verificarReceta(
       pacienteId,
       vigentes.map(comoMedicamento),
+      medicacionParaVerificar(planActual!),
+      vivo,
     );
-  } catch {
+  } catch (e) {
+    // El verificador respondió, pero con algo que no es su contrato: no es una
+    // caída (no se reintenta igual) y nunca se interpreta como «sin alertas».
+    if (e instanceof MegiError && (e.detalle as any)?.codigo === CODIGO_VERIFICADOR_INVALIDO) {
+      fail(`${e.message} No se guardó ningún cambio.`, {
+        errorCode: CODIGO_VERIFICADOR_INVALIDO,
+        statusCode: 502,
+      });
+    }
     fail(
       "No se pudo verificar la receta con MEGI. No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible.",
       {

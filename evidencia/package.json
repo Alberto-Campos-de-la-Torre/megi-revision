@@ -1,0 +1,7 @@
+{
+  "name": "megi-evidencia-reproducible",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node ejecutar.mjs", "agente": "node ejecutar.mjs --agente" },
+  "devDependencies": { "playwright": "1.57.0" }
+}

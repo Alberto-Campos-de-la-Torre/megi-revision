@@ -1,16 +1,24 @@
 import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
 
 from ..db import db
-from ..ownership import owned_consultation
+from ..ownership import doctor_of, owned_consultation
 from ..schemas import ReviewApproveRequest, ReviewEventRequest, ReviewSaveRequest
-from ..security import current_user
+from ..security import current_user, require_user
 from ..services import audit_log
+from .patients import _row_to_patient
 from .safety import compute_alerts, load_catalog_rules
 
 router = APIRouter()
+
+# Tamaño máximo de página de las lecturas paginadas de revisión. El cliente
+# puede pedir menos; nunca más (una página «infinita» equivale a no paginar).
+_PAGE_MAX = 200
 
 # Tipos de evento de auditoría permitidos por esta ruta (cambios por voz, Fase 4).
 _VOICE_EVENT_KINDS = {"voice_edit", "voice_soap", "voice_dx", "voice_rx"}
@@ -89,3 +97,90 @@ def review_approve(body: ReviewApproveRequest, user: dict = Depends(current_user
         if c["patient_id"]:
             conn.execute("UPDATE patients SET status = 'terminada' WHERE id = ?", (c["patient_id"],))
     return {"ok": True, "status": "approved", "approved_by": actor}
+
+
+# --------------------------------------------------------------- paginadas
+# Lecturas pensadas para la mesa de revisión (MEGI Revisión): evitan recorrer
+# TODOS los pacientes del médico y pedir cada consulta una a una. Filtran en
+# servidor por el médico del token (multi-tenencia por `patients.doctor_id`).
+
+def _pagina(limit: int, offset: int):
+    limit = max(1, min(int(limit), _PAGE_MAX))
+    offset = max(0, int(offset))
+    return limit, offset
+
+
+@router.get("/review/pending")
+def review_pending(limit: int = Query(50, ge=1, le=_PAGE_MAX), offset: int = Query(0, ge=0),
+                   user: dict = Depends(require_user)):
+    """Consultas consolidadas (con nota final) y todavía sin aprobar/exportar de
+    los pacientes de ESTE médico, con la ficha del paciente incluida. Ordenadas de
+    la más reciente a la más antigua; `total` y `next_offset` permiten recorrer
+    todas las páginas sin duplicados ni huecos (orden estable por fecha e id)."""
+    limit, offset = _pagina(limit, offset)
+    doctor = doctor_of(user)
+    where = ("FROM consultations c JOIN patients p ON p.id = c.patient_id "
+             "WHERE p.doctor_id = ? AND c.final_soap IS NOT NULL AND c.final_soap != '' "
+             "AND c.status NOT IN ('approved', 'exported', 'radiologia')")
+    with db() as conn:
+        total = conn.execute(f"SELECT COUNT(*) AS n {where}", (doctor,)).fetchone()["n"]
+        rows = conn.execute(
+            f"SELECT c.*, p.id AS p_id {where} "
+            "ORDER BY COALESCE(c.finalized_at, c.started_at) DESC, c.id DESC LIMIT ? OFFSET ?",
+            (doctor, limit, offset),
+        ).fetchall()
+        pacientes = {}
+        for r in rows:
+            pid = r["patient_id"]
+            if pid not in pacientes:
+                pr = conn.execute("SELECT * FROM patients WHERE id = ?", (pid,)).fetchone()
+                pacientes[pid] = _row_to_patient(pr) if pr else None
+    items = []
+    for r in rows:
+        c = dict(r)
+        c.pop("p_id", None)
+        # La transcripción no hace falta para listar y puede ser larga.
+        c.pop("transcript", None)
+        items.append({"consultation": c, "patient": pacientes.get(r["patient_id"])})
+    next_offset = offset + len(rows)
+    return {"items": items, "total": total, "limit": limit, "offset": offset,
+            "next_offset": next_offset if next_offset < total else None}
+
+
+class MedicationHistoryRequest(BaseModel):
+    patient_ids: List[str] = Field(default_factory=list, max_length=_PAGE_MAX)
+    limit: int = Field(100, ge=1, le=_PAGE_MAX)
+    offset: int = Field(0, ge=0)
+
+
+@router.post("/review/medication-history")
+def review_medication_history(body: MedicationHistoryRequest, user: dict = Depends(require_user)):
+    """Recetas aprobadas/exportadas de varios pacientes en una sola lectura
+    paginada (sin pedir cada consulta). Solo pacientes de ESTE médico: un id
+    ajeno o inexistente responde 404 y no se devuelve nada (no se mezcla un
+    historial parcial con uno ajeno). Orden estable: paciente, fecha de
+    aprobación descendente, id."""
+    ids = [i for i in dict.fromkeys(body.patient_ids) if i]
+    if not ids:
+        return {"items": [], "total": 0, "limit": body.limit, "offset": body.offset, "next_offset": None}
+    limit, offset = _pagina(body.limit, body.offset)
+    doctor = doctor_of(user)
+    marks = ",".join("?" for _ in ids)
+    with db() as conn:
+        owned = {r["id"] for r in conn.execute(
+            f"SELECT id FROM patients WHERE doctor_id = ? AND id IN ({marks})", (doctor, *ids))}
+        ajenos = [i for i in ids if i not in owned]
+        if ajenos:
+            raise HTTPException(status_code=404, detail="paciente no encontrado")
+        where = (f"FROM consultations WHERE patient_id IN ({marks}) "
+                 "AND status IN ('approved', 'exported')")
+        total = conn.execute(f"SELECT COUNT(*) AS n {where}", (*ids,)).fetchone()["n"]
+        rows = conn.execute(
+            f"SELECT id, patient_id, status, started_at, approved_at, approved_by, prescription {where} "
+            "ORDER BY patient_id, COALESCE(approved_at, started_at) DESC, id DESC LIMIT ? OFFSET ?",
+            (*ids, limit, offset),
+        ).fetchall()
+    items = [dict(r) for r in rows]
+    next_offset = offset + len(rows)
+    return {"items": items, "total": total, "limit": limit, "offset": offset,
+            "next_offset": next_offset if next_offset < total else None}

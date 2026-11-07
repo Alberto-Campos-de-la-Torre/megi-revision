@@ -1,0 +1,12 @@
+{
+  "fecha": "2026-11-07T03:57:19.471Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lista de modelos anterior restaurada tras la comparación",
+      "pasa": true
+    }
+  ],
+  "modelo": "grok-4.20-0309-non-reasoning",
+  "scope": "org"
+}

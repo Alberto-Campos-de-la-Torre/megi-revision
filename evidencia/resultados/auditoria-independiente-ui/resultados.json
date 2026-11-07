@@ -1,0 +1,31 @@
+{
+  "fecha": "2026-11-07T05:21:33.969Z",
+  "url": "http://localhost:8091",
+  "entorno": "PGlite temporal /tmp/megi-audit-20261106, adaptador mock, pacientes ficticios, sin invocar al modelo",
+  "checks": [
+    {
+      "id": "cuatro-consultas-ficticias",
+      "passed": true
+    },
+    {
+      "id": "edicion-manual-verificada",
+      "passed": true
+    },
+    {
+      "id": "movil-sin-overflow",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-y-cierre",
+      "passed": true
+    },
+    {
+      "id": "fhir-y-sello",
+      "passed": true
+    },
+    {
+      "id": "archivo-exportadas",
+      "passed": true
+    }
+  ]
+}

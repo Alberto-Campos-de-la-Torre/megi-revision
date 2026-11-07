@@ -1,0 +1,272 @@
+{
+  "fecha": "2026-11-07T07:12:27.388801+00:00",
+  "app_commit_base": "b631b872117404d6d6b90232bf70c36506d49007",
+  "app_cambios_sin_commit": 25,
+  "app_diffstat": [
+    " 24 files changed, 630 insertions(+), 95 deletions(-)"
+  ],
+  "verificacion": {
+    "fecha": "2026-11-07T07:04:45.608Z",
+    "resultados": [
+      {
+        "nombre": "typecheck",
+        "codigo": 0,
+        "duracionMs": 1316
+      },
+      {
+        "nombre": "doctor",
+        "codigo": 0,
+        "duracionMs": 785
+      },
+      {
+        "nombre": "build",
+        "codigo": 0,
+        "duracionMs": 16917
+      },
+      {
+        "nombre": "auditoria-http",
+        "codigo": 0,
+        "duracionMs": 3626
+      },
+      {
+        "nombre": "bateria-http",
+        "codigo": 0,
+        "duracionMs": 4431
+      },
+      {
+        "nombre": "revision-trazable",
+        "codigo": 0,
+        "duracionMs": 3362
+      }
+    ]
+  },
+  "suites": {
+    "auditoria_http": {
+      "archivo": "evidencia/auditoria-hackathon-resultados.json",
+      "pasan": 117,
+      "fallan": 0
+    },
+    "bateria_http": {
+      "archivo": "pruebas-hackathon/bateria-resultados.json",
+      "pasan": 33,
+      "fallan": 0
+    },
+    "revision_trazable": {
+      "archivo": "pruebas-hackathon/revision-trazable-resultados.json",
+      "pasan": 45,
+      "fallan": 0
+    }
+  },
+  "recorrido_http": {
+    "archivo": "evidencia/resultados/recorrido-http.json",
+    "pasan": 25,
+    "fallan": 0,
+    "fecha": "2026-11-07T07:03:37.250Z"
+  },
+  "navegador_demo": {
+    "recorrido": {
+      "archivo": "evidencia/resultados/recorrido.json",
+      "pasan": 33,
+      "fallan": 0,
+      "fecha": "2026-11-07T07:06:03.804Z"
+    },
+    "advertencias": {
+      "archivo": "evidencia/resultados/advertencias.json",
+      "pasan": 7,
+      "fallan": 0,
+      "fecha": "2026-11-07T07:06:13.903Z"
+    },
+    "agente": {
+      "archivo": "evidencia/resultados/agente.json",
+      "pasan": 15,
+      "fallan": 0,
+      "fecha": "2026-11-07T07:07:20.256Z"
+    }
+  },
+  "iteraciones": [
+    {
+      "id": "I1",
+      "titulo": "Revalidar la integración HTTP actual",
+      "estado": "completado",
+      "evidencia": [
+        "evidencia/resultados/verificacion.json",
+        "evidencia/resultados/recorrido-http.json",
+        "evidencia/capturas-http/"
+      ],
+      "pruebas": [
+        "http-backend-disponible",
+        "http-vivo-pendientes-paginadas-coinciden-con-el-recorrido",
+        "http-vivo-aprobacion-firmada-por-la-identidad-propia",
+        "accion-listar-sin-identidad-clinica-es-403-sin-rol-clinico"
+      ],
+      "notas": "verificar.mjs (typecheck, doctor, build, auditoría --http, batería --http, trazable) y recorrido de navegador en modo http con fases A/B/C."
+    },
+    {
+      "id": "I2",
+      "titulo": "Identidad y autorización por médico",
+      "estado": "mitigado (decisión de David, 7 nov): completo en el backend de evidencia; cuentas individuales reales pendientes del consultorio",
+      "evidencia": [
+        "megi-revision/server/lib/megi/secretos.ts",
+        "megi-revision/server/lib/megi/index.ts",
+        "megi-revision/server/lib/plan.ts",
+        "evidencia/sembrar-medico-b.py",
+        "evidencia/resultados/recorrido-http.json"
+      ],
+      "pruebas": [
+        "http-conexion-propia-crea-instancia-por-medico",
+        "http-dos-medicos-dos-conexiones-distintas",
+        "http-rotacion-de-credenciales-renueva-la-conexion",
+        "http-conexion-retirada-deniega-y-olvida-la-sesion",
+        "http-almacen-de-credenciales-caido-es-503-no-rechazo",
+        "http-vivo-medica-b-solo-ve-sus-pendientes",
+        "http-vivo-medico-a-no-ve-pacientes-de-b",
+        "http-vivo-medica-b-no-ve-pacientes-de-a",
+        "http-vivo-aprobacion-firmada-por-la-identidad-propia",
+        "http-vivo-megi-registra-approved-by-de-b-y-la-nota-con-el-correo",
+        "http-vivo-medico-a-no-lee-la-auditoria-de-b"
+      ],
+      "notas": "Credenciales por usuario en la superficie de secretos del framework; MEGI firma con la identidad propia. La cuenta de servicio queda como respaldo autorizado por MEGI_MEDICOS (H2 mitigado para quien no conecta). La revocación deniega MEGI y conserva la lectura local de los planes propios."
+    },
+    {
+      "id": "I3",
+      "titulo": "Pendientes e historial con coste acotado",
+      "estado": "completado",
+      "evidencia": [
+        "megi-demo/backend/app/routes/review.py",
+        "megi-revision/server/lib/megi/megi-http.ts",
+        "evidencia/resultados/coste-historial.json"
+      ],
+      "pruebas": [
+        "http-pendientes-paginadas-sin-duplicados-ni-huecos",
+        "http-listar-una-pagina-no-descarga-todos-los-pacientes",
+        "http-coste-por-pagina-acotado-a-dos-peticiones",
+        "http-paciente-ajeno-en-historial-es-404-no-respaldo",
+        "http-pagina-fallida-aborta-sin-resultado-parcial",
+        "http-total-cambiado-entre-paginas-se-rechaza",
+        "http-vivo-historial-por-lotes-conserva-fuente-y-fecha"
+      ],
+      "coste": [
+        {
+          "pacientes": 10,
+          "anterior": 32,
+          "primeraPagina": 3,
+          "todas": 3,
+          "coinciden": true
+        },
+        {
+          "pacientes": 100,
+          "anterior": 302,
+          "primeraPagina": 3,
+          "todas": 3,
+          "coinciden": true
+        },
+        {
+          "pacientes": 500,
+          "anterior": 1502,
+          "primeraPagina": 3,
+          "todas": 8,
+          "coinciden": true
+        }
+      ],
+      "expedienteLargo": {
+        "recetasAprobadas": 60,
+        "cronicoAntiguoConservado": true
+      },
+      "notas": "Coste por página documentado en cada regresión; el expediente largo conserva el crónico antiguo."
+    },
+    {
+      "id": "I4",
+      "titulo": "Evidencia de utilidad con usuarios",
+      "estado": "pendiente (sin participantes; decisión de David, 7 nov)",
+      "evidencia": [
+        "PENDIENTE_VALIDACION_USUARIOS.md",
+        "evidencia/protocolo-usuarios.md"
+      ],
+      "pruebas": [],
+      "notas": "Protocolo, tareas y criterios definidos; ningún resultado. n=1 sintético no acredita ahorro."
+    },
+    {
+      "id": "I5",
+      "titulo": "Pulir la interacción visible",
+      "estado": "completado según la aceptación del plan (antes/después, recorridos sin desbordamiento, smoke del agente); abierto solo lo que dependa de observaciones de usuarios (I4)",
+      "evidencia": [
+        "megi-revision/app/components/revision/Chips.tsx",
+        "megi-revision/app/routes/revision._index.tsx",
+        "evidencia/capturas-comparacion/",
+        "evidencia/evaluacion-visual-i5.md",
+        "evidencia/capturas-http/"
+      ],
+      "pruebas": [],
+      "notas": "Evaluación visual registrada en evidencia/evaluacion-visual-i5.md; recorrido http comprueba «Sin alergias conocidas (registrado)» en verde, 390 px sin desbordamiento y acción principal visible."
+    },
+    {
+      "id": "I6",
+      "titulo": "Cerrar evidencia y preparar entrega",
+      "estado": "cierre local realizado; entrega detenida por decisión de David (7 nov)",
+      "evidencia": [
+        "ESTADO.md",
+        "evidencia/README.md",
+        "PARA_EL_100.md",
+        "evidencia/resultados/iteraciones-i1-i6.json",
+        "evidencia/resultados/recorrido.json",
+        "evidencia/resultados/advertencias.json",
+        "evidencia/resultados/agente.json"
+      ],
+      "pruebas": [],
+      "notas": "Recorridos de navegador en modo demo repetidos sobre el código final (sin fallos). H5 pendiente del equipo."
+    }
+  ],
+  "codigo_sha256": {
+    "megi-revision/AGENTS.md": "c22caf64b66b2805298a4a933722b6ad339a0d71f31f953cf945592b1eceff87",
+    "megi-revision/actions/actualizar-linea.ts": "93cdbb5740d6462dce5e11e9f1ddb76e8ab76a8f6b1c90a6f290ece674681400",
+    "megi-revision/actions/agregar-linea.ts": "9b5ea768aff85c18ccefc5e78f9bb8bf64da97ee0e6d953c87f80552fdfd8078",
+    "megi-revision/actions/aprobar-plan.ts": "a9cca401f6374b81363c858c90f5a176f17de2a0c78474bbae8bebe3176ad7e5",
+    "megi-revision/actions/conciliar-medicacion.ts": "df94f1204abc002f085ddc0289e200cef01b85f4ba27fbbdf62a2e5bf0415c45",
+    "megi-revision/actions/definir-alcance.ts": "95888c694651abda48fdd362c6cac6a712f2986fb5a14ec5fccf63356ff5a3bb",
+    "megi-revision/actions/listar-consultas.ts": "6f4dbeee0d912e2c35d0de808ac8b8530d1803b7219f6f695789357e311c216b",
+    "megi-revision/actions/medir-revision.ts": "00bf36c6d521aff8f777bea7ed6b0026b60961ddc2431e7c1fc97fb8a299b787",
+    "megi-revision/actions/preparar-aprobacion.ts": "a7a4301dec78c24dc0230d911944c03423d34ed4902f89da09aae08538b05001",
+    "megi-revision/actions/proponer-plan.ts": "99988bf01acc85bb4c5507be1a860957cc04c23085f0d42237b30df8d3eaa70f",
+    "megi-revision/actions/reajustar-plan.ts": "436a05b5ca02a625251f178a902d6d2bb3b3cd775d51b65cd201f9223bfc9ebd",
+    "megi-revision/actions/resolver-sugerencia.ts": "795233a62e717bec19f5b1956774298f036d715ce9794bfe17acc3a860897d30",
+    "megi-revision/actions/restaurar-demo.ts": "acce500b9da463bd7691e14dcde0df8f2b7afba69661307d21144eb935f618c3",
+    "megi-revision/actions/sugerir-reemplazo.ts": "e6af050e69221f203caa9675000bd365068d5519eb46b1e69234d20f60ad7a9b",
+    "megi-revision/actions/ver-contexto-consulta.ts": "bebb1226cc595f6e0b54bcfc8e1fc2cb971863d708e965216cc3704ffff1d4a9",
+    "megi-revision/app/components/revision/Chips.tsx": "83d49d1f9e4d78786afa971dffddf57c5c3542e6cbd438e7f6a35addd16f2b1b",
+    "megi-revision/app/routes/revision._index.tsx": "d8761d10acd481dcb1fca0b095747ed15d4886a46eca24bed268cf77fb6eea77",
+    "megi-revision/server/lib/megi/index.ts": "d43d0c83fc0d12bb21b2cb4559d8713eb58f9dfaaeaf244dd85e7c0bd94a97fc",
+    "megi-revision/server/lib/megi/megi-http.ts": "b48a4faddb02ee1c5f37a367bb6fd81a5c3b64c5688d1881d85a4f099d651f2a",
+    "megi-revision/server/lib/megi/megi-mock.ts": "5171f1d2c554aee65afe7dc7f9f7fa4ae7adc0f604f7dda23a50d65a0e5d3a3e",
+    "megi-revision/server/lib/megi/types.ts": "8d74c2c33bfa6c3fdc9617feb829059553a0aed884e4dcc038560b3d7548ac67",
+    "megi-revision/server/lib/plan.ts": "383537c37dc73059625dfca645e095bd53d95ca68860c59118b687173a12674a",
+    "megi-revision/server/plugins/agent-native-email-branding.ts": "edf47ff58ae6bb715c5af356cc51cb9e0d5621db0790f45369524450c77a289a",
+    "megi-revision/server/lib/megi/secretos.ts": "0d2d700bcaebef8e980edc8fce85e83c8a4f27a5cd185507d1b65eb01aaed81a",
+    "megi-demo/backend/app/routes/review.py": "7a1ec6134e19eef1b5ea42385cd1b0e07f51a1ca0c60956812dc2dd041fea224",
+    "megi-demo/backend/app/routes/consultations.py": "7f20b5a2733a88a1d90eabc0f54616e2cc65953ca12f31df2d0297cd0f92afee",
+    "evidencia/auditoria-hackathon.mts": "cb8cc43f9ba5a905a0a8f298d093de3f7e25ed0d6c4abc906372fdb2f3d0c195",
+    "evidencia/auditoria-independiente.mts": "a070cbff9fb5720b49945f2ffff6989804193656d4ddf76896c4a0eddcd79628",
+    "evidencia/recorrido-http.mjs": "df3bdc38703376721006aec8d5871183417f9656c032ebdc76c7afbfaa8ca8f7",
+    "evidencia/ui-http.mjs": "8b75eb43b2444b7321547bc36d7395fdf33a74e1ef9d5046ce71ef727ac6f5c3",
+    "evidencia/coste-historial.mts": "ad6d4e9d440268671caca42974d737e520a824f0936279fdd8138b8280f76f38",
+    "evidencia/sembrar-medico-b.py": "589eeea3b5dec71f1ab2ec691091c8384382f1985560625251161ccf15e42329",
+    "evidencia/backend.mjs": "15df142c10fd53324212757c3ad88afeeca5337183a7625a9e6ef724645fbaf3",
+    "pruebas-hackathon/bateria.mts": "8c51414c7683c7d19b573d25065e40be77e0ed0135c447258eba9399bee7b11c",
+    "pruebas-hackathon/revision-trazable.mts": "867166895afa3922fada5315ca4ddad7f33b3bd26e8a8a7e1f3def1756c4e6e5"
+  },
+  "evidencia_sha256": {
+    "evidencia/resultados/verificacion.json": "8845a9ab25d33ad4b8712d3ce46f07a98dcb389d1372cb743ddc6841b7f2e6e4",
+    "evidencia/auditoria-hackathon-resultados.json": "88f0a81784387217dfe53c3a0cff7e634192e0e12752750e46dbd53bcf7b73bc",
+    "pruebas-hackathon/bateria-resultados.json": "16b854a55d06adddb14765278dde1a81ed079c32f98d4bdcd898a1401124b3b5",
+    "pruebas-hackathon/revision-trazable-resultados.json": "4c2146c97794113b00fd4d9c5ad5cfcf1fa0e3e5b15f45eff48e5dc6444e0efd",
+    "evidencia/resultados/recorrido-http.json": "6235d8791ceea96dde8f1714f58255cea563929e81954dd64a42e7379acffd61",
+    "evidencia/resultados/coste-historial.json": "b15638b3aa764c0dfed64b0865b3eefc80b6841be5917bb516cc7d5843d01dd0",
+    "evidencia/resultados/auditoria-independiente-tras-correccion.json": "1e160c53b96d8c486fbff26540825dc23312f7230969eba5b53d50f151d9489e",
+    "evidencia/resultados/dictamen-auditoria-2026-11-06.json": "7935c1d7d0be689436ddbdee3040db474998501868c17ac7e8689542f59108c6"
+  },
+  "limites": [
+    "Backend de evidencia con SQLite aislado y dos cuentas ficticias; no es la instalación del consultorio.",
+    "I2 depende de que el consultorio dé de alta cuentas individuales en MEGI; la lista MEGI_MEDICOS sigue como respaldo.",
+    "I4 sin participantes: ninguna afirmación de ahorro.",
+    "Sin commit, publicación, Clips ni formulario por indicación vigente."
+  ]
+}

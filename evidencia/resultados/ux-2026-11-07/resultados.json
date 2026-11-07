@@ -1,0 +1,86 @@
+{
+  "fecha": "2026-11-07T17:29:11.675Z",
+  "url": "http://127.0.0.1:8091",
+  "entorno": "Base temporal, MEGI mock; dos turnos de chat con modelo configurado",
+  "checks": [
+    {
+      "id": "cuatro-casos",
+      "passed": true
+    },
+    {
+      "id": "sin-enlace-inicio",
+      "passed": true
+    },
+    {
+      "id": "dos-columnas-escritorio",
+      "passed": true,
+      "detail": "482px 482px"
+    },
+    {
+      "id": "alergias-distinguidas",
+      "passed": true
+    },
+    {
+      "id": "home-redirige-revision",
+      "passed": true
+    },
+    {
+      "id": "lista-movil-sin-overflow",
+      "passed": true,
+      "detail": {
+        "window": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "id": "chat-bienvenida-clinica",
+      "passed": true
+    },
+    {
+      "id": "chat-tres-sugerencias",
+      "passed": true
+    },
+    {
+      "id": "chat-movil-sin-overflow",
+      "passed": true,
+      "detail": {
+        "window": 390,
+        "scroll": 390
+      }
+    },
+    {
+      "id": "compositor-alcanzable-movil",
+      "passed": true
+    },
+    {
+      "id": "sugerencia-alcanzable-movil",
+      "passed": true,
+      "detail": {
+        "x": 49.453125,
+        "y": 810,
+        "width": 291.09375,
+        "height": 34
+      }
+    },
+    {
+      "id": "sugerencia-envia-y-se-puede-cancelar",
+      "passed": true
+    },
+    {
+      "id": "envio-solapado-impedido",
+      "passed": true
+    },
+    {
+      "id": "nuevo-envio-tras-cancelar-responde",
+      "passed": true,
+      "detail": "Consultas pendientes de revisión:\n\ndemo-c4: Luis Modelo Simulado – Cefalea tensional\ndemo-c3: Rosa Ficticia Muestra – Dolor de rodilla derecha\ndemo-c2: Mateo Ejemplo Demo – Control de presión y dolor lumbar\ndemo-c1: Alba Prueba Ficticia – Dolor de garganta y fiebre de 3 días\n\n(Todas sin plan creado aún). ¿Quieres abrir alguna?"
+    },
+    {
+      "id": "excepcion",
+      "passed": false,
+      "detail": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:8091/revision/demo-c4\", waiting until \"networkidle\"\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "network": []
+}

@@ -1,0 +1,44 @@
+{
+  "fecha": "2026-11-07T00:15:46.123455+00:00",
+  "proveedor_host": "api.x.ai",
+  "modelo_conservado": "grok-4.7",
+  "fuente": "Logs del servidor de demo y recorrido Playwright",
+  "titulos_observados": [
+    {
+      "status": 200,
+      "duracionMs": 3815
+    },
+    {
+      "status": 200,
+      "duracionMs": 4258
+    },
+    {
+      "status": 200,
+      "duracionMs": 4001
+    },
+    {
+      "status": 200,
+      "duracionMs": 4425
+    },
+    {
+      "status": 200,
+      "duracionMs": 3501
+    },
+    {
+      "status": 200,
+      "duracionMs": 4988
+    },
+    {
+      "status": 502,
+      "duracionMs": 10020,
+      "clase": "timed out"
+    },
+    {
+      "status": 502,
+      "duracionMs": 10018,
+      "clase": "timed out"
+    }
+  ],
+  "alcance": "Observaciones de este entorno; no prueban una caída global. No se cambió de modelo ni se atribuye todo el tiempo al cómputo del modelo.",
+  "pendiente": "Objetivo de turno completo menor de 35 segundos; preferencia de conservar el modelo o comparar otro solicitada al usuario."
+}

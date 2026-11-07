@@ -1,7 +1,11 @@
 import { defineAppConfig } from "@agent-native/core/server";
 
+// Registra la conexión personal con MEGI en la superficie compartida de secretos.
+import "../lib/megi/secretos.js";
+
 export default defineAppConfig({
   app: {
+    id: "megi-revision",
     // This name appears in transactional emails. Change it to your product name.
     name: "MEGI Revisión",
     // The source template keeps a renamed app from inheriting first-party email branding.

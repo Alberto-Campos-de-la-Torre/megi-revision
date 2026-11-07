@@ -1,0 +1,272 @@
+{
+  "fecha": "2026-11-07T03:57:13.294Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "propuesta y explicación tras respuesta de alergias",
+      "ms": 3547,
+      "objetivoMs": 35000,
+      "cumpleObjetivo": true
+    }
+  ],
+  "exploratorio": true,
+  "n": 1,
+  "inicioPropuesta": 1794023813945,
+  "finTurno": 1794023817492,
+  "visibleMs": 4343,
+  "etapas": [
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "fecha": 1794023792272
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792388
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792388
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023792122-u3dglh",
+      "runId": "run-1794023792322-toq4qj",
+      "fecha": 1794023792414
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023796075
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796184
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796184
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023796217
+    },
+    {
+      "argsKeys": [
+        "slug"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "docs-search",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023797224
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": false,
+      "isError": false,
+      "fecha": 1794023797225
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023798265
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023796127-zj2r3b",
+      "fecha": 1794023798266
+    },
+    {
+      "argsKeys": [
+        "question",
+        "options",
+        "header",
+        "allowMultiple"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "ask-question",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": false,
+      "isError": false,
+      "fecha": 1794023798319
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023798320
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023814049
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814168
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814168
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023814202
+    },
+    {
+      "paso": "Preparando propuesta\nVer agente y control de detener",
+      "fecha": 1794023814270
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023815439
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [],
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "tabId": "chat-1794023795929-3iizdn",
+      "runId": "run-1794023814100-i6tv1n",
+      "fecha": 1794023817492
+    },
+    {
+      "argsKeys": [
+        "consultaId",
+        "lineas",
+        "explicacion"
+      ],
+      "resultKeys": [],
+      "evento": "agent-native:tool-input",
+      "tool": "proponer-plan",
+      "phase": "start",
+      "tabId": "chat-1794023795929-3iizdn",
+      "fecha": 1794023817557
+    },
+    {
+      "argsKeys": [],
+      "resultKeys": [
+        "id",
+        "plan",
+        "change"
+      ],
+      "evento": "agent-native:tool-done",
+      "tool": "proponer-plan",
+      "tabId": "chat-1794023795929-3iizdn",
+      "completedSideEffect": true,
+      "isError": false,
+      "fecha": 1794023817557
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "mediciones": [
+    {
+      "archivo": "latencia.json",
+      "modeloSolicitado": "grok-4.20-0309-non-reasoning",
+      "modeloEfectivo": "grok-4.20-0309-non-reasoning",
+      "runId": "run-1794025580457-h9dcmq",
+      "planVisibleMs": 4228,
+      "turnoMs": 3659,
+      "apiMs": 3329,
+      "llamadasModelo": 1,
+      "herramientasMs": 23,
+      "comparacionValida": true,
+      "flujoRegistrado": "agente.json",
+      "exploratorio": true,
+      "n": 1
+    },
+    {
+      "archivo": "latencia-grok-420.json",
+      "modeloSolicitado": "grok-4.20-0309-non-reasoning",
+      "modeloEfectivo": "grok-4.20-0309-non-reasoning",
+      "runId": "run-1794023814100-i6tv1n",
+      "planVisibleMs": 4343,
+      "turnoMs": 3547,
+      "apiMs": 3202,
+      "llamadasModelo": 1,
+      "herramientasMs": 16,
+      "comparacionValida": true,
+      "flujoRegistrado": "agente-grok-420.json",
+      "exploratorio": true,
+      "n": 1
+    },
+    {
+      "archivo": "latencia-qwen-local.json",
+      "modeloSolicitado": "qwen2.5-14b-32k:latest",
+      "modeloEfectivo": "grok-4.7",
+      "runId": "run-1794022384503-bk0vei",
+      "planVisibleMs": 63508,
+      "turnoMs": 63095,
+      "apiMs": 62689,
+      "llamadasModelo": 1,
+      "herramientasMs": 17,
+      "comparacionValida": false,
+      "flujoRegistrado": "agente-qwen-local.json",
+      "exploratorio": true,
+      "n": 1
+    }
+  ],
+  "limites": [
+    "Muestras exploratorias individuales; no demuestran eficacia clínica ni garantizan una latencia máxima.",
+    "El intento Qwen no compara Qwen: la traza mostró Grok 4.7 por la configuración del motor. Se conserva como intento inválido."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "fecha": "2026-11-07T03:35:16.779Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lista de modelos anterior restaurada tras la comparación",
+      "pasa": true
+    }
+  ],
+  "modelo": "qwen2.5-14b-32k:latest",
+  "scope": "org"
+}

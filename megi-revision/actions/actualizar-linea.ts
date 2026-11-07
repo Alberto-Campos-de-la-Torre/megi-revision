@@ -1,12 +1,15 @@
+// guard:allow-resource-action-access — La autorización privada se aplica con requireEmail y planDe/lineaDe (owner_email) dentro de la transacción; no hay recursos compartidos.
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction, fail } from "@agent-native/core/action";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { comprobarAlcance, comprobarVersion, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
-  lineaOut,
+  lineasOut,
   lineaOutputSchema,
   origenAutorizado,
   origenSchema,
@@ -17,11 +20,13 @@ import {
 } from "../server/lib/plan.js";
 
 export default defineAction({
+  changeResource: (_input, result) => ({ resourceType: `plan:${result.linea.planId}`, resourceId: result.linea.planId }),
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
     "Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insistir; solo el médico la desbloquea desde la interfaz. Tras editar un fármaco se vuelve a verificar todo el plan.",
   schema: z.object({
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
     lineaId: z.string().describe("Id de la línea (de obtener-plan)"),
     texto: z.string().trim().min(1).optional().describe("Nuevo fármaco o texto"),
     dosis: z.string().optional(),
@@ -41,13 +46,15 @@ export default defineAction({
   }),
   outputSchema: z.object({
     id: z.string(),
+    version: z.number(),
     linea: lineaOutputSchema,
     message: z.string(),
   }),
-  run: async (args, ctx) => {
+  run: async (args, ctx) => enPeticionMegi(async () => {
+    const inicio = performance.now();
     const email = requireEmail(ctx);
     const orgId = ctx?.orgId ?? null;
-    const origen = origenAutorizado(args.origen, ctx);
+    const origen = await origenAutorizado(args.origen, ctx);
     return getDb().transaction(async (tx) => {
       const [referencia] = await tx
         .select()
@@ -61,6 +68,7 @@ export default defineAction({
         });
       const plan = await planDe(referencia.planId, email, tx, true);
       exigirAbierto(plan);
+      comprobarVersion(plan, args.versionEsperada, origen);
       // Otro cambio pudo terminar mientras esperábamos el bloqueo del plan.
       const [linea] = await tx
         .select()
@@ -73,6 +81,7 @@ export default defineAction({
           statusCode: 404,
         });
 
+      comprobarAlcance(plan, origen, [linea.id]);
       const editaCampos = [
         args.texto,
         args.dosis,
@@ -181,6 +190,7 @@ export default defineAction({
       if (linea.tipo === "farmaco")
         await verificarPlan(plan.id, plan.pacienteId, tx);
 
+      const version = await guardarVersion(plan.id, origen, accion, args.motivo || cambios || accion, inicio, tx, ctx);
       const [actualizada] = await tx
         .select()
         .from(schema.lineasPlan)
@@ -191,13 +201,14 @@ export default defineAction({
           errorCode: "not_found",
           statusCode: 404,
         });
-      const out = lineaOut(actualizada);
+      const out = lineasOut([actualizada], plan)[0]!;
       ctx?.signal?.throwIfAborted();
       return {
+        version,
         id: out.id,
         linea: out,
         message: `${accion}: ${out.texto} (${out.estado}, verificación ${out.verificacion})`,
       };
     });
-  },
+  }),
 });

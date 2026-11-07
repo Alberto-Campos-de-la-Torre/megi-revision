@@ -9,7 +9,7 @@ import { useCommandMenuShortcut } from "@agent-native/toolkit/app/shared";
 import { CommandMenu } from "@agent-native/toolkit/app/shared";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Links,
   Meta,
@@ -24,9 +24,9 @@ import type { LinksFunction } from "react-router";
 import { Layout as AppLayout } from "@/components/layout/Layout";
 import { AppToolkitProvider } from "@/components/ui/toolkit-provider";
 import { useNavigationState } from "@/hooks/use-navigation-state";
+import { invalidarHerramientaRevision, invalidarRevision, observarRecursosRevision } from "@/lib/revision-sync";
 import { APP_TITLE } from "@/lib/app-config";
 import {
-  HOME_PATH,
   isChatPathname,
   NEW_CHAT_PATH,
   skeletonLayoutForPath,
@@ -55,7 +55,7 @@ const LOCALE_INIT_SCRIPT = getLocaleInitScript();
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta
@@ -95,9 +95,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 function DbSyncSetup() {
   const qc = useQueryClient();
   useNavigationState();
+  useEffect(() => observarRecursosRevision(tool => {
+    void qc.invalidateQueries({ predicate: query => invalidarHerramientaRevision(query, tool) });
+  }), [qc]);
   useDbSync({
     queryClient: qc,
     ignoreSource: TAB_ID,
+    actionInvalidatePredicate: invalidarRevision,
   });
   return null;
 }
@@ -138,11 +142,6 @@ function AppContent() {
               }
             >
               {t("chat.newChat")}
-            </CommandMenu.Item>
-          ) : null}
-          {location.pathname !== HOME_PATH ? (
-            <CommandMenu.Item onSelect={() => navigate(HOME_PATH)}>
-              {t("navigation.home")}
             </CommandMenu.Item>
           ) : null}
           {!isChatPathname(location.pathname) ? (

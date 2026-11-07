@@ -21,6 +21,7 @@ export type Linea = {
   alternativas: string[];
   origen: "agente" | "medico";
   justificacion: string | null;
+  fuentes?: { tipo: string; referencia: string; fecha: string; fragmento: string }[];
 };
 
 export type EdicionLinea = { texto: string; dosis: string; frecuencia: string; duracion: string };
@@ -30,6 +31,8 @@ export function LineaPlan({
   cerrado,
   ocupada,
   onEditar,
+  seleccionada = false,
+  onSeleccionar,
   onBloquear,
   onDesbloquear,
   onRechazar,
@@ -40,6 +43,8 @@ export function LineaPlan({
   cerrado: boolean;
   ocupada: boolean;
   onEditar: (cambios: EdicionLinea) => void;
+  seleccionada?: boolean;
+  onSeleccionar?: () => void;
   onBloquear: () => void;
   onDesbloquear: () => void;
   onRechazar: () => void;
@@ -69,9 +74,10 @@ export function LineaPlan({
         linea.verificacion === "bloqueado" && !rechazada && "border-red-500/50",
       )}
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0 flex-1 space-y-1.5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+        <div className="w-full min-w-0 flex-1 space-y-1.5 sm:w-auto">
           <div className="flex flex-wrap items-center gap-2">
+            {!cerrado && !rechazada && onSeleccionar && <input type="checkbox" aria-label={`Seleccionar ${linea.texto}`} checked={seleccionada} onChange={onSeleccionar} className="size-4 accent-current" />}
             <span className={cn("font-medium", rechazada && "line-through")}>{linea.texto}</span>
             {esFarmaco && (linea.dosis || linea.frecuencia || linea.duracion) ? (
               <span className={cn("text-sm text-muted-foreground", rechazada && "line-through")}>
@@ -93,6 +99,7 @@ export function LineaPlan({
               {rechazada ? "Motivo: " : ""}{linea.justificacion}
             </p>
           ) : null}
+          {linea.fuentes && <details className="text-xs"><summary className="cursor-pointer text-muted-foreground">Fuentes y alcance de la verificación</summary><div className="mt-2 space-y-2 rounded-md border border-border p-2">{linea.fuentes.map((f, i) => <div key={i}><p className="font-medium">{f.tipo === "nota" ? "Mención literal en la nota" : f.tipo === "medicacion" ? "Medicación histórica" : "Requiere confirmación"}{f.referencia ? ` · ${f.referencia}` : ""}{f.fecha ? ` · ${new Date(f.fecha).toLocaleDateString("es-MX")}` : ""}</p><p className="mt-1">{f.fragmento}</p></div>)}<p className="text-muted-foreground">La justificación es una explicación del autor. La verificación contrasta las reglas y datos disponibles; no valida por sí sola la indicación ni la dosis.</p></div></details>}
           {esFarmaco && linea.verificacion === "bloqueado" && linea.alternativas.length && !rechazada ? (
             <p className="text-xs text-muted-foreground">
               Alternativas sugeridas: {linea.alternativas.join(" · ")}

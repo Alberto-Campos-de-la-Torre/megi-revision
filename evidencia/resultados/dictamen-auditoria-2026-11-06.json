@@ -1,0 +1,153 @@
+{
+  "fecha": "2026-11-07T05:23:34.524959+00:00",
+  "app_commit": "b631b872117404d6d6b90232bf70c36506d49007",
+  "objeto": "Evaluación independiente del prototipo MEGI Revisión para Agent-Native Hackathon; no es nota oficial ni certificación clínica o de producción.",
+  "calificacion": 84,
+  "rubrica": [
+    {
+      "criterio": "Utilidad y ejecución",
+      "puntos": 33,
+      "maximo": 40,
+      "razon": "Flujo funcional, transacciones, conciliación, versiones y exportación; fallos ante respuestas inválidas del verificador y separación incompleta de identidades HTTP."
+    },
+    {
+      "criterio": "Creatividad y diseño",
+      "puntos": 16,
+      "maximo": 20,
+      "razon": "Tablero, cambios, fuentes y control por línea claros; jerarquía aún densa en móvil y semántica de alergias mejorable: Ninguna conocida aparece en rojo."
+    },
+    {
+      "criterio": "Innovación",
+      "puntos": 17,
+      "maximo": 20,
+      "razon": "Colaboración médico-agente con alcance, sugerencias y bloqueos; ahorro y eficacia aún sin evidencia de uso con médicos."
+    },
+    {
+      "criterio": "Uso de Agent-Native",
+      "puntos": 18,
+      "maximo": 20,
+      "razon": "Acciones compartidas, contexto, herramientas, recibos e invalidación; doctor limpio y regresiones amplias."
+    }
+  ],
+  "fuentes_oficiales": [
+    "https://www.builder.io/hackathon/rules",
+    "https://www.builder.io/hackathon",
+    "https://www.builder.io/hackathon/submit"
+  ],
+  "requisitos": [
+    {
+      "requisito": "App funcional en Agent-Native",
+      "estado": "verificado localmente",
+      "evidencia": "57+33+45 pruebas, typecheck, doctor y 6 comprobaciones de navegador; la app usa Core 0.222.2."
+    },
+    {
+      "requisito": "Trabajo nuevo desde 27 octubre y declaración de trabajo previo",
+      "estado": "declaración e historial disponibles; autoría del backend no certificada",
+      "evidencia": "Primer commit de la app c8073ca, 2 noviembre; ENVIO_HACKATHON.md declara MEGI previo y plantilla MIT."
+    },
+    {
+      "requisito": "Clips público accesible sin sesión",
+      "estado": "pendiente",
+      "evidencia": "ENVIO_HACKATHON.md mantiene publicación detenida; videos locales anteriores son históricos."
+    },
+    {
+      "requisito": "Datos de contacto/equipo y elegibilidad",
+      "estado": "pendiente de datos confirmados por los participantes",
+      "evidencia": "Borrador conserva [nombres]; no se verificó identidad ni mayoría de edad."
+    },
+    {
+      "requisito": "Formulario, aceptación y recibo antes del límite",
+      "estado": "pendiente",
+      "limite": "2026-11-09T23:59:00-08:00 = 2026-11-10T01:59:00-06:00"
+    },
+    {
+      "requisito": "Repositorio público, despliegue público y diapositivas",
+      "estado": "opcionales; no se dedujeron puntos por ausencia"
+    }
+  ],
+  "alcance_de_verificacion_oficial": "Las bases especifican elegibilidad, originalidad, uso del framework, accesibilidad de demo y cumplimiento. No describen un pentest obligatorio ni una auditoría clínica formal, ni requieren publicar todo el código.",
+  "hallazgos": [
+    {
+      "id": "H1",
+      "severidad": "alta",
+      "hecho": "HTTP 200 con {} en rx-check genera resultado ok. Una alerta blocker sin drug/against atribuibles también acaba en ok.",
+      "fuente": "megi-revision/server/lib/megi/megi-http.ts:472",
+      "prueba": "evidencia/resultados/auditoria-independiente-2026-11-06.json",
+      "limite": "Reproducido con transporte simulado; no se demostró que el backend actual emita esas respuestas ni una aprobación insegura en producción.",
+      "accion_recomendada": "Validar esquema de respuesta; rechazar ausencia de alerts y no descartar alertas sin atribución. Añadir regresiones en la capa HTTP y de acción."
+    },
+    {
+      "id": "H2",
+      "severidad": "alta para despliegue multiusuario",
+      "hecho": "En modo HTTP dos correos comparten instancia/cuenta MEGI; exigirMedico comprueba caller frontend pero no rol clínico. El aislamiento SQL de planes existe y pasa las pruebas.",
+      "fuentes": [
+        "megi-revision/server/lib/megi/index.ts:20",
+        "megi-revision/server/lib/plan.ts:39",
+        "megi-demo/backend/app/routes/review.py:58"
+      ],
+      "prueba": "evidencia/resultados/auditoria-independiente-2026-11-06.json",
+      "limite": "Es una limitación de arquitectura demostrada localmente; no se realizó intrusión remota. La firma de MEGI usa identidad de la cuenta de servicio.",
+      "accion_recomendada": "Vincular usuario/organización a permisos y credenciales de MEGI, comprobar rol clínico y conservar identidad del aprobador."
+    },
+    {
+      "id": "H3",
+      "severidad": "media",
+      "hecho": "medicacionActiva recorre secuencialmente todas las consultas aprobadas y listarConsultasCerradas todos los pacientes; el caché reduce repetición dentro de una acción pero no el coste longitudinal.",
+      "fuente": "megi-revision/server/lib/megi/megi-http.ts:367",
+      "accion_recomendada": "Endpoint de pendientes e historial paginado o por lotes, con medición sobre expedientes grandes."
+    },
+    {
+      "id": "H4",
+      "severidad": "limitación de evidencia",
+      "hecho": "Cuatro pacientes sintéticos y mediciones individuales no acreditan eficacia clínica ni ahorro generalizable. La prueba del agente vivo y su latencia son evidencia histórica, no una nueva ejecución en esta auditoría.",
+      "fuentes": [
+        "evidencia/resultados/comparacion-modelos.json",
+        "evidencia/resultados/agente.json"
+      ]
+    },
+    {
+      "id": "H5",
+      "severidad": "entrega",
+      "hecho": "Clips, datos definitivos del equipo y recibo del formulario pendientes. El video previo no acredita cambios actuales.",
+      "fuente": "ENVIO_HACKATHON.md"
+    }
+  ],
+  "verificacion_nueva": {
+    "suites": [
+      {
+        "archivo": "evidencia/auditoria-hackathon-resultados.json",
+        "pasan": 57,
+        "fallan": 0
+      },
+      {
+        "archivo": "pruebas-hackathon/bateria-resultados.json",
+        "pasan": 33,
+        "fallan": 0
+      },
+      {
+        "archivo": "pruebas-hackathon/revision-trazable-resultados.json",
+        "pasan": 45,
+        "fallan": 0
+      }
+    ],
+    "total_automatizadas": 135,
+    "typecheck": "exit 0",
+    "doctor": "exit 0, clean",
+    "navegador": "6/6: lista, edición verificada, móvil 390px sin desbordamiento, aprobación/cierre, FHIR/sello y archivo de exportadas",
+    "build": "No repetido en esta auditoría; existe ejecución anterior exitosa en evidencia/resultados/verificacion.json",
+    "llm": "No invocado de nuevo; revisados los artefactos históricos del agente y sus limitaciones."
+  },
+  "evidencia_sha256": {
+    "evidencia/auditoria-hackathon-resultados.json": "263f96e0815b9c4d4d05b7af78c218916301fabe8ae39b189c0a7a38b1253943",
+    "pruebas-hackathon/bateria-resultados.json": "5201682ac6cf8c905c2264743f265028cd22ab0ed445fd3079f6ade05214ad6e",
+    "pruebas-hackathon/revision-trazable-resultados.json": "a5a2fd24ae8a2991ccd42cf3372d10a78b783a5ab575c576df689942d9635247",
+    "evidencia/resultados/auditoria-independiente-2026-11-06.json": "b59270adf41d304460031adcf3ced882671dc309af8def339b7a83a3ff54f8c8",
+    "evidencia/resultados/auditoria-independiente-ui/resultados.json": "da202c22db752b433edb998bfd86a3e56e691e1e36680ea13b7e60d0f5bc07ee"
+  },
+  "prioridades": [
+    "Cerrar fallo de contrato del verificador H1 y añadir regresión.",
+    "Acotar despliegue a demo o corregir identidad/permisos HTTP H2 antes de uso multiusuario real.",
+    "Ensayar y grabar el flujo actual cuando se autorice Clips; completar equipo, aceptación y recibo."
+  ],
+  "cambios_de_esta_auditoria": "Nuevos scripts/resultados de auditoría y actualización de resultados al reejecutar suites existentes; sin cambios en código funcional ni publicación."
+}

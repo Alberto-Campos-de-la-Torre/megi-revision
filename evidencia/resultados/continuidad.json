@@ -1,0 +1,106 @@
+{
+  "fecha": "2026-11-07T19:12:36.399Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "1 · el plan propuesto por el agente aparece en el tablero sin recargar (reintentos: 0)",
+      "pasa": true
+    },
+    {
+      "prueba": "1 · el plan tiene 5 líneas con estado propio",
+      "pasa": true,
+      "detalle": {
+        "version": 1
+      }
+    },
+    {
+      "prueba": "1 · las líneas se marcan «Propuesta por el agente»",
+      "pasa": true
+    },
+    {
+      "prueba": "2 · la UI explica el límite antes de pedir el reajuste",
+      "pasa": true,
+      "detalle": {
+        "fijada": "Ibuprofeno",
+        "seleccionada": "Paracetamol"
+      }
+    },
+    {
+      "prueba": "2 · el alcance queda guardado en el servidor (no solo en la selección visual)",
+      "pasa": true
+    },
+    {
+      "prueba": "3 · el tablero avisó de que el turno del agente no cambió el plan",
+      "pasa": true
+    },
+    {
+      "prueba": "3 · la línea autorizada (Paracetamol) cambió (reintentos: 1)",
+      "pasa": true,
+      "detalle": {
+        "antes": "Paracetamol 1 g · cada 8 h · 7 días",
+        "despues": "Paracetamol 1 g · cada 8 h · 3 días"
+      }
+    },
+    {
+      "prueba": "3 · las líneas fuera del alcance no cambiaron",
+      "pasa": true
+    },
+    {
+      "prueba": "3 · el reajuste del agente creó una versión nueva del mismo plan",
+      "pasa": true,
+      "detalle": {
+        "antes": 3,
+        "despues": 5
+      }
+    },
+    {
+      "prueba": "3b · la línea fijada (Ibuprofeno) sigue intacta aunque el médico pidió quitarla",
+      "pasa": true
+    },
+    {
+      "prueba": "3b · el servidor no aplicó nada: misma versión y mismas líneas",
+      "pasa": true,
+      "detalle": {
+        "version": 5
+      }
+    },
+    {
+      "prueba": "3b · el agente explica el límite en su respuesta",
+      "pasa": true,
+      "detalle": {
+        "respuesta": "No puedo quitar Ibuprofeno: está fuera de alcanceAgente (solo permite editar línea de Paracetamol). El médico debe desbloquearla o ampliar alcance primero."
+      }
+    },
+    {
+      "prueba": "3b · el tablero avisa de que el turno no cambió el plan (lo del chat no está guardado)",
+      "pasa": true
+    },
+    {
+      "prueba": "3 · la bitácora registra a médico y agente sobre el mismo plan",
+      "pasa": true
+    },
+    {
+      "prueba": "4 · cancelar a mitad de turno no deja cambios parciales (misma versión y mismas líneas)",
+      "pasa": true,
+      "detalle": {
+        "antes": 6,
+        "despues": 6
+      }
+    },
+    {
+      "prueba": "5 · la medicación histórica queda conciliada por el médico antes de aprobar",
+      "pasa": true
+    },
+    {
+      "prueba": "5 · exportación FHIR con sello visible",
+      "pasa": true
+    },
+    {
+      "prueba": "5 · el plan exportado queda cerrado a nuevas ediciones",
+      "pasa": true
+    }
+  ],
+  "fallos": 0,
+  "red": [],
+  "alcance": "Demo con modelo real sobre demo-c3 (Rosa): propuesta desde el tablero, bloqueo y alcance desde la UI, reajuste del agente dentro del alcance, cancelación sin parcial y aprobación con conciliación. No mide calidad clínica."
+}

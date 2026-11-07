@@ -1,0 +1,10 @@
+{
+  "fecha": "2026-11-07T03:58:39.905Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "panel vacío conserva las sugerencias clínicas en español",
+      "pasa": true
+    }
+  ]
+}

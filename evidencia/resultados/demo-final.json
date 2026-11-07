@@ -1,0 +1,14 @@
+{
+  "fecha": "2026-11-07T04:38:36.707Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "cuatro casos propios sin planes, listos para grabar",
+      "pasa": true
+    },
+    {
+      "prueba": "manifiesto de herramientas y exclusiones UI",
+      "pasa": true
+    }
+  ]
+}

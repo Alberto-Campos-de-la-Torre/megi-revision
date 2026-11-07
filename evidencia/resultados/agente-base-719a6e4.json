@@ -1,0 +1,256 @@
+{
+  "fecha": "2026-11-06T23:44:10.376Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "la UI impide un envío solapado durante el turno",
+      "pasa": true
+    },
+    {
+      "prueba": "cancelar antes de proponer no deja un plan parcial",
+      "pasa": true
+    },
+    {
+      "prueba": "nuevo intento tras cancelar llega a la pregunta estructurada",
+      "pasa": true
+    },
+    {
+      "prueba": "el agente está conectado (no aparece «Conectar IA»)",
+      "pasa": true
+    },
+    {
+      "prueba": "tablero muestra etapas del runtime durante la propuesta",
+      "pasa": true
+    },
+    {
+      "prueba": "el agente creó el plan en 59 s",
+      "pasa": true
+    },
+    {
+      "prueba": "líneas marcadas «Propuesta por el agente»",
+      "pasa": true
+    },
+    {
+      "prueba": "motivo del agente abierto en el tablero",
+      "pasa": true
+    },
+    {
+      "prueba": "el plan tiene 5 líneas",
+      "pasa": true
+    },
+    {
+      "prueba": "la bitácora registra al agente como actor",
+      "pasa": true
+    },
+    {
+      "prueba": "la línea bloqueada (Paracetamol) sigue intacta tras pedir al agente que la quite",
+      "pasa": true
+    },
+    {
+      "prueba": "el agente explica que no puede tocar la línea bloqueada",
+      "pasa": true
+    }
+  ],
+  "fallos": 0,
+  "etapas": [
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008524032
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008524181
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008524182
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008524208
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008527423
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008527554
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008527555
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008527588
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "fecha": 1794008540363
+    },
+    {
+      "evento": "agent-native:tool-input",
+      "tool": "docs-search",
+      "phase": "start",
+      "fecha": 1794008540597
+    },
+    {
+      "evento": "agent-native:tool-input",
+      "tool": "ver-contexto-consulta",
+      "phase": "start",
+      "fecha": 1794008540597
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "docs-search",
+      "fecha": 1794008540597
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "ver-contexto-consulta",
+      "fecha": 1794008540598
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "fecha": 1794008545057
+    },
+    {
+      "evento": "agent-native:tool-input",
+      "tool": "ask-question",
+      "phase": "start",
+      "fecha": 1794008545089
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "fecha": 1794008545089
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008560442
+    },
+    {
+      "paso": "Preparando propuesta\nVer agente y control de detener",
+      "fecha": 1794008560573
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008560578
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008560578
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008560619
+    },
+    {
+      "evento": "agent-native:tool-input",
+      "tool": "proponer-plan",
+      "phase": "start",
+      "fecha": 1794008593995
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "proponer-plan",
+      "fecha": 1794008593995
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "fecha": 1794008617437
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "proponer-plan",
+      "fecha": 1794008617486
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "fecha": 1794008618801
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008620403
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008620547
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008620547
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "working",
+      "isRunning": true,
+      "fecha": 1794008620584
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "responding",
+      "isRunning": true,
+      "fecha": 1794008648537
+    },
+    {
+      "evento": "agentNative.chatRunning",
+      "phase": "idle",
+      "isRunning": false,
+      "fecha": 1794008649892
+    },
+    {
+      "evento": "agent-native:tool-input",
+      "tool": "ask-question",
+      "phase": "start",
+      "fecha": 1794008649961
+    },
+    {
+      "evento": "agent-native:tool-done",
+      "tool": "ask-question",
+      "fecha": 1794008649961
+    }
+  ],
+  "sondaSinSesion": [],
+  "red": [],
+  "consola": []
+}

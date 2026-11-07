@@ -59,7 +59,7 @@ export function ContextoPaciente({ ctx }: { ctx: Contexto }) {
           </dd>
         </div>
         <div>
-          <dt className="text-xs uppercase tracking-wide text-muted-foreground">Medicación activa</dt>
+          <dt className="text-xs uppercase tracking-wide text-muted-foreground">Medicación del expediente</dt>
           <dd className="mt-1 flex flex-wrap gap-1.5">
             {paciente.medicacionActiva.length ? (
               paciente.medicacionActiva.map((m) => (

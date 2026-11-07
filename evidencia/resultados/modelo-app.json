@@ -1,0 +1,21 @@
+{
+  "fecha": "2026-11-07T04:33:55.887Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lectura autenticada del modelo predeterminado de MEGI",
+      "pasa": true
+    }
+  ],
+  "configuracion": {
+    "ok": true,
+    "appId": "megi-revision",
+    "engine": "ai-sdk:openai",
+    "model": "grok-4.20-0309-non-reasoning",
+    "updatedAt": 1794023984092,
+    "updatedBy": "dev@local.test",
+    "scope": "org",
+    "source": "org",
+    "canUpdate": true
+  }
+}

@@ -66,7 +66,11 @@ import {
 } from "@agent-native/toolkit/composer";
 import {
   IconAlertTriangle,
+  IconArrowRight,
+  IconClipboardText,
   IconLayoutSidebarRight,
+  IconLock,
+  IconShieldCheck,
   IconX,
 } from "@tabler/icons-react";
 import {
@@ -78,7 +82,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -337,7 +341,7 @@ function ChatThreadRouteContent({
 
   return (
     <div
-      className="relative flex h-full min-h-0 overflow-clip bg-background"
+      className="lienzo-chat relative flex h-full min-h-0 overflow-clip bg-background"
       data-agent-chat-workspace-state={workspaceOpen ? "open" : "closed"}
     >
       <div
@@ -1188,11 +1192,105 @@ function ChatMcpConnectionSuggestion({
   );
 }
 
-function ChatEmptyState() {
-  const t = useT();
+// Qué hace el agente y qué no, con accesos rápidos. Las sugerencias se envían
+// como mensaje; el modelo y el motor son los configurados en el compositor.
+// Paleta: #06141B · #11212D · #253745 · #4A5C6A · #9BA8AB · #CCD0CF.
+const PASOS_AGENTE = [
+  {
+    Icono: IconClipboardText,
+    titulo: "Propongo el plan",
+    texto:
+      "Leo la nota SOAP y la ficha del paciente y redacto la receta: fármacos con dosis, frecuencia y duración, más los pendientes.",
+  },
+  {
+    Icono: IconShieldCheck,
+    titulo: "Verifico con MEGI",
+    texto:
+      "Alergias, interacciones y medicación activa. Distingo lo que dice la nota, lo que alerta el verificador y lo que propongo yo.",
+  },
+  {
+    Icono: IconLock,
+    titulo: "Tú decides",
+    texto:
+      "Editas, bloqueas o rechazas líneas desde el tablero. Lo bloqueado queda intocable y la aprobación es siempre tuya.",
+  },
+] as const;
+
+const SUGERENCIAS_INICIO = [
+  "¿Qué consultas tengo pendientes de revisión?",
+  "Prepara el plan de la primera consulta pendiente",
+  "Explícame cómo trabajas y qué decisiones quedan en mis manos",
+] as const;
+
+function ChatEmptyState({ threadId }: { threadId: string }) {
+  const control = useAgentKitControl(threadId);
+  const [enviando, setEnviando] = useState<string | null>(null);
+
+  async function sugerir(texto: string) {
+    if (enviando) return;
+    setEnviando(texto);
+    try {
+      await control.sendMessage({ text: texto, options: { mode: "act" } });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : String(error));
+    } finally {
+      setEnviando(null);
+    }
+  }
+
   return (
-    <div className="agentkit-chat-empty-copy">
-      <h1>{t("chat.heroTitle")}</h1>
+    <div className="agentkit-chat-empty-copy bienvenida-agente mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 sm:gap-6">
+      <header className="space-y-1.5 text-center sm:space-y-2">
+        <p className="bienvenida-agente__etiqueta">
+          <span aria-hidden="true" className="bienvenida-agente__punto" />
+          Agente clínico · apoyo a la decisión
+        </p>
+        <h1>Soy el agente de MEGI Revisión</h1>
+        <p className="mx-auto max-w-xl text-sm text-muted-foreground">
+          Preparo contigo la receta y los pendientes de una consulta ya consolidada en MEGI.
+          No soy un chat general: trabajo sobre tus consultas y tus pacientes.
+        </p>
+      </header>
+
+      <ol className="grid gap-3 sm:grid-cols-3" aria-label="Cómo trabajamos">
+        {PASOS_AGENTE.map(({ Icono, titulo, texto }, i) => (
+          <li key={titulo} className="superficie-megi flex flex-col gap-1.5 rounded-xl p-3 text-left sm:gap-2 sm:p-4">
+            <div className="flex items-center justify-between">
+              <span className="bienvenida-agente__paso" aria-hidden="true">{i + 1}</span>
+              <Icono className="size-5 text-muted-foreground" strokeWidth={1.8} />
+            </div>
+            <h2 className="text-sm font-semibold leading-snug">{titulo}</h2>
+            <p className="text-xs leading-relaxed text-muted-foreground">{texto}</p>
+          </li>
+        ))}
+      </ol>
+
+      <section className="space-y-2 text-center" aria-label="Sugerencias para empezar">
+        <p className="bienvenida-agente__seccion">Para empezar</p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {SUGERENCIAS_INICIO.map((texto) => (
+            <button
+              key={texto}
+              type="button"
+              className="bienvenida-agente__chip"
+              disabled={enviando !== null}
+              onClick={() => void sugerir(texto)}
+            >
+              {enviando === texto ? "Enviando…" : texto}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <p className="bienvenida-agente__nota">
+        <IconLock className="size-4 shrink-0" strokeWidth={1.8} aria-hidden="true" />
+        <span>
+          Aprobar y exportar a MEGI se hace desde el tablero de cada consulta, nunca desde el chat.{" "}
+          <Link to="/revision" className="inline-flex items-center gap-1 font-medium underline-offset-4 hover:underline">
+            Ir a las consultas pendientes <IconArrowRight className="size-3.5" />
+          </Link>
+        </span>
+      </p>
     </div>
   );
 }

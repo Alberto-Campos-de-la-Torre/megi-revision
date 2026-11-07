@@ -1,6 +1,6 @@
 {
-  "ejecutadoEl": "2026-11-05T06:03:45.217Z",
-  "appCommit": "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1",
+  "ejecutadoEl": "2026-11-07T07:04:42.174Z",
+  "appCommit": "b631b872117404d6d6b90232bf70c36506d49007",
   "cambiosSinCommitear": true,
   "entorno": "Acciones reales, PGlite en memoria, MEGI mock y transporte http simulado; sin LLM. Con --http añade lecturas contra el backend de demo",
   "resultados": [
@@ -52,7 +52,7 @@
       "bloque": "1 · funcionamiento",
       "id": "fn-contexto-ve-el-plan-con-id-real",
       "passed": true,
-      "detail": "ddb1a13f-8f55-4852-87e8-484167d6188f"
+      "detail": "12792abf-e351-4cc2-9633-d50ff60529e7"
     },
     {
       "bloque": "1 · funcionamiento",
@@ -164,7 +164,7 @@
       "id": "uti-la-advertencia-queda-en-la-bitacora",
       "passed": true,
       "detail": [
-        "Exportado a MEGI (fhir) · sello sha256:00bab7477de75e1ca529cd04f3abe7af68b783a5c545b95d1c54d283ab210e8d · 1 advertencia(s) vigentes: Naproxeno: Naproxeno 250 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Naproxeno 250 mg + Losartán 50 mg (moderada): Los AINE reducen el efecto antihipertensivo y aumentan el riesgo de daño renal con ARA II. → Usar el AINE el menor tiempo posible y vigilar TA y función renal."
+        "Exportado a MEGI (fhir) · sello sha256:1238f8e11a7083a82ff42da7ad7e5d14f462e2636b9932b8bd125626474cdf8e · 1 advertencia(s) vigentes: Naproxeno: Naproxeno 250 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Naproxeno 250 mg + Losartán 50 mg (moderada): Los AINE reducen el efecto antihipertensivo y aumentan el riesgo de daño renal con ARA II. → Usar el AINE el menor tiempo posible y vigilar TA y función renal."
       ]
     },
     {
@@ -176,7 +176,7 @@
     {
       "bloque": "3 · utilidad",
       "id": "uti-peticiones-por-verificacion",
-      "medicion": 4
+      "medicion": 5
     },
     {
       "bloque": "3 · utilidad",
@@ -187,7 +187,7 @@
     {
       "bloque": "3 · utilidad",
       "id": "uti-peticiones-para-listar-3-pacientes",
-      "medicion": 7
+      "medicion": 8
     },
     {
       "bloque": "3 · utilidad",
@@ -195,7 +195,7 @@
       "passed": true,
       "detail": {
         "consultas": 3,
-        "peticiones": 7
+        "peticiones": 8
       }
     },
     {
@@ -211,7 +211,7 @@
       "detail": {
         "disponible": true,
         "modo": "local_mock",
-        "detalle": "build 90085a5"
+        "detalle": "build b35cba2"
       }
     },
     {

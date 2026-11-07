@@ -1,0 +1,258 @@
+{
+  "fecha": "2026-11-07T19:07:52.578Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "lista: 4 consultas pendientes",
+      "pasa": true
+    },
+    {
+      "prueba": "indicador de conexión con MEGI",
+      "pasa": true
+    },
+    {
+      "prueba": "caso 2 muestra «Sin registro de alergias»",
+      "pasa": true
+    },
+    {
+      "prueba": "panel vacío usa las sugerencias en español sin reemplazo dinámico en inglés",
+      "pasa": true
+    },
+    {
+      "prueba": "ficha muestra la alergia a penicilina",
+      "pasa": true
+    },
+    {
+      "prueba": "botón que delega al agente visible",
+      "pasa": true
+    },
+    {
+      "prueba": "plan en blanco creado",
+      "pasa": true
+    },
+    {
+      "prueba": "amoxicilina añadida con chip «Bloqueo de seguridad»",
+      "pasa": true
+    },
+    {
+      "prueba": "motivo del bloqueo visible",
+      "pasa": true
+    },
+    {
+      "prueba": "alternativas visibles",
+      "pasa": true
+    },
+    {
+      "prueba": "botón «Pedir reemplazo al agente»",
+      "pasa": true
+    },
+    {
+      "prueba": "aprobar deshabilitado hasta marcar la confirmación",
+      "pasa": true
+    },
+    {
+      "prueba": "alternativa automática queda pendiente sin tocar la línea fijada",
+      "pasa": true
+    },
+    {
+      "prueba": "línea bloqueada no se puede editar",
+      "pasa": true
+    },
+    {
+      "prueba": "desbloqueada: vuelve a ser editable",
+      "pasa": true
+    },
+    {
+      "prueba": "edición inline guardada y marcada como editada por el médico",
+      "pasa": true
+    },
+    {
+      "prueba": "edición en ámbar con dosis antes y después",
+      "pasa": true
+    },
+    {
+      "prueba": "paracetamol añadido con chip «Sin alertas detectadas»",
+      "pasa": true
+    },
+    {
+      "prueba": "pendiente añadido",
+      "pasa": true
+    },
+    {
+      "prueba": "rechazada con motivo y botón de reactivar",
+      "pasa": true
+    },
+    {
+      "prueba": "selección explica el límite de dos líneas",
+      "pasa": true
+    },
+    {
+      "prueba": "comparación muestra retiradas rojas y adiciones verdes",
+      "pasa": true
+    },
+    {
+      "prueba": "comparación de versiones disponible",
+      "pasa": true
+    },
+    {
+      "prueba": "tablero sin desbordamiento horizontal a 390 px",
+      "pasa": true
+    },
+    {
+      "prueba": "bitácora con 16 eventos (médico)",
+      "pasa": true
+    },
+    {
+      "prueba": "sin bloqueos pendientes en el diálogo",
+      "pasa": true
+    },
+    {
+      "prueba": "plan aprobado y exportado",
+      "pasa": true
+    },
+    {
+      "prueba": "FHIR con MedicationRequest y sello sha256 visibles",
+      "pasa": true
+    },
+    {
+      "prueba": "plan cerrado: sin botones de edición",
+      "pasa": true
+    },
+    {
+      "prueba": "demo-c1 desaparece de pendientes",
+      "pasa": true
+    },
+    {
+      "prueba": "consulta exportada accesible en el archivo",
+      "pasa": true
+    },
+    {
+      "prueba": "caso 2 avisa que no hay registro de alergias",
+      "pasa": true
+    },
+    {
+      "prueba": "comparación exploratoria distingue servidor y API del modelo sin atribuirle el total",
+      "pasa": true
+    }
+  ],
+  "fallos": 0,
+  "redInesperada": [],
+  "avisosFramework": [
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).",
+    "Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template)."
+  ],
+  "sondaSinSesion": [
+    "401 GET http://localhost:8082/_agent-native/agent-engine/status"
+  ],
+  "navegacion": [
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 1,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 2,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 3,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 4,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 5,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 6,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 7,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 8,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 9,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 10,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 11,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 12,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 13,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 14,
+      "alcanceAgente": [
+        "d7113107-8e61-4154-9581-3a0cd2449c6b",
+        "69c68afb-ae59-41cd-b317-344914200e64"
+      ]
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 15,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 16,
+      "alcanceAgente": null
+    },
+    {
+      "consultaId": "demo-c1",
+      "planId": "45c7e439-5675-47a5-a0a4-e9efcd761769",
+      "version": 17,
+      "alcanceAgente": null
+    }
+  ]
+}

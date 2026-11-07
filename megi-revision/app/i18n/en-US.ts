@@ -19,7 +19,7 @@ const messages = {
     archiveChat: "Archive chat",
     archiveFailed: "Could not archive chat.",
     chats: "Chats",
-    composerPlaceholder: "Ask anything",
+    composerPlaceholder: "Ask the agent to prepare, explain or adjust a consultation plan",
     emptyState: "Ask me anything",
     heroDescription: "Ask the agent to inspect, explain, or change this app.",
     heroTitle: "How can I help?",

@@ -18,6 +18,7 @@ import {
   type Paciente,
   type PlanAprobado,
   type Verificacion,
+  type PaginaPendientes,
 } from "./types.js";
 
 function hoy(hora = 9): string {
@@ -205,7 +206,7 @@ function n(s: string): string {
   return s
     .normalize("NFKD")
     .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+    .toLowerCase().replace(/[-\s]/g, "");
 }
 
 const ALERGIAS: Record<string, string[]> = {
@@ -415,7 +416,9 @@ export class MegiMock implements MegiAdapter {
         `MEGI GET /patients/${pacienteId} → 404: paciente no encontrado`,
         404,
       );
-    return structuredClone(p);
+    const copia = structuredClone(p);
+    copia.historialMedicacion = copia.medicacionActiva.map((m, i) => ({ ...m, id: `demo-previa-${pacienteId}-${i}`, fuente: `Receta histórica ${pacienteId}`, fecha: m.desde ?? "", estado: "sin_confirmar" }));
+    return copia;
   }
 
   async verConsulta(consultaId: string): Promise<Consulta> {
@@ -440,11 +443,21 @@ export class MegiMock implements MegiAdapter {
     return out.sort((a, b) => b.fecha.localeCompare(a.fecha));
   }
 
+  async listarPendientes(pagina: { limite: number; desde: number }): Promise<PaginaPendientes> {
+    const todas = await this.listarConsultasCerradas();
+    const desde = Math.max(0, pagina.desde);
+    const consultas = todas.slice(desde, desde + Math.max(1, pagina.limite));
+    const siguiente = desde + consultas.length;
+    return { consultas, total: todas.length, siguiente: siguiente < todas.length ? siguiente : null };
+  }
+
   async verificarReceta(
     pacienteId: string,
     farmacos: Medicamento[],
+    medicacionConciliada?: Medicamento[],
   ): Promise<Record<string, Verificacion>> {
     const paciente = await this.verPaciente(pacienteId);
+    if (medicacionConciliada) paciente.medicacionActiva = medicacionConciliada;
     const alertas = alertasDe(paciente, farmacos);
     const out: Record<string, Verificacion> = {};
     for (const f of farmacos) {
@@ -485,6 +498,7 @@ export class MegiMock implements MegiAdapter {
       );
     }
     const paciente = await this.verPaciente(c.pacienteId);
+    if (plan.medicacionConciliada) paciente.medicacionActiva = plan.medicacionConciliada;
     // Mismo gate que MEGI: bloqueo sin confirmación → 409.
     const bloqueos = alertasDe(paciente, plan.farmacos).filter(
       (a) => a.severidad === "bloqueo",

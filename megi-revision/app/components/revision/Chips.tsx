@@ -10,7 +10,7 @@ export function ChipVerificacion({ v, className }: { v: Verificacion; className?
   if (v === "ok") {
     return (
       <Badge variant="outline" className={cn("gap-1 border-emerald-500/40 text-emerald-700 dark:text-emerald-400", className)}>
-        <IconCircleCheck className="size-3.5" /> Verificado
+        <IconCircleCheck className="size-3.5" /> Sin alertas detectadas
       </Badge>
     );
   }
@@ -48,10 +48,29 @@ export function ChipEstado({ estado, origen }: { estado: EstadoLinea; origen: "a
   return <Badge variant="secondary">Propuesta por el {origen === "medico" ? "médico" : "agente"}</Badge>;
 }
 
+/**
+ * «Ninguna conocida», «Sin alergias conocidas» o «Niega alergias» es un
+ * REGISTRO de ausencia: se confirmó con el paciente y no hay alergia. No es una
+ * alerta y no va en rojo. Distinto de «sin registro» (nadie preguntó), que la
+ * ficha muestra en ámbar, y de una alergia registrada, que sí va en rojo.
+ */
+export const RE_SIN_ALERGIAS = /^(?:alergias?:\s*)?(?:ninguna(?:\s+conocida)?|sin\s+alergias?(?:\s+conocidas?)?|niega\s+alergias?|no\s+conocidas?|negadas?|no\s+refiere)\.?$/i;
+
 export function Alergia({ texto }: { texto: string }) {
+  if (RE_SIN_ALERGIAS.test(texto.trim())) {
+    return (
+      <Badge
+        variant="outline"
+        className="max-w-full gap-1 whitespace-normal border-emerald-500/40 text-emerald-700 dark:text-emerald-400"
+        title="Registrado en el expediente: el paciente no tiene alergias conocidas"
+      >
+        <IconCircleCheck className="size-3.5" /> Sin alergias conocidas (registrado)
+      </Badge>
+    );
+  }
   return (
-    <Badge variant="outline" className="border-red-500/40 text-red-700 dark:text-red-400">
-      {texto}
+    <Badge variant="outline" className="max-w-full gap-1 whitespace-normal border-red-500/40 text-red-700 dark:text-red-400" title="Alergia registrada en el expediente">
+      <IconAlertTriangle className="size-3.5" /> {texto}
     </Badge>
   );
 }

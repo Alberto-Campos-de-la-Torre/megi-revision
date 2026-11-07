@@ -1,0 +1,252 @@
+{
+  "fecha": "2026-11-07T19:07:27.154Z",
+  "url": "http://localhost:8082",
+  "resultados": [
+    {
+      "prueba": "teclado · Tab llega a una tarjeta de consulta",
+      "pasa": true,
+      "detalle": {
+        "tag": "A",
+        "texto": "Luis Modelo Simulado28 años · M · 7 nov, 06:00 a.m.Sin planC",
+        "href": "/revision/demo-c4",
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "teclado · la tarjeta enfocada muestra anillo de foco",
+      "pasa": true,
+      "detalle": {
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "teclado · Enter abre el tablero de la tarjeta enfocada",
+      "pasa": true,
+      "detalle": {
+        "url": "http://localhost:8082/revision/demo-c4"
+      }
+    },
+    {
+      "prueba": "teclado · «Plan en blanco» alcanzable con anillo de foco",
+      "pasa": true,
+      "detalle": {
+        "tag": "BUTTON",
+        "texto": "Plan en blanco",
+        "href": null,
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "teclado · Enter crea el plan en blanco",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · Enter en el formulario añade la línea verificada",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · «Bloquear» de la línea alcanzable con anillo de foco",
+      "pasa": true,
+      "detalle": {
+        "tag": "BUTTON",
+        "texto": "Bloquear",
+        "href": null,
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "teclado · Enter bloquea la línea",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · flecha derecha cambia a «Comparar versiones»",
+      "pasa": true,
+      "detalle": {
+        "seleccionada": "Comparar versiones"
+      }
+    },
+    {
+      "prueba": "estados · la comparación muestra versiones o su estado vacío, sin error",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · al abrir el diálogo de aprobación el foco entra en él",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · Tab se mantiene dentro del diálogo (foco atrapado)",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · Escape cierra el diálogo sin aprobar",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · el plan sigue en revisión tras cerrar con Escape",
+      "pasa": true
+    },
+    {
+      "prueba": "teclado · sugerencia de bienvenida enfocable con anillo visible",
+      "pasa": true,
+      "detalle": {
+        "tag": "BUTTON",
+        "texto": "¿Qué consultas tengo pendientes de revisión?",
+        "href": null,
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "teclado · enlace «Ir a las consultas pendientes» alcanzable",
+      "pasa": true,
+      "detalle": {
+        "tag": "A",
+        "texto": "Ir a las consultas pendientes",
+        "href": "/revision",
+        "focoVisible": true,
+        "anillo": true
+      }
+    },
+    {
+      "prueba": "zoom · lista sin desbordamiento horizontal (texto 200 %)",
+      "pasa": true,
+      "detalle": {
+        "anchoContenidoPx": 537
+      }
+    },
+    {
+      "prueba": "zoom · el nombre del paciente conserva ancho legible en la tarjeta (texto 200 %)",
+      "pasa": true,
+      "detalle": {
+        "anchoNombrePx": 216,
+        "anchoContenidoPx": 537
+      }
+    },
+    {
+      "prueba": "zoom · tablero sin desbordamiento horizontal (texto 200 %)",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · «Aprobar y exportar» visible y operativo (texto 200 %)",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · chat sin desbordamiento horizontal (texto 200 %)",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · primera sugerencia del chat clicable (texto 200 %)",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · lista sin desbordamiento horizontal (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true,
+      "detalle": {
+        "anchoContenidoPx": 640
+      }
+    },
+    {
+      "prueba": "zoom · el nombre del paciente conserva ancho legible en la tarjeta (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true,
+      "detalle": {
+        "anchoNombrePx": 172,
+        "anchoContenidoPx": 640
+      }
+    },
+    {
+      "prueba": "zoom · tablero sin desbordamiento horizontal (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · «Aprobar y exportar» visible y operativo (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · chat sin desbordamiento horizontal (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true
+    },
+    {
+      "prueba": "zoom · primera sugerencia del chat clicable (ventana 640 px (≈ zoom 200 %))",
+      "pasa": true
+    },
+    {
+      "prueba": "estados · lista en espera muestra esqueletos",
+      "pasa": true,
+      "detalle": {
+        "esqueletos": 4
+      }
+    },
+    {
+      "prueba": "estados · lista con MEGI caído muestra un mensaje de error accionable",
+      "pasa": true
+    },
+    {
+      "prueba": "estados · archivo de exportadas vacío muestra un mensaje",
+      "pasa": true,
+      "detalle": {
+        "texto": "Todavía no hay consultas exportadas. Cuando apruebes y exportes un plan aparecerá aquí, en el archivo local."
+      }
+    },
+    {
+      "prueba": "estados · el mensaje de vacío habla de exportadas, no de pendientes",
+      "pasa": true,
+      "detalle": {
+        "texto": "Todavía no hay consultas exportadas. Cuando apruebes y exportes un plan aparecerá aquí, en el archivo local."
+      }
+    },
+    {
+      "prueba": "estados · consulta inexistente muestra error y «Volver a la lista»",
+      "pasa": true,
+      "detalle": {
+        "texto": "Consulta no encontrada en MEGI."
+      }
+    },
+    {
+      "prueba": "estados · tablero en espera muestra esqueletos",
+      "pasa": true,
+      "detalle": {
+        "esqueletos": 4
+      }
+    },
+    {
+      "prueba": "estados · acción fallida muestra aviso de error",
+      "pasa": true
+    },
+    {
+      "prueba": "estados · la línea conserva su estado tras el fallo",
+      "pasa": true
+    },
+    {
+      "prueba": "landmarks · un solo <main> en /revision",
+      "pasa": true,
+      "detalle": {
+        "mains": 1
+      }
+    },
+    {
+      "prueba": "landmarks · un solo <main> en /revision/demo-c4",
+      "pasa": true,
+      "detalle": {
+        "mains": 1
+      }
+    },
+    {
+      "prueba": "landmarks · un solo <main> en /chat",
+      "pasa": true,
+      "detalle": {
+        "mains": 1
+      }
+    },
+    {
+      "prueba": "sin excepciones JavaScript en todo el recorrido",
+      "pasa": true,
+      "detalle": []
+    }
+  ],
+  "fallos": 0,
+  "alcance": "Teclado, zoom (texto 200 % y ventana de 640 px) y estados de espera/error/vacío con respuestas interceptadas en el navegador. Sin usuarios reales y sin certificación de accesibilidad."
+}

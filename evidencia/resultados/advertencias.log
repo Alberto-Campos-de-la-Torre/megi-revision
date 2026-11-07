@@ -1,0 +1,8 @@
+✔ naproxeno: advertencia por interacción con losartán visible
+✔ paracetamol duplicado: las dos líneas avisan de dosis duplicada
+✔ medicación sin conciliar impide aprobar
+✔ diálogo de aprobación lista las advertencias
+✔ cuenta 3 advertencias (naproxeno + 2 paracetamol)
+✔ sin casilla de bloqueo: las advertencias no frenan
+✔ bitácora: el evento aprobar deja escritas las advertencias
+comprobación de advertencias correcta

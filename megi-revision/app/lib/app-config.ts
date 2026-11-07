@@ -1,5 +1,5 @@
 const rawAppName = "megi-revision";
-const rawAppTitle = "Megi Revision";
+const rawAppTitle = "MEGI Revisión";
 
 const APP_NAME_PLACEHOLDER = "{" + "{APP_NAME}}";
 const APP_TITLE_PLACEHOLDER = "{" + "{APP_TITLE}}";

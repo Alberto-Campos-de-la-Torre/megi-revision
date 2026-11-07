@@ -42,7 +42,11 @@ Mesa de revisión post-consulta: el médico y el agente preparan juntos la recet
 - `aprobar-plan` es `uiOnly` y no se expone al modelo; si el médico pide aprobar, indícale el botón de la pantalla. El framework verifica sesión de navegador, mismo origen y capacidad UI.
 - Todo cambio lleva motivo; `proponer-plan` y `reajustar-plan` son atómicos: líneas, verificación y bitácora se confirman juntas o se revierten. Las mutaciones bloquean el plan en SQL y releen las líneas tras adquirir el bloqueo. MEGI caído o verificación incompleta no dejan cambios. La exportación puede recuperarse tras una descarga interrumpida; no se vuelve a aprobar un plan cerrado.
 - En `/revision/:consultaId`, `navigation` trae `consultaId`.
+- El adaptador http valida el contrato de `/safety/rx-check`: cuerpo inválido, `alerts` ausente, severidad desconocida, alerta sin mensaje o recuentos incoherentes → 502 `verificador_invalido` (no es `megi_no_disponible`; no se reintenta igual y nunca significa «sin alertas»). Una alerta sin fármaco atribuible se aplica a toda la receta propuesta.
+- Identidad clínica en `http`: cada médico conecta SU cuenta de MEGI en Ajustes → claves (`MEGI_USUARIO` / `MEGI_CONTRASENA`, ámbito usuario, `server/lib/megi/secretos.ts`); `megi(email)` crea una conexión por correo (rotación → conexión nueva; retirada → 403 y sesión olvidada) y MEGI firma `approved_by` con esa identidad. Sin conexión propia solo entra la cuenta de servicio (`MEGI_USER/MEGI_PASSWORD`) si el correo está en `MEGI_MEDICOS`; si no, 403 `sin_rol_clinico`; almacén de secretos caído → 503 `credenciales_no_disponibles` (reintentable). Las acciones usan `conectarMegi(email)` para devolver ese contrato, no un 500. `exigirMedico`/`origenAutorizado` son asíncronos y exigen caller `frontend` + identidad clínica. La nota de aprobación lleva el correo de la sesión; MEGI la muestra en la línea de tiempo de auditoría. En mock la lista es opcional.
+- Lecturas paginadas (I3): `listarPendientes({limite, desde})` usa `GET /review/pending` (filtrado por médico en el servidor, con ficha del paciente) y `POST /review/medication-history` (historial de varios pacientes por páginas); una página inválida, incompleta o con total cambiado se rechaza (`pagina_invalida` / `pagina_inconsistente`), nunca un historial truncado. Backend anterior (404 Not Found) → recorrido paciente a paciente (`listarRecorriendoPacientes`). `listar-consultas` acepta `limite`/`desde` y devuelve `total`/`siguiente`. Medición: `evidencia/coste-historial.mts`.
 
+- Tablero: `TrabajoAgente` muestra el progreso real del turno y dos estados de recuperación. Si el médico pidió la propuesta y el turno termina sin `proponer-plan`, ofrece «Volver a pedir la propuesta» (`pedirPropuesta(..., true)` exige la herramienta). Si un turno termina sin ninguna herramienta de escritura y la versión no cambia, avisa de que lo dicho en el chat no está guardado. Ninguno de los dos avisos aparece si el turno terminó con `ask-question` (el agente espera al médico). Las rutas no anidan `<main>` (el layout aporta el landmark) y las cuadrículas usan consultas de contenedor (`@container`), no el ancho de la ventana. Comprobación: `evidencia/friccion-ui.mjs`.
 | Acción | Para qué |
 | --- | --- |
 | listar-consultas | Consultas pendientes de revisión con paciente y plan |
@@ -54,4 +58,43 @@ Mesa de revisión post-consulta: el médico y el agente preparan juntos la recet
 | reajustar-plan | Varios cambios atómicos con motivo; respeta bloqueos |
 | aprobar-plan | Aprobar y exportar a MEGI (409 alertas_sin_confirmar) |
 
-Verificación de regresión: desde el repo raíz, `megi-revision/node_modules/.bin/tsx evidencia/auditoria-hackathon.mts --http`. Escribe únicamente en PGlite en memoria; el modo http solo lee y verifica pacientes ficticios. Comprueba suplantación por todos los transportes, rollback, verificación incompleta, concurrencia, cancelación, recuperación de exportación y coherencia del SOAP.
+Verificación de regresión: desde el repo raíz, `megi-revision/node_modules/.bin/tsx evidencia/auditoria-hackathon.mts --http`. Escribe únicamente en PGlite en memoria; el modo http solo lee y verifica pacientes ficticios. Comprueba suplantación por todos los transportes, rollback, verificación incompleta, contrato del verificador y alertas sin atribución, rol clínico por `MEGI_MEDICOS`, lecturas en paralelo acotadas, concurrencia, cancelación, recuperación de exportación y coherencia del SOAP.
+
+
+## Revisión trazable
+
+- Cada mutación guarda versión e instantánea en su misma transacción. `obtener-plan.plan.version` se pasa como `versionEsperada`; una confirmación clínica debe quedar ligada a la versión que el médico vio, no a una consulta refrescada después.
+- `alcanceAgente` vive en SQL: null permite líneas abiertas, una lista delimita ids y [] congela toda edición del agente. Solo `definir-alcance` desde UI cambia esa autorización. La selección de la pestaña no concede permisos.
+- `view-screen` hidrata consulta, selección, líneas actuales y fuentes. La UI guarda solo ids en `revision-selection:<browserTabId>` y los limpia al salir.
+- `conciliar-medicacion` conserva procedencia/fecha y vuelve a verificar con los tratamientos activos o sin confirmar. No se aprueba con antecedentes sin confirmar. No se fusiona el historial en una lista de activos supuestos.
+- Invalidación por recurso/plan al completar herramientas. Por petición explícita de PARA_EL_100.md, el tablero añade foco y 60 s como respaldo ante caída de sincronización; no hay sondeo de progreso del modelo. Comprobar que las propuestas aparecen sin recargar.
+- `revision-clinica` es explícitamente runtime. El agente usa `docs-search` para cargarla antes del trabajo clínico; sus reglas también están en el prompt y los invariantes se exigen en servidor.
+
+| Acción nueva | Para qué |
+| --- | --- |
+| historial-plan | Páginas de versiones, fuentes, autores y tiempos de servidor |
+| metricas-revision | Lectura de mediciones exploratorias del caso y usuario |
+| preparar-aprobacion | Solo UI: actualizar alertas y fijar la versión visible de la confirmación |
+| definir-alcance | Solo UI: delimitar o liberar líneas editables por el agente |
+| conciliar-medicacion | Solo UI: confirmar antecedentes y medicación referida |
+| medir-revision | Solo UI: iniciar, señalar plan visible y terminar cronómetro |
+| restaurar-demo | Solo UI y mock: restaurar los cuatro casos propios; conserva mediciones |
+
+Demo autónoma: `pnpm demo` arranca mock con SQL en `.demo/pglite`, separado de `data/`, y conserva el agente configurado. Requiere un modelo conectado para propuestas reales. No publica la app ni utiliza el backend privado. La restauración no afecta a otros usuarios; las exportaciones de mock son sintéticas.
+
+## Cierre PARA_EL_100
+
+- El agente siempre envía versionEsperada, incluso sin alcance. MEGI vivo se fusiona con decisiones por pauta y fuente; recetas nuevas entran sin_confirmar. El caché por paciente/adaptador dura una sola acción y conserva el historial crónico.
+- contextoFuente contiene solo SOAP, propuestas, pendientes e historial mínimo (sin transcripción). Legacy abierto se hidrata con fallo 502 tipado; exportado sin fuentes permanece neutro.
+- sugerir-reemplazo guarda una alternativa pendiente para alcanceSugerencias, sin tocar la receta. resolver-sugerencia es solo UI; requiere desbloqueo médico explícito y pauta de origen intacta. La sugerencia tiene máquina de estados pendiente→aceptada/descartada.
+- La petición de PARA_EL_100.md autoriza build, README, pruebas Playwright reproducibles y commit local, además de los checks habituales. No autoriza publicación/GitHub/Clips. Evidencia: ../evidencia/README.md.
+
+- Rendimiento: `contextoFuenteDe` reutiliza el JSON fuente únicamente dentro de `enPeticionMegi`. No conservarlo entre acciones. Las pistas de invalidación de una herramienta sustituyen las del objetivo anterior. El prompt clínico usa ocho herramientas iniciales, acciones nativas, `lazyContext`, `corpusTools: "lazy"` y `skipFilesContext`; conserva el modelo seleccionado y reutiliza el contexto fresco de la pantalla. En Core 0.222.2, `leanPrompt` desactiva el contexto diferido; no combinarlo con esta configuración. Las métricas vinculan la versión al runId del contexto confiable del servidor (v5); el hook público de observabilidad lee la traza propia bajo demanda y muestra solo duraciones.
+
+- `proponer-plan` entrega el control al médico tras guardar y verificar: `endsTurn` y recibo `core.record-change`. Solo el éxito termina el turno; los fallos siguen llegando al agente. `mcpTool: true` conserva la creación directa externa con resultado completo y enlace. Las ediciones posteriores continúan en el chat; aprobar sigue siendo solo UI.
+
+- Un recibo proyectado conserva id de plan/consulta. El observador de tool-done refresca solo recursos conocidos de escrituras transaccionales exitosas, con o sin completedSideEffect; no extiende el alcance a consultas ajenas ni a lecturas/fallos. Resultados sin ids conservan el alcance del input de esa llamada, nunca el de una llamada anterior.
+
+- En el inspector clínico, `dynamicSuggestions={false}` conserva las sugerencias en español: la lista genérica dinámica del framework sustituye las estáticas con textos en inglés. Comprobarlo con el panel vacío abierto.
+
+- Identidad de despliegue: `app.id = megi-revision`. La demo xAI mide D4 con `AGENT_MODEL=grok-4.20-0309-non-reasoning`; un valor explícito tiene prioridad sobre la preferencia de app. Reiniciar el servidor tras cambiar el archivo de entorno y verificar el modelo efectivo en el selector y su traza. Nunca mostrar credenciales al revisar esta configuración.

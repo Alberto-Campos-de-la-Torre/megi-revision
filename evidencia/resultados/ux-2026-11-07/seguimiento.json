@@ -1,0 +1,87 @@
+{
+  "fecha": "2026-11-07T17:30:43.038Z",
+  "checks": [
+    {
+      "id": "sugerencia-1-clicable-en-movil",
+      "passed": false,
+      "detail": "locator.click: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '¿Qué consultas tengo pendientes de revisión?', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"bienvenida-agente__chip\" data-agent-native-node-id=\"an-5c8bf932b5d4c534-28\" data-agent-native-motion-source-file=\"app/components/chat/ChatRouteContent.tsx\" data-agent-native-motion-source-hash=\"75c4169da2e1070ef5d77fbcdefd646189a11f4cafe48fd86588a48c9eee5870\">¿Qué consultas tengo pendientes de revisión?</button>\u001b[22m\n\u001b[2m  - attempting click action (trial run)\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div data-agent-composer-slot=\"area\" data-agent-composer-variant=\"default\" class=\"agent-composer-area min-w-0 shrink-0 py-2 text-start px-0\">…</div> from <footer class=\"agentkit-chat-footer\">…</footer> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action (trial run)\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div data-agent-composer-slot=\"area\" data-agent-compo"
+    },
+    {
+      "id": "sugerencia-2-clicable-en-movil",
+      "passed": true
+    },
+    {
+      "id": "sugerencia-3-clicable-en-movil",
+      "passed": true
+    },
+    {
+      "id": "bloqueo-conservado",
+      "passed": true
+    },
+    {
+      "id": "tablero-movil-sin-overflow",
+      "passed": true
+    },
+    {
+      "id": "aprobacion-exportacion-conservadas",
+      "passed": true
+    }
+  ],
+  "observaciones": [
+    {
+      "id": "para-empezar-oscuro",
+      "text": "rgb(74, 92, 106)",
+      "background": "rgb(33, 33, 33)"
+    },
+    {
+      "id": "contraste-sugerencia-inspector",
+      "text": "rgb(26, 26, 26)",
+      "font": "11px",
+      "ancestors": [
+        {
+          "tag": "SECTION",
+          "cls": "w-full min-w-0 overflow-hidden px-3 py-2 agentkit-host-suggestions",
+          "bg": "rgb(17, 32, 44)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "SECTION",
+          "cls": "agentkit-chat ",
+          "bg": "rgb(17, 32, 44)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "DIV",
+          "cls": "agent-sidebar-panel-inner relative flex min-h-0 flex-1 flex-col",
+          "bg": "rgb(17, 32, 44)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "DIV",
+          "cls": "agent-sidebar-panel agent-kit-density flex shrink-0 flex-col overflow-hidden antialiased agent-native-chat-view-transition",
+          "bg": "rgb(17, 32, 44)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "DIV",
+          "cls": "agent-sidebar-shell flex min-w-0 flex-1 h-screen overflow-hidden",
+          "bg": "rgb(255, 255, 255)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "DIV",
+          "cls": "agent-layout-shell chat-layout-shell flex h-screen w-full overflow-hidden bg-background text-foreground",
+          "bg": "rgb(255, 255, 255)",
+          "color": "rgb(26, 26, 26)"
+        },
+        {
+          "tag": "BODY",
+          "cls": "",
+          "bg": "rgb(255, 255, 255)",
+          "color": "rgb(26, 26, 26)"
+        }
+      ]
+    }
+  ],
+  "nota": "Sustituye la espera networkidle de la navegación posterior al chat por domcontentloaded y espera del control visible; conserva resultados anteriores."
+}

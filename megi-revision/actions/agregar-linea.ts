@@ -1,14 +1,17 @@
+// guard:allow-resource-action-access — La autorización privada se aplica con requireEmail y planDe/lineaDe (owner_email) dentro de la transacción; no hay recursos compartidos.
+import { enPeticionMegi } from "../server/lib/megi/peticion.js";
 import { defineAction } from "@agent-native/core/action";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { comprobarAlcance, comprobarVersion, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
   exigirEspacio,
   lineaInputSchema,
-  lineaOut,
+  lineasOut,
   lineaOutputSchema,
   origenAutorizado,
   origenSchema,
@@ -19,11 +22,13 @@ import {
 } from "../server/lib/plan.js";
 
 export default defineAction({
+  changeResource: (_input, result) => ({ resourceType: `plan:${result.linea.planId}`, resourceId: result.linea.planId }),
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
     "Añade una línea (fármaco o pendiente) a un plan existente y vuelve a verificar los fármacos. Para varios cambios a la vez usa reajustar-plan.",
   schema: lineaInputSchema.extend({
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
     planId: z.string().describe("Id del plan"),
     origen: origenSchema,
   }),
@@ -32,13 +37,16 @@ export default defineAction({
     linea: lineaOutputSchema,
     message: z.string(),
   }),
-  run: async (args, ctx) => {
+  run: async (args, ctx) => enPeticionMegi(async () => {
+    const inicio = performance.now();
     const email = requireEmail(ctx);
     const orgId = ctx?.orgId ?? null;
-    const origen = origenAutorizado(args.origen, ctx);
+    const origen = await origenAutorizado(args.origen, ctx);
     return getDb().transaction(async (tx) => {
       const plan = await planDe(args.planId, email, tx, true);
       exigirAbierto(plan);
+      comprobarVersion(plan, args.versionEsperada, origen);
+      comprobarAlcance(plan, origen, [], true);
       await exigirEspacio(plan.id, 1, tx);
       const [ultima] = await tx
         .select({ orden: schema.lineasPlan.orden })
@@ -85,13 +93,14 @@ export default defineAction({
       );
       if (args.tipo === "farmaco")
         await verificarPlan(plan.id, plan.pacienteId, tx);
+      await guardarVersion(plan.id, origen, "agregar", args.justificacion || args.texto, inicio, tx, ctx);
       const [row] = await tx
         .select()
         .from(schema.lineasPlan)
         .where(eq(schema.lineasPlan.id, id))
         .limit(1);
       if (!row) throw new Error("Línea no encontrada tras insertar.");
-      const out = lineaOut(row);
+      const out = lineasOut([row], plan)[0]!;
       ctx?.signal?.throwIfAborted();
       return {
         id,
@@ -99,5 +108,5 @@ export default defineAction({
         message: `Añadida ${out.texto} (verificación ${out.verificacion})`,
       };
     });
-  },
+  }),
 });
