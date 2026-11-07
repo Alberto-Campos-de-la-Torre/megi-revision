@@ -1,16 +1,78 @@
 # Qué falta para el 100 · iteraciones del proyecto
 
-Actualizado: **7 nov 2026**. Calificación independiente vigente: **91/100** (dictamen de reverificación UX, `evidencia/resultados/ux-2026-11-07/reverificacion/dictamen.json`), frente a 88/100 tras I1–I6, 84/100 antes de H1–H3 y 77/100 en el plan inicial. Es una evaluación del proyecto para el hackatón; la nota oficial corresponde al jurado. Completar este plan no garantiza una puntuación concreta.
+Actualizado: **7 nov 2026**. Calificación independiente vigente: **94/100**, tras revisar la respuesta al dictamen de 91 y contrastar sus hashes con el código (`evidencia/resultados/respuesta-dictamen-91.json`). Antecedentes: 91/100 tras reverificar UX; 88/100 tras I1–I6; 84/100 antes de H1–H3 y 77/100 en el plan inicial. Es una evaluación del proyecto para el hackatón; la nota oficial corresponde al jurado. Completar este plan no garantiza una puntuación concreta.
 
 | Criterio | Nota actual | Puntos hasta el máximo | Qué lo cerraría (según el dictamen) |
 |---|---|---|---|
-| Utilidad y ejecución | 38/40 | 2 | Sesiones con médicos y cuentas individuales en la instalación destino (detenido por decisión de David) |
-| Creatividad y diseño | 17/20 | 3 | Fricción corregida y comprobada (hecho el 7 nov) + observación de usuarios nuevos (pendiente de participantes) |
-| Innovación | 17/20 | 3 | Valor diferencial con resultados comparables (hecho el 7 nov, sin afirmar reducción de errores) |
-| Uso de Agent-Native | 19/20 | 1 | Demo del código final con continuidad UI–agente (hecha el 7 nov); puntuación final subjetiva del jurado |
-| **Total** | **91/100** | 9 | Lo que queda depende de médicos reales y de la entrega |
+| Utilidad y ejecución | 38/40 | 2 | Sesiones con médicos y cuentas individuales en la instalación destino (pendientes de disponibilidad y autorización) |
+| Creatividad y diseño | 18/20 | 2 | Observar la primera revisión de usuarios nuevos y ajustar la comunicación del flujo |
+| Innovación | 18/20 | 2 | Contraste justo del valor diferencial y consistencia del agente en intentos repetidos |
+| Uso de Agent-Native | 20/20 | 0 | Mantener la continuidad UI–agente y las garantías ya acreditadas; no hace falta añadir funciones del framework para perseguir puntos |
+| **Total** | **94/100** | **6** | Seis puntos de valoración, no seis requisitos oficiales ni puntos garantizados por tarea |
 
 Alcance de esta actualización: dejar las iteraciones listas para ejecutar. **No autoriza publicación, despliegue, GitHub, Clips, envío del formulario o commits.** La publicación y el envío siguen detenidos según [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md). Se conserva el histórico al final; sus instrucciones no son el plan vigente.
+
+## Investigación de antecedentes y plan 94 → 100 · 7 nov 2026
+
+**Resultado de esta tarea: investigación y propuestas; G1–G6 no están ejecutados por estar descritos aquí.** La falta de participantes y cuentas reales permanece explícita. No se contactó a terceros, no se consumió el modelo para nuevos experimentos ni se reanudó la entrega.
+
+### Qué sabemos de otros eventos relacionados con Builder.io
+
+| Antecedente comprobado | Relación y evidencia primaria | Aplicación propuesta a MEGI |
+|---|---|---|
+| Builder.io × Contra Challenge, 2025 | Antecedente directo de la empresa, con Fusion; no es una edición previa de Agent-Native. La [publicación de Builder.io](https://contra.com/community/roQoglmR-the-winners-of-the-builder-challenge) confirma los ganadores. | Aprender del enfoque y de la presentación, usando la rúbrica actual como autoridad. |
+| The Git Bang, primer lugar | El [caso del autor](https://contra.com/p/g7sEcOZ2-the-git-bang-3-d-git-hub-data-visualization) presenta exploración visual de repositorios en 3D y acceso a una vista de lista. Sus comentarios atribuidos a jueces son el relato del autor, no una transcripción verificada aquí. | Una interacción central que se entiende al verla: el médico fija una línea, el agente trabaja solo donde se le permite y el cambio aparece en el mismo plan. La traslación a un producto clínico es claridad y control visibles; no se propone copiar efectos 3D. |
+| Clarify, segundo lugar | El [caso original del autor](https://contra.com/p/oWeoUkMq-ai-tool-that-turns-vague-client-feedback-into-clear-design-tasks) describe una tarea enfocada: comentarios ambiguos entran y tareas estructuradas salen. Su [caso posterior](https://contra.com/p/QFAFWNPQ-clarify-20-taking-a-builderio-challenge-entry-to-launch) identifica el desafío de 2025. | Mostrar un problema concreto, una transformación y un resultado utilizable. Mantener la mesa post-consulta como flujo principal. |
+| Syntropy Room, tercer lugar | El resultado figura en el anuncio de Builder; la [presentación de su autora](https://contra.com/community/ROOMqWEO-ive-been-thinking-a-lot-about) explica cómo organiza contenido mezclado con IA. | Mostrar entrada y salida reales en pantalla, con controles del usuario sobre el resultado. |
+| SolidHack 2022 / CodeImage | El [organizador](https://opencollective.com/solid/updates/solidhack-2022-winners-announced) identifica a Builder entre los patrocinadores. El [repositorio de CodeImage](https://github.com/riccardoperra/codeimage) declara el premio Best Application y muestra su función de exportar capturas de código. Evento organizado por Solid, no por Builder.io. | Un resultado concreto y exportable ayuda a explicar el producto. Es una analogía de alcance, no evidencia de cómo puntuará el jurado de este hackatón. |
+
+**Inferencia de esta investigación:** las candidaturas citadas permiten entender pronto qué problema resuelven y ver una transformación tangible. No conocemos las puntuaciones individuales ni podemos probar que esos rasgos causaran sus premios. Tampoco se encontró una serie verificable de ganadores de ediciones anteriores de Agent-Native; el anuncio de resultados del evento actual está previsto para el 13 nov. No usar anuncios programados como si ya fueran resultados.
+
+Las [bases vigentes](https://www.builder.io/hackathon/rules) mantienen utilidad/ejecución 40 %, diseño 20 %, innovación 20 % y uso de Agent-Native 20 %. En un empate priorizan utilidad/ejecución. No exigen ensayos con médicos, una certificación clínica, repositorio público o despliegue público. Estos dos últimos son opcionales. Las pruebas con usuarios y cuentas reales se proponen como evidencia de calidad y utilidad, no como condiciones oficiales nuevas. El Clips público y el formulario sí forman parte de la entrega.
+
+### Seis intervenciones propuestas para fortalecer los seis puntos pendientes
+
+Las dos primeras refuerzan utilidad, las dos siguientes diseño y las dos últimas innovación. No se asigna automáticamente un punto a cada intervención. Esfuerzos y umbrales de abajo son propuestas internas, no exigencias del concurso.
+
+Para G1, el resultado principal es tiempo total hasta una tarea correctamente completada. Mantener las duraciones de API y herramientas como diagnósticos separados; no estimar tiempo humano restándolas del total sin demostrar que cubren intervalos distintos y sin solapamiento. Si solo hay un médico, se puede documentar como observación exploratoria n=1, sin presentarlo como validación general. Si no hay ninguno, usuarios no clínicos aportan únicamente a G3 y no cierran I4.
+
+| ID / prioridad | Trabajo concreto | Evidencia que permitiría darlo por hecho | Dependencia / esfuerzo estimado |
+|---|---|---|---|
+| **G1 · P0 · Utilidad** | Ejecutar el [protocolo de médicos](evidencia/protocolo-usuarios.md) con 2–3 participantes, si están disponibles: revisión manual y con agente sobre casos equivalentes, con orden alternado. Medir tarea correcta, tiempo hasta exportación, correcciones, ayudas y fallos. La revisión manual conserva el mismo verificador. | Resultados individuales anonimizados, tamaño de muestra, mediana/rango y tareas correctas por modalidad; registrar abandonos. El criterio de éxito se define antes de medir. Solo describir mejora si los datos la muestran. | Médicos voluntarios y autorización de participación; propuesta de 45–60 min por médico más análisis. No contactar ni reclutar automáticamente. |
+| **G2 · P1 · Utilidad** | Repetir la integración ya probada con dos cuentas individuales de la instalación destino, primero en un entorno de ensayo con pacientes ficticios. Comprobar expedientes separados, firma, retirada de conexión y errores de credenciales. | Registro de la revisión exacta, entorno y denegaciones cruzadas, sin secretos; `approved_by` corresponde a la cuenta individual. La dependencia deja de ser «solo probado en backend de evidencia». | Cuentas y entorno proporcionados por el consultorio; propuesta de 1–2 h una vez disponibles. No habilitar uso clínico ni modificar la instalación por este documento. |
+| **G3 · P0 · Diseño** | Primera revisión sin instrucciones paso a paso: observar si un médico nuevo distingue «fijada por el médico» de «bloqueo de seguridad», reconoce medicación sin confirmar y sabe qué se guardó. Aplicar las correcciones que surjan de esa observación. | Por cada tarea: completada sin ayuda / con ayuda / no completada; momento de confusión y cambio asociado. Repetir la tarea después del arreglo. Desarrolladores ajenos al proyecto pueden aportar usabilidad, identificados como tales; no cuentan como médicos ni validan utilidad clínica. | Puede aprovechar las sesiones G1; propuesta de 15 min de observación inicial. Sin participantes permanece pendiente. |
+| **G4 · P0 · Diseño** | Preparar un guion breve centrado en un solo caso: problema, propuesta, límite del agente, cambio visible, conciliación y exportación. Objetivo editorial de 150–180 s, no duración obligatoria de las bases. Revisar lenguaje y final del caso como se detalla abajo. | Guion ensayable con marcas de tiempo, narración alineada con lo que realmente ocurre y lista de afirmaciones respaldadas. Grabación y publicación solo cuando David reanude esos pasos. | Equipo; propuesta de 1–2 h para guion y ensayo. Puede prepararse sin publicar ni gastar en funciones nuevas. |
+| **G5 · P1 · Innovación** | Añadir un contraste honesto a la comparación estructural existente: receta/recomendación de partida igual, mismas fuentes y mismo criterio de resultado. Cuando haya médicos, comparar manual con verificador frente a mesa con agente. Si se prueba un chat, darle el mismo contexto y modelo; documentar sus capacidades y todas sus salidas. | Separar «mecanismo presente» de «resultado observado». `valor-diferencial.md` sigue siendo evidencia estructural; un cero por construcción no prueba que la mesa supere empíricamente a otros productos. No afirmar «menos errores» ni «más rápido» a partir de esa tabla. | Datos de G1; comparación adicional con chat es opcional y genera consumo si se ejecuta. No construir una plataforma rival solo para el benchmark. |
+| **G6 · P0 · Innovación** | Medir consistencia del agente con el modelo efectivo actual: lote inicial propuesto de 20 ejecuciones (4 casos × 5), sesiones y bases de ensayo nuevas; propuesta, cambio permitido, intento sobre fijada, pregunta ambigua y recuperación. Registrar todos los intentos, incluidos texto sin herramienta, cambios rechazados, cancelaciones y reintentos. | JSON por run y resumen: éxito al primer intento, éxito tras reintento, escrituras reales frente a texto, latencia mediana/rango y peor caso, modelo efectivo y consumo. No seleccionar solo ejecuciones buenas. Los invariantes del servidor deben mantenerse en todas. | Equipo; requiere decidir ejecutar el lote y asumir su consumo. Aquí solo se propone. Ante una violación de permisos o escritura indebida, detener el lote y corregir antes de continuar. |
+
+### Ajuste de la historia que verá el jurado
+
+Propuesta de frase de entrada: **«Un médico y un agente revisan la misma receta; el médico decide qué puede cambiar y ve cada cambio antes de aprobar».** El vídeo debe mostrar pronto el plan y una decisión del médico, sin abrir con documentación, instalación o inventario de pruebas.
+
+| Tiempo propuesto | Qué mostrar | Qué demuestra |
+|---|---|---|
+| 0–15 s | Consulta ficticia y decisión pendiente de revisión | Problema y usuario claros |
+| 15–40 s | Propuesta real y alerta visible | El agente produce un registro utilizable y el verificador tiene un papel visible |
+| 40–85 s | Médico fija una línea y autoriza otra; agente reajusta dentro del alcance | Colaboración sobre el mismo registro y control del médico |
+| 85–115 s | Antes/después, motivo y fuente | Qué cambió y por qué; no confundir una explicación con una escritura |
+| 115–155 s | Resolver o rechazar bloqueos del caso, conciliar y aprobar/exportar | Resultado completo, con decisión médica explícita |
+| 155–180 s | Resultado, aportación nueva y evidencia de utilidad disponible | Cierre verificable, sin beneficios inventados |
+
+**Detalle importante del guion actual:** `evidencia/demo-continuidad.md` fija el ibuprofeno que el verificador del caso sintético marca bloqueado; `continuidad.mjs` puede marcar la casilla de confirmación al final. Es válido para probar el override explícito, pero conviene que el recorrido principal termine **sin bloqueos de seguridad pendientes**: el médico desbloquea y rechaza o resuelve esa línea antes de exportar. Otra opción es fijar desde el principio una línea no alertada y dejar la alertada abierta a una sugerencia pendiente de revisión médica. No se propone una pauta clínica nueva ni se afirma seguridad absoluta por ausencia de alertas. Mantener el override como prueba secundaria, no como la decisión que define la demo.
+
+Usar consistentemente **«Fijada por el médico»** para el permiso de edición y **«Bloqueo de seguridad»** para la alerta del verificador, si G3 confirma esa confusión. Comprobar todas las etiquetas, narración y pruebas al cambiarlo; el estado interno puede conservar su nombre. La distinción debe entenderse por texto e icono, además de color.
+
+La narración y el tablero deben coincidir: si el agente solo escribe texto, la demo muestra el aviso y la recuperación real. Si hay un fallo, no simular recibos ni presentar una ejecución fabricada. La última continuidad ya documenta un reintento; G6 permitirá saber con qué frecuencia ocurre.
+
+### Orden práctico y límites de cierre
+
+1. Preparar G4 y el diseño del lote G6; el trabajo de código se limita a fallos que aparezcan, sin añadir módulos ni otro rediseño general.
+2. Si se dispone de médicos, ejecutar G1 y G3 juntos y usar sus datos en G5. Si no se dispone, conservar I4 pendiente; un LLM que simula un médico o una revisión propia no sustituye la muestra.
+3. Completar G2 cuando existan cuentas y autorización del entorno. La conexión propia ya implementada no debe presentarse como instalación real probada antes de ese paso.
+4. Tras cambios nuevos, repetir las comprobaciones afectadas y los recorridos principales sobre el código final. Guardar hashes, resultados fallidos y estado de cada G. Los 195 tests previos no acreditan una revisión de código posterior por sí solos.
+5. Preparar el cierre de entrega con [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md): actualizar el modelo declarado (todavía menciona Grok 4.7), revisar procedencia y equipo. Al reanudarse la publicación, verificar el Clips sin sesión, enviar el formulario y conservar el recibo. Mantener la pausa hasta entonces. El límite oficial es 9 nov, 23:59 PT (10 nov, 01:59 Ciudad de México).
+
+**Criterio de «casi perfecta»:** una tarea valiosa que un usuario nuevo puede completar; el estado guardado es comprensible y fiable; los límites del agente sobreviven a intentos repetidos; la demo demuestra esas propiedades y declara sus límites. La validación clínica formal es un frente distinto. La nota permanece en 94 mientras solo se investiga o planifica; se recalifica con evidencia nueva y sigue sin ser una predicción de premio.
 
 ## Respuesta al dictamen de 91 · 7 nov 2026
 
