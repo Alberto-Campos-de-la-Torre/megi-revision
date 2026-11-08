@@ -71,6 +71,8 @@ export default defineAction({
   }),
   outputSchema: z.object({
     id: z.string(),
+    /** La versión que deja este reajuste; úsala para el cambio siguiente. */
+    version: z.number(),
     aplicados: z.number(),
     lineas: z.array(lineaOutputSchema),
     resumen: z.object({
@@ -273,16 +275,17 @@ export default defineAction({
         );
       await verificarPlan(plan.id, plan.pacienteId, tx);
 
-      await guardarVersion(plan.id, origen, "reajustar", args.explicacion, inicio, tx, ctx);
+      const version = await guardarVersion(plan.id, origen, "reajustar", args.explicacion, inicio, tx, ctx);
       const lineas = lineasOut(await lineasDe(plan.id, tx), plan);
       const resumen = resumenVerificacion(lineas);
       ctx?.signal?.throwIfAborted();
       return {
         id: plan.id,
+        version,
         aplicados: args.cambios.length,
         lineas,
         resumen,
-        message: `Reajuste aplicado (${args.cambios.length} cambios). Ahora: ${resumen.bloqueos} bloqueo(s), ${resumen.advertencias} advertencia(s), ${resumen.bloqueadas} línea(s) bloqueada(s) intactas.`,
+        message: `Reajuste aplicado (${args.cambios.length} cambios), plan en la versión ${version}. Ahora: ${resumen.bloqueos} bloqueo(s), ${resumen.advertencias} advertencia(s), ${resumen.bloqueadas} línea(s) bloqueada(s) intactas.`,
       };
     });
   }),

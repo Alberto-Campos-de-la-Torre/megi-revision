@@ -35,6 +35,11 @@ export default defineAction({
   }),
   outputSchema: z.object({
     id: z.string(),
+    // La versión que deja esta escritura. Sin ella el agente no puede encadenar
+    // dos cambios en un turno: medido con un modelo real, tras añadir la primera
+    // línea reusaba la versión que ya había gastado, la segunda salía rechazada
+    // y el framework retenía el reintento. `actualizar-linea` ya la devolvía.
+    version: z.number(),
     linea: lineaOutputSchema,
     message: z.string(),
   }),
@@ -95,7 +100,7 @@ export default defineAction({
       );
       if (args.tipo === "farmaco")
         await verificarPlan(plan.id, plan.pacienteId, tx);
-      await guardarVersion(plan.id, origen, "agregar", args.justificacion || args.texto, inicio, tx, ctx);
+      const version = await guardarVersion(plan.id, origen, "agregar", args.justificacion || args.texto, inicio, tx, ctx);
       const [row] = await tx
         .select()
         .from(schema.lineasPlan)
@@ -106,8 +111,9 @@ export default defineAction({
       ctx?.signal?.throwIfAborted();
       return {
         id,
+        version,
         linea: out,
-        message: `Añadida ${out.texto} (verificación ${out.verificacion})`,
+        message: `Añadida ${out.texto} (verificación ${out.verificacion}). El plan queda en la versión ${version}: úsala como versionEsperada si vas a hacer otro cambio.`,
       };
     });
   }),

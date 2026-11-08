@@ -82,7 +82,23 @@ export function comprobarVersion(plan: PlanRow, esperada?: number, actor?: strin
   // quedaba en bucle. Con el número en la propia respuesta, la corrección no
   // necesita otra lectura. No revela nada: el dueño del plan ya puede leerla.
   if (actor === "agente" && esperada === undefined) fail(`Falta versionEsperada: es obligatoria en toda edición del agente. La versión vigente de este plan es ${plan.version}; vuelve a llamar con versionEsperada=${plan.version}.`, { errorCode: "version_desactualizada", statusCode: 409 });
-  if (esperada !== undefined && esperada !== plan.version) fail(`El plan cambió: mandaste versionEsperada=${esperada} y la vigente es ${plan.version}. Relee el plan antes de continuar.`, { errorCode: "version_desactualizada", statusCode: 409 });
+  if (esperada !== undefined && esperada !== plan.version) {
+    // Exactamente una versión por detrás y actor agente: acaba de escribir y
+    // está reusando la versión que ya gastó. Medido con un modelo real: ese es
+    // el patrón de 9 de cada 10 turnos con dos cambios, y el reintento lo
+    // retiene el framework por escritura repetida, así que el segundo cambio no
+    // entraba nunca. El remedio va en el propio error, que es donde el modelo lo
+    // lee: la respuesta de cada escritura ya trae la versión nueva, y varios
+    // cambios caben en una sola llamada a reajustar-plan.
+    const acabaDeEscribir = actor === "agente" && esperada === plan.version - 1;
+    fail(
+      `El plan cambió: mandaste versionEsperada=${esperada} y la vigente es ${plan.version}.` +
+        (acabaDeEscribir
+          ? ` Tu escritura anterior dejó el plan en la versión ${plan.version} y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion="agregar" por cada línea nueva) en vez de una llamada por línea.`
+          : " Relee el plan antes de continuar."),
+      { errorCode: "version_desactualizada", statusCode: 409 },
+    );
+  }
 }
 export function comprobarAlcance(plan: PlanRow, actor: string, ids: string[], agrega = false) {
   if (actor === "medico" || !plan.alcanceAgente) return;

@@ -1,12 +1,12 @@
 {
   "bateria": "fase 2 · bloque HTTP (superficie real de la app)",
-  "cuando": "2026-11-08T05:14:15.418Z",
+  "cuando": "2026-11-08T05:22:37.372Z",
   "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision",
   "base": "http://127.0.0.1:8186",
   "megi": "http://127.0.0.1:8020",
   "siembra": "Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
   "node": "v22.22.2",
-  "appCommit": "9a349ba",
+  "appCommit": "3fc7efc",
   "segundos": 14,
   "total": 49,
   "pasan": 49,
@@ -33,7 +33,7 @@
     "siembra: Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
     "en `agent-native dev` el HTML lo sirve Vite y no pasa por el middleware de nitro: le faltan x-content-type-options, referrer-policy, cross-origin-opener-policy. En producción el middleware sí va montado sobre nitro, pero `agent-native start` no arranca con PGlite (503 DEPLOY_SETTINGS_REQUIRED), así que no se pudo medir."
   ],
-  "registro": "/tmp/fase2-OAvefq/dev-server.log",
+  "registro": "/tmp/fase2-v6VtXs/dev-server.log",
   "checks": [
     {
       "id": "pre-megi-de-demo-en-pie",
@@ -118,7 +118,7 @@
     {
       "id": "b3-propuesta-creada-y-verificada",
       "pasa": true,
-      "detalle": "plan cfc3907d-47bb-4fe1-a783-fe9ab931bbad · bloqueos 0 advertencias 1"
+      "detalle": "plan 084de0c6-c913-4fa9-af90-7172fd835a9b · bloqueos 0 advertencias 1"
     },
     {
       "id": "b4-el-aine-sale-marcado-con-motivo",
@@ -203,12 +203,12 @@
     {
       "id": "c1-dos-propuestas-a-la-vez-dejan-un-plan",
       "pasa": true,
-      "detalle": "ok 1 · plan_existente 1 · plan 1385317e-e205-4330-b7fc-ee71d8d9e7ca"
+      "detalle": "ok 1 · plan_existente 1 · plan 10166d26-8671-4425-a7ed-afd66365f07d"
     },
     {
       "id": "c2-dos-cambios-a-la-vez-dejan-un-estado-valido",
       "pasa": true,
-      "detalle": "200/200 → estado final \"rechazada\""
+      "detalle": "200/200 → estado final \"bloqueada\""
     },
     {
       "id": "c3-dos-aprobaciones-a-la-vez-aprueban-una-vez",
