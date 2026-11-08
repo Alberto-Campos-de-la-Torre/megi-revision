@@ -378,7 +378,11 @@ export function llamadasDe(eventos: unknown[]): Llamada[] {
     }
     salida.push({ tool, args, error: m?.[1] ?? (esError ? "error" : null), cerrada: false, crudo: [e] });
   }
-  return salida;
+  // Un fragmento que se quedó sin argumentos y sin cierre no es una llamada: el
+  // modelo empezó a dictarla y cambió de herramienta a mitad, así que nunca
+  // salió. Medido: uno de esos se contaba como escritura sin `versionEsperada`.
+  // Una llamada de verdad sin argumentos sí recibe su evento de cierre.
+  return salida.filter((c) => c.cerrada || Object.keys(c.args).length > 0);
 }
 
 /**
@@ -630,6 +634,9 @@ try {
       // forma que se vio con un modelo real y la que antes no se contaba.
       { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x" } },
       { type: "tool_done", tool: "agregar-linea", result: "Falta versionEsperada: es obligatoria… (version_desactualizada)" },
+      // Un fragmento abandonado a mitad: el modelo empezó a dictar `agregar-linea`
+      // y cambió de herramienta. No es una llamada y no debe contarse.
+      { type: "tool_start", tool: "agregar-linea", input: {} },
       { type: "tool_start", tool: "obtener-plan", input: { consultaId: CONSULTA, otra: 1 } },
       { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x", versionEsperada: 3 } },
       { type: "tool_done", tool: "agregar-linea", result: { id: "l" } },
