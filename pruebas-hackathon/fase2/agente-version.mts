@@ -167,6 +167,9 @@ async function porTeclado(etiqueta: string): Promise<string> {
   return valor.trim();
 }
 
+/** De dónde salió la clave que se acabó usando; va al informe. */
+let fuenteClave = "ninguna";
+
 /** Deja en el entorno la clave que necesita el motor elegido. */
 async function configuraClave() {
   if (ATAJO?.baseUrl && !(process.env.OPENAI_BASE_URL ?? "").trim()) {
@@ -183,25 +186,35 @@ async function configuraClave() {
   }
   const vars = CLAVES.find(([m]) => m === (MOTOR ?? "anthropic"))?.[1] ?? [];
   for (const v of vars) recuerdaSecreto(process.env[v]);
-  const faltan = vars.filter((v) => (process.env[v] ?? "").trim() === "");
-  if (!faltan.length) return;
+  const yaPuestas = vars.filter((v) => (process.env[v] ?? "").trim() !== "");
+  // Lo que se pide a mano MANDA sobre lo que ya hubiera en el entorno o en el
+  // `.env`. Antes solo preguntaba si el valor faltaba, y una clave vieja
+  // exportada en la sesión se usaba en silencio: la prueba decía «hay clave» sin
+  // haber pedido nada y fallaba con «Incorrect API key provided» sin que se
+  // viera de dónde salía.
+  const aPoner = PEDIR_CLAVE || CLAVE_ARCHIVO ? vars : vars.filter((v) => !yaPuestas.includes(v));
+  if (!aPoner.length) {
+    fuenteClave = yaPuestas.length ? "el entorno o megi-revision/.env" : "ninguna";
+    if (yaPuestas.length) nota(`clave tomada de ${fuenteClave} para ${yaPuestas.join(", ")}`);
+    return;
+  }
   if (CLAVE_ARCHIVO) {
     const leido = readFileSync(CLAVE_ARCHIVO, "utf8").split("\n")[0]!.trim();
     if (!leido) throw new Error(`${CLAVE_ARCHIVO} está vacío`);
-    for (const v of faltan) process.env[v] = leido;
+    for (const v of aPoner) process.env[v] = leido;
     recuerdaSecreto(leido);
-    nota(`clave leída de ${CLAVE_ARCHIVO} para ${faltan.join(", ")} (no se guarda en ningún sitio)`);
+    fuenteClave = CLAVE_ARCHIVO;
+    nota(`clave leída de ${CLAVE_ARCHIVO} para ${aPoner.join(", ")}${yaPuestas.length ? " (ignorando la que ya había en el entorno)" : ""}`);
     return;
   }
-  if (PEDIR_CLAVE) {
-    for (const v of faltan) {
-      const valor = await porTeclado(`Clave para ${v} (no se verá al teclear)`);
-      if (!valor) throw new Error(`No se introdujo ${v}`);
-      process.env[v] = valor;
-      recuerdaSecreto(valor);
-    }
-    nota(`clave introducida por teclado para ${faltan.join(", ")} (solo vive en este proceso)`);
+  for (const v of aPoner) {
+    const valor = await porTeclado(`Clave para ${v} (no se verá al teclear)`);
+    if (!valor) throw new Error(`No se introdujo ${v}`);
+    process.env[v] = valor;
+    recuerdaSecreto(valor);
   }
+  fuenteClave = "el teclado";
+  nota(`clave introducida por teclado para ${aPoner.join(", ")}${yaPuestas.length ? " (ignorando la que ya había en el entorno)" : ""}; solo vive en este proceso`);
 }
 const CONSULTA = opcion("consulta", "demo-c2")!;
 const ITERACIONES = opcion("iteraciones", "14")!;
@@ -633,7 +646,7 @@ try {
   } else {
     await configuraClave();
     const listos = conClave();
-    if (listos.length) nota(`motores con clave en este entorno: ${listos.join(", ")}`);
+    if (listos.length) nota(`motores con clave disponible: ${listos.join(", ")}`);
     else nota(`No hay clave de ningún proveedor. Miré: ${[...new Set(CLAVES.flatMap(([, v]) => v))].join(", ")}. Pásala con --pedir-clave o --clave-archivo, o ponla en el entorno; --motores lista los motores.`);
     if (MOTOR && !listos.includes(MOTOR) && MOTOR !== "ai-sdk:ollama") {
       nota(`Pediste --motor ${MOTOR} y no veo su variable puesta: si falla, es por eso.`);
@@ -652,9 +665,17 @@ try {
       ].join("\n");
       const t = await turnoDelAgente(mensaje);
       const llamadas = llamadasDe(t.eventos);
-      if (i === 1) { mide("j-motor", { motor: t.motor, modelo: t.modelo }); mide("j-herramientas-ofrecidas", t.ofrecidas); }
+      if (i === 1) { mide("j-motor", { motor: t.motor, modelo: t.modelo, claveTomadaDe: fuenteClave }); mide("j-herramientas-ofrecidas", t.ofrecidas); }
       pasadas.push({ pasada: i, ms: t.ms, llamadas: llamadas.map((x) => ({ tool: x.tool, args: x.args, error: x.error })), respuesta: t.responseText || null, fallo: t.fallo, usage: t.usage, eventos: t.eventos });
       nota(`pasada ${i}: ${t.ms} ms, ${llamadas.length} llamada(s)${t.fallo ? " · con fallo" : ""}`);
+      // Si el proveedor rechaza la credencial o el modelo, repetir no aporta
+      // nada: se corta y se dice qué pasa, en vez de gastar tres veces lo mismo.
+      const cuerpo = String((t.fallo as any)?.proveedor?.cuerpo ?? "");
+      const credencial = /api key|unauthorized|forbidden|invalid.?argument|does not exist|not found|quota|rate limit/i.test(cuerpo);
+      if (llamadas.length === 0 && credencial) {
+        nota(`el proveedor rechazó la petición y no se intentan más pasadas. Clave tomada de: ${fuenteClave}. Dijo: ${cuerpo.slice(0, 200)}`);
+        break;
+      }
     }
     mide("j-pasadas", pasadas.map((p) => ({ pasada: p.pasada, ms: p.ms, llamadas: p.llamadas.length })));
     crudas = pasadas.map((p) => ({
