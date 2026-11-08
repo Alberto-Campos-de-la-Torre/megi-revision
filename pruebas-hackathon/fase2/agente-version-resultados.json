@@ -1,6 +1,6 @@
 {
   "bateria": "fase 2 · bloque J (el contrato de versión, con el agente)",
-  "cuando": "2026-11-08T05:28:23.061Z",
+  "cuando": "2026-11-08T05:41:10.221Z",
   "modo": "arnes (sin modelo)",
   "modeloPedido": null,
   "motorPedido": null,
@@ -30,6 +30,7 @@
           "agregar-linea!version_desactualizada",
           "agregar-linea!version_desactualizada",
           "obtener-plan",
+          "agregar-linea",
           "agregar-linea"
         ]
       }

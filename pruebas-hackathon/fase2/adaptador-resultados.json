@@ -1,8 +1,8 @@
 {
   "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
-  "cuando": "2026-11-08T05:29:28.617Z",
+  "cuando": "2026-11-08T05:41:45.935Z",
   "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision/",
-  "appCommit": "680a0da",
+  "appCommit": "0eed789",
   "node": "v22.22.2",
   "total": 29,
   "pasan": 29,

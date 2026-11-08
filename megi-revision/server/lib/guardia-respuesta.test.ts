@@ -94,6 +94,13 @@ describe("revisaRespuestaFinal", () => {
     expect(revisaRespuestaFinal({ texto: "   ", resultados: soloLecturas })).toBeNull();
   });
 
+  it("pide sustituir la respuesta, no añadir la corrección detrás", () => {
+    // Medido: el modelo corrigió añadiendo, y el médico leía primero la frase
+    // falsa: «Plan guardado: 5 líneas… No se guardó nada: …».
+    const r = revisaRespuestaFinal({ texto: "Plan guardado: 5 líneas.", resultados: soloLecturas })!;
+    expect(r.retryMessage).toMatch(/SUSTITUYE tu respuesta entera/);
+  });
+
   it("el mensaje de reserva no promete nada que no se pueda comprobar", () => {
     const r = revisaRespuestaFinal({ texto: "Plan guardado: 5 líneas.", resultados: soloLecturas })!;
     expect(r.fallbackMessage).not.toMatch(/\d+\s+(líneas|bloqueos|advertencias)/);

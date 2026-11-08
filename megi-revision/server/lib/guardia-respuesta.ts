@@ -103,6 +103,9 @@ export function revisaRespuestaFinal(ctx: {
     .map((r) => r.name);
   return {
     retryMessage:
+      "SUSTITUYE tu respuesta entera; no la continúes ni conserves ninguna frase anterior. " +
+      "Medido con un modelo real: una respuesta corregida que se añadía detrás dejaba al médico " +
+      "leyendo primero la frase falsa. " +
       "En este turno NO entró ninguna escritura en el plan: no hay recibo de " +
       (rechazos.length
         ? `ninguna acción (${[...new Set(rechazos)].join(", ")} fue rechazada). `
