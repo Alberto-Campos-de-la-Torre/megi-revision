@@ -54,10 +54,17 @@ megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts -
 megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts
 ```
 
-La quinta necesita la clave del proveedor en el entorno o en `megi-revision/.env`
-(`ANTHROPIC_API_KEY`, o `OPENAI_API_KEY` + `OPENAI_BASE_URL` con `--motor openai`);
+La quinta necesita la clave del proveedor en el entorno o en `megi-revision/.env`;
 las guardadas en Ajustes de la app no sirven, porque corre contra una base
-desechable. Lee su cabecera: dice qué mide y qué no.
+desechable. Vale cualquiera de los once motores que registra el framework, y
+cada uno lee su propia variable: `--motores` los lista y marca el que ya tiene
+clave aquí. `anthropic` es el de por defecto (`ANTHROPIC_API_KEY`);
+`ai-sdk:google` lee `GOOGLE_GENERATIVE_AI_API_KEY`, `ai-sdk:openrouter`
+`OPENROUTER_API_KEY`, `ai-sdk:groq` `GROQ_API_KEY`, `ai-sdk:mistral`
+`MISTRAL_API_KEY`, `ai-sdk:cohere` `COHERE_API_KEY`, `ai-sdk:ollama`
+`OLLAMA_BASE_URL` (local, sin clave), `builder` las dos de Builder.io, y
+`ai-sdk:openai` `OPENAI_API_KEY` —con `OPENAI_BASE_URL` sirve para xAI/Grok y
+cualquier compatible—. Lee su cabecera: dice qué mide y qué no.
 
 Variables: `APP_MEGI_REVISION`, `REPO_HACKATHON`, `MEGI_DEMO_DIR`, `MEGI_URL`,
 `MEGI_USER`, `MEGI_PASSWORD`, `PUERTO_PRUEBA`. Opciones útiles: `--sin-sembrar`

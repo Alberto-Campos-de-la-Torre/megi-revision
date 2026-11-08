@@ -41,20 +41,35 @@
  *   # 1 · comprobar el arnés sin gastar nada (no llama a ningún modelo):
  *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts --arnes
  *
- *   # 2 · la prueba de verdad, con la clave del proveedor en el entorno.
- *   #     Anthropic es el motor por defecto del framework:
- *   export ANTHROPIC_API_KEY=...
- *   #     o un compatible con OpenAI (xAI, etc.), declarando el motor:
- *   export OPENAI_BASE_URL=https://api.x.ai/v1
- *   export OPENAI_API_KEY=...
+ *   # 2 · ver qué motores hay registrados y cuál tiene clave en este entorno:
+ *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts --motores
+ *
+ *   # 3 · la prueba de verdad. Cada motor lee su propia variable:
+ *   #
+ *   #   --motor                 variable
+ *   #   anthropic (por defecto) ANTHROPIC_API_KEY   (+ ANTHROPIC_BASE_URL opcional)
+ *   #   ai-sdk:anthropic        ANTHROPIC_API_KEY
+ *   #   ai-sdk:openai           OPENAI_API_KEY      (+ OPENAI_BASE_URL: con eso
+ *   #                                                vale xAI/Grok y cualquier
+ *   #                                                compatible con OpenAI)
+ *   #   ai-sdk:openrouter       OPENROUTER_API_KEY
+ *   #   ai-sdk:google           GOOGLE_GENERATIVE_AI_API_KEY
+ *   #   ai-sdk:groq             GROQ_API_KEY
+ *   #   ai-sdk:mistral          MISTRAL_API_KEY
+ *   #   ai-sdk:cohere           COHERE_API_KEY
+ *   #   ai-sdk:ollama           OLLAMA_BASE_URL     (local, sin clave)
+ *   #   builder                 BUILDER_PUBLIC_KEY + BUILDER_PRIVATE_KEY
+ *   #
+ *   export GOOGLE_GENERATIVE_AI_API_KEY=...        # el que sea
  *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
- *     --motor openai --modelo grok-4.20-0309-non-reasoning
+ *     --motor ai-sdk:google --repeticiones 3
  *
  * La clave tiene que venir del entorno o de `megi-revision/.env`: las que estén
  * guardadas en Ajustes > Agente de la app no sirven, porque esta prueba corre
  * contra una base de datos desechable y no ve esa configuración.
  *
- * Opcionales: `--modelo <nombre>`, `--motor <nombre>`, `--iteraciones <n>`,
+ * Opcionales: `--motores` (lista los motores y cuál tiene clave aquí),
+ * `--modelo <nombre>`, `--motor <nombre>`, `--iteraciones <n>`,
  * `--consulta <id>` (por defecto demo-c2), `--repeticiones <n>` (la conducta de
  * un modelo varía entre ejecuciones: con 1 se obtiene una anécdota, no una tasa).
  *
@@ -75,6 +90,23 @@ const opcion = (n: string, pordefecto?: string) => {
   return i >= 0 && argv[i + 1] && !argv[i + 1]!.startsWith("--") ? argv[i + 1]! : pordefecto;
 };
 const SOLO_ARNES = bandera("arnes");
+const SOLO_MOTORES = bandera("motores");
+
+/** Qué variable mira cada motor del framework; sirve para el aviso y para `--motores`. */
+const CLAVES: Array<[string, string[]]> = [
+  ["anthropic", ["ANTHROPIC_API_KEY"]],
+  ["ai-sdk:anthropic", ["ANTHROPIC_API_KEY"]],
+  ["ai-sdk:openai", ["OPENAI_API_KEY"]],
+  ["ai-sdk:openrouter", ["OPENROUTER_API_KEY"]],
+  ["ai-sdk:google", ["GOOGLE_GENERATIVE_AI_API_KEY"]],
+  ["ai-sdk:groq", ["GROQ_API_KEY"]],
+  ["ai-sdk:mistral", ["MISTRAL_API_KEY"]],
+  ["ai-sdk:cohere", ["COHERE_API_KEY"]],
+  ["ai-sdk:ollama", ["OLLAMA_BASE_URL"]],
+  ["builder", ["BUILDER_PUBLIC_KEY", "BUILDER_PRIVATE_KEY"]],
+];
+const conClave = () =>
+  CLAVES.filter(([, vars]) => vars.every((v) => (process.env[v] ?? "").trim() !== "")).map(([m]) => m);
 const CONSULTA = opcion("consulta", "demo-c2")!;
 const ITERACIONES = opcion("iteraciones", "14")!;
 const REPETICIONES = Number(opcion("repeticiones", "1"));
@@ -289,6 +321,21 @@ async function turnoDelAgente(mensaje: string) {
 // ═══════════════════════════════ la prueba ═════════════════════════════════
 let fallo = false;
 try {
+  if (SOLO_MOTORES) {
+    const f = await cargaBucle();
+    const lista = (f.listAgentEngines?.() ?? []).map((e: any) => e?.engine ?? e);
+    const listos = new Set(conClave());
+    console.log("Motores registrados por el framework (· = tiene su variable puesta aquí):\n");
+    for (const e of lista) {
+      const nombre = String(e?.name ?? "?");
+      const vars = CLAVES.find(([m]) => m === nombre)?.[1] ?? [];
+      console.log(`  ${listos.has(nombre) ? "·" : " "} ${nombre.padEnd(22)} ${String(e?.defaultModel ?? "—").padEnd(26)} ${vars.join(" + ") || "(sin variable conocida)"}`);
+    }
+    console.log("\nSe elige con --motor <nombre>, y el modelo con --modelo <nombre>.");
+    process.exitCode = 0;
+    // No se monta base ni se escribe JSON: es solo una consulta.
+    process.exit(0);
+  }
   await abreBase();
 
   // Montaje: un plan existente, y una escritura más para que la versión no sea
@@ -347,8 +394,11 @@ try {
     nota("--arnes: montaje y analizador comprobados; el turno del agente no se ejecuta y no se gasta nada");
     mide("j-arnes", "sin turno de modelo");
   } else {
-    if (!process.env.ANTHROPIC_API_KEY && !process.env.OPENAI_API_KEY && !process.env.AGENT_ENGINE && !MOTOR) {
-      nota("No hay clave de proveedor en el entorno: el turno fallará al llamar al modelo. Lee la cabecera de este archivo.");
+    const listos = conClave();
+    if (listos.length) nota(`motores con clave en este entorno: ${listos.join(", ")}`);
+    else nota(`No hay clave de ningún proveedor. Miré: ${[...new Set(CLAVES.flatMap(([, v]) => v))].join(", ")}. El turno fallará al llamar al modelo; corre --motores para ver la lista.`);
+    if (MOTOR && !listos.includes(MOTOR) && MOTOR !== "ai-sdk:ollama") {
+      nota(`Pediste --motor ${MOTOR} y no veo su variable puesta: si falla, es por eso.`);
     }
     mide("j-reglas-del-producto-caracteres", reglasDelProducto().length);
     const pasadas: any[] = [];
