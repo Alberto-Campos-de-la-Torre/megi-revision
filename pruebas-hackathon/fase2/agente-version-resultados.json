@@ -1,0 +1,40 @@
+{
+  "bateria": "fase 2 · bloque J (el contrato de versión, con el agente)",
+  "cuando": "2026-11-08T03:46:54.857Z",
+  "modo": "arnes (sin modelo)",
+  "modeloPedido": null,
+  "motorPedido": null,
+  "consulta": "demo-c2",
+  "iteracionesMax": 14,
+  "repeticiones": 1,
+  "advertencia": "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
+  "total": 2,
+  "pasan": 2,
+  "resultados": [
+    {
+      "id": "j0-version-al-empezar",
+      "medicion": 2
+    },
+    {
+      "id": "j0-el-montaje-dejo-la-version-por-encima-de-la-inicial",
+      "passed": true,
+      "detail": 2
+    },
+    {
+      "id": "j0b-el-analizador-de-eventos-lee-un-flujo-con-409-y-recuperacion",
+      "passed": true,
+      "detail": {
+        "llamadas": [
+          "obtener-plan",
+          "agregar-linea!version_desactualizada",
+          "obtener-plan",
+          "agregar-linea"
+        ]
+      }
+    },
+    {
+      "id": "j-arnes",
+      "medicion": "sin turno de modelo"
+    }
+  ]
+}

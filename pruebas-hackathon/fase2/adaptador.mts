@@ -616,13 +616,9 @@ try {
   {
     const plan = await capta(() => call("obtener-plan", { consultaId: "demo-c4" }));
     const html = `<img src=x onerror="alert(1)">`;
-    // Desde el cierre del 7-nov toda edición del agente exige `versionEsperada`,
-    // y `obtener-plan` no la devuelve: la única lectura que la trae es
-    // `historial-plan`. Se lee por ahí, que es el camino que tendría el agente.
-    const hist = await capta(() =>
-      call("historial-plan", { planId: (plan.valor as any).id }),
-    );
-    const version = (hist.valor as any)?.versiones?.[0]?.version;
+    // Desde el cierre del 7-nov toda edición del agente exige `versionEsperada`.
+    // La trae el propio `obtener-plan`, en `plan.version` (viene de `planOut`).
+    const version = (plan.valor as any)?.plan?.version;
     const r = await capta(() =>
       call("agregar-linea", {
         planId: (plan.valor as any).id,

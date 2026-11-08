@@ -46,7 +46,18 @@ megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/catalogo.mts
 
 # 4 · los requisitos del envío (compila, tipos, doctor, licencias, secretos, datos)
 node pruebas-hackathon/fase2/requisitos.mjs
+
+# 5 · el contrato de versión, con el agente de verdad. Las cuatro de arriba no
+#     gastan nada; esta llama a un modelo, así que va aparte y pide clave.
+#     --arnes comprueba el montaje sin llamar a ningún modelo.
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts --arnes
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts
 ```
+
+La quinta necesita la clave del proveedor en el entorno o en `megi-revision/.env`
+(`ANTHROPIC_API_KEY`, o `OPENAI_API_KEY` + `OPENAI_BASE_URL` con `--motor openai`);
+las guardadas en Ajustes de la app no sirven, porque corre contra una base
+desechable. Lee su cabecera: dice qué mide y qué no.
 
 Variables: `APP_MEGI_REVISION`, `REPO_HACKATHON`, `MEGI_DEMO_DIR`, `MEGI_URL`,
 `MEGI_USER`, `MEGI_PASSWORD`, `PUERTO_PRUEBA`. Opciones útiles: `--sin-sembrar`

@@ -14,7 +14,7 @@ import {
 
 export default defineAction({
   description:
-    "Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId.",
+    "Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId. Devuelve en `plan.version` la versión vigente, que es la que hay que mandar como `versionEsperada` en cualquier edición, y en `plan.alcanceAgente` las líneas que el agente puede editar.",
   schema: z.object({
     planId: z.string().optional().describe("Id del plan"),
     consultaId: z.string().optional().describe("O bien el id de la consulta (p. ej. demo-c3)"),

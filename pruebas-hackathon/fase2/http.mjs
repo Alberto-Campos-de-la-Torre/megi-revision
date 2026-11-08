@@ -649,13 +649,12 @@ async function bloqueB(ui, token) {
   // requisito para aprobar: con un solo candidato `sin_confirmar` el plan
   // responde 409 `medicacion_sin_conciliar`. Es el paso que da el médico en la
   // pantalla de conciliación, y aquí se da por el mismo camino: leer los
-  // candidatos de `obtener-plan`, la versión de `historial-plan` —la única
-  // lectura que la trae— y decidir sobre todos.
+  // candidatos y la versión de `obtener-plan` —ambos vienen en la misma lectura:
+  // `conciliacion` y `plan.version`— y decidir sobre todos.
   const porConciliar = (estado.json?.conciliacion ?? []).filter(
     (m) => m.estado === "sin_confirmar",
   );
-  const hist = await ui("historial-plan", { planId: plan.id }, { lectura: true });
-  const versionActual = hist.json?.versiones?.[0]?.version;
+  const versionActual = estado.json?.plan?.version;
   const conciliado = porConciliar.length
     ? await ui("conciliar-medicacion", {
         planId: plan.id,
@@ -839,10 +838,9 @@ async function bloqueC(ui, token) {
     );
     let resultado = "no había medicación sin confirmar";
     if (pendientes.length) {
-      const h = await ui("historial-plan", { planId }, { lectura: true });
       const c = await ui("conciliar-medicacion", {
         planId,
-        versionEsperada: h.json?.versiones?.[0]?.version,
+        versionEsperada: previo.json?.plan?.version,
         decisiones: pendientes.map((m) => ({ id: m.id, estado: "activo" })),
         adicionales: [],
       });
