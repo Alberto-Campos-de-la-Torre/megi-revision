@@ -190,8 +190,22 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > turno porque no había plan. Ahora le contesta y mide el intercambio completo,
 > que es el de la demo.
 >
-> La tanda de diez pasadas **hay que repetirla** con esto puesto: es la única
-> cifra del producto final que falta.
+> **8-nov, cuarta tanda (14/14): diez de diez.** Con el reintento desbloqueado y
+> la versión obligatoria en lo que ve el modelo, las diez pasadas hicieron el
+> mismo turno: leer el plan, dos escrituras con su `versionEsperada`, y el
+> recibo contado. **20 escrituras, 20 aplicadas, ningún rechazo y ningún 409**
+> —ninguna pasada volvió a abrir a ciegas—, los dos pendientes puestos, las tres
+> líneas anteriores intactas (3 → 5 líneas, versión 2 → 4) y ninguna respuesta
+> que afirme un cambio sin recibo. Tres llamadas por pasada, entre 2,6 y 4,3
+> segundos cada una.
+>
+> Son **14 comprobaciones puntuadas, no 14 de 16**: las dos de j5 —«tras un 409
+> releyó y volvió con versión» y «no se encadenaron más de dos 409»— solo
+> existen si hubo un conflicto que juzgar, y esta vez no hubo ninguno. El camino
+> de recuperación no se queda sin medir: lo cubren `j0b`, que lee un flujo con
+> 409 y recuperación, y el escenario `reintento`, los dos gratis.
+>
+> Evidencia: `historico/agente-version-2026-11-08T21-39-42-250Z-modelo.json`.
 
 La fase 1 llamó a las acciones **como funciones**, con un `ctx` escrito a mano. Eso prueba
 las reglas, pero no prueba quién puede llamarlas: `ctx.caller` lo decide el transporte, y
@@ -312,6 +326,7 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario varias` · tres líneas en una llamada | — | **14/14** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario promesa` · el turno que promete sin hacer | — | **15/15** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario reintento` · el reintento corregido tras un 409 | 13/15 | **15/15** |
+| `fase2/agente-version.mts --motor grok --repeticiones 10` · el agente de verdad, diez veces | 12/16 | **14/14 · 10 de 10 pasadas** |
 | `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **83 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |

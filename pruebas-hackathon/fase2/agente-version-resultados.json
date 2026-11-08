@@ -1,6 +1,6 @@
 {
   "bateria": "fase 2 · bloque J (el contrato de versión, con el agente)",
-  "cuando": "2026-11-08T17:46:54.809Z",
+  "cuando": "2026-11-08T21:39:42.250Z",
   "modo": "con modelo",
   "modeloPedido": "grok-4.20-0309-non-reasoning",
   "motorPedido": "ai-sdk:openai",
@@ -9,8 +9,8 @@
   "iteracionesMax": 14,
   "repeticiones": 10,
   "advertencia": "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
-  "total": 16,
-  "pasan": 12,
+  "total": 14,
+  "pasan": 14,
   "resultados": [
     {
       "id": "j0-version-al-empezar",
@@ -93,52 +93,52 @@
       "medicion": [
         {
           "pasada": 1,
-          "ms": 5502,
-          "llamadas": 4
+          "ms": 3325,
+          "llamadas": 3
         },
         {
           "pasada": 2,
-          "ms": 3737,
+          "ms": 4277,
           "llamadas": 3
         },
         {
           "pasada": 3,
-          "ms": 1334,
-          "llamadas": 1
+          "ms": 2600,
+          "llamadas": 3
         },
         {
           "pasada": 4,
-          "ms": 1343,
-          "llamadas": 1
+          "ms": 3009,
+          "llamadas": 3
         },
         {
           "pasada": 5,
-          "ms": 1470,
-          "llamadas": 1
+          "ms": 3118,
+          "llamadas": 3
         },
         {
           "pasada": 6,
-          "ms": 2557,
+          "ms": 3930,
           "llamadas": 3
         },
         {
           "pasada": 7,
-          "ms": 2390,
+          "ms": 2616,
           "llamadas": 3
         },
         {
           "pasada": 8,
-          "ms": 3007,
+          "ms": 3037,
           "llamadas": 3
         },
         {
           "pasada": 9,
-          "ms": 2513,
+          "ms": 2674,
           "llamadas": 3
         },
         {
           "pasada": 10,
-          "ms": 2472,
+          "ms": 3275,
           "llamadas": 3
         }
       ]
@@ -149,7 +149,7 @@
       "detail": {
         "pasadas": 10,
         "arrancaron": 10,
-        "llamadas": 25,
+        "llamadas": 30,
         "fallos": []
       }
     },
@@ -157,32 +157,25 @@
       "id": "j1-herramientas-usadas",
       "medicion": [
         "agregar-linea",
-        "obtener-plan",
-        "reajustar-plan"
+        "obtener-plan"
       ]
     },
     {
       "id": "j2-leyo-el-plan-antes-de-escribir",
-      "passed": false,
+      "passed": true,
       "detail": {
         "primeras": [
-          "agregar-linea",
           "obtener-plan",
-          "reajustar-plan",
-          "reajustar-plan"
+          "agregar-linea",
+          "agregar-linea",
+          "obtener-plan"
         ]
       }
     },
     {
       "id": "j3-toda-escritura-llevo-versionEsperada",
-      "passed": false,
-      "detail": {
-        "cuantas": 1,
-        "de": 15,
-        "ejemplos": [
-          "reajustar-plan(cambios,explicacion,planId) → version_desactualizada"
-        ]
-      }
+      "passed": true,
+      "detail": "20 escritura(s), todas con versión"
     },
     {
       "id": "j4-no-se-hizo-pasar-por-el-medico",
@@ -191,36 +184,21 @@
     },
     {
       "id": "j5-409-version_desactualizada",
-      "medicion": 4
+      "medicion": 0
     },
     {
-      "id": "j5-tras-un-409-releyo-y-volvio-con-version",
-      "passed": false,
-      "detail": [
-        "pasada 1: tras el 409 → obtener-plan, reajustar-plan, reajustar-plan",
-        "pasada 1: tras el 409 → reajustar-plan (con versión)",
-        "pasada 7: tras el 409 → obtener-plan, agregar-linea (con versión)",
-        "pasada 10: tras el 409 → obtener-plan, agregar-linea (con versión)"
-      ]
-    },
-    {
-      "id": "j5b-no-se-encadenaron-mas-de-dos-409",
-      "passed": true,
-      "detail": 4
+      "id": "j5-recuperacion",
+      "medicion": "no se ejercitó: ninguna escritura llegó tarde"
     },
     {
       "id": "j8-por-pasada",
       "medicion": [
         {
           "pasada": 1,
-          "llamadas": 4,
-          "escrituras": 3,
-          "aplicadas": 0,
-          "rechazos": [
-            "version_desactualizada",
-            "version_desactualizada",
-            "error"
-          ]
+          "llamadas": 3,
+          "escrituras": 2,
+          "aplicadas": 2,
+          "rechazos": []
         },
         {
           "pasada": 2,
@@ -231,23 +209,23 @@
         },
         {
           "pasada": 3,
-          "llamadas": 1,
-          "escrituras": 0,
-          "aplicadas": 0,
+          "llamadas": 3,
+          "escrituras": 2,
+          "aplicadas": 2,
           "rechazos": []
         },
         {
           "pasada": 4,
-          "llamadas": 1,
-          "escrituras": 0,
-          "aplicadas": 0,
+          "llamadas": 3,
+          "escrituras": 2,
+          "aplicadas": 2,
           "rechazos": []
         },
         {
           "pasada": 5,
-          "llamadas": 1,
-          "escrituras": 0,
-          "aplicadas": 0,
+          "llamadas": 3,
+          "escrituras": 2,
+          "aplicadas": 2,
           "rechazos": []
         },
         {
@@ -261,11 +239,8 @@
           "pasada": 7,
           "llamadas": 3,
           "escrituras": 2,
-          "aplicadas": 0,
-          "rechazos": [
-            "version_desactualizada",
-            "error"
-          ]
+          "aplicadas": 2,
+          "rechazos": []
         },
         {
           "pasada": 8,
@@ -285,34 +260,27 @@
           "pasada": 10,
           "llamadas": 3,
           "escrituras": 2,
-          "aplicadas": 0,
-          "rechazos": [
-            "version_desactualizada",
-            "error"
-          ]
+          "aplicadas": 2,
+          "rechazos": []
         }
       ]
     },
     {
       "id": "j8-pasadas-que-aplicaron-los-dos-pendientes",
-      "medicion": "4 de 10"
+      "medicion": "10 de 10"
     },
     {
       "id": "j8b-la-mayoria-de-las-pasadas-completa-el-trabajo",
-      "passed": false,
-      "detail": "4 de 10 (objetivo: 8)"
+      "passed": true,
+      "detail": "10 de 10 (objetivo: 8)"
     },
     {
       "id": "j8-rechazos-sin-codigo-reconocido",
-      "medicion": [
-        "(sin mensaje)",
-        "(sin mensaje)",
-        "(sin mensaje)"
-      ]
+      "medicion": []
     },
     {
       "id": "j9-pasadas-que-dijeron-la-verdad-al-no-guardar",
-      "medicion": "6 de 10"
+      "medicion": "0 de 10"
     },
     {
       "id": "j9b-ninguna-respuesta-afirma-y-desmiente-a-la-vez",
@@ -337,12 +305,6 @@
           "Control en una semana",
           "Pendiente añadido en el montaje",
           "Control de presión en 72 h",
-          "Revisar adherencia en la próxima cita",
-          "Control de presión en 72 h",
-          "Revisar adherencia en la próxima cita",
-          "Control de presión en 72 h",
-          "Revisar adherencia en la próxima cita",
-          "Control de presión en 72 h",
           "Revisar adherencia en la próxima cita"
         ]
       }
@@ -352,116 +314,31 @@
       "passed": true,
       "detail": {
         "antes": 3,
-        "ahora": 11
+        "ahora": 5
       }
     },
     {
       "id": "j-version-al-terminar",
-      "medicion": 10
+      "medicion": 4
     }
   ],
   "pasadas": [
     {
       "pasada": 1,
-      "ms": 5502,
+      "ms": 3325,
       "fallo": null,
       "usage": {
-        "inputTokens": 33443,
-        "outputTokens": 363,
-        "cacheReadTokens": 21504,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 5,
-        "firstEngineEventAtMs": 1794159989384,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: reajustar-plan devolvió error por llamada duplicada. Relee el plan y confirma si los dos pendientes ya figuran.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              }
-            ],
-            "planId": "demo-c2",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes. Plan verificado, 0 bloqueos, 0 advertencias, aprobación médica pendiente."
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes. Plan verificado, 0 bloqueos, 0 advertencias, aprobación médica pendiente.",
-            "versionEsperada": 2
-          },
-          "error": "error"
-        }
-      ]
-    },
-    {
-      "pasada": 2,
-      "ms": 3737,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 29056,
-        "outputTokens": 158,
-        "cacheReadTokens": 21504,
+        "inputTokens": 29079,
+        "outputTokens": 160,
+        "cacheReadTokens": 20352,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
         "llmCalls": 4,
-        "firstEngineEventAtMs": 1794159994770,
+        "firstEngineEventAtMs": 1794173951072,
         "usageReported": true
       },
-      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Pendientes confirmados.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
         {
           "tool": "obtener-plan",
@@ -479,8 +356,8 @@
                 "texto": "Control de presión en 72 h"
               }
             ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 2
+            "versionEsperada": 2,
+            "planId": "940ba9e2-3ddc-4e0b-be4c-cc9b1787d58f"
           },
           "error": null
         },
@@ -493,8 +370,62 @@
                 "texto": "Revisar adherencia en la próxima cita"
               }
             ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 3
+            "versionEsperada": 3,
+            "planId": "940ba9e2-3ddc-4e0b-be4c-cc9b1787d58f"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 2,
+      "ms": 4277,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 29155,
+        "outputTokens": 167,
+        "cacheReadTokens": 20480,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173954214,
+        "usageReported": true
+      },
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Pendiente confirmación médica.",
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "6b8152a8-5d5d-45e0-977d-49d90bf76b89"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "6b8152a8-5d5d-45e0-977d-49d90bf76b89"
           },
           "error": null
         }
@@ -502,25 +433,53 @@
     },
     {
       "pasada": 3,
-      "ms": 1334,
+      "ms": 2600,
       "fallo": null,
       "usage": {
-        "inputTokens": 13377,
-        "outputTokens": 47,
-        "cacheReadTokens": 11008,
+        "inputTokens": 29124,
+        "outputTokens": 162,
+        "cacheReadTokens": 24448,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 2,
-        "firstEngineEventAtMs": 1794159998123,
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173958281,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: obtener-plan devolvió éxito pero no añadí pendientes. Llamo a agregar-linea dos veces con versionEsperada=4.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
         {
           "tool": "obtener-plan",
           "args": {
-            "planId": "demo-c2"
+            "consultaId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "dc95e25d-8f1b-49a1-8ffa-41ac51e713c8"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "dc95e25d-8f1b-49a1-8ffa-41ac51e713c8"
           },
           "error": null
         }
@@ -528,25 +487,53 @@
     },
     {
       "pasada": 4,
-      "ms": 1343,
+      "ms": 3009,
       "fallo": null,
       "usage": {
-        "inputTokens": 13377,
-        "outputTokens": 40,
-        "cacheReadTokens": 11008,
+        "inputTokens": 29076,
+        "outputTokens": 154,
+        "cacheReadTokens": 24448,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 2,
-        "firstEngineEventAtMs": 1794159999675,
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173960952,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: obtener-plan devolvió éxito pero no añadí pendientes. Llamo a agregar-linea ahora.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
         {
           "tool": "obtener-plan",
           "args": {
-            "consultaId": "demo-c2"
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "0f48f701-d7d5-46ed-8774-a86196db2ebe"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "0f48f701-d7d5-46ed-8774-a86196db2ebe"
           },
           "error": null
         }
@@ -554,25 +541,53 @@
     },
     {
       "pasada": 5,
-      "ms": 1470,
+      "ms": 3118,
       "fallo": null,
       "usage": {
-        "inputTokens": 13377,
-        "outputTokens": 43,
-        "cacheReadTokens": 7808,
+        "inputTokens": 29116,
+        "outputTokens": 162,
+        "cacheReadTokens": 25856,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 2,
-        "firstEngineEventAtMs": 1794160001064,
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173964350,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: obtener-plan devolvió éxito pero no se llamó a agregar-linea. No añado nada sin versiónEsperada.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
         {
           "tool": "obtener-plan",
           "args": {
             "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "00bcef8f-9b1b-43e1-b6b9-1aa898078f03"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "00bcef8f-9b1b-43e1-b6b9-1aa898078f03"
           },
           "error": null
         }
@@ -580,182 +595,20 @@
     },
     {
       "pasada": 6,
-      "ms": 2557,
+      "ms": 3930,
       "fallo": null,
       "usage": {
-        "inputTokens": 31321,
-        "outputTokens": 156,
-        "cacheReadTokens": 29312,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794160002394,
-        "usageReported": true
-      },
-      "respuesta": "Plan guardado: 7 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
-      "llamadas": [
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              }
-            ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 4
-          },
-          "error": null
-        },
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 5
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 7,
-      "ms": 2390,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 28645,
-        "outputTokens": 121,
-        "cacheReadTokens": 19840,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794160005036,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: agregar-linea devolvió error por duplicado en el turno. Revisa el plan actual.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              }
-            ],
-            "planId": "demo-c2",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              }
-            ],
-            "planId": "demo-c2",
-            "versionEsperada": 6
-          },
-          "error": "error"
-        }
-      ]
-    },
-    {
-      "pasada": 8,
-      "ms": 3007,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 33575,
+        "inputTokens": 29075,
         "outputTokens": 158,
         "cacheReadTokens": 25856,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
         "llmCalls": 4,
-        "firstEngineEventAtMs": 1794160007303,
+        "firstEngineEventAtMs": 1794173967613,
         "usageReported": true
       },
-      "respuesta": "Plan guardado: 9 líneas, 0 bloqueos y 0 advertencias. Pendientes añadidos.",
-      "llamadas": [
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              }
-            ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 6
-          },
-          "error": null
-        },
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "lineas": [
-              {
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 7
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 9,
-      "ms": 2513,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 35866,
-        "outputTokens": 158,
-        "cacheReadTokens": 24960,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794160010258,
-        "usageReported": true
-      },
-      "respuesta": "Plan guardado: 11 líneas, 0 bloqueos y 0 advertencias. Pendientes añadidos.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
         {
           "tool": "obtener-plan",
@@ -773,8 +626,8 @@
                 "texto": "Control de presión en 72 h"
               }
             ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 8
+            "versionEsperada": 2,
+            "planId": "42a7b4c3-56b7-4736-a9fe-b65ba7740799"
           },
           "error": null
         },
@@ -787,30 +640,37 @@
                 "texto": "Revisar adherencia en la próxima cita"
               }
             ],
-            "planId": "f2bc95e5-411f-4d71-a226-cd89bc092a5a",
-            "versionEsperada": 9
+            "versionEsperada": 3,
+            "planId": "42a7b4c3-56b7-4736-a9fe-b65ba7740799"
           },
           "error": null
         }
       ]
     },
     {
-      "pasada": 10,
-      "ms": 2472,
+      "pasada": 7,
+      "ms": 2616,
       "fallo": null,
       "usage": {
-        "inputTokens": 31675,
-        "outputTokens": 121,
-        "cacheReadTokens": 26880,
+        "inputTokens": 29029,
+        "outputTokens": 156,
+        "cacheReadTokens": 18944,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
         "llmCalls": 4,
-        "firstEngineEventAtMs": 1794160012968,
+        "firstEngineEventAtMs": 1794173971001,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: agregar-linea devolvió error por duplicado en el turno. Revisa el plan actual.",
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
       "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "consultaId": "demo-c2"
+          },
+          "error": null
+        },
         {
           "tool": "agregar-linea",
           "args": {
@@ -820,11 +680,152 @@
                 "texto": "Control de presión en 72 h"
               }
             ],
-            "planId": "demo-c2",
-            "versionEsperada": 1
+            "versionEsperada": 2,
+            "planId": "5c0858b1-b050-445d-a51f-02f96c2987bd"
           },
-          "error": "version_desactualizada"
+          "error": null
         },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "5c0858b1-b050-445d-a51f-02f96c2987bd"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 8,
+      "ms": 3037,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 29037,
+        "outputTokens": 154,
+        "cacheReadTokens": 25728,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173973844,
+        "usageReported": true
+      },
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "consultaId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "83a78957-150a-4326-aa04-23c7d487d87e"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "83a78957-150a-4326-aa04-23c7d487d87e"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 9,
+      "ms": 2674,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 29167,
+        "outputTokens": 160,
+        "cacheReadTokens": 24448,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173976723,
+        "usageReported": true
+      },
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "consultaId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2,
+            "planId": "b80b145a-21f1-4cfd-9127-a9e5da1945b2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "b80b145a-21f1-4cfd-9127-a9e5da1945b2"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 10,
+      "ms": 3275,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 29102,
+        "outputTokens": 156,
+        "cacheReadTokens": 25856,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 4,
+        "firstEngineEventAtMs": 1794173979567,
+        "usageReported": true
+      },
+      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo confirmado.",
+      "llamadas": [
         {
           "tool": "obtener-plan",
           "args": {
@@ -841,10 +842,24 @@
                 "texto": "Control de presión en 72 h"
               }
             ],
-            "planId": "demo-c2",
-            "versionEsperada": 10
+            "versionEsperada": 2,
+            "planId": "03820803-ab06-4f55-a0d8-5dfae124d8f4"
           },
-          "error": "error"
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 3,
+            "planId": "03820803-ab06-4f55-a0d8-5dfae124d8f4"
+          },
+          "error": null
         }
       ]
     }
