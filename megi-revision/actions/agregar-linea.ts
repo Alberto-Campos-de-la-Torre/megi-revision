@@ -29,7 +29,7 @@ export default defineAction({
   description:
     "Añade una línea (fármaco o pendiente) a un plan existente y vuelve a verificar los fármacos. Para varios cambios a la vez usa reajustar-plan.",
   schema: lineaInputSchema.extend({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
     planId: z.string().describe("Id del plan"),
     origen: origenSchema,
   }),

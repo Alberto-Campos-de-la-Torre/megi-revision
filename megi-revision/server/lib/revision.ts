@@ -77,8 +77,12 @@ export function medicacionParaVerificar(plan: PlanRow, vivo?: Paciente): Medicam
   return (vivo ? fusionarConciliacion(plan, vivo) : conciliacionDe(plan)).filter(m => m.estado === "activo" || m.estado === "sin_confirmar");
 }
 export function comprobarVersion(plan: PlanRow, esperada?: number, actor?: string) {
-  if (actor === "agente" && esperada === undefined) fail("Relee el plan y envía versionEsperada antes de cualquier edición del agente.", { errorCode: "version_desactualizada", statusCode: 409 });
-  if (esperada !== undefined && esperada !== plan.version) fail("El plan cambió. Relee la versión actual antes de continuar.", { errorCode: "version_desactualizada", statusCode: 409 });
+  // El mensaje lleva la versión vigente a propósito: medido con un modelo real,
+  // el agente que recibía solo «relee el plan» volvía a llamar sin el campo y se
+  // quedaba en bucle. Con el número en la propia respuesta, la corrección no
+  // necesita otra lectura. No revela nada: el dueño del plan ya puede leerla.
+  if (actor === "agente" && esperada === undefined) fail(`Falta versionEsperada: es obligatoria en toda edición del agente. La versión vigente de este plan es ${plan.version}; vuelve a llamar con versionEsperada=${plan.version}.`, { errorCode: "version_desactualizada", statusCode: 409 });
+  if (esperada !== undefined && esperada !== plan.version) fail(`El plan cambió: mandaste versionEsperada=${esperada} y la vigente es ${plan.version}. Relee el plan antes de continuar.`, { errorCode: "version_desactualizada", statusCode: 409 });
 }
 export function comprobarAlcance(plan: PlanRow, actor: string, ids: string[], agrega = false) {
   if (actor === "medico" || !plan.alcanceAgente) return;

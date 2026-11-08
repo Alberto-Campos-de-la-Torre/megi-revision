@@ -56,7 +56,7 @@ export default defineAction({
   description:
     "Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médico, NO se aplica nada y responde linea_bloqueada (409) con los ids; explícaselo al médico en vez de reintentar. Las líneas rechazadas tampoco se tocan (reactívalas con actualizar-linea).",
   schema: z.object({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
     planId: z.string().describe("Id del plan"),
     cambios: z
       .array(cambioSchema)

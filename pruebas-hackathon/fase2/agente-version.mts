@@ -82,7 +82,8 @@
  * contra una base de datos desechable y no ve esa configuración.
  *
  * Opcionales: `--motores` (lista los motores y cuál tiene clave aquí),
- * `--pedir-clave`, `--clave-archivo <ruta>`,
+ * `--pedir-clave`, `--clave-archivo <ruta>`, `--eventos-crudos` (añade al JSON
+ * los eventos del bucle, no solo las llamadas),
  * `--modelo <nombre>`, `--motor <nombre>`, `--iteraciones <n>`,
  * `--consulta <id>` (por defecto demo-c2), `--repeticiones <n>` (la conducta de
  * un modelo varía entre ejecuciones: con 1 se obtiene una anécdota, no una tasa).
@@ -306,7 +307,13 @@ export function llamadasDe(eventos: unknown[]): Llamada[] {
     // El código de error puede venir en el resultado, en un campo suelto o
     // dentro de un texto; se busca el primero que aparezca en el evento entero.
     const texto = JSON.stringify(e);
-    const m = /"errorCode"\s*:\s*"([a-z_]+)"/.exec(texto);
+    // El código puede venir como campo (`errorCode`) o solo dentro del texto que
+    // el bucle entrega al modelo. Medido con un modelo real: diez rechazos por
+    // pasada se contaban como uno porque el `done` no traía ni `isError` ni el
+    // campo, solo el mensaje. Por eso también se buscan los códigos conocidos.
+    const m =
+      /"errorCode"\s*:\s*"([a-z_]+)"/.exec(texto) ??
+      new RegExp(`\\b(${[...CODIGOS].join("|")})\\b`).exec(texto);
     const esError = e.isError === true || e.error != null || /"isError"\s*:\s*true/.test(texto);
     // Una llamada son dos eventos (apertura y cierre) o uno solo, según la
     // versión del framework. El cierre no es una llamada nueva: se pega a la
@@ -333,6 +340,19 @@ export function llamadasDe(eventos: unknown[]): Llamada[] {
   }
   return salida;
 }
+
+/**
+ * Códigos de error de la mesa. Se usan para reconocer un rechazo cuando el
+ * evento solo trae el mensaje y no el campo `errorCode`.
+ */
+const CODIGOS = new Set([
+  "version_desactualizada", "fuera_de_alcance", "linea_bloqueada", "plan_cerrado",
+  "plan_existente", "plan_demasiado_largo", "alertas_sin_confirmar", "solo_medico",
+  "sin_rol_clinico", "credenciales_no_disponibles", "medicacion_sin_conciliar",
+  "megi_no_disponible", "verificador_invalido", "not_found", "invalid_input",
+  "consulta_cerrada", "medicion_en_curso", "plan_no_visible", "megi_rechazo",
+  "verificacion_incompleta", "pagina_inconsistente",
+]);
 
 const ESCRITURAS = new Set([
   "proponer-plan", "agregar-linea", "actualizar-linea", "reajustar-plan",
@@ -510,6 +530,9 @@ async function turnoDelAgente(mensaje: string) {
 }
 
 // ═══════════════════════════════ la prueba ═════════════════════════════════
+/** Lo que se guardará en el JSON como evidencia cruda. */
+let crudas: unknown[] = [];
+
 let fallo = false;
 try {
   if (SOLO_MOTORES) {
@@ -560,6 +583,10 @@ try {
       { type: "tool_done", tool: "obtener-plan", result: { ok: true } },
       { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x" } },
       { type: "tool_done", tool: "agregar-linea", isError: true, result: { errorCode: "version_desactualizada" } },
+      // Un rechazo que solo trae el mensaje, sin `isError` ni `errorCode`: es la
+      // forma que se vio con un modelo real y la que antes no se contaba.
+      { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x" } },
+      { type: "tool_done", tool: "agregar-linea", result: "Falta versionEsperada: es obligatoria… (version_desactualizada)" },
       { type: "tool_start", tool: "obtener-plan", input: { consultaId: CONSULTA, otra: 1 } },
       { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x", versionEsperada: 3 } },
       { type: "tool_done", tool: "agregar-linea", result: { id: "l" } },
@@ -567,14 +594,16 @@ try {
     ];
     const l = llamadasDe(fabricado);
     const escrituras = l.filter((x) => ESCRITURAS.has(x.tool));
-    // El flujo fabricado tiene cuatro llamadas: dos lecturas y dos escrituras,
-    // la primera de ellas rechazada por versión.
+    // El flujo fabricado tiene cinco llamadas: dos lecturas y tres escrituras,
+    // las dos primeras rechazadas por versión —una con `errorCode`, la otra solo
+    // con el mensaje— y la tercera buena.
     const ok =
-      l.length === 4 &&
-      escrituras.length === 2 &&
+      l.length === 5 &&
+      escrituras.length === 3 &&
       escrituras[0]!.error === "version_desactualizada" &&
-      escrituras[1]!.error === null &&
-      escrituras[1]!.args.versionEsperada === 3 &&
+      escrituras[1]!.error === "version_desactualizada" && // reconocido solo por el mensaje
+      escrituras[2]!.error === null &&
+      escrituras[2]!.args.versionEsperada === 3 &&
       l.filter((x) => LECTURAS.has(x.tool)).length === 2;
     anota("j0b-el-analizador-de-eventos-lee-un-flujo-con-409-y-recuperacion", ok, {
       llamadas: l.map((x) => `${x.tool}${x.error ? `!${x.error}` : ""}`),
@@ -628,6 +657,12 @@ try {
       nota(`pasada ${i}: ${t.ms} ms, ${llamadas.length} llamada(s)${t.fallo ? " · con fallo" : ""}`);
     }
     mide("j-pasadas", pasadas.map((p) => ({ pasada: p.pasada, ms: p.ms, llamadas: p.llamadas.length })));
+    crudas = pasadas.map((p) => ({
+      pasada: p.pasada, ms: p.ms, fallo: p.fallo, usage: p.usage,
+      respuesta: typeof p.respuesta === "string" ? p.respuesta.slice(0, 2000) : null,
+      llamadas: p.llamadas,
+      ...(bandera("eventos-crudos") ? { eventos: (p.eventos as unknown[]).slice(0, 400) } : {}),
+    }));
 
     const todas = pasadas.flatMap((p) => p.llamadas as Llamada[]);
     const escrituras = todas.filter((x) => ESCRITURAS.has(x.tool));
@@ -655,9 +690,10 @@ try {
       { primeras: todas.slice(0, 4).map((x) => x.tool) });
 
     const sinVersion = escrituras.filter((x) => x.args.versionEsperada === undefined);
+    const resumeArgs = (x: Llamada) => `${x.tool}(${Object.keys(x.args).sort().join(",") || "sin argumentos"})${x.error ? ` → ${x.error}` : ""}`;
     anota("j3-toda-escritura-llevo-versionEsperada", escrituras.length > 0 && sinVersion.length === 0,
       sinVersion.length
-        ? sinVersion.map((x) => x.tool)
+        ? { cuantas: sinVersion.length, de: escrituras.length, ejemplos: [...new Set(sinVersion.map(resumeArgs))].slice(0, 6) }
         : escrituras.length === 0
           ? "no hubo ninguna escritura que mirar (ver j1)"
           : `${escrituras.length} escritura(s), todas con versión`);
@@ -718,6 +754,10 @@ try {
     advertencia: "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
     total: checks.length, pasan: checks.length - fallos.length,
     resultados: tapa(resultados),
+    // La evidencia cruda, que es lo que permite auditar lo que el analizador no
+    // viera: cada llamada con sus argumentos y su error, pasada por pasada. Los
+    // eventos del bucle, solo con `--eventos-crudos`, porque abultan mucho.
+    pasadas: tapa(crudas),
   }, null, 2) + "\n");
   try { rmSync(baseDir, { recursive: true, force: true }); } catch { /* da igual */ }
   console.log(`\n${checks.length - fallos.length}/${checks.length} · ${fallos.length} FALLA · ${destino.pathname}`);

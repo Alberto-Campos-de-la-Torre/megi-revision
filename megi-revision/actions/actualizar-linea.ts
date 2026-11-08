@@ -27,7 +27,7 @@ export default defineAction({
   description:
     "Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insistir; solo el médico la desbloquea desde la interfaz. Tras editar un fármaco se vuelve a verificar todo el plan.",
   schema: z.object({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
     lineaId: z.string().describe("Id de la línea (de obtener-plan)"),
     texto: z.string().trim().min(1).optional().describe("Nuevo fármaco o texto"),
     dosis: z.string().optional(),

@@ -1,8 +1,8 @@
 {
   "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
-  "cuando": "2026-11-08T03:46:15.365Z",
+  "cuando": "2026-11-08T04:17:12.522Z",
   "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision/",
-  "appCommit": "0b758ff",
+  "appCommit": "9953513",
   "node": "v22.22.2",
   "total": 29,
   "pasan": 29,
@@ -73,7 +73,7 @@
       "passed": true,
       "detail": {
         "filas": 50,
-        "ms": 5
+        "ms": 3
       }
     },
     {
@@ -89,7 +89,7 @@
     {
       "bloque": "F · el adaptador frente a un MEGI hostil",
       "id": "f7-milisegundos",
-      "medicion": 5
+      "medicion": 3
     },
     {
       "bloque": "F · el adaptador frente a un MEGI hostil",
@@ -102,7 +102,7 @@
       "id": "f9-sin-respuesta-corta-por-tiempo",
       "passed": true,
       "detail": {
-        "ms": 802,
+        "ms": 801,
         "mensaje": "MEGI no responde en http://megi.invalido (tiempo de espera agotado). ¿Está arrancado el backend?"
       }
     },

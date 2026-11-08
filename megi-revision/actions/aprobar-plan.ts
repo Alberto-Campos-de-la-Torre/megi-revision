@@ -33,7 +33,7 @@ export default defineAction({
   description:
     "Aprobación final y exportación FHIR: solo el médico desde la interfaz autenticada. El agente debe pedirle que use Aprobar y exportar; las llamadas tool, MCP, CLI y HTTP directo reciben solo_medico (403). Vuelve a verificar y exige confirmar los bloqueos. Reintentar un plan ya exportado devuelve el mismo resultado sin volver a aprobar.",
   schema: z.object({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión leída antes de editar; relectura obligatoria tras conflicto"),
+    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
     planId: z.string().describe("Id del plan"),
     confirmaAlertas: z
       .boolean()
