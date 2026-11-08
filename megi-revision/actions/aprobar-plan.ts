@@ -23,6 +23,7 @@ import { conectarMegi,
   requireEmail,
   resumenVerificacion,
   verificarPlan,
+  limpiaControles,
 } from "../server/lib/plan.js";
 
 export default defineAction({
@@ -64,6 +65,7 @@ export default defineAction({
   run: async (args, ctx) => enPeticionMegi(async () => {
     const inicio = performance.now();
     const email = requireEmail(ctx);
+    limpiaControles(args); // sin caracteres de control antes de tocar la base
     await exigirMedico(ctx);
     const orgId = ctx?.orgId ?? null;
     const origen = await origenAutorizado(args.origen, ctx);

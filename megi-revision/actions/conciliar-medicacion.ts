@@ -4,7 +4,7 @@ import { defineAction, fail } from "@agent-native/core/action";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
-import { exigirAbierto, exigirMedico, planDe, registrarEvento, requireEmail, verificarPlan } from "../server/lib/plan.js";
+import { exigirAbierto, exigirMedico, limpiaControles, planDe, registrarEvento, requireEmail, verificarPlan } from "../server/lib/plan.js";
 import { comprobarVersion, conciliacionDe, conciliadoSchema, guardarVersion } from "../server/lib/revision.js";
 export default defineAction({
   changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
@@ -13,7 +13,7 @@ export default defineAction({
   schema: z.object({ planId: z.string(), versionEsperada: z.number().int(), decisiones: z.array(z.object({ id: z.string(), estado: conciliadoSchema.shape.estado })).max(400), adicionales: z.array(z.object({ nombre: z.string().trim().min(1).max(160), dosis: z.string().max(160), frecuencia: z.string().max(160) })).max(40).default([]) }),
   outputSchema: z.object({ version: z.number(), medicacion: z.array(conciliadoSchema) }),
   run: async (args, ctx) => enPeticionMegi(async () => {
-    const inicio = performance.now(); const email = requireEmail(ctx); ctx?.signal?.throwIfAborted(); await exigirMedico(ctx);
+    const inicio = performance.now(); const email = requireEmail(ctx); limpiaControles(args); ctx?.signal?.throwIfAborted(); await exigirMedico(ctx);
     return getDb().transaction(async tx => {
       const p = await planDe(args.planId, email, tx, true); exigirAbierto(p); comprobarVersion(p, args.versionEsperada);
       const candidatos = conciliacionDe(p);

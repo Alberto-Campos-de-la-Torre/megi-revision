@@ -1,0 +1,273 @@
+{
+  "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
+  "cuando": "2026-11-06T07:40:09.537Z",
+  "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision/",
+  "appCommit": "d03fdf7",
+  "node": "v22.22.2",
+  "total": 29,
+  "pasan": 26,
+  "fallan": 3,
+  "resultados": [
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f1-500-con-html-es-error-controlado",
+      "passed": true,
+      "detail": {
+        "nombre": "MegiError",
+        "status": 500
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f2-502-vacio-es-error-controlado",
+      "passed": true,
+      "detail": {
+        "nombre": "MegiError"
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f3-json-roto-no-pasa-por-exito",
+      "passed": false,
+      "detail": {
+        "devolvió": {
+          "fecha": "",
+          "motivo": "",
+          "soap": {
+            "s": "",
+            "o": "",
+            "a": "",
+            "p": ""
+          },
+          "diagnosticos": [],
+          "medicamentosPropuestos": [],
+          "pendientes": [],
+          "estado": "pendiente",
+          "transcripcion": ""
+        }
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f4-200-vacio-no-inventa-una-consulta",
+      "passed": true,
+      "detail": {
+        "nombre": "TypeError"
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f5-paciente-incompleto-no-rompe",
+      "passed": true,
+      "detail": {
+        "id": "demo-p1",
+        "nombre": "",
+        "edad": 0,
+        "sexo": "X",
+        "alergias": [],
+        "cronicos": [],
+        "medicacionActiva": []
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f6-tipos-equivocados-se-normalizan",
+      "passed": false,
+      "detail": {
+        "nombre": 12345,
+        "edad": null,
+        "alergias": []
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f7-una-agenda-de-50-pacientes-se-lista",
+      "passed": true,
+      "detail": {
+        "filas": 50,
+        "ms": 3
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f7-peticiones-por-paciente",
+      "medicion": 2.02
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f7-peticiones-totales",
+      "medicion": 101
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f7-milisegundos",
+      "medicion": 3
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f8-unicode-y-emoji-llegan-intactos",
+      "passed": true,
+      "detail": "Ωmega 💊 طبيب — Niño Ñ"
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f9-sin-respuesta-corta-por-tiempo",
+      "passed": true,
+      "detail": {
+        "ms": 802,
+        "mensaje": "MEGI no responde en http://megi.invalido (tiempo de espera agotado). ¿Está arrancado el backend?"
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f10-no-sigue-redirecciones-a-otro-host",
+      "passed": true,
+      "detail": {
+        "rutas": [
+          "/api/consultations/C-DEMO1"
+        ],
+        "error": "MegiError"
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f11-el-401-no-entra-en-bucle",
+      "passed": true,
+      "detail": {
+        "intentos": 2,
+        "logins": 0
+      }
+    },
+    {
+      "bloque": "F · el adaptador frente a un MEGI hostil",
+      "id": "f12-los-errores-no-llevan-credenciales",
+      "passed": true,
+      "detail": {
+        "fugas": []
+      }
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-estado-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-verConsulta-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-verPaciente-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-listarConsultasCerradas-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-verificarReceta-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-alternativas-misma-forma",
+      "passed": true,
+      "detail": "idéntica"
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-el-veredicto-del-aine-coincide",
+      "passed": true,
+      "detail": {
+        "mock": [
+          "Ibuprofeno:advertencia"
+        ],
+        "http": [
+          "Ibuprofeno:advertencia"
+        ]
+      }
+    },
+    {
+      "bloque": "G · paridad entre el mock y el adaptador http",
+      "id": "g-los-dos-explican-por-que",
+      "passed": true,
+      "detail": {
+        "mock": [
+          "Ibuprofeno 400 mg: AINE puede elevar la presión arterial y r"
+        ],
+        "http": [
+          "Ibuprofeno 400 mg: AINE puede elevar la presión arterial y r"
+        ]
+      }
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h1-texto-de-10k-se-guarda-entero-o-falla-claro",
+      "passed": true,
+      "detail": {
+        "guardado": 10000
+      }
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h2-el-byte-nulo-no-deja-la-mesa-rota",
+      "passed": false,
+      "detail": {
+        "nombre": "Error",
+        "mensaje": "Failed query: insert into \"lineas_plan\" (\"id\", \"plan_id\", \"tipo\", \"texto\", \"dosis\", \"frecuencia\", \"duracion\", "
+      }
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h2b-y-la-consulta-sigue-consultable",
+      "passed": true,
+      "detail": "Esta consulta todavía no tiene plan; créalo con proponer-plan."
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h3-la-inyeccion-sql-se-guarda-como-texto",
+      "passed": true,
+      "detail": {
+        "guardado": "'; DROP TABLE planes; --"
+      }
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h4-el-html-se-guarda-literal",
+      "passed": true,
+      "detail": "<img src=x onerror=\"alert(1)\">"
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h5-el-agente-no-vacia-el-plan",
+      "passed": true,
+      "detail": "lineas_vacias"
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h6-rechazar-sin-motivo-no-se-acepta",
+      "passed": true,
+      "detail": "invalid_input"
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h7-otro-medico-no-toca-el-plan",
+      "passed": true,
+      "detail": "not_found"
+    },
+    {
+      "bloque": "H · entradas hostiles que sí pasan el esquema",
+      "id": "h8-el-esquema-limita-los-cambios-por-reajuste",
+      "passed": true,
+      "detail": "rechazado en el esquema"
+    }
+  ]
+}

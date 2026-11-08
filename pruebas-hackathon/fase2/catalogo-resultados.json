@@ -1,0 +1,1086 @@
+{
+  "bateria": "fase 2 · bloque I (qué puede llamar el agente)",
+  "cuando": "2026-11-08T03:10:14.349Z",
+  "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision/",
+  "total": 7,
+  "pasan": 4,
+  "fallan": 3,
+  "registro": [
+    {
+      "nombre": "actualizar-linea",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "agregar-linea",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "approve-resource-access-request",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "aprobar-plan",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "bulk-update-workspace-user-groups",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "check-provider-key",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "conciliar-medicacion",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "consume-review-feedback",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-compact",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-compaction-get",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-evict",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-manifest-get",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-pin",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-report",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "context-restore",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "create-resource-suggestion",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "create-resource-suggestion-proposal",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "create-resource-version",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "create-review-comment",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "decide-resource-suggestion",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "decide-resource-suggestion-proposal",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "decline-resource-access-request",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "definir-alcance",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "delete-api-key",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "delete-review-comment",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "delete-workspace-user-group",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "describe-models",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "disconnect-chatgpt-subscription",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-builder-credit-status",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-builder-credit-usage",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-builder-referral-info",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-chatgpt-subscription-status",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-feature-flags",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-file-storage",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-hosted-harness-config",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-infrastructure-status",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-lab-states",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-labs",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-launchdarkly-flags",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-localization-preference",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-observability-review-app",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-observability-review-detail",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-observability-review-summary-source",
+      "uiOnly": false,
+      "agentTool": true,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-provider-models",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-resource-access-request",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-resource-access-status",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-resource-suggestion",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-resource-suggestion-proposal-by-creation-key",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-resource-version",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-review-feedback",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-usage-alerts",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-usage-insights",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-usage-metrics",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "get-usage-run",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "historial-plan",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-api-keys",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-automation-events",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-automation-runs",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-automations",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-chatgpt-subscription-accounts",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-feature-flags",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-messaging-channels",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-model-providers",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-observability-reviews",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-recurring-jobs",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-resource-access-requests",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-resource-history",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-resource-shares",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-resource-suggestions",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-resource-versions",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-review-comments",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-workspace-connection-scopes",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "list-workspace-user-groups",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "listar-consultas",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-automation",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "manage-builder-connection",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-file-storage",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-messaging-channel",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "manage-provider-key-policy",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-provider-models",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-recurring-job",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-service-providers",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "manage-usage-alert",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "medir-revision",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "metricas-revision",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "navigate",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "obtener-plan",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "preparar-aprobacion",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "preview-secret-removal",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "proponer-plan",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "react-to-review-comment",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "reajustar-plan",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "reply-review-comment",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "request-resource-access",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "resolve-review-thread",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "resolver-sugerencia",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "restaurar-demo",
+      "uiOnly": true,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "restore-resource-version",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "run-automation-now",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "save-observability-instruction-update",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "save-observability-review-feedback",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "save-observability-review-summary",
+      "uiOnly": false,
+      "agentTool": true,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "search-automation-accounts",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "select-chatgpt-subscription-account",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "send-review-thread-to-agent",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-feature-flag",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-hosted-harness-enabled",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-lab",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-localization-preference",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-resource-visibility",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "set-review-status",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-review-thread-muted",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-review-thread-unread",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-review-threads-unread",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "set-tool-approval-policy",
+      "uiOnly": false,
+      "agentTool": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "share-resource",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "sugerir-reemplazo",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": true
+    },
+    {
+      "nombre": "unshare-resource",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "update-resource-suggestion",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "update-review-comment",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "update-review-comment-anchor",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "upload-image",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "upsert-workspace-user-group",
+      "uiOnly": false,
+      "readOnly": false,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "ver-contexto-consulta",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    },
+    {
+      "nombre": "view-screen",
+      "uiOnly": false,
+      "readOnly": true,
+      "tieneAuthorize": false,
+      "necesitaAprobacion": false
+    }
+  ],
+  "resultados": [
+    {
+      "id": "i0-acciones-en-el-registro",
+      "medicion": 125
+    },
+    {
+      "id": "i0-acciones-propias-de-la-mesa",
+      "medicion": 17
+    },
+    {
+      "id": "i0-herramientas-iniciales-declaradas",
+      "medicion": [
+        "docs-search",
+        "view-screen",
+        "ver-contexto-consulta",
+        "proponer-plan",
+        "obtener-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "ask-question"
+      ]
+    },
+    {
+      "id": "i1-aprobar-plan-no-esta-entre-las-iniciales",
+      "passed": true,
+      "detail": "no está"
+    },
+    {
+      "id": "i1b-aprobar-plan-es-uiOnly-y-no-es-herramienta",
+      "passed": true,
+      "detail": {
+        "nombre": "aprobar-plan",
+        "uiOnly": true,
+        "agentTool": false,
+        "readOnly": false,
+        "tieneAuthorize": false,
+        "necesitaAprobacion": false
+      }
+    },
+    {
+      "id": "i2-alcanzables-por-tool-search",
+      "medicion": 91
+    },
+    {
+      "id": "i2-de-esas-que-escriben",
+      "medicion": 49
+    },
+    {
+      "id": "i2-el-agente-clinico-solo-alcanza-la-mesa",
+      "passed": false,
+      "detail": "91 acciones de la plantilla siguen al alcance; 49 escriben"
+    },
+    {
+      "id": "i3-alcanzables-delicadas-por-grupo",
+      "medicion": {
+        "secretos y claves": [
+          "delete-api-key",
+          "manage-provider-key-policy"
+        ],
+        "compartición y acceso": [
+          "share-resource",
+          "unshare-resource"
+        ],
+        "usuarios y organización": [
+          "bulk-update-workspace-user-groups",
+          "delete-workspace-user-group",
+          "upsert-workspace-user-group"
+        ],
+        "banderas y laboratorio": [
+          "set-feature-flag",
+          "set-lab"
+        ],
+        "terminal y código": [
+          "disconnect-chatgpt-subscription",
+          "select-chatgpt-subscription-account"
+        ],
+        "correo y mensajería": []
+      }
+    },
+    {
+      "id": "i3-nada-delicado-al-alcance-del-agente",
+      "passed": false,
+      "detail": "11 acciones de escritura delicadas alcanzables: delete-api-key, manage-provider-key-policy, share-resource, unshare-resource, bulk-update-workspace-user-groups, delete-workspace-user-group, upsert-workspace-user-group, set-feature-flag…"
+    },
+    {
+      "id": "i4-escriben-sin-authorize-ni-aprobacion",
+      "medicion": 44
+    },
+    {
+      "id": "i4-toda-escritura-alcanzable-tiene-algun-freno",
+      "passed": false,
+      "detail": "44 sin authorize ni needsApproval: bulk-update-workspace-user-groups, consume-review-feedback, context-compact, context-evict, context-pin, context-report, context-restore, create-resource-suggestion…"
+    },
+    {
+      "id": "i5-las-escrituras-del-dominio-tienen-freno",
+      "passed": true,
+      "detail": [
+        {
+          "n": "actualizar-linea",
+          "uiOnly": false,
+          "aprobacion": true
+        },
+        {
+          "n": "agregar-linea",
+          "uiOnly": false,
+          "aprobacion": true
+        },
+        {
+          "n": "aprobar-plan",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "conciliar-medicacion",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "definir-alcance",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "medir-revision",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "preparar-aprobacion",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "proponer-plan",
+          "uiOnly": false,
+          "aprobacion": true
+        },
+        {
+          "n": "reajustar-plan",
+          "uiOnly": false,
+          "aprobacion": true
+        },
+        {
+          "n": "resolver-sugerencia",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "restaurar-demo",
+          "uiOnly": true,
+          "aprobacion": false
+        },
+        {
+          "n": "sugerir-reemplazo",
+          "uiOnly": false,
+          "aprobacion": true
+        }
+      ]
+    },
+    {
+      "id": "i5b-las-lecturas-del-dominio-estan-marcadas-readOnly",
+      "passed": true,
+      "detail": [
+        "historial-plan",
+        "listar-consultas",
+        "metricas-revision",
+        "obtener-plan",
+        "ver-contexto-consulta"
+      ]
+    }
+  ]
+}

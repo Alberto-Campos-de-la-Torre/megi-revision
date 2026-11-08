@@ -86,6 +86,32 @@ export async function exigirMedico(ctx?: ActionRunContext): Promise<void> {
   await exigirIdentidadClinica(ctx);
 }
 
+const CONTROLES = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
+/**
+ * Quita caracteres de control del texto que llega en los argumentos.
+ * Postgres no admite `\u0000` en una columna `text`: un byte nulo en el nombre
+ * de un fármaco hacía fallar el INSERT con el error crudo del driver (sin
+ * errorCode, HTTP 500 y la consulta SQL en el registro). Y ninguno de esos
+ * caracteres significa nada en una receta. Se limpian en la entrada, una sola
+ * vez, antes de tocar la base. Hallazgo de la fase 2 (bloque H).
+ */
+export function limpiaControles<T>(valor: T): T {
+  if (typeof valor === "string") return valor.replace(CONTROLES, "") as T;
+  if (Array.isArray(valor)) {
+    for (let i = 0; i < valor.length; i++) valor[i] = limpiaControles(valor[i]);
+    return valor;
+  }
+  if (valor && typeof valor === "object") {
+    for (const k of Object.keys(valor as Record<string, unknown>)) {
+      const v = (valor as Record<string, unknown>)[k];
+      if (typeof v === "string" || Array.isArray(v) || (v && typeof v === "object"))
+        (valor as Record<string, unknown>)[k] = limpiaControles(v);
+    }
+  }
+  return valor;
+}
+
 export const lineaInputSchema = z.object({
   tipo: z
     .enum(["farmaco", "pendiente"])

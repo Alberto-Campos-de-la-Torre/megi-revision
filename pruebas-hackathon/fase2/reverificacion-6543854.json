@@ -1,0 +1,97 @@
+{
+  "medidoEl": "2026-11-08T02:17:47.733158+00:00",
+  "proposito": "Reverificar NGZeggers/hackathons rama bluiders.io tras el arreglo del .gitignore",
+  "commitAnterior": "6b087ff",
+  "commitVerificado": "6543854",
+  "entorno": {
+    "clon": "limpio, sin .env y sin BETTER_AUTH_SECRET ni DATABASE_URL en el ambiente",
+    "node": "22.22.2",
+    "backendDeEvidencia": "evidencia/backend.mjs en :8123, SQLite aislado, sembrado por seed_demo.py y sembrar-medico-b.py",
+    "salvedad": "pnpm install quedó bloqueado en este entorno; se usó un clon con node_modules ya instalado y colocado en 6543854. Las dependencias de package.json son idénticas entre 6b087ff y 6543854."
+  },
+  "resultados": [
+    {
+      "id": "gitignore-restaurado",
+      "paso": true,
+      "antes": "3 reglas (ignoraba megi-revision/ y megi-demo/)",
+      "ahora": "26 reglas del equipo"
+    },
+    {
+      "id": "modulos-que-faltaban",
+      "paso": true,
+      "antes": 0,
+      "ahora": 11,
+      "detalle": "peticion.ts, secretos.ts, revision.ts, sugerencias.ts, revision-sync.ts y los seis componentes de app/components/revision/"
+    },
+    {
+      "id": "typecheck",
+      "paso": true,
+      "antes": "29 errores TS2307",
+      "ahora": "0"
+    },
+    {
+      "id": "build",
+      "paso": true,
+      "antes": "código 1, 'Build failed with 7 errors: No such file or directory'",
+      "ahora": "código 0, Build complete",
+      "nota": "los dos 'production configuration errors' (BETTER_AUTH_SECRET, DATABASE_URL) se imprimen en ambos commits y no rompen la construcción; atribuirles el fallo fue un error mío, ya corregido en HALLAZGO-REPO-INCOMPLETO.md"
+    },
+    {
+      "id": "doctor",
+      "paso": true,
+      "ahora": "0"
+    },
+    {
+      "id": "rutas-http",
+      "paso": true,
+      "antes": {
+        "/": 500,
+        "/revision": 500,
+        "/revision/demo-c2": 500
+      },
+      "ahora": {
+        "/": 200,
+        "/revision": 200,
+        "/revision/demo-c2": 200
+      }
+    },
+    {
+      "id": "auditoria-http",
+      "paso": true,
+      "antes": "ERR_MODULE_NOT_FOUND",
+      "ahora": "117 pasan · 0 fallan"
+    },
+    {
+      "id": "bateria-http",
+      "paso": true,
+      "antes": "ERR_MODULE_NOT_FOUND",
+      "ahora": "33 pasan · 0 fallan · 3 mediciones"
+    },
+    {
+      "id": "revision-trazable",
+      "paso": true,
+      "antes": "ERR_MODULE_NOT_FOUND",
+      "ahora": "45 pasan · 0 fallan"
+    },
+    {
+      "id": "195-reproducible-desde-el-repositorio",
+      "paso": true,
+      "detalle": "117 + 33 + 45 = 195, la cifra que PARA_EL_100.md declaraba y que antes solo existía en un disco"
+    },
+    {
+      "id": "sin-secretos-colados",
+      "paso": true,
+      "detalle": "al añadir las dos carpetas no entró .env, ni megi-revision/data/, ni megi_secret.key, ni sessions/, ni speaker_profiles/"
+    },
+    {
+      "id": "appCommit-del-json-publicado",
+      "paso": false,
+      "detalle": "evidencia/auditoria-hackathon-resultados.json sigue declarando appCommit b631b87 con uncommittedChanges true; es cosmético y se arregla corriendo evidencia/verificar.mjs sobre el árbol publicado"
+    },
+    {
+      "id": "arreglos-de-la-fase-2-todavia-necesarios",
+      "paso": false,
+      "detalle": "los cinco: parseJson(texto, texto) en call(), Number(p.age ?? 0), sin limpieza de caracteres de control, --passWithNoTests sin pruebas, y MegiError sin código que sale como 500 opaco. peticion.ts resultó ser solo una caché por petición, sin traducción de errores"
+    }
+  ]
+}

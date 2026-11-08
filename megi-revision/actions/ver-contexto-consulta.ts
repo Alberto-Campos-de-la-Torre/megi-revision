@@ -1,11 +1,11 @@
 import { enPeticionMegi } from "../server/lib/megi/peticion.js";
-import { defineAction, fail } from "@agent-native/core/action";
+import { defineAction } from "@agent-native/core/action";
 import { buildDeepLink } from "@agent-native/core/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getDb, schema } from "../server/db/index.js";
-import { MegiError } from "../server/lib/megi/index.js";
+import { fallaDeMegi } from "../server/lib/megi/index.js";
 import { candidatosDe, conciliadoSchema } from "../server/lib/revision.js";
 import { conectarMegi, requireEmail } from "../server/lib/plan.js";
 
@@ -48,10 +48,11 @@ export default defineAction({
     try {
       consulta = await adapter.verConsulta(consultaId);
     } catch (e) {
-      if (e instanceof MegiError && e.status === 404) fail("Consulta no encontrada en MEGI.", { errorCode: "not_found", statusCode: 404 });
-      throw e;
+      fallaDeMegi(e, "La consulta");
     }
-    const paciente = await adapter.verPaciente(consulta.pacienteId);
+    const paciente = await adapter
+      .verPaciente(consulta.pacienteId)
+      .catch((e) => fallaDeMegi(e, "El paciente"));
     // `consulta.id` es el id lógico con el que se guarda el plan; el argumento
     // puede venir con el id real de MEGI.
     const [plan] = await getDb()

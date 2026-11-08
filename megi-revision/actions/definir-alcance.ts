@@ -4,7 +4,7 @@ import { defineAction, fail } from "@agent-native/core/action";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
-import { exigirAbierto, exigirMedico, lineasDe, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
+import { exigirAbierto, exigirMedico, limpiaControles, lineasDe, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
 import { comprobarVersion, guardarVersion } from "../server/lib/revision.js";
 
 export default defineAction({
@@ -16,7 +16,7 @@ export default defineAction({
   run: async (args, ctx) => enPeticionMegi(async () => {
     const inicio = performance.now();
     ctx?.signal?.throwIfAborted();
-    const email = requireEmail(ctx); await exigirMedico(ctx);
+    const email = requireEmail(ctx); limpiaControles(args); await exigirMedico(ctx);
     return getDb().transaction(async tx => {
       const p = await planDe(args.planId, email, tx, true); exigirAbierto(p); comprobarVersion(p, args.versionEsperada);
       const lineas = await lineasDe(p.id, tx);

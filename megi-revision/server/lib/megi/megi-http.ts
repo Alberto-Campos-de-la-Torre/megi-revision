@@ -373,11 +373,19 @@ export class MegiHttp implements MegiAdapter {
     path: string,
     body?: unknown,
     reintento = true,
+    /**
+     * Si es `false`, un cuerpo que no sea un objeto JSON NO se rechaza aquí y
+     * sube tal cual. Solo lo usa `/safety/rx-check`, que tiene su propia
+     * validación (`alertasDeMegi` → 502 `verificador_invalido`) y da un error
+     * más preciso que el genérico de aquí: la receta no se da por segura, con
+     * su código. Para cualquier otra ruta, un 200 sin JSON es un fallo.
+     */
+    exigeObjeto = true,
   ): Promise<T> {
     const r = await this.raw(method, path, body);
     if (r.status === 401 && reintento) {
       this.token = null; // sesión caducada o revocada: volver a entrar una vez
-      return this.call<T>(method, path, body, false);
+      return this.call<T>(method, path, body, false, exigeObjeto);
     }
     const texto = await r.text();
     const data = texto ? parseJson<any>(texto, texto) : null;
@@ -388,6 +396,17 @@ export class MegiHttp implements MegiAdapter {
         `MEGI ${method} ${path} → ${r.status}: ${detalle}`,
         r.status,
         data,
+      );
+    }
+    // Un 200 cuyo cuerpo no es JSON —la página de error de un proxy, una
+    // respuesta cortada— no puede pasar por éxito: `parseJson` devuelve el
+    // texto tal cual y la mesa acabaría mostrando una consulta vacía como si
+    // fuera real. Hallazgo de la fase 2 (bloque F).
+    if (exigeObjeto && (data === null || typeof data !== "object")) {
+      throw new MegiError(
+        `MEGI ${method} ${path} → ${r.status} con una respuesta que no es JSON; no se puede usar.`,
+        502,
+        { muestra: texto.slice(0, 120) },
       );
     }
     return data as T;
@@ -443,13 +462,18 @@ export class MegiHttp implements MegiAdapter {
   }
 
   private pacienteDeMegi(p: Json, medicacionActiva: Medicamento[]): Paciente {
+    // El esquema de salida exige `nombre: string` y `edad: number`. Un campo
+    // mal tipado en MEGI rompía la acción entera en vez de mostrarse como
+    // viniera, así que aquí se normaliza. Fase 2, bloque F.
+    const texto = (v: unknown) => (typeof v === "string" ? v : v == null ? "" : String(v));
+    const lista = (v: unknown) => (Array.isArray(v) ? v.map(texto).filter(Boolean) : []);
     return {
       id: aLogico(p.id),
-      nombre: p.name ?? "",
-      edad: Number(p.age ?? 0),
+      nombre: texto(p.name),
+      edad: Number.isFinite(Number(p.age)) ? Number(p.age) : 0,
       sexo: p.sex === "F" || p.sex === "M" ? p.sex : "X",
-      alergias: Array.isArray(p.allergies) ? p.allergies : [],
-      cronicos: Array.isArray(p.chronic) ? p.chronic : [],
+      alergias: lista(p.allergies),
+      cronicos: lista(p.chronic),
       medicacionActiva,
     };
   }
@@ -740,11 +764,13 @@ export class MegiHttp implements MegiAdapter {
       (a) => !farmacos.some((f) => normaliza(f.nombre) === normaliza(a.nombre)),
     );
     const rx = [...rxAMegi(farmacos), ...rxAMegi(activos)];
-    const r = await this.call<Json>("POST", "/safety/rx-check", {
-      rx_list: rx,
-      allergies: paciente.alergias,
-      chronic: paciente.cronicos,
-    });
+    const r = await this.call<Json>(
+      "POST",
+      "/safety/rx-check",
+      { rx_list: rx, allergies: paciente.alergias, chronic: paciente.cronicos },
+      true,
+      false, // lo valida `alertasDeMegi`, que distingue por qué está roto
+    );
 
     const alertas = alertasDeMegi(r);
 

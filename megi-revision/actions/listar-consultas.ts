@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { getDb, schema } from "../server/db/index.js";
+import { fallaDeMegi } from "../server/lib/megi/index.js";
 import { conectarMegi, requireEmail } from "../server/lib/plan.js";
 
 export default defineAction({
@@ -49,7 +50,9 @@ export default defineAction({
     const adapter = await conectarMegi(ctx?.userEmail ?? undefined);
     const [estado, pagina, planes] = await Promise.all([
       adapter.estado(),
-      adapter.listarPendientes({ limite: args.limite, desde: args.desde }),
+      // Si MEGI no está, la agenda responde con `megi_no_disponible` (502) en
+      // lugar de un 500 opaco: la mesa puede decir qué pasa. Fase 2, bloque E.
+      adapter.listarPendientes({ limite: args.limite, desde: args.desde }).catch((e) => fallaDeMegi(e, "La agenda")),
       getDb()
         .select({ id: schema.planes.id, consultaId: schema.planes.consultaId, estado: schema.planes.estado })
         .from(schema.planes)

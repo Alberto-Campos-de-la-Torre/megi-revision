@@ -3,6 +3,7 @@ import { defineAction, fail } from "@agent-native/core/action";
 import { and, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
+import { fallaDeMegi } from "../server/lib/megi/index.js";
 import { conectarMegi, exigirMedico, requireEmail } from "../server/lib/plan.js";
 export default defineAction({
   uiOnly: true, agentTool: false,
@@ -12,7 +13,7 @@ export default defineAction({
   run: async (args, ctx) => enPeticionMegi(async () => {
     ctx?.signal?.throwIfAborted();
     const email = requireEmail(ctx); await exigirMedico(ctx);
-    await (await conectarMegi(email)).verConsulta(args.consultaId);
+    await (await conectarMegi(email)).verConsulta(args.consultaId).catch((e) => fallaDeMegi(e, "La consulta"));
     return getDb().transaction(async tx => {
       const filtro = and(eq(schema.medicionesRevision.ownerEmail, email), eq(schema.medicionesRevision.consultaId, args.consultaId), isNull(schema.medicionesRevision.fin));
       const [abierta] = await tx.select().from(schema.medicionesRevision).where(filtro).for("update");

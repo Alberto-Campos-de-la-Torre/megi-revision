@@ -5,11 +5,58 @@
  * El mock lo escribe el Frente A en `./megi-mock.ts` exportando
  * `crearMegiMock(): MegiAdapter`. Hasta que exista, `mock` lanza un error claro.
  */
+import { fail } from "@agent-native/core/action";
+
 import { MegiError, type MegiAdapter } from "./types.js";
 import { crearMegiHttp } from "./megi-http.js";
 
 export * from "./types.js";
 export { aLogico, aReal, CODIGO_VERIFICADOR_INVALIDO } from "./megi-http.js";
+
+/**
+ * Traduce un fallo del adaptador al error que la mesa sabe explicar.
+ *
+ * Antes solo se mapeaba el 404: cualquier otro fallo de MEGI (backend caído,
+ * 500, id rechazado por `idSeguro`) subía como excepción cruda y el framework
+ * lo convertía en «Internal server error» con HTTP 500 y sin `errorCode`. El
+ * médico no sabía qué pasaba y el agente no tenía código al que reaccionar,
+ * aunque el contrato ya declaraba `megi_no_disponible`. Hallazgo de la fase 2
+ * (bloques D y E).
+ *
+ * No toca los MegiError que ya traen código propio —`sin_rol_clinico`,
+ * `credenciales_no_disponibles`, `verificador_invalido`—: esos los traduce
+ * quien los entiende (`conectarMegi` y la propia acción), y envolverlos aquí
+ * los degradaría a un 502 genérico.
+ */
+export function fallaDeMegi(e: unknown, que = "El recurso"): never {
+  if (e instanceof MegiError && !(e.detalle as { codigo?: string } | undefined)?.codigo) {
+    if (e.status === 404) {
+      fail(`${que} no existe en MEGI.`, {
+        errorCode: "not_found",
+        statusCode: 404,
+      });
+    }
+    if (e.status === 400) {
+      // El 400 lo levanta `idSeguro` antes de salir a la red: no es MEGI quien
+      // rechaza, somos nosotros, y el mensaje debe decirlo así.
+      fail(`Identificador no válido: ${e.message}`, {
+        errorCode: "invalid_input",
+        statusCode: 400,
+      });
+    }
+    if (e.status === 401 || e.status === 403) {
+      fail(
+        "MEGI rechazó las credenciales del adaptador. Revisa las credenciales de la conexión.",
+        { errorCode: "megi_no_disponible", statusCode: 502 },
+      );
+    }
+    fail(
+      `No se pudo hablar con MEGI (${e.status ?? "sin respuesta"}). No se guardó ningún cambio; vuelve a intentarlo cuando esté disponible.`,
+      { errorCode: "megi_no_disponible", statusCode: 502 },
+    );
+  }
+  throw e;
+}
 
 let instancia: MegiAdapter | null = null;
 

@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { contextoMinimo, guardarVersion } from "../server/lib/revision.js";
 import { getDb, schema } from "../server/db/index.js";
-import { MegiError } from "../server/lib/megi/index.js";
+import { fallaDeMegi } from "../server/lib/megi/index.js";
 import { conectarMegi,
   ahora,
   lineaInputSchema,
@@ -23,6 +23,7 @@ import { conectarMegi,
   requireEmail,
   resumenVerificacion,
   verificarPlan,
+  limpiaControles,
 } from "../server/lib/plan.js";
 
 const reciboSchema = z.object({
@@ -91,6 +92,7 @@ export default defineAction({
   run: async (args, ctx) => enPeticionMegi(async () => {
     const inicio = performance.now();
     const email = requireEmail(ctx);
+    limpiaControles(args); // sin caracteres de control antes de tocar la base
     const orgId = ctx?.orgId ?? null;
     const origen = await origenAutorizado(args.origen, ctx);
     const adapter = await conectarMegi(ctx?.userEmail ?? undefined);
@@ -98,12 +100,7 @@ export default defineAction({
     try {
       consulta = await adapter.verConsulta(args.consultaId);
     } catch (e) {
-      if (e instanceof MegiError && e.status === 404)
-        fail("Consulta no encontrada en MEGI.", {
-          errorCode: "not_found",
-          statusCode: 404,
-        });
-      throw e;
+      fallaDeMegi(e, "La consulta");
     }
     if (consulta.estado !== "pendiente") {
       fail(`La consulta ya está ${consulta.estado} en MEGI.`, {
@@ -111,7 +108,9 @@ export default defineAction({
         statusCode: 409,
       });
     }
-    const paciente = await adapter.verPaciente(consulta.pacienteId);
+    const paciente = await adapter
+      .verPaciente(consulta.pacienteId)
+      .catch((e) => fallaDeMegi(e, "El paciente"));
     if (origen !== "medico" && args.lineas.length === 0) {
       // Sin escribir nada: el agente debe volver a llamar con las líneas completas.
       fail(

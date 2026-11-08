@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
 import type { Verificacion } from "../server/lib/megi/types.js";
 import { enPeticionMegi } from "../server/lib/megi/peticion.js";
-import { conectarMegi, exigirAbierto, lineaInputSchema, lineasDe, origenAutorizado, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
+import { conectarMegi, exigirAbierto, limpiaControles, lineaInputSchema, lineasDe, origenAutorizado, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
 import { comprobarVersion, guardarVersion, leerJson, fusionarConciliacion, medicacionParaVerificar } from "../server/lib/revision.js";
 import { pautaOriginal, sugerenciaSchema, type Sugerencia } from "../server/lib/sugerencias.js";
 export default defineAction({
@@ -15,7 +15,7 @@ export default defineAction({
   outputSchema: z.object({ planId: z.string(), version: z.number(), sugerencia: sugerenciaSchema }),
   changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
   run: async (args, ctx) => enPeticionMegi(async () => {
-    const inicio = performance.now(); const email = requireEmail(ctx); const actor = await origenAutorizado("agente", ctx);
+    const inicio = performance.now(); const email = requireEmail(ctx); limpiaControles(args); const actor = await origenAutorizado("agente", ctx);
     return getDb().transaction(async tx => {
       const p = await planDe(args.planId, email, tx, true); exigirAbierto(p); comprobarVersion(p, args.versionEsperada, actor);
       if (!leerJson<string[]>(p.alcanceSugerencias, []).includes(args.lineaId)) fail("Esta línea no está autorizada para sugerencias.", { errorCode: "fuera_de_alcance", statusCode: 403 });

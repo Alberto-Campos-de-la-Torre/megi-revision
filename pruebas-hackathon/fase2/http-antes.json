@@ -1,0 +1,273 @@
+{
+  "bateria": "fase 2 · bloque HTTP (superficie real de la app)",
+  "cuando": "2026-11-06T07:40:28.782Z",
+  "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision",
+  "base": "http://127.0.0.1:8186",
+  "megi": "http://127.0.0.1:8020",
+  "siembra": "Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
+  "node": "v22.22.2",
+  "appCommit": "d03fdf7",
+  "segundos": 19,
+  "total": 47,
+  "pasan": 43,
+  "fallan": 4,
+  "medidas": {
+    "b4-verificacion-del-ibuprofeno": "advertencia",
+    "b8-bloqueos-antes-de-aprobar": 0,
+    "b10-farmacos-en-megi": 2,
+    "b10-farmacos-vigentes-en-el-plan": 2,
+    "d4-cabeceras-que-no-trae-una-ruta-del-framework-en-dev": [
+      "x-content-type-options",
+      "referrer-policy",
+      "cross-origin-opener-policy"
+    ],
+    "d4-cabeceras-que-no-trae-la-pagina-en-dev": [
+      "x-content-type-options",
+      "referrer-policy",
+      "cross-origin-opener-policy"
+    ],
+    "d5-trazas-de-pila-en-el-registro": 10
+  },
+  "notas": [
+    "siembra: Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
+    "en `agent-native dev` el HTML lo sirve Vite y no pasa por el middleware de nitro: le faltan x-content-type-options, referrer-policy, cross-origin-opener-policy. En producción el middleware sí va montado sobre nitro, pero `agent-native start` no arranca con PGlite (503 DEPLOY_SETTINGS_REQUIRED), así que no se pudo medir."
+  ],
+  "registro": "/tmp/fase2-r15Fm2/dev-server.log",
+  "checks": [
+    {
+      "id": "pre-megi-de-demo-en-pie",
+      "pasa": true,
+      "detalle": "http://127.0.0.1:8020 responde al login"
+    },
+    {
+      "id": "pre-app-en-pie",
+      "pasa": true,
+      "detalle": "http://127.0.0.1:8186 responde"
+    },
+    {
+      "id": "pre-sesion-y-capacidad",
+      "pasa": true,
+      "detalle": "sesión de desarrollo local y capacidad de interfaz obtenidas por HTTP"
+    },
+    {
+      "id": "a1-sin-sesion-no-ejecuta-nada",
+      "pasa": true,
+      "detalle": "actualizar-linea:401 agregar-linea:401 aprobar-plan:401 listar-consultas:401 obtener-plan:401 proponer-plan:401 reajustar-plan:401 ver-contexto-consulta:401"
+    },
+    {
+      "id": "a1b-la-cabecera-sola-no-autentica",
+      "pasa": true,
+      "detalle": "ninguna acción responde 200 solo con x-agent-native-frontend: 1"
+    },
+    {
+      "id": "a2-escritura-sin-capacidad-ui-no-corre",
+      "pasa": true,
+      "detalle": "proponer-plan:ui_capability_required · reajustar-plan:ui_capability_required · agregar-linea:Invalid action parameters — Missing required parameter: texto. tipo: Invalid option: expected one of \"farmaco\"|\"pendiente\". Received: {\"planId\":\"x\",\"linea\":{\"tipo\":\"pendiente\",\"texto\":\"t\"},\"origen\":\"medico\"}. Expected: { tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). · actualizar-linea:ui_capability_required"
+    },
+    {
+      "id": "a3-aprobar-exige-interfaz-probada",
+      "pasa": true,
+      "detalle": "403 ui_capability_required"
+    },
+    {
+      "id": "a4-sin-cabecera-no-hay-medico",
+      "pasa": true,
+      "detalle": "409 approval_required"
+    },
+    {
+      "id": "a5-origen-cruzado-rechazado",
+      "pasa": true,
+      "detalle": "403 ui_capability_required"
+    },
+    {
+      "id": "a6-token-bearer-no-se-vuelve-medico",
+      "pasa": true,
+      "detalle": "409 approval_required"
+    },
+    {
+      "id": "a7-capacidad-manipulada-rechazada",
+      "pasa": true,
+      "detalle": "403 ui_capability_required"
+    },
+    {
+      "id": "a8-metodos-no-se-cruzan",
+      "pasa": true,
+      "detalle": "lectura por POST: 405 · escritura por GET: 405 Method not allowed. Use POST."
+    },
+    {
+      "id": "a9-cuerpo-enorme-se-rechaza-sin-caer",
+      "pasa": true,
+      "detalle": "400 Invalid action parameters — Missing required parameters: consultaId, lineas. Received: {}. Expected: { consultaId*: string, lineas*: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, explicacion?: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). · servidor en pie: true"
+    },
+    {
+      "id": "b1-lista-pendientes-desde-megi",
+      "pasa": true,
+      "detalle": "4 consultas: demo-c4, demo-c3, demo-c2, demo-c1"
+    },
+    {
+      "id": "b1b-la-lista-trae-contexto-del-paciente",
+      "pasa": true,
+      "detalle": "nombre, alergias, crónicos y medicación activa en cada fila"
+    },
+    {
+      "id": "b2-la-ruta-de-revision-responde",
+      "pasa": true,
+      "detalle": "GET /revision/demo-c2 -> 200"
+    },
+    {
+      "id": "b3-propuesta-creada-y-verificada",
+      "pasa": true,
+      "detalle": "plan 6bdee269-6ee3-45dd-8fd1-b66e4d99c485 · bloqueos 0 advertencias 1"
+    },
+    {
+      "id": "b4-el-aine-sale-marcado-con-motivo",
+      "pasa": true,
+      "detalle": "advertencia: Ibuprofeno 400 mg: AINE puede elevar la presión arterial y reducir el efecto de antihipertensivos. · Ibuprofeno 400 mg +"
+    },
+    {
+      "id": "b4b-si-bloquea-ofrece-alternativas",
+      "pasa": true,
+      "detalle": "[]"
+    },
+    {
+      "id": "b5-el-medico-bloquea-una-linea",
+      "pasa": true,
+      "detalle": "200 bloqueada"
+    },
+    {
+      "id": "b6-reajuste-sobre-bloqueada-no-aplica-nada",
+      "pasa": true,
+      "detalle": "409 linea_bloqueada · líneas intactas: true"
+    },
+    {
+      "id": "b7-reajuste-respetuoso-se-aplica",
+      "pasa": true,
+      "detalle": "200 aplicados 2 HTTP 200"
+    },
+    {
+      "id": "b8-no-se-aprueba-con-alertas-sin-confirmar",
+      "pasa": true,
+      "detalle": "el plan no quedó con bloqueos: comprobación no aplicable"
+    },
+    {
+      "id": "b9-aprobacion-sella-y-firma",
+      "pasa": true,
+      "detalle": "sello sha256:b89f1d0e6e51296e1… por Dra. Demo Ficticia"
+    },
+    {
+      "id": "b10-megi-registra-la-aprobacion",
+      "pasa": true,
+      "detalle": "status exported · firmado por Dra. Demo Ficticia · sello sha256:b89f1…"
+    },
+    {
+      "id": "b10b-la-receta-en-megi-son-las-vigentes",
+      "pasa": true,
+      "detalle": "MEGI 2 fármacos · plan 2 vigentes"
+    },
+    {
+      "id": "b11-reintentar-no-vuelve-a-aprobar",
+      "pasa": true,
+      "detalle": "200 HTTP 200"
+    },
+    {
+      "id": "b11b-el-sello-no-cambia-al-reintentar",
+      "pasa": true,
+      "detalle": "sello igual · aprobaciones 1 -> 1 · sellos 1 -> 1"
+    },
+    {
+      "id": "b12-la-consulta-aprobada-sale-de-la-lista",
+      "pasa": true,
+      "detalle": "demo-c4, demo-c3, demo-c1"
+    },
+    {
+      "id": "b13-la-bitacora-registra-todo-el-recorrido",
+      "pasa": true,
+      "detalle": "proponer → bloquear → reajustar → editar → agregar → aprobar"
+    },
+    {
+      "id": "b13b-cada-evento-dice-quien-lo-hizo",
+      "pasa": true,
+      "detalle": "medico"
+    },
+    {
+      "id": "c1-dos-propuestas-a-la-vez-dejan-un-plan",
+      "pasa": true,
+      "detalle": "ok 1 · plan_existente 1 · plan ae5b200a-45c4-4011-9f53-741c62b4e708"
+    },
+    {
+      "id": "c2-dos-cambios-a-la-vez-dejan-un-estado-valido",
+      "pasa": true,
+      "detalle": "200/200 → estado final \"rechazada\""
+    },
+    {
+      "id": "c3-dos-aprobaciones-a-la-vez-aprueban-una-vez",
+      "pasa": true,
+      "detalle": "200/200 · aprobaciones 0 -> 1 · sellos 0 -> 1 · status exported"
+    },
+    {
+      "id": "c3b-nadie-recibe-un-exito-a-medias",
+      "pasa": true,
+      "detalle": "200 HTTP 200 · 200 HTTP 200"
+    },
+    {
+      "id": "d1-consulta-inexistente-es-404-claro",
+      "pasa": true,
+      "detalle": "404 not_found"
+    },
+    {
+      "id": "d2-id-hostil-no-llega-a-la-red",
+      "pasa": true,
+      "detalle": "500 Internal server error"
+    },
+    {
+      "id": "d2b-id-hostil-devuelve-error-controlado",
+      "pasa": false,
+      "detalle": "500 sin errorCode · \"Internal server error\""
+    },
+    {
+      "id": "d3-los-errores-no-filtran-nada",
+      "pasa": true,
+      "detalle": "sin credenciales, pilas ni URLs internas"
+    },
+    {
+      "id": "d4-el-plugin-de-sesion-si-manda-las-cabeceras",
+      "pasa": true,
+      "detalle": "x-content-type-options=sí · referrer-policy=sí · cross-origin-opener-policy=sí"
+    },
+    {
+      "id": "d5-el-registro-no-guarda-la-contrasena",
+      "pasa": true,
+      "detalle": "4637 bytes de registro revisados"
+    },
+    {
+      "id": "e1-sin-megi-la-lista-da-error-legible",
+      "pasa": false,
+      "detalle": "500 sin errorCode · \"Internal server error\""
+    },
+    {
+      "id": "e2-sin-megi-el-contexto-da-error-legible",
+      "pasa": false,
+      "detalle": "500 sin errorCode · \"Internal server error\""
+    },
+    {
+      "id": "e3-sin-megi-no-se-crea-un-plan-a-ciegas",
+      "pasa": true,
+      "detalle": "500 Internal server error"
+    },
+    {
+      "id": "e3b-y-el-error-trae-codigo",
+      "pasa": false,
+      "detalle": "sin errorCode"
+    },
+    {
+      "id": "e4-el-fallo-de-megi-no-filtra-interioridades",
+      "pasa": true,
+      "detalle": "sin URL interna, pila ni credencial"
+    },
+    {
+      "id": "e5-la-mesa-sigue-abriendo-sin-megi",
+      "pasa": true,
+      "detalle": "GET /revision -> 200"
+    }
+  ]
+}
