@@ -11,6 +11,7 @@ import {
   exigirAbierto,
   exigirEspacio,
   lineaInputSchema,
+  lineasDe,
   lineasOut,
   lineaOutputSchema,
   origenAutorizado,
@@ -18,6 +19,7 @@ import {
   planDe,
   registrarEvento,
   requireEmail,
+  resumenVerificacion,
   verificarPlan,
   limpiaControles,
 } from "../server/lib/plan.js";
@@ -41,6 +43,16 @@ export default defineAction({
     // y el framework retenía el reintento. `actualizar-linea` ya la devolvía.
     version: z.number(),
     linea: lineaOutputSchema,
+    // El estado del plan tras el cambio, tomado de la base y no de la memoria
+    // del modelo. Medido: sin esto, la frase final del agente inventaba el
+    // recuento («5 líneas, 0 bloqueos») o costaba una lectura más. Con el
+    // recuento en el recibo, decir la verdad es lo barato.
+    resumen: z.object({
+      bloqueos: z.number(),
+      advertencias: z.number(),
+      bloqueadas: z.number(),
+      vigentes: z.number(),
+    }),
     message: z.string(),
   }),
   run: async (args, ctx) => enPeticionMegi(async () => {
@@ -108,12 +120,14 @@ export default defineAction({
         .limit(1);
       if (!row) throw new Error("Línea no encontrada tras insertar.");
       const out = lineasOut([row], plan)[0]!;
+      const resumen = resumenVerificacion(lineasOut(await lineasDe(plan.id, tx), plan));
       ctx?.signal?.throwIfAborted();
       return {
         id,
         version,
         linea: out,
-        message: `Añadida ${out.texto} (verificación ${out.verificacion}). El plan queda en la versión ${version}: úsala como versionEsperada si vas a hacer otro cambio.`,
+        resumen,
+        message: `Añadida ${out.texto} (verificación ${out.verificacion}). El plan queda en la versión ${version} con ${resumen.vigentes} línea(s) vigente(s), ${resumen.bloqueos} bloqueo(s) y ${resumen.advertencias} advertencia(s). Usa la versión ${version} como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.`,
       };
     });
   }),

@@ -90,7 +90,8 @@
  * los eventos del bucle, no solo las llamadas),
  * `--modelo <nombre>`, `--motor <nombre>`, `--iteraciones <n>`,
  * `--consulta <id>` (por defecto demo-c2), `--repeticiones <n>` (la conducta de
- * un modelo varía entre ejecuciones: con 1 se obtiene una anécdota, no una tasa).
+ * un modelo varía entre ejecuciones: con 1 se obtiene una anécdota, no una tasa;
+ * con 5 o más se exige además la tasa de terminación de j8b).
  *
  * No necesita MEGI: corre con `MEGI_MODE=mock` y una base PGlite desechable.
  * No toca ninguna base ni ninguna demo existente.
@@ -836,6 +837,24 @@ try {
     mide("j8-por-pasada", porPasada);
     const completas = porPasada.filter((x) => x.aplicadas >= 2).length;
     mide("j8-pasadas-que-aplicaron-los-dos-pendientes", `${completas} de ${porPasada.length}`);
+    /**
+     * j8b · la terminación como objetivo, no como impresión.
+     *
+     * `j6` mira el estado final del plan, que es acumulado: con que una pasada
+     * de diez haga el trabajo, queda en verde. Esto exige que la mayoría lo
+     * complete. Se afirma solo con cinco pasadas o más, porque con menos no hay
+     * tasa que defender —con una sola, cualquier número es una anécdota—.
+     */
+    const OBJETIVO = 0.8;
+    if (porPasada.length >= 5) {
+      anota(
+        "j8b-la-mayoria-de-las-pasadas-completa-el-trabajo",
+        completas / porPasada.length >= OBJETIVO,
+        `${completas} de ${porPasada.length} (objetivo: ${Math.ceil(OBJETIVO * porPasada.length)})`,
+      );
+    } else {
+      mide("j8b-objetivo-de-terminacion", `no se afirma con ${porPasada.length} pasada(s): hacen falta 5 o más`);
+    }
     mide("j8-rechazos-sin-codigo-reconocido", todas.filter((x) => x.error === "error").map((x) => x.mensaje ?? "(sin mensaje)").slice(0, 6));
 
     /**

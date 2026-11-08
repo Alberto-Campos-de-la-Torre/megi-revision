@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { getDb, schema } from "../db/index.js";
 import type { LineaRow, PlanRow } from "../db/schema.js";
-import { CODIGO_VERIFICADOR_INVALIDO, MegiError, megi, identidadClinica, type MegiAdapter } from "./megi/index.js";
+import { aLogico, CODIGO_VERIFICADOR_INVALIDO, MegiError, megi, identidadClinica, type MegiAdapter } from "./megi/index.js";
 import { contextoFuenteDe, contextoMinimo, evidenciaDe, fusionarConciliacion, leerJson, medicacionParaVerificar, type ContextoFuente } from "./revision.js";
 import type { Medicamento, Verificacion } from "./megi/types.js";
 
@@ -254,14 +254,28 @@ export async function planDe(
   db: PlanDb = getDb(),
   bloquear = false,
 ): Promise<PlanRow> {
-  const query = db
-    .select()
-    .from(schema.planes)
-    .where(
-      and(eq(schema.planes.id, planId), eq(schema.planes.ownerEmail, email)),
-    )
-    .limit(1);
-  const [p] = await (bloquear ? query.for("update") : query);
+  const busca = (id: string) => {
+    const q = db
+      .select()
+      .from(schema.planes)
+      .where(and(eq(schema.planes.id, id), eq(schema.planes.ownerEmail, email)))
+      .limit(1);
+    return bloquear ? q.for("update") : q;
+  };
+  let [p] = await busca(planId);
+  // El id de la consulta en el campo del plan no es un callejón sin salida.
+  // Medido con un modelo real: el agente manda `{"planId": "demo-c2"}` y perdía
+  // dos llamadas en remontar el 404 —y alguna escritura se quedaba ahí—. La
+  // búsqueda sigue acotada al dueño, así que esto no abre nada: solo acepta el
+  // otro id del mismo plan. Un id con forma de plan que no existe sigue dando 404.
+  if (!p && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(planId)) {
+    const [porConsulta] = await db
+      .select({ id: schema.planes.id })
+      .from(schema.planes)
+      .where(and(eq(schema.planes.consultaId, aLogico(planId)), eq(schema.planes.ownerEmail, email)))
+      .limit(1);
+    if (porConsulta) [p] = await busca(porConsulta.id);
+  }
   if (!p)
     fail("Plan no encontrado.", { errorCode: "not_found", statusCode: 404 });
   // Compatibilidad con planes anteriores a la migración de trazabilidad.
