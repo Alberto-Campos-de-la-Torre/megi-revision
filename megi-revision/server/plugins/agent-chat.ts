@@ -5,6 +5,7 @@ import {
 } from "@agent-native/core/server";
 
 import actionsRegistry from "../../.generated/actions-registry.js";
+import { alcanceDelAgente } from "../lib/alcance-agente.js";
 import { revisaRespuestaFinal } from "../lib/guardia-respuesta.js";
 
 const INITIAL_TOOL_NAMES = [
@@ -39,6 +40,33 @@ export default createAgentChatPlugin({
    */
   finalResponseGuard: ({ text, toolResults, receipts }) =>
     revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
+  /**
+   * Lo que el agente puede alcanzar, por lista de permitidos.
+   *
+   * `initialToolNames` solo decide qué va en el prompt desde el principio; el
+   * catálogo que viaja al modelo lo completa el framework. Medido en la
+   * petición real, eran veinte herramientas, con `web-request` y `web-search`
+   * entre ellas, y `tool-search` alcanzaba además las noventa y una acciones
+   * de la plantilla. Esto lo recorta a lo que la mesa necesita; el motivo de
+   * cada exclusión está en `alcance-agente.ts`.
+   *
+   * Solo afecta al agente: la interfaz llama a las acciones por HTTP con la
+   * sesión del médico y sigue viendo todas las suyas.
+   */
+  resolveActionSurface: (detalles) => {
+    const alcance = alcanceDelAgente(detalles.availableActionNames);
+    if (alcance.ausentes.length > 0) {
+      // Un nombre que el registro ya no ofrece: renombrado o mal escrito. No
+      // se deja que tire el chat —el framework lanza con un nombre
+      // desconocido—, pero tampoco se calla.
+      console.warn(`[megi-revision] el alcance del agente nombra herramientas que no existen: ${alcance.ausentes.join(", ")}`);
+    }
+    return {
+      allowedActionNames: alcance.permitidas,
+      // Una petición con ámbito exige que se le devuelva el ámbito.
+      ...(detalles.actionScope ? { actionScope: detalles.actionScope } : {}),
+    };
+  },
   initialToolNames: INITIAL_TOOL_NAMES,
   resolveOrgId: async (event) => (await getOrgContext(event)).orgId,
   systemPrompt: `Eres el agente de MEGI Revisión: preparas, junto con el médico, la receta y los pendientes de una consulta ya consolidada en MEGI. Responde siempre en español, con frases cortas.

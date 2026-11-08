@@ -50,7 +50,23 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > `connect-builder`, `describe-workspace-apps`, `read-attachment`—, más
 > `tool-search`, que alcanza el resto del registro. Es el hallazgo que
 > `catalogo.mts` dejó abierto, ahora medido en la petición real y no deducido.
-> Se cierra con `resolveActionSurface`; no está aplicado.
+>
+> **Cerrado el mismo día.** `server/lib/alcance-agente.ts` es una lista de
+> permitidos —las once acciones de la mesa que el agente usa más siete ayudas
+> del framework que solo leen, preguntan o sugieren— y `resolveActionSurface`
+> la aplica en el chat. Medido otra vez por la petición real: el catálogo pasa
+> de **20 a 13 herramientas**, ninguna de las sensibles. Y comprobado por donde
+> se podría rodear: `--escenario busqueda` pide a `tool-search` los diez
+> nombres cerrados, uno a uno y exactos, y el framework responde que no existen
+> «in the current mode»; lo único que carga son acciones de la mesa. `catalogo.mts`,
+> que medía el registro a secas, mide ahora las dos caras —lo que el registro
+> ofrece y lo que el recorte deja pasar— y pasa de **4/7 a 7/7**: el recorte
+> cierra 86 de las 91, las 5 que quedan son de la mesa, ninguna delicada y todas
+> con freno. Diez pruebas unitarias nuevas fijan la lista, incluida una que
+> falla si alguien añade una acción al producto y no decide si entra o no.
+>
+> Solo afecta al agente: la interfaz llama a las acciones por HTTP con la sesión
+> del médico y sigue viendo todas las suyas, lo que comprueba la propia batería.
 
 La fase 1 llamó a las acciones **como funciones**, con un `ctx` escrito a mano. Eso prueba
 las reglas, pero no prueba quién puede llamarlas: `ctx.caller` lo decide el transporte, y
@@ -111,6 +127,10 @@ node pruebas-hackathon/fase2/interfaz-y-modelo.mts --solo-interfaz
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario mentira
 
+#     Y si el recorte del alcance se puede rodear: pide por `tool-search` los
+#     nombres exactos que la lista de permitidos cerró.
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda
+
 #     Y con el modelo de verdad, por el endpoint del chat:
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor grok --pedir-clave
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --arnes   # solo el analizador
@@ -152,15 +172,24 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 |---|---|---|
 | `fase2/http.mjs` · la app en marcha | 43/47 | **47/47** |
 | `fase2/adaptador.mts` · MEGI hostil, paridad, entradas | 26/29 | **29/29** |
-| `fase2/catalogo.mts` · alcance real del agente | 4/7 | 4/7 · *hallazgo abierto* |
+| `fase2/catalogo.mts` · alcance real del agente | 4/7 | **7/7** |
 | `fase2/requisitos.mjs` · requisitos del envío | 26/28 | **29/29** |
 | `fase2/interfaz-y-modelo.mts --solo-interfaz` · la pantalla por su frontera de datos | — | **9/9** |
-| `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | 16/17 · *catálogo* |
+| `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | **17/17** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario mentira` · la guarda | — | **11/11** |
-| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **29 pruebas** |
+| `fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda` · el recorte, por donde se rodea | — | **13/13** |
+| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **54 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |
 | `typecheck` · `doctor` · `build` | limpios | **limpios** |
+
+> **Sobre la fila de `http.mjs`.** Las cifras de arriba son las medidas con el
+> backend de demo recién sembrado y para esta copia. Al reverificar el 8-nov
+> dio 27/30 —fallan `b1`, `b3` y `c1`— porque el MEGI de demo que escucha en
+> 8020 lo arrancó otra sesión de la misma máquina, con su propio estado: dos de
+> las cuatro consultas ya están cerradas. Comprobado con y sin el recorte del
+> alcance: idéntico en los dos casos, así que no es del cambio. Para volver a
+> medirla hay que parar ese backend y dejar que la batería arranque el suyo.
 
 Resultados crudos: `*-antes.json` y `*-resultados.json` en esta carpeta.
 

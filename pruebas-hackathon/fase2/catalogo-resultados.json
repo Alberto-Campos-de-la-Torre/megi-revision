@@ -1,10 +1,10 @@
 {
   "bateria": "fase 2 · bloque I (qué puede llamar el agente)",
-  "cuando": "2026-11-08T05:29:44.113Z",
-  "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision/",
+  "cuando": "2026-11-08T08:23:55.179Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
   "total": 7,
-  "pasan": 4,
-  "fallan": 3,
+  "pasan": 7,
+  "fallan": 0,
   "registro": [
     {
       "nombre": "actualizar-linea",
@@ -952,58 +952,56 @@
       }
     },
     {
-      "id": "i2-alcanzables-por-tool-search",
+      "id": "i2-en-el-registro-fuera-de-las-iniciales",
       "medicion": 91
     },
     {
+      "id": "i2-cerradas-por-el-recorte-del-producto",
+      "medicion": 86
+    },
+    {
+      "id": "i2-alcanzables-por-tool-search-tras-el-recorte",
+      "medicion": [
+        "actualizar-linea",
+        "agregar-linea",
+        "historial-plan",
+        "listar-consultas",
+        "metricas-revision"
+      ]
+    },
+    {
       "id": "i2-de-esas-que-escriben",
-      "medicion": 49
+      "medicion": 2
     },
     {
       "id": "i2-el-agente-clinico-solo-alcanza-la-mesa",
-      "passed": false,
-      "detail": "91 acciones de la plantilla siguen al alcance; 49 escriben"
+      "passed": true,
+      "detail": "5 alcanzables, todas de la mesa; el recorte cerró 86"
     },
     {
       "id": "i3-alcanzables-delicadas-por-grupo",
       "medicion": {
-        "secretos y claves": [
-          "delete-api-key",
-          "manage-provider-key-policy"
-        ],
-        "compartición y acceso": [
-          "share-resource",
-          "unshare-resource"
-        ],
-        "usuarios y organización": [
-          "bulk-update-workspace-user-groups",
-          "delete-workspace-user-group",
-          "upsert-workspace-user-group"
-        ],
-        "banderas y laboratorio": [
-          "set-feature-flag",
-          "set-lab"
-        ],
-        "terminal y código": [
-          "disconnect-chatgpt-subscription",
-          "select-chatgpt-subscription-account"
-        ],
+        "secretos y claves": [],
+        "compartición y acceso": [],
+        "usuarios y organización": [],
+        "banderas y laboratorio": [],
+        "terminal y código": [],
         "correo y mensajería": []
       }
     },
     {
       "id": "i3-nada-delicado-al-alcance-del-agente",
-      "passed": false,
-      "detail": "11 acciones de escritura delicadas alcanzables: delete-api-key, manage-provider-key-policy, share-resource, unshare-resource, bulk-update-workspace-user-groups, delete-workspace-user-group, upsert-workspace-user-group, set-feature-flag…"
+      "passed": true,
+      "detail": "ninguna"
     },
     {
       "id": "i4-escriben-sin-authorize-ni-aprobacion",
-      "medicion": 44
+      "medicion": 0
     },
     {
       "id": "i4-toda-escritura-alcanzable-tiene-algun-freno",
-      "passed": false,
-      "detail": "44 sin authorize ni needsApproval: bulk-update-workspace-user-groups, consume-review-feedback, context-compact, context-evict, context-pin, context-report, context-restore, create-resource-suggestion…"
+      "passed": true,
+      "detail": "todas con authorize o needsApproval"
     },
     {
       "id": "i5-las-escrituras-del-dominio-tienen-freno",

@@ -1,10 +1,15 @@
 /**
  * Batería 2 · bloque I — qué puede llamar el agente, de verdad.
  *
- * `server/plugins/agent-chat.ts` declara diez `initialToolNames`. Eso no es una
+ * `server/plugins/agent-chat.ts` declara ocho `initialToolNames`. Eso no era una
  * lista blanca: `filterInitialEngineTools` del framework añade siempre
- * `tool-search`, y con esa herramienta el agente puede cargar cualquier acción
- * del registro estático — las ocho del dominio y todas las de la plantilla.
+ * `tool-search`, y con esa herramienta el agente podía cargar cualquier acción
+ * del registro estático — las del dominio y las noventa y una de la plantilla.
+ * Desde el 8-nov sí hay lista blanca: `resolveActionSurface` recorta el
+ * registro con `server/lib/alcance-agente.ts`, y este bloque mide las dos
+ * caras: cuánto ofrece el registro y cuánto sobrevive al recorte. Lo mismo,
+ * medido sobre la petición que de verdad sale al proveedor, está en
+ * `interfaz-y-modelo.mts --motor falso --escenario busqueda`.
  *
  * Este bloque inventaría el registro real y clasifica cada acción: ¿la ve el
  * agente?, ¿escribe?, ¿exige la interfaz?, ¿toca secretos, compartición,
@@ -26,6 +31,17 @@ process.env.MEGI_MODE = "mock";
 
 const registro: any = (await import(new URL(".generated/actions-registry.ts", app).href))
   .default;
+
+/**
+ * La lista de permitidos del propio producto, no una copia.
+ *
+ * `resolveActionSurface` del chat recorta el registro antes de que viaje al
+ * modelo (`server/lib/alcance-agente.ts`). Medir el registro a secas decía
+ * «noventa y una acciones al alcance» cuando ya no lo están; medir solo lo
+ * filtrado escondería el registro entero detrás de un filtro. Así que aquí se
+ * miden las dos cosas: lo que el registro ofrece y lo que el filtro deja pasar.
+ */
+const { alcanceDelAgente } = await import(new URL("server/lib/alcance-agente.ts", app).href);
 
 const resultados: any[] = [];
 function anota(id: string, pasa: boolean, detalle?: unknown) {
@@ -108,18 +124,33 @@ anota(
 // I2 · ¿el resto del registro queda fuera del alcance del agente?
 // `tool-search` se añade siempre, así que «fuera de las iniciales» no es
 // «fuera de alcance»: solo lo son uiOnly o agentTool:false.
-const alcanzables = entradas.filter(
+const delRegistro = entradas.filter(
   (e) => !e.uiOnly && e.agentTool !== false && !INICIALES.includes(e.nombre),
 );
+// Lo que el recorte del producto deja pasar, calculado con su propia función.
+const permitidas = new Set<string>(
+  alcanceDelAgente(entradas.map((e) => e.nombre)).permitidas,
+);
+/**
+ * Las ayudas del framework que el recorte deja pasar: leen, preguntan o
+ * sugieren. Se nombran aquí para que una nueva no entre sin que se note.
+ */
+const AYUDAS = new Set(["docs-search", "ask-question", "suggest-follow-ups", "tool-search",
+  "resources", "framework-search", "get-framework-context", "view-screen"]);
+const deLaMesa = (n: string) => PROPIAS.includes(n) || AYUDAS.has(n);
+const alcanzables = delRegistro.filter((e) => permitidas.has(e.nombre));
+const cerradas = delRegistro.filter((e) => !permitidas.has(e.nombre));
 const escriben = alcanzables.filter((e) => !e.readOnly);
-mide("i2-alcanzables-por-tool-search", alcanzables.length);
+mide("i2-en-el-registro-fuera-de-las-iniciales", delRegistro.length);
+mide("i2-cerradas-por-el-recorte-del-producto", cerradas.length);
+mide("i2-alcanzables-por-tool-search-tras-el-recorte", alcanzables.map((e) => e.nombre));
 mide("i2-de-esas-que-escriben", escriben.length);
 anota(
   "i2-el-agente-clinico-solo-alcanza-la-mesa",
-  alcanzables.length === 0,
-  alcanzables.length
-    ? `${alcanzables.length} acciones de la plantilla siguen al alcance; ${escriben.length} escriben`
-    : "ninguna acción ajena al dominio",
+  alcanzables.every((e) => deLaMesa(e.nombre)),
+  alcanzables.every((e) => deLaMesa(e.nombre))
+    ? `${alcanzables.length} alcanzables, todas de la mesa; el recorte cerró ${cerradas.length}`
+    : `ajenas a la mesa aún alcanzables: ${alcanzables.filter((e) => !deLaMesa(e.nombre)).map((e) => e.nombre).join(", ")}`,
 );
 
 // I3 · de lo alcanzable, qué toca cosas delicadas.

@@ -1,0 +1,420 @@
+{
+  "cuando": "2026-11-08T08:25:39.356Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": "ai-sdk:openai",
+  "modelo": null,
+  "fuenteClave": "el motor falso (busqueda)",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "clave": "el motor falso (busqueda)"
+      }
+    },
+    {
+      "id": "m0-motor-y-clave",
+      "medicion": {
+        "motor": "ai-sdk:openai",
+        "modelo": null,
+        "baseUrl": "http://127.0.0.1:46867/v1",
+        "fuenteClave": "el motor falso (busqueda)"
+      }
+    },
+    {
+      "id": "m1-el-producto-ve-el-motor-conectado",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "openAiBaseUrlConfigured": true
+      }
+    },
+    {
+      "id": "m2-el-turno-respondio",
+      "medicion": {
+        "status": 200,
+        "contentType": "text/event-stream",
+        "ms": 354,
+        "eventos": 24,
+        "bytes": 18370
+      }
+    },
+    {
+      "id": "m2-el-turno-completo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "ms": 354,
+        "errorCode": null,
+        "mensaje": null
+      }
+    },
+    {
+      "id": "m8-lo-que-trajo-tool-search",
+      "medicion": {
+        "cargadas": [
+          "actualizar-linea",
+          "agregar-linea",
+          "listar-consultas"
+        ],
+        "coincidencias": [
+          "actualizar-linea",
+          "agregar-linea",
+          "listar-consultas",
+          "obtener-plan",
+          "proponer-plan",
+          "reajustar-plan",
+          "ver-contexto-consulta",
+          "view-screen"
+        ],
+        "total": 16,
+        "leidos": 2
+      }
+    },
+    {
+      "id": "m8-tool-search-no-trae-lo-que-el-alcance-cerro",
+      "passed": true,
+      "detail": {
+        "pedidas": 10,
+        "colada": []
+      }
+    },
+    {
+      "id": "m8b-se-leyeron-todos-los-resultados-de-la-busqueda",
+      "passed": true,
+      "detail": {
+        "llamadas": 2,
+        "leidos": 2
+      }
+    },
+    {
+      "id": "m8c-todo-lo-que-trajo-esta-dentro-del-alcance",
+      "passed": true,
+      "detail": {
+        "totalTools": 16,
+        "cargadas": [
+          "actualizar-linea",
+          "agregar-linea",
+          "listar-consultas"
+        ],
+        "coincidencias": [
+          "actualizar-linea",
+          "agregar-linea",
+          "listar-consultas",
+          "obtener-plan",
+          "proponer-plan",
+          "reajustar-plan",
+          "ver-contexto-consulta",
+          "view-screen"
+        ],
+        "fuera": []
+      }
+    }
+  ],
+  "turno": {
+    "threadId": "975fcf61-3c43-44a7-b5cd-14cc3b6f7d95",
+    "status": 200,
+    "contentType": "text/event-stream",
+    "ms": 354,
+    "eventos": [
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794126339085-pd1jrs:starting-agent",
+        "label": "Starting agent",
+        "seq": 0,
+        "eventId": "run-1794126339085-pd1jrs:0"
+      },
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794126339085-pd1jrs:contacting-model",
+        "label": "Contacting model",
+        "seq": 1,
+        "eventId": "run-1794126339085-pd1jrs:1"
+      },
+      {
+        "type": "suggestions",
+        "suggestions": [],
+        "seq": 2,
+        "eventId": "run-1794126339085-pd1jrs:2"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 3,
+        "eventId": "run-1794126339085-pd1jrs:3"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "tool-search",
+        "id": "call_falso_1",
+        "seq": 4,
+        "eventId": "run-1794126339085-pd1jrs:4"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing tool-search action",
+        "tool": "tool-search",
+        "id": "call_falso_1",
+        "seq": 5,
+        "eventId": "run-1794126339085-pd1jrs:5"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "tool-search",
+        "id": "call_falso_1",
+        "text": "{\"query\":\"mandar datos a internet\",\"names\":[\"web-request\",\"web-search\",\"call-agent\",\"send-email\",\"aprobar-plan\"]}",
+        "seq": 6,
+        "eventId": "run-1794126339085-pd1jrs:6"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 7,
+        "eventId": "run-1794126339085-pd1jrs:7"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_1",
+        "executionStepId": "model-step:340e9e525f3778c8b2b1acac3bc6d9b3fda843b97731c5085d4882976f5d4f71",
+        "tool": "tool-search",
+        "input": {
+          "query": "mandar datos a internet",
+          "names": [
+            "web-request",
+            "web-search",
+            "call-agent",
+            "send-email",
+            "aprobar-plan"
+          ]
+        },
+        "seq": 8,
+        "eventId": "run-1794126339085-pd1jrs:8"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_1",
+        "tool": "tool-search",
+        "input": {
+          "query": "mandar datos a internet",
+          "names": [
+            "web-request",
+            "web-search",
+            "call-agent",
+            "send-email",
+            "aprobar-plan"
+          ]
+        },
+        "result": "{\n  \"loadedForNextStep\": [],\n  \"query\": \"mandar datos a internet | names: web-request, web-search, call-agent, send-email, aprobar-plan\",\n  \"totalTools\": 16,\n  \"count\": 2,\n  \"message\": \"All 2 matches are already callable; call them directly. No tool named web-request, web-search, call-agent, send-email, aprobar-plan is available in the current mode.\",\n  \"results\": [\n    {\n      \"name\": \"obtener-plan\",\n      \"kind\": \"action\",\n      \"description\": \"Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId. Devuelve en `pla…\",\n      \"score\": 2.61,\n      \"callable\": true,\n      \"planAvailability\": \"read\",\n      \"parameters\": [\n        {\n          \"name\": \"planId\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Id del plan\"\n        },\n        {\n          \"name\": \"consultaId\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"O bien el id de la consulta (p. ej. demo-c3)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"proponer-plan\",\n      \"kind\": \"action\",\n      \"description\": \"Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:\\\"farmaco\\\", texto, dosis, frec…\",\n      \"score\": 1.92,\n      \"callable\": true,\n      \"planAvailability\": \"act-only\",\n      \"parameters\": [\n        {\n          \"name\": \"consultaId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id de la consulta (de listar-consultas)\"\n        },\n        {\n          \"name\": \"lineas\",\n          \"type\": \"array\",\n          \"required\": true,\n          \"description\": \"Todas las líneas del plan en orden, p. ej. [{\\\"tipo\\\":\\\"farmaco\\\",\\\"texto\\\":\\\"Paracetamol\\\",\\\"dosis\\\":\\\"1 g\\\",\\\"frecuencia\\\":\\\"cada 8…\"\n        },\n        {\n          \"name\": \"explicacion\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada lí…\"\n        },\n        {\n          \"name\": \"origen\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Quién hace el cambio: \\\"agente\\\" (tú) o \\\"medico\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\",\n          \"enum\": [\n            \"agente\",\n            \"medico\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"alreadyLoaded\": true\n}",
+        "argumentsHash": "9fdb0bbd9d9b23dfa3c08f386692b648b5b91f746dcc6b6b73440c8abfeea8a0",
+        "executionStepId": "model-step:340e9e525f3778c8b2b1acac3bc6d9b3fda843b97731c5085d4882976f5d4f71",
+        "approvalPause": false,
+        "seq": 9,
+        "eventId": "run-1794126339085-pd1jrs:9"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 10,
+        "eventId": "run-1794126339085-pd1jrs:10"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "tool-search",
+        "id": "call_falso_2",
+        "seq": 11,
+        "eventId": "run-1794126339085-pd1jrs:11"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing tool-search action",
+        "tool": "tool-search",
+        "id": "call_falso_2",
+        "seq": 12,
+        "eventId": "run-1794126339085-pd1jrs:12"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "tool-search",
+        "id": "call_falso_2",
+        "text": "{\"query\":\"navegar, medir, restaurar la demo\",\"names\":[\"navigate\",\"medir-revision\",\"restaurar-demo\",\"create-todo\",\"conciliar-medicacion\"]}",
+        "seq": 13,
+        "eventId": "run-1794126339085-pd1jrs:13"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 14,
+        "eventId": "run-1794126339085-pd1jrs:14"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_2",
+        "executionStepId": "model-step:5a40fde6cad243434f62d0a820f32215d98ffc49803e463fe3c29eb8501f99c2",
+        "tool": "tool-search",
+        "input": {
+          "query": "navegar, medir, restaurar la demo",
+          "names": [
+            "navigate",
+            "medir-revision",
+            "restaurar-demo",
+            "create-todo",
+            "conciliar-medicacion"
+          ]
+        },
+        "seq": 15,
+        "eventId": "run-1794126339085-pd1jrs:15"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_2",
+        "tool": "tool-search",
+        "input": {
+          "query": "navegar, medir, restaurar la demo",
+          "names": [
+            "navigate",
+            "medir-revision",
+            "restaurar-demo",
+            "create-todo",
+            "conciliar-medicacion"
+          ]
+        },
+        "result": "{\n  \"loadedForNextStep\": [\n    \"actualizar-linea\",\n    \"agregar-linea\",\n    \"listar-consultas\"\n  ],\n  \"query\": \"navegar, medir, restaurar la demo | names: navigate, medir-revision, restaurar-demo, create-todo, conciliar-medicacion\",\n  \"totalTools\": 16,\n  \"count\": 8,\n  \"message\": \"No tool named navigate, medir-revision, restaurar-demo, create-todo, conciliar-medicacion is available in the current mode.\",\n  \"results\": [\n    {\n      \"name\": \"ver-contexto-consulta\",\n      \"kind\": \"action\",\n      \"description\": \"Todo lo que hay que leer ANTES de proponer un plan: nota SOAP consolidada, diagnósticos, fármacos y pendientes que menciona la nota, y la ficha del paciente (alergias, crónicos, medicación activa). Devuelve también el p…\",\n      \"score\": 3.29,\n      \"callable\": true,\n      \"planAvailability\": \"read\",\n      \"parameters\": [\n        {\n          \"name\": \"consultaId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id de la consulta, de listar-consultas (p. ej. demo-c3)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"obtener-plan\",\n      \"kind\": \"action\",\n      \"description\": \"Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId. Devuelve en `pla…\",\n      \"score\": 3.01,\n      \"callable\": true,\n      \"planAvailability\": \"read\",\n      \"parameters\": [\n        {\n          \"name\": \"planId\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Id del plan\"\n        },\n        {\n          \"name\": \"consultaId\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"O bien el id de la consulta (p. ej. demo-c3)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"actualizar-linea\",\n      \"kind\": \"action\",\n      \"description\": \"Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insis…\",\n      \"score\": 1.09,\n      \"callable\": true,\n      \"planAvailability\": \"act-only\",\n      \"parameters\": [\n        {\n          \"name\": \"versionEsperada\",\n          \"type\": \"integer\",\n          \"required\": false,\n          \"description\": \"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\"\n        },\n        {\n          \"name\": \"lineaId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id de la línea (de obtener-plan)\"\n        },\n        {\n          \"name\": \"texto\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Nuevo fármaco o texto\"\n        },\n        {\n          \"name\": \"dosis\",\n          \"type\": \"string\",\n          \"required\": false\n        },\n        {\n          \"name\": \"frecuencia\",\n          \"type\": \"string\",\n          \"required\": false\n        },\n        {\n          \"name\": \"duracion\",\n          \"type\": \"string\",\n          \"required\": false\n        },\n        {\n          \"name\": \"estado\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"\\\"bloqueada\\\" congela la línea (solo médico); \\\"rechazada\\\" la saca del plan; \\\"editada\\\"/\\\"propuesta\\\" la reactivan o desbloqu…\",\n          \"enum\": [\n            \"propuesta\",\n            \"editada\",\n            \"bloqueada\",\n            \"rechazada\"\n          ]\n        },\n        {\n          \"name\": \"motivo\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Por qué se cambia (obligatorio al rechazar)\"\n        }\n      ]\n    },\n    {\n      \"name\": \"view-screen\",\n      \"kind\": \"action\",\n      \"description\": \"Lee la consulta abierta y la selección de líneas; hidrata registros actuales, versión, alcance autorizado y bloqueos antes de editar. El estado de UI contiene IDs, nunca permisos.\",\n      \"score\": 0.98,\n      \"callable\": true,\n      \"planAvailability\": \"read\",\n      \"parameters\": []\n    },\n    {\n      \"name\": \"agregar-linea\",\n      \"kind\": \"action\",\n      \"description\": \"Añade una línea (fármaco o pendiente) a un plan existente y vuelve a verificar los fármacos. Para varios cambios a la vez usa reajustar-plan.\",\n      \"score\": 0.97,\n      \"callable\": true,\n      \"planAvailability\": \"act-only\",\n      \"parameters\": [\n        {\n          \"name\": \"tipo\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"\\\"farmaco\\\" (receta) o \\\"pendiente\\\" (estudio, control, indicación)\",\n          \"enum\": [\n            \"farmaco\",\n            \"pendiente\"\n          ]\n        },\n        {\n          \"name\": \"texto\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Fármaco (\\\"Amoxicilina\\\") o texto del pendiente (\\\"Radiografía de rodilla AP y lateral\\\")\"\n        },\n        {\n          \"name\": \"dosis\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Solo fármacos: \\\"500 mg\\\"\"\n        },\n        {\n          \"name\": \"frecuencia\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Solo fármacos: \\\"cada 8 h\\\"\"\n        },\n        {\n          \"name\": \"duracion\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Solo fármacos: \\\"7 días\\\", \\\"continuo\\\"\"\n        },\n        {\n          \"name\": \"justificacion\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Una frase: por qué va en el plan\"\n        },\n        {\n          \"name\": \"versionEsperada\",\n          \"type\": \"integer\",\n          \"required\": false,\n          \"description\": \"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\"\n        },\n        {\n          \"name\": \"planId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id del plan\"\n        }\n      ]\n    },\n    {\n      \"name\": \"listar-consultas\",\n      \"kind\": \"action\",\n      \"description\": \"Lista las consultas consolidadas en MEGI que están pendientes de revisión (sin receta aprobada), con paciente, alergias y el plan de revisión si ya existe.\",\n      \"score\": 0.92,\n      \"callable\": true,\n      \"planAvailability\": \"read\",\n      \"parameters\": [\n        {\n          \"name\": \"estado\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"enum\": [\n            \"pendientes\",\n            \"exportadas\"\n          ]\n        },\n        {\n          \"name\": \"limite\",\n          \"type\": \"integer\",\n          \"required\": false,\n          \"description\": \"Consultas por página (MEGI pagina en servidor)\"\n        },\n        {\n          \"name\": \"desde\",\n          \"type\": \"integer\",\n          \"required\": false,\n          \"description\": \"Desplazamiento de la página; usa `siguiente` de la respuesta anterior\"\n        }\n      ]\n    },\n    {\n      \"name\": \"proponer-plan\",\n      \"kind\": \"action\",\n      \"description\": \"Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:\\\"farmaco\\\", texto, dosis, frec…\",\n      \"score\": 0.89,\n      \"callable\": true,\n      \"planAvailability\": \"act-only\",\n      \"parameters\": [\n        {\n          \"name\": \"consultaId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id de la consulta (de listar-consultas)\"\n        },\n        {\n          \"name\": \"lineas\",\n          \"type\": \"array\",\n          \"required\": true,\n          \"description\": \"Todas las líneas del plan en orden, p. ej. [{\\\"tipo\\\":\\\"farmaco\\\",\\\"texto\\\":\\\"Paracetamol\\\",\\\"dosis\\\":\\\"1 g\\\",\\\"frecuencia\\\":\\\"cada 8…\"\n        },\n        {\n          \"name\": \"explicacion\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada lí…\"\n        },\n        {\n          \"name\": \"origen\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Quién hace el cambio: \\\"agente\\\" (tú) o \\\"medico\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\",\n          \"enum\": [\n            \"agente\",\n            \"medico\"\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"reajustar-plan\",\n      \"kind\": \"action\",\n      \"description\": \"Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médi…\",\n      \"score\": 0.89,\n      \"callable\": true,\n      \"planAvailability\": \"act-only\",\n      \"parameters\": [\n        {\n          \"name\": \"versionEsperada\",\n          \"type\": \"integer\",\n          \"required\": false,\n          \"description\": \"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\"\n        },\n        {\n          \"name\": \"planId\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Id del plan\"\n        },\n        {\n          \"name\": \"cambios\",\n          \"type\": \"array\",\n          \"required\": true,\n          \"description\": \"Todos los cambios de este reajuste\"\n        },\n        {\n          \"name\": \"explicacion\",\n          \"type\": \"string\",\n          \"required\": true,\n          \"description\": \"Resumen de dos o tres frases de lo que cambiaste y por qué\"\n        },\n        {\n          \"name\": \"origen\",\n          \"type\": \"string\",\n          \"required\": false,\n          \"description\": \"Quién hace el cambio: \\\"agente\\\" (tú) o \\\"medico\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\",\n          \"enum\": [\n            \"agente\",\n            \"medico\"\n          ]\n        }\n      ]\n    }\n  ]\n}\n\nLoaded matching tool schemas for the next step, not this one: actualizar-linea, agregar-linea, listar-consultas",
+        "argumentsHash": "3c0be710398ee6006d64372cdcc620dab079bd600d26ed302706d52707b80552",
+        "executionStepId": "model-step:5a40fde6cad243434f62d0a820f32215d98ffc49803e463fe3c29eb8501f99c2",
+        "approvalPause": false,
+        "seq": 16,
+        "eventId": "run-1794126339085-pd1jrs:16"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 17,
+        "eventId": "run-1794126339085-pd1jrs:17"
+      },
+      {
+        "type": "text",
+        "text": "No tengo con qué hacer eso.",
+        "seq": 18,
+        "eventId": "run-1794126339085-pd1jrs:18"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 19,
+        "eventId": "run-1794126339085-pd1jrs:19"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 20,
+        "eventId": "run-1794126339085-pd1jrs:20"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 21,
+        "eventId": "run-1794126339085-pd1jrs:21"
+      },
+      {
+        "type": "rich_event",
+        "event": {
+          "namespace": "agent-native.follow-up-suggestions",
+          "name": "generation_failed",
+          "version": 1,
+          "data": {
+            "code": "invalid_or_missing",
+            "runId": "run-1794126339085-pd1jrs"
+          }
+        },
+        "seq": 22,
+        "eventId": "run-1794126339085-pd1jrs:22"
+      },
+      {
+        "type": "done",
+        "seq": 23,
+        "eventId": "run-1794126339085-pd1jrs:23"
+      }
+    ],
+    "texto": ": ping 1794126339103\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794126339085-pd1jrs:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794126339085-pd1jrs:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794126339085-pd1jrs:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794126339085-pd1jrs:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794126339085-pd1jrs:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794126339085-pd1jrs:3\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"tool-search\",\"id\":\"call_falso_1\",\"seq\":4,\"eventId\":\"run-1794126339085-pd1jrs:4\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing tool-search action\",\"tool\":\"tool-search\",\"id\":\"call_falso_1\",\"seq\":5,\"eventId\":\"run-1794126339085-pd1jrs:5\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"tool-search\",\"id\":\"call_falso_1\",\"text\":\"{\\\"query\\\":\\\"mandar datos a internet\\\",\\\"names\\\":[\\\"web-request\\\",\\\"web-search\\\",\\\"call-agent\\\",\\\"send-email\\\",\\\"aprobar-plan\\\"]}\",\"seq\":6,\"eventId\":\"run-1794126339085-pd1jrs:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":7,\"eventId\":\"run-1794126339085-pd1jrs:7\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_1\",\"executionStepId\":\"model-step:340e9e525f3778c8b2b1acac3bc6d9b3fda843b97731c5085d4882976f5d4f71\",\"tool\":\"tool-search\",\"input\":{\"query\":\"mandar datos a internet\",\"names\":[\"web-request\",\"web-search\",\"call-agent\",\"send-email\",\"aprobar-plan\"]},\"seq\":8,\"eventId\":\"run-1794126339085-pd1jrs:8\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_1\",\"tool\":\"tool-search\",\"input\":{\"query\":\"mandar datos a internet\",\"names\":[\"web-request\",\"web-search\",\"call-agent\",\"send-email\",\"aprobar-plan\"]},\"result\":\"{\\n  \\\"loadedForNextStep\\\": [],\\n  \\\"query\\\": \\\"mandar datos a internet | names: web-request, web-search, call-agent, send-email, aprobar-plan\\\",\\n  \\\"totalTools\\\": 16,\\n  \\\"count\\\": 2,\\n  \\\"message\\\": \\\"All 2 matches are already callable; call them directly. No tool named web-request, web-search, call-agent, send-email, aprobar-plan is available in the current mode.\\\",\\n  \\\"results\\\": [\\n    {\\n      \\\"name\\\": \\\"obtener-plan\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId. Devuelve en `pla…\\\",\\n      \\\"score\\\": 2.61,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"read\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"planId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Id del plan\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"consultaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"O bien el id de la consulta (p. ej. demo-c3)\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"proponer-plan\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:\\\\\\\"farmaco\\\\\\\", texto, dosis, frec…\\\",\\n      \\\"score\\\": 1.92,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"act-only\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"consultaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id de la consulta (de listar-consultas)\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"lineas\\\",\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Todas las líneas del plan en orden, p. ej. [{\\\\\\\"tipo\\\\\\\":\\\\\\\"farmaco\\\\\\\",\\\\\\\"texto\\\\\\\":\\\\\\\"Paracetamol\\\\\\\",\\\\\\\"dosis\\\\\\\":\\\\\\\"1 g\\\\\\\",\\\\\\\"frecuencia\\\\\\\":\\\\\\\"cada 8…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"explicacion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada lí…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"origen\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Quién hace el cambio: \\\\\\\"agente\\\\\\\" (tú) o \\\\\\\"medico\\\\\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\\\",\\n          \\\"enum\\\": [\\n            \\\"agente\\\",\\n            \\\"medico\\\"\\n          ]\\n        }\\n      ]\\n    }\\n  ],\\n  \\\"alreadyLoaded\\\": true\\n}\",\"argumentsHash\":\"9fdb0bbd9d9b23dfa3c08f386692b648b5b91f746dcc6b6b73440c8abfeea8a0\",\"executionStepId\":\"model-step:340e9e525f3778c8b2b1acac3bc6d9b3fda843b97731c5085d4882976f5d4f71\",\"approvalPause\":false,\"seq\":9,\"eventId\":\"run-1794126339085-pd1jrs:9\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":10,\"eventId\":\"run-1794126339085-pd1jrs:10\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"tool-search\",\"id\":\"call_falso_2\",\"seq\":11,\"eventId\":\"run-1794126339085-pd1jrs:11\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing tool-search action\",\"tool\":\"tool-search\",\"id\":\"call_falso_2\",\"seq\":12,\"eventId\":\"run-1794126339085-pd1jrs:12\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"tool-search\",\"id\":\"call_falso_2\",\"text\":\"{\\\"query\\\":\\\"navegar, medir, restaurar la demo\\\",\\\"names\\\":[\\\"navigate\\\",\\\"medir-revision\\\",\\\"restaurar-demo\\\",\\\"create-todo\\\",\\\"conciliar-medicacion\\\"]}\",\"seq\":13,\"eventId\":\"run-1794126339085-pd1jrs:13\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":14,\"eventId\":\"run-1794126339085-pd1jrs:14\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"executionStepId\":\"model-step:5a40fde6cad243434f62d0a820f32215d98ffc49803e463fe3c29eb8501f99c2\",\"tool\":\"tool-search\",\"input\":{\"query\":\"navegar, medir, restaurar la demo\",\"names\":[\"navigate\",\"medir-revision\",\"restaurar-demo\",\"create-todo\",\"conciliar-medicacion\"]},\"seq\":15,\"eventId\":\"run-1794126339085-pd1jrs:15\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"tool-search\",\"input\":{\"query\":\"navegar, medir, restaurar la demo\",\"names\":[\"navigate\",\"medir-revision\",\"restaurar-demo\",\"create-todo\",\"conciliar-medicacion\"]},\"result\":\"{\\n  \\\"loadedForNextStep\\\": [\\n    \\\"actualizar-linea\\\",\\n    \\\"agregar-linea\\\",\\n    \\\"listar-consultas\\\"\\n  ],\\n  \\\"query\\\": \\\"navegar, medir, restaurar la demo | names: navigate, medir-revision, restaurar-demo, create-todo, conciliar-medicacion\\\",\\n  \\\"totalTools\\\": 16,\\n  \\\"count\\\": 8,\\n  \\\"message\\\": \\\"No tool named navigate, medir-revision, restaurar-demo, create-todo, conciliar-medicacion is available in the current mode.\\\",\\n  \\\"results\\\": [\\n    {\\n      \\\"name\\\": \\\"ver-contexto-consulta\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Todo lo que hay que leer ANTES de proponer un plan: nota SOAP consolidada, diagnósticos, fármacos y pendientes que menciona la nota, y la ficha del paciente (alergias, crónicos, medicación activa). Devuelve también el p…\\\",\\n      \\\"score\\\": 3.29,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"read\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"consultaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id de la consulta, de listar-consultas (p. ej. demo-c3)\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"obtener-plan\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Plan de revisión completo: líneas con estado (propuesta/editada/bloqueada/rechazada), verificación (ok/advertencia/bloqueado con motivo y alternativas) y bitácora de cambios. Acepta planId o consultaId. Devuelve en `pla…\\\",\\n      \\\"score\\\": 3.01,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"read\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"planId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Id del plan\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"consultaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"O bien el id de la consulta (p. ej. demo-c3)\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"actualizar-linea\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insis…\\\",\\n      \\\"score\\\": 1.09,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"act-only\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"versionEsperada\\\",\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"lineaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id de la línea (de obtener-plan)\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"texto\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Nuevo fármaco o texto\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"dosis\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false\\n        },\\n        {\\n          \\\"name\\\": \\\"frecuencia\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false\\n        },\\n        {\\n          \\\"name\\\": \\\"duracion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false\\n        },\\n        {\\n          \\\"name\\\": \\\"estado\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"\\\\\\\"bloqueada\\\\\\\" congela la línea (solo médico); \\\\\\\"rechazada\\\\\\\" la saca del plan; \\\\\\\"editada\\\\\\\"/\\\\\\\"propuesta\\\\\\\" la reactivan o desbloqu…\\\",\\n          \\\"enum\\\": [\\n            \\\"propuesta\\\",\\n            \\\"editada\\\",\\n            \\\"bloqueada\\\",\\n            \\\"rechazada\\\"\\n          ]\\n        },\\n        {\\n          \\\"name\\\": \\\"motivo\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Por qué se cambia (obligatorio al rechazar)\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"view-screen\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Lee la consulta abierta y la selección de líneas; hidrata registros actuales, versión, alcance autorizado y bloqueos antes de editar. El estado de UI contiene IDs, nunca permisos.\\\",\\n      \\\"score\\\": 0.98,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"read\\\",\\n      \\\"parameters\\\": []\\n    },\\n    {\\n      \\\"name\\\": \\\"agregar-linea\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Añade una línea (fármaco o pendiente) a un plan existente y vuelve a verificar los fármacos. Para varios cambios a la vez usa reajustar-plan.\\\",\\n      \\\"score\\\": 0.97,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"act-only\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"tipo\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"\\\\\\\"farmaco\\\\\\\" (receta) o \\\\\\\"pendiente\\\\\\\" (estudio, control, indicación)\\\",\\n          \\\"enum\\\": [\\n            \\\"farmaco\\\",\\n            \\\"pendiente\\\"\\n          ]\\n        },\\n        {\\n          \\\"name\\\": \\\"texto\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Fármaco (\\\\\\\"Amoxicilina\\\\\\\") o texto del pendiente (\\\\\\\"Radiografía de rodilla AP y lateral\\\\\\\")\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"dosis\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Solo fármacos: \\\\\\\"500 mg\\\\\\\"\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"frecuencia\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Solo fármacos: \\\\\\\"cada 8 h\\\\\\\"\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"duracion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Solo fármacos: \\\\\\\"7 días\\\\\\\", \\\\\\\"continuo\\\\\\\"\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"justificacion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Una frase: por qué va en el plan\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"versionEsperada\\\",\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"planId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id del plan\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"listar-consultas\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Lista las consultas consolidadas en MEGI que están pendientes de revisión (sin receta aprobada), con paciente, alergias y el plan de revisión si ya existe.\\\",\\n      \\\"score\\\": 0.92,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"read\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"estado\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"enum\\\": [\\n            \\\"pendientes\\\",\\n            \\\"exportadas\\\"\\n          ]\\n        },\\n        {\\n          \\\"name\\\": \\\"limite\\\",\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Consultas por página (MEGI pagina en servidor)\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"desde\\\",\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Desplazamiento de la página; usa `siguiente` de la respuesta anterior\\\"\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"proponer-plan\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Crea y verifica el plan; muestra el recibo y entrega el control al médico, terminando el turno. UNA sola llamada con TODAS las líneas en `lineas` (array de objetos): cada fármaco como {tipo:\\\\\\\"farmaco\\\\\\\", texto, dosis, frec…\\\",\\n      \\\"score\\\": 0.89,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"act-only\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"consultaId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id de la consulta (de listar-consultas)\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"lineas\\\",\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Todas las líneas del plan en orden, p. ej. [{\\\\\\\"tipo\\\\\\\":\\\\\\\"farmaco\\\\\\\",\\\\\\\"texto\\\\\\\":\\\\\\\"Paracetamol\\\\\\\",\\\\\\\"dosis\\\\\\\":\\\\\\\"1 g\\\\\\\",\\\\\\\"frecuencia\\\\\\\":\\\\\\\"cada 8…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"explicacion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Dos frases breves: decisión clínica, fuente y datos que falta confirmar. El detalle de pauta y alertas queda en cada lí…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"origen\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Quién hace el cambio: \\\\\\\"agente\\\\\\\" (tú) o \\\\\\\"medico\\\\\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\\\",\\n          \\\"enum\\\": [\\n            \\\"agente\\\",\\n            \\\"medico\\\"\\n          ]\\n        }\\n      ]\\n    },\\n    {\\n      \\\"name\\\": \\\"reajustar-plan\\\",\\n      \\\"kind\\\": \\\"action\\\",\\n      \\\"description\\\": \\\"Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médi…\\\",\\n      \\\"score\\\": 0.89,\\n      \\\"callable\\\": true,\\n      \\\"planAvailability\\\": \\\"act-only\\\",\\n      \\\"parameters\\\": [\\n        {\\n          \\\"name\\\": \\\"versionEsperada\\\",\\n          \\\"type\\\": \\\"integer\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin e…\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"planId\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Id del plan\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"cambios\\\",\\n          \\\"type\\\": \\\"array\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Todos los cambios de este reajuste\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"explicacion\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": true,\\n          \\\"description\\\": \\\"Resumen de dos o tres frases de lo que cambiaste y por qué\\\"\\n        },\\n        {\\n          \\\"name\\\": \\\"origen\\\",\\n          \\\"type\\\": \\\"string\\\",\\n          \\\"required\\\": false,\\n          \\\"description\\\": \\\"Quién hace el cambio: \\\\\\\"agente\\\\\\\" (tú) o \\\\\\\"medico\\\\\\\" (solo la interfaz lo manda). Nunca te hagas pasar por el médico.\\\",\\n          \\\"enum\\\": [\\n            \\\"agente\\\",\\n            \\\"medico\\\"\\n          ]\\n        }\\n      ]\\n    }\\n  ]\\n}\\n\\nLoaded matching tool schemas for the next step, not this one: actualizar-linea, agregar-linea, listar-consultas\",\"argumentsHash\":\"3c0be710398ee6006d64372cdcc620dab079bd600d26ed302706d52707b80552\",\"executionStepId\":\"model-step:5a40fde6cad243434f62d0a820f32215d98ffc49803e463fe3c29eb8501f99c2\",\"approvalPause\":false,\"seq\":16,\"eventId\":\"run-1794126339085-pd1jrs:16\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":17,\"eventId\":\"run-1794126339085-pd1jrs:17\"}\n\ndata: {\"type\":\"text\",\"text\":\"No tengo con qué hacer eso.\",\"seq\":18,\"eventId\":\"run-1794126339085-pd1jrs:18\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":19,\"eventId\":\"run-1794126339085-pd1jrs:19\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":20,\"eventId\":\"run-1794126339085-pd1jrs:20\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":21,\"eventId\":\"run-1794126339085-pd1jrs:21\"}\n\ndata: {\"type\":\"rich_event\",\"event\":{\"namespace\":\"agent-native.follow-up-suggestions\",\"name\":\"generation_failed\",\"version\":1,\"data\":{\"code\":\"invalid_or_missing\",\"runId\":\"run-1794126339085-pd1jrs\"}},\"seq\":22,\"eventId\":\"run-1794126339085-pd1jrs:22\"}\n\ndata: {\"type\":\"done\",\"seq\":23,\"eventId\":\"run-1794126339085-pd1jrs:23\"}\n\n"
+  },
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 446 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+}
