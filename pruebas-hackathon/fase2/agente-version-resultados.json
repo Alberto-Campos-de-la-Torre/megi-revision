@@ -1,15 +1,16 @@
 {
   "bateria": "fase 2 · bloque J (el contrato de versión, con el agente)",
-  "cuando": "2026-11-08T04:00:52.955Z",
+  "cuando": "2026-11-08T04:09:13.863Z",
   "modo": "arnes (sin modelo)",
   "modeloPedido": null,
   "motorPedido": null,
+  "atajo": null,
   "consulta": "demo-c2",
   "iteracionesMax": 14,
   "repeticiones": 1,
   "advertencia": "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
-  "total": 2,
-  "pasan": 2,
+  "total": 3,
+  "pasan": 3,
   "resultados": [
     {
       "id": "j0-version-al-empezar",
@@ -31,6 +32,11 @@
           "agregar-linea"
         ]
       }
+    },
+    {
+      "id": "j0c-la-clave-no-sobrevive-en-la-salida-ni-en-el-json",
+      "passed": true,
+      "detail": "tapada en cadena y en objeto anidado"
     },
     {
       "id": "j-arnes",

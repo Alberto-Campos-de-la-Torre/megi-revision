@@ -51,7 +51,14 @@ node pruebas-hackathon/fase2/requisitos.mjs
 #     gastan nada; esta llama a un modelo, así que va aparte y pide clave.
 #     --arnes comprueba el montaje sin llamar a ningún modelo.
 megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts --arnes
-megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts --motores
+
+#     Con Grok (xAI): atajo de motor, URL y modelo del despliegue, y la clave
+#     introducida sin dejarla en `ps` ni en el historial.
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
+  --motor grok --pedir-clave --repeticiones 3
+megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
+  --motor grok --clave-archivo ~/.config/xai.key
 ```
 
 La quinta necesita la clave del proveedor en el entorno o en `megi-revision/.env`;

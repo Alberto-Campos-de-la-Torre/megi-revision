@@ -64,11 +64,25 @@
  *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
  *     --motor ai-sdk:google --repeticiones 3
  *
+ *   # 4 · Grok (xAI) tiene atajo: `--motor grok` usa el motor compatible con
+ *   #     OpenAI apuntando a https://api.x.ai/v1 y el modelo del despliegue
+ *   #     del proyecto. La clave se introduce sin dejarla en el historial:
+ *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
+ *     --motor grok --pedir-clave --repeticiones 3
+ *   #     o desde un archivo, para no teclearla cada vez:
+ *   megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
+ *     --motor grok --clave-archivo ~/.config/xai.key
+ *
+ * La clave NO se acepta como argumento a propósito: la línea de órdenes se ve
+ * en `ps` y se queda en el historial. Se registra como secreto y se tapa en la
+ * salida y en el JSON; no se escribe en ningún archivo.
+ *
  * La clave tiene que venir del entorno o de `megi-revision/.env`: las que estén
  * guardadas en Ajustes > Agente de la app no sirven, porque esta prueba corre
  * contra una base de datos desechable y no ve esa configuración.
  *
  * Opcionales: `--motores` (lista los motores y cuál tiene clave aquí),
+ * `--pedir-clave`, `--clave-archivo <ruta>`,
  * `--modelo <nombre>`, `--motor <nombre>`, `--iteraciones <n>`,
  * `--consulta <id>` (por defecto demo-c2), `--repeticiones <n>` (la conducta de
  * un modelo varía entre ejecuciones: con 1 se obtiene una anécdota, no una tasa).
@@ -80,6 +94,8 @@ import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "n
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createInterface } from "node:readline";
+import { inspect } from "node:util";
 import { pathToFileURL } from "node:url";
 
 // ─────────────────────────────── argumentos ───────────────────────────────
@@ -91,6 +107,18 @@ const opcion = (n: string, pordefecto?: string) => {
 };
 const SOLO_ARNES = bandera("arnes");
 const SOLO_MOTORES = bandera("motores");
+const PEDIR_CLAVE = bandera("pedir-clave");
+const CLAVE_ARCHIVO = opcion("clave-archivo");
+
+/**
+ * Atajos de proveedor. xAI (Grok) habla el protocolo de OpenAI, así que va por
+ * el motor `ai-sdk:openai` con la URL cambiada: es la misma configuración que
+ * usa el despliegue del proyecto (`OPENAI_BASE_URL=https://api.x.ai/v1`).
+ */
+const ATAJOS: Record<string, { motor: string; modelo: string; baseUrl?: string; host?: string }> = {
+  grok: { motor: "ai-sdk:openai", modelo: "grok-4.20-0309-non-reasoning", baseUrl: "https://api.x.ai/v1", host: "api.x.ai" },
+  xai: { motor: "ai-sdk:openai", modelo: "grok-4.20-0309-non-reasoning", baseUrl: "https://api.x.ai/v1", host: "api.x.ai" },
+};
 
 /** Qué variable mira cada motor del framework; sirve para el aviso y para `--motores`. */
 const CLAVES: Array<[string, string[]]> = [
@@ -107,11 +135,80 @@ const CLAVES: Array<[string, string[]]> = [
 ];
 const conClave = () =>
   CLAVES.filter(([, vars]) => vars.every((v) => (process.env[v] ?? "").trim() !== "")).map(([m]) => m);
+
+/**
+ * Introducir la clave sin dejarla por ahí.
+ *
+ * NO se acepta como argumento: la línea de órdenes se ve en `ps` y se queda en
+ * el historial del shell. Es la norma que ya sigue `evidencia/modelos-xai.mjs`
+ * («never print, persist or accept a credential on the command line»). Caminos:
+ *   · la variable del motor, ya puesta en el entorno o en `megi-revision/.env`;
+ *   · `--clave-archivo <ruta>`: se lee la primera línea y no se guarda nada;
+ *   · `--pedir-clave`: la pide por teclado, sin eco.
+ * En los tres casos el valor se registra como secreto y se tapa en la salida y
+ * en el JSON de resultados.
+ */
+async function porTeclado(etiqueta: string): Promise<string> {
+  if (!process.stdin.isTTY) {
+    // Sin terminal (tubería, CI): se lee una línea tal cual, sin prometer eco apagado.
+    const rl = createInterface({ input: process.stdin });
+    const it = rl[Symbol.asyncIterator]();
+    const { value } = await it.next();
+    rl.close();
+    return String(value ?? "").trim();
+  }
+  process.stdout.write(`${etiqueta}: `);
+  const rl: any = createInterface({ input: process.stdin, output: process.stdout, terminal: true });
+  rl._writeToOutput = () => {}; // sin eco: no se ve lo que se teclea
+  const valor: string = await new Promise((res) => rl.question("", (r: string) => res(r)));
+  rl.close();
+  process.stdout.write("\n");
+  return valor.trim();
+}
+
+/** Deja en el entorno la clave que necesita el motor elegido. */
+async function configuraClave() {
+  if (ATAJO?.baseUrl && !(process.env.OPENAI_BASE_URL ?? "").trim()) {
+    process.env.OPENAI_BASE_URL = ATAJO.baseUrl;
+    nota(`${MOTOR_PEDIDO}: usando ${ATAJO.baseUrl} por el motor ${ATAJO.motor}`);
+  }
+  if (ATAJO?.host) {
+    // Antes de mandar nada: que el endpoint sea el que se espera, como comprueba
+    // el propio guion de modelos del proyecto.
+    const u = new URL(process.env.OPENAI_BASE_URL!);
+    if (u.protocol !== "https:" || u.hostname !== ATAJO.host) {
+      throw new Error(`OPENAI_BASE_URL apunta a ${u.protocol}//${u.hostname} y para ${MOTOR_PEDIDO} se espera https://${ATAJO.host}: no se envía la clave`);
+    }
+  }
+  const vars = CLAVES.find(([m]) => m === (MOTOR ?? "anthropic"))?.[1] ?? [];
+  for (const v of vars) recuerdaSecreto(process.env[v]);
+  const faltan = vars.filter((v) => (process.env[v] ?? "").trim() === "");
+  if (!faltan.length) return;
+  if (CLAVE_ARCHIVO) {
+    const leido = readFileSync(CLAVE_ARCHIVO, "utf8").split("\n")[0]!.trim();
+    if (!leido) throw new Error(`${CLAVE_ARCHIVO} está vacío`);
+    for (const v of faltan) process.env[v] = leido;
+    recuerdaSecreto(leido);
+    nota(`clave leída de ${CLAVE_ARCHIVO} para ${faltan.join(", ")} (no se guarda en ningún sitio)`);
+    return;
+  }
+  if (PEDIR_CLAVE) {
+    for (const v of faltan) {
+      const valor = await porTeclado(`Clave para ${v} (no se verá al teclear)`);
+      if (!valor) throw new Error(`No se introdujo ${v}`);
+      process.env[v] = valor;
+      recuerdaSecreto(valor);
+    }
+    nota(`clave introducida por teclado para ${faltan.join(", ")} (solo vive en este proceso)`);
+  }
+}
 const CONSULTA = opcion("consulta", "demo-c2")!;
 const ITERACIONES = opcion("iteraciones", "14")!;
 const REPETICIONES = Number(opcion("repeticiones", "1"));
-const MODELO = opcion("modelo") ?? process.env.AGENT_MODEL;
-const MOTOR = opcion("motor");
+const MOTOR_PEDIDO = opcion("motor");
+const ATAJO = MOTOR_PEDIDO ? ATAJOS[MOTOR_PEDIDO.toLowerCase()] : undefined;
+const MOTOR = ATAJO?.motor ?? MOTOR_PEDIDO;
+const MODELO = opcion("modelo") ?? process.env.AGENT_MODEL ?? ATAJO?.modelo;
 
 const aquí = new URL(".", import.meta.url);
 const APP = new URL("../../megi-revision/", aquí);
@@ -119,18 +216,42 @@ const req = createRequire(new URL("package.json", APP));
 const baseDir = mkdtempSync(join(tmpdir(), "fase2-agente-"));
 const DATABASE_URL = `pglite:${join(baseDir, "db")}`;
 
+// ───────────────────── la clave: nunca se imprime ni se guarda ────────────
+/** Valores que no deben aparecer en pantalla ni en el JSON de resultados. */
+const secretos = new Set<string>();
+function tapa<T>(v: T): T {
+  if (typeof v === "string") {
+    let s = v;
+    for (const x of secretos) if (x.length >= 8) s = s.split(x).join("«clave tapada»");
+    return s as T;
+  }
+  if (Array.isArray(v)) return v.map(tapa) as T;
+  if (v && typeof v === "object") {
+    const o: Record<string, unknown> = {};
+    for (const [k, x] of Object.entries(v as Record<string, unknown>)) o[k] = tapa(x);
+    return o as T;
+  }
+  return v;
+}
+function recuerdaSecreto(s: string | undefined) {
+  const v = (s ?? "").trim();
+  if (v.length >= 8) secretos.add(v);
+}
+
 // ─────────────────────────────── anotación ────────────────────────────────
 type Check = { id: string; passed: boolean; detail: unknown };
 const resultados: Array<Check | { id: string; medicion: unknown }> = [];
 function anota(id: string, pasa: boolean, detalle?: unknown) {
-  resultados.push({ id, passed: !!pasa, detail: detalle ?? null });
-  console.log(`${pasa ? "PASA " : "FALLA"} ${id}${detalle === undefined ? "" : `: ${String(JSON.stringify(detalle)).slice(0, 240)}`}`);
+  const d = tapa(detalle ?? null);
+  resultados.push({ id, passed: !!pasa, detail: d });
+  console.log(`${pasa ? "PASA " : "FALLA"} ${id}${detalle === undefined ? "" : `: ${String(JSON.stringify(d)).slice(0, 240)}`}`);
 }
 function mide(id: string, valor: unknown) {
-  resultados.push({ id, medicion: valor });
-  console.log(`MIDE  ${id}: ${String(JSON.stringify(valor)).slice(0, 240)}`);
+  const v = tapa(valor);
+  resultados.push({ id, medicion: v });
+  console.log(`MIDE  ${id}: ${String(JSON.stringify(v)).slice(0, 240)}`);
 }
-function nota(t: string) { console.log(`  ⓘ   ${t}`); }
+function nota(t: string) { console.log(`  ⓘ   ${tapa(t)}`); }
 
 // ───────────────────── la base y las acciones, en proceso ─────────────────
 // El montaje y la verificación se hacen aquí, no por la línea de órdenes: así
@@ -285,6 +406,71 @@ async function accionesDeLaApp(): Promise<Record<string, any>> {
   return out;
 }
 
+/**
+ * Lo que dijo el proveedor, que es lo único que distingue «clave mala» de
+ * «modelo que no existe» o «cuota agotada».
+ *
+ * El `EngineError` del framework se queda en «Bad Request» con `statusCode`;
+ * el cuerpo de la respuesta viaja más abajo, en la cadena de `cause`. Sin esto,
+ * un fallo de clave y uno de modelo son indistinguibles en la salida.
+ */
+function delProveedor(e: unknown, registro = ""): unknown {
+  const visto = new Set<unknown>();
+  let x: any = e;
+  for (let i = 0; i < 8 && x && typeof x === "object" && !visto.has(x); i++) {
+    visto.add(x);
+    const cuerpo = x.responseBody ?? x.body ?? x.data;
+    if (typeof cuerpo === "string" && cuerpo.trim()) {
+      return { estado: x.statusCode ?? x.status ?? null, url: typeof x.url === "string" ? x.url : null, cuerpo: cuerpo.slice(0, 400) };
+    }
+    x = x.cause;
+  }
+  // El framework imprime el error del proveedor pero no lo adjunta al suyo, así
+  // que se rescata del registro capturado durante el turno.
+  const a: any = e;
+  const estado = a?.statusCode ?? a?.status ?? null;
+  const m =
+    /responseBody:\s*'([^']{0,400})'/.exec(registro) ??
+    /"error"\s*:\s*"([^"]{0,300})"/.exec(registro) ??
+    /"message"\s*:\s*"([^"]{0,300})"/.exec(registro);
+  if (m) return { estado, cuerpo: m[1] };
+  return estado ? { estado, cuerpo: null } : null;
+}
+
+/**
+ * Captura lo que el framework escribe durante el turno. Se restaura siempre, se
+ * limita de tamaño y se tapa la clave antes de guardarlo: es el único sitio
+ * donde aparece el motivo real de un rechazo del proveedor.
+ *
+ * Durante el turno la salida normal del framework no se reenvía a pantalla, para
+ * que el informe de la prueba quede legible; el registro se muestra solo si algo
+ * falla. Lo que va a stderr sí se deja pasar, por si hay un aviso que importe.
+ */
+function capturaRegistro() {
+  const trozos: string[] = [];
+  let total = 0;
+  const guarda = (s: unknown) => {
+    const txt = tapa(String(s));
+    if (total < 20_000) { trozos.push(txt); total += txt.length; }
+  };
+  const consolaOriginal = { log: console.log, error: console.error, warn: console.warn, info: console.info };
+  const errWrite = process.stderr.write.bind(process.stderr);
+  const outWrite = process.stdout.write.bind(process.stdout);
+  for (const k of ["log", "error", "warn", "info"] as const) {
+    console[k] = (...args: unknown[]) => { for (const a of args) guarda(typeof a === "string" ? a : inspect(a, { depth: 4 })); };
+  }
+  process.stderr.write = ((c: any, ...r: any[]) => { guarda(c); return errWrite(c, ...r); }) as any;
+  process.stdout.write = ((c: any, ...r: any[]) => { guarda(c); return true; }) as any;
+  return {
+    suelta() {
+      Object.assign(console, consolaOriginal);
+      process.stderr.write = errWrite as any;
+      process.stdout.write = outWrite as any;
+      return trozos.join("\n");
+    },
+  };
+}
+
 async function turnoDelAgente(mensaje: string) {
   const f = await cargaBucle();
   const acciones = await accionesDeLaApp();
@@ -295,6 +481,8 @@ async function turnoDelAgente(mensaje: string) {
   let responseText = "";
   const t0 = Date.now();
   let usage: unknown = null; let fallo: unknown = null;
+  const captura = capturaRegistro();
+  let registro = "";
   try {
     usage = await f.runWithRequestContext({ userEmail: CORREO, orgId: null }, () =>
       f.runAgentLoopDirectWithSoftTimeout({
@@ -309,7 +497,10 @@ async function turnoDelAgente(mensaje: string) {
       }),
     );
   } catch (e: any) {
-    fallo = { nombre: e?.name, mensaje: String(e?.message).slice(0, 600) };
+    registro = captura.suelta();
+    fallo = { nombre: e?.name, mensaje: String(e?.message).slice(0, 600), proveedor: delProveedor(e, registro) };
+  } finally {
+    if (!registro) registro = captura.suelta();
   }
   return {
     ms: Date.now() - t0, eventos, responseText, usage, fallo,
@@ -390,13 +581,31 @@ try {
     });
   }
 
+  // El tapado de la clave es una afirmación de seguridad, así que se comprueba
+  // en vez de prometerse: se registra un secreto de juguete y se mira que no
+  // sobreviva ni en una cadena ni dentro de un objeto anidado.
+  {
+    const juguete = "clave-de-juguete-para-comprobar-el-tapado";
+    recuerdaSecreto(juguete);
+    const anidado = tapa({ a: [{ b: `Authorization: Bearer ${juguete}` }], c: juguete });
+    const plano = tapa(`la clave era ${juguete} y no debe verse`);
+    const serializado = JSON.stringify(anidado) + plano;
+    secretos.delete(juguete);
+    anota(
+      "j0c-la-clave-no-sobrevive-en-la-salida-ni-en-el-json",
+      !serializado.includes(juguete) && serializado.includes("clave tapada"),
+      serializado.includes(juguete) ? "se filtró" : "tapada en cadena y en objeto anidado",
+    );
+  }
+
   if (SOLO_ARNES) {
     nota("--arnes: montaje y analizador comprobados; el turno del agente no se ejecuta y no se gasta nada");
     mide("j-arnes", "sin turno de modelo");
   } else {
+    await configuraClave();
     const listos = conClave();
     if (listos.length) nota(`motores con clave en este entorno: ${listos.join(", ")}`);
-    else nota(`No hay clave de ningún proveedor. Miré: ${[...new Set(CLAVES.flatMap(([, v]) => v))].join(", ")}. El turno fallará al llamar al modelo; corre --motores para ver la lista.`);
+    else nota(`No hay clave de ningún proveedor. Miré: ${[...new Set(CLAVES.flatMap(([, v]) => v))].join(", ")}. Pásala con --pedir-clave o --clave-archivo, o ponla en el entorno; --motores lista los motores.`);
     if (MOTOR && !listos.includes(MOTOR) && MOTOR !== "ai-sdk:ollama") {
       nota(`Pediste --motor ${MOTOR} y no veo su variable puesta: si falla, es por eso.`);
     }
@@ -431,7 +640,12 @@ try {
       pasadas: pasadas.length, arrancaron, llamadas: todas.length,
       fallos: pasadas.map((p) => p.fallo).filter(Boolean),
       motivo: todas.length === 0
-        ? pasadas.map((p) => (p.fallo as any)?.mensaje ?? "el bucle no llamó a ninguna herramienta y no dio error")
+        ? pasadas.map((p) => {
+            const f = p.fallo as any;
+            if (!f) return "el bucle no llamó a ninguna herramienta y no dio error";
+            const prov = f.proveedor?.cuerpo ? ` · el proveedor dijo: ${f.proveedor.cuerpo}` : "";
+            return `${f.mensaje}${f.proveedor?.estado ? ` (${f.proveedor.estado})` : ""}${prov}`;
+          })
         : undefined,
     });
     mide("j1-herramientas-usadas", [...new Set(todas.map((x) => x.tool))].sort());
@@ -499,11 +713,11 @@ try {
     bateria: "fase 2 · bloque J (el contrato de versión, con el agente)",
     cuando: new Date().toISOString(),
     modo: SOLO_ARNES ? "arnes (sin modelo)" : "con modelo",
-    modeloPedido: MODELO ?? null, motorPedido: MOTOR ?? null, consulta: CONSULTA,
+    modeloPedido: MODELO ?? null, motorPedido: MOTOR ?? null, atajo: MOTOR_PEDIDO && ATAJO ? MOTOR_PEDIDO : null, consulta: CONSULTA,
     iteracionesMax: Number(ITERACIONES), repeticiones: REPETICIONES,
     advertencia: "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
     total: checks.length, pasan: checks.length - fallos.length,
-    resultados,
+    resultados: tapa(resultados),
   }, null, 2) + "\n");
   try { rmSync(baseDir, { recursive: true, force: true }); } catch { /* da igual */ }
   console.log(`\n${checks.length - fallos.length}/${checks.length} · ${fallos.length} FALLA · ${destino.pathname}`);
