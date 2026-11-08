@@ -1,0 +1,387 @@
+{
+  "cuando": "2026-11-08T07:50:39.447Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": "ai-sdk:openai",
+  "modelo": null,
+  "fuenteClave": "el motor falso (trabajo)",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "clave": "el motor falso (trabajo)"
+      }
+    },
+    {
+      "id": "m0-motor-y-clave",
+      "medicion": {
+        "motor": "ai-sdk:openai",
+        "modelo": null,
+        "baseUrl": "http://127.0.0.1:37647/v1",
+        "fuenteClave": "el motor falso (trabajo)"
+      }
+    },
+    {
+      "id": "m1-el-producto-ve-el-motor-conectado",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "openAiBaseUrlConfigured": true
+      }
+    },
+    {
+      "id": "m2-el-turno-respondio",
+      "medicion": {
+        "status": 200,
+        "contentType": "text/event-stream",
+        "ms": 587,
+        "eventos": 12,
+        "bytes": 6586
+      }
+    },
+    {
+      "id": "m2-el-turno-completo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "ms": 587,
+        "errorCode": null,
+        "mensaje": null
+      }
+    },
+    {
+      "id": "m3-llamadas-del-turno",
+      "medicion": [
+        {
+          "tool": "proponer-plan",
+          "fallo": false,
+          "errorCode": null,
+          "recibo": true
+        }
+      ]
+    },
+    {
+      "id": "m3-el-turno-llamo-a-las-acciones-del-producto",
+      "passed": true,
+      "detail": {
+        "herramientas": [
+          "proponer-plan"
+        ],
+        "propias": [
+          "proponer-plan"
+        ]
+      }
+    },
+    {
+      "id": "m4-no-aparecen-herramientas-ajenas-al-producto",
+      "passed": true,
+      "detail": {
+        "ajenas": [],
+        "herramientas": [
+          "proponer-plan"
+        ]
+      }
+    },
+    {
+      "id": "m4b-toda-escritura-aplicada-trae-recibo",
+      "passed": true,
+      "detail": {
+        "escrituras": 1,
+        "conRecibo": 1,
+        "rechazadas": []
+      }
+    },
+    {
+      "id": "m4c-catalogo-ofrecido-al-modelo",
+      "medicion": {
+        "cuantas": 20,
+        "ofrecidas": [
+          "suggest-follow-ups",
+          "obtener-plan",
+          "proponer-plan",
+          "reajustar-plan",
+          "sugerir-reemplazo",
+          "ver-contexto-consulta",
+          "view-screen",
+          "resources",
+          "framework-search",
+          "docs-search",
+          "get-framework-context",
+          "ask-question",
+          "call-agent",
+          "describe-workspace-apps",
+          "web-request",
+          "web-search",
+          "read-attachment",
+          "connect-file-storage",
+          "connect-builder",
+          "tool-search"
+        ]
+      }
+    },
+    {
+      "id": "m4c-el-catalogo-no-da-salida-a-internet-ni-amplia-el-alcance",
+      "passed": false,
+      "detail": {
+        "sensibles": [
+          "call-agent",
+          "describe-workspace-apps",
+          "web-request",
+          "web-search",
+          "read-attachment",
+          "connect-file-storage",
+          "connect-builder"
+        ]
+      }
+    },
+    {
+      "id": "m4d-no-hay-herramientas-sin-clasificar-en-el-catalogo",
+      "passed": true,
+      "detail": {
+        "desconocidas": []
+      }
+    },
+    {
+      "id": "m5-el-plan-se-ve-por-la-lectura-de-la-interfaz",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "version": 1,
+        "lineas": 2,
+        "estado": "borrador"
+      }
+    },
+    {
+      "id": "m6-el-plan-guardado-trae-version",
+      "passed": true,
+      "detail": {
+        "version": 1
+      }
+    }
+  ],
+  "turno": {
+    "threadId": "1311ca9d-95fd-4442-bc71-44402fcda773",
+    "status": 200,
+    "contentType": "text/event-stream",
+    "ms": 587,
+    "eventos": [
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794124239004-d9d7jh:starting-agent",
+        "label": "Starting agent",
+        "seq": 0,
+        "eventId": "run-1794124239004-d9d7jh:0"
+      },
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794124239004-d9d7jh:contacting-model",
+        "label": "Contacting model",
+        "seq": 1,
+        "eventId": "run-1794124239004-d9d7jh:1"
+      },
+      {
+        "type": "suggestions",
+        "suggestions": [],
+        "seq": 2,
+        "eventId": "run-1794124239004-d9d7jh:2"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 3,
+        "eventId": "run-1794124239004-d9d7jh:3"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "proponer-plan",
+        "id": "call_falso_1",
+        "seq": 4,
+        "eventId": "run-1794124239004-d9d7jh:4"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing proponer-plan action",
+        "tool": "proponer-plan",
+        "id": "call_falso_1",
+        "seq": 5,
+        "eventId": "run-1794124239004-d9d7jh:5"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "proponer-plan",
+        "id": "call_falso_1",
+        "text": "{\"consultaId\":\"demo-c2\",\"explicacion\":\"Guion del motor falso: dos líneas para comprobar el camino completo.\",\"lineas\":[{\"tipo\":\"farmaco\",\"texto\":\"Paracetamol\",\"dosis\":\"1 g\",\"frecuencia\":\"cada 8 h\",\"duracion\":\"5 días\",\"justificacion\":\"Dolor lumbar mecánico.\"},{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\"}]}",
+        "seq": 6,
+        "eventId": "run-1794124239004-d9d7jh:6"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 7,
+        "eventId": "run-1794124239004-d9d7jh:7"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_1",
+        "executionStepId": "model-step:1173c2fcb2192909594e82cefe9651534b1636c56b06254bd26db271d526936b",
+        "tool": "proponer-plan",
+        "input": {
+          "consultaId": "demo-c2",
+          "explicacion": "Guion del motor falso: dos líneas para comprobar el camino completo.",
+          "lineas": [
+            {
+              "tipo": "farmaco",
+              "texto": "Paracetamol",
+              "dosis": "1 g",
+              "frecuencia": "cada 8 h",
+              "duracion": "5 días",
+              "justificacion": "Dolor lumbar mecánico."
+            },
+            {
+              "tipo": "pendiente",
+              "texto": "Control de tensión arterial en 7 días"
+            }
+          ]
+        },
+        "seq": 8,
+        "eventId": "run-1794124239004-d9d7jh:8"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_1",
+        "tool": "proponer-plan",
+        "input": {
+          "consultaId": "demo-c2",
+          "explicacion": "Guion del motor falso: dos líneas para comprobar el camino completo.",
+          "lineas": [
+            {
+              "tipo": "farmaco",
+              "texto": "Paracetamol",
+              "dosis": "1 g",
+              "frecuencia": "cada 8 h",
+              "duracion": "5 días",
+              "justificacion": "Dolor lumbar mecánico."
+            },
+            {
+              "tipo": "pendiente",
+              "texto": "Control de tensión arterial en 7 días"
+            }
+          ]
+        },
+        "result": "{\n  \"id\": \"31b26ac1-db37-4eff-ba39-75681e38deee\",\n  \"plan\": {\n    \"id\": \"31b26ac1-db37-4eff-ba39-75681e38deee\",\n    \"consultaId\": \"demo-c2\",\n    \"pacienteId\": \"demo-p2\",\n    \"pacienteNombre\": \"Mateo Ejemplo Demo\",\n    \"motivo\": \"Control de presión y dolor lumbar\",\n    \"estado\": \"borrador\",\n    \"version\": 1,\n    \"alcanceAgente\": null,\n    \"alcanceSugerencias\": [],\n    \"explicacion\": \"Guion del motor falso: dos líneas para comprobar el camino completo.\",\n    \"sello\": null,\n    \"aprobadoPor\": null,\n    \"updatedAt\": \"2026-11-08T07:50:39.227Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"fba80f87-c3b7-4b2e-a076-b5ecba98ba6d\",\n      \"planId\": \"31b26ac1-db37-4eff-ba39-75681e38deee\",\n      \"tipo\": \"farmaco\",\n      \"texto\": \"Paracetamol\",\n      \"dosis\": \"1 g\",\n      \"frecuencia\": \"cada 8 h\",\n      \"duracion\": \"5 días\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"ok\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Dolor lumbar mecánico.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 0,\n      \"updatedAt\": \"2026-11-08T07:50:39.225Z\"\n    },\n    {\n      \"id\": \"529f45a7-e965-4862-8c27-06a95bdc6f13\",\n      \"planId\": \"31b26ac1-db37-4eff-ba39-75681e38deee\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de tensión arterial en 7 días\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": null,\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 1,\n      \"updatedAt\": \"2026-11-08T07:50:39.220Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 2\n  },\n  \"message\": \"Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.\",\n  \"change\": {\n    \"verb\": \"created\",\n    \"kind\": \"plan\",\n    \"title\": \"Plan listo para revisión médica\",\n    \"detail\": \"Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.\",\n    \"url\": \"/_agent-native/open?view=revision&to=%2Frevision%2Fdemo-c2&consultaId=demo-c2&agentSidebar=closed\"\n  }\n}",
+        "completedSideEffect": true,
+        "chatUI": {
+          "renderer": "core.record-change"
+        },
+        "chatUIResult": {
+          "id": "31b26ac1-db37-4eff-ba39-75681e38deee",
+          "plan": {
+            "id": "31b26ac1-db37-4eff-ba39-75681e38deee",
+            "consultaId": "demo-c2"
+          },
+          "change": {
+            "verb": "created",
+            "kind": "plan",
+            "title": "Plan listo para revisión médica",
+            "detail": "Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.",
+            "url": "/_agent-native/open?view=revision&to=%2Frevision%2Fdemo-c2&consultaId=demo-c2&agentSidebar=closed"
+          }
+        },
+        "argumentsHash": "00346a9101b2f7c2c05a57e0a6b2e520dd9ddfe9a6a672cf449d31c723c8b451",
+        "executionStepId": "model-step:1173c2fcb2192909594e82cefe9651534b1636c56b06254bd26db271d526936b",
+        "approvalPause": false,
+        "seq": 9,
+        "eventId": "run-1794124239004-d9d7jh:9"
+      },
+      {
+        "type": "text",
+        "text": "Waiting for your answer before continuing.",
+        "seq": 10,
+        "eventId": "run-1794124239004-d9d7jh:10"
+      },
+      {
+        "type": "done",
+        "seq": 11,
+        "eventId": "run-1794124239004-d9d7jh:11"
+      }
+    ],
+    "texto": ": ping 1794124239040\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794124239004-d9d7jh:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794124239004-d9d7jh:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794124239004-d9d7jh:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794124239004-d9d7jh:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794124239004-d9d7jh:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794124239004-d9d7jh:3\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"proponer-plan\",\"id\":\"call_falso_1\",\"seq\":4,\"eventId\":\"run-1794124239004-d9d7jh:4\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing proponer-plan action\",\"tool\":\"proponer-plan\",\"id\":\"call_falso_1\",\"seq\":5,\"eventId\":\"run-1794124239004-d9d7jh:5\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"proponer-plan\",\"id\":\"call_falso_1\",\"text\":\"{\\\"consultaId\\\":\\\"demo-c2\\\",\\\"explicacion\\\":\\\"Guion del motor falso: dos líneas para comprobar el camino completo.\\\",\\\"lineas\\\":[{\\\"tipo\\\":\\\"farmaco\\\",\\\"texto\\\":\\\"Paracetamol\\\",\\\"dosis\\\":\\\"1 g\\\",\\\"frecuencia\\\":\\\"cada 8 h\\\",\\\"duracion\\\":\\\"5 días\\\",\\\"justificacion\\\":\\\"Dolor lumbar mecánico.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\"}]}\",\"seq\":6,\"eventId\":\"run-1794124239004-d9d7jh:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":7,\"eventId\":\"run-1794124239004-d9d7jh:7\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_1\",\"executionStepId\":\"model-step:1173c2fcb2192909594e82cefe9651534b1636c56b06254bd26db271d526936b\",\"tool\":\"proponer-plan\",\"input\":{\"consultaId\":\"demo-c2\",\"explicacion\":\"Guion del motor falso: dos líneas para comprobar el camino completo.\",\"lineas\":[{\"tipo\":\"farmaco\",\"texto\":\"Paracetamol\",\"dosis\":\"1 g\",\"frecuencia\":\"cada 8 h\",\"duracion\":\"5 días\",\"justificacion\":\"Dolor lumbar mecánico.\"},{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\"}]},\"seq\":8,\"eventId\":\"run-1794124239004-d9d7jh:8\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_1\",\"tool\":\"proponer-plan\",\"input\":{\"consultaId\":\"demo-c2\",\"explicacion\":\"Guion del motor falso: dos líneas para comprobar el camino completo.\",\"lineas\":[{\"tipo\":\"farmaco\",\"texto\":\"Paracetamol\",\"dosis\":\"1 g\",\"frecuencia\":\"cada 8 h\",\"duracion\":\"5 días\",\"justificacion\":\"Dolor lumbar mecánico.\"},{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\"}]},\"result\":\"{\\n  \\\"id\\\": \\\"31b26ac1-db37-4eff-ba39-75681e38deee\\\",\\n  \\\"plan\\\": {\\n    \\\"id\\\": \\\"31b26ac1-db37-4eff-ba39-75681e38deee\\\",\\n    \\\"consultaId\\\": \\\"demo-c2\\\",\\n    \\\"pacienteId\\\": \\\"demo-p2\\\",\\n    \\\"pacienteNombre\\\": \\\"Mateo Ejemplo Demo\\\",\\n    \\\"motivo\\\": \\\"Control de presión y dolor lumbar\\\",\\n    \\\"estado\\\": \\\"borrador\\\",\\n    \\\"version\\\": 1,\\n    \\\"alcanceAgente\\\": null,\\n    \\\"alcanceSugerencias\\\": [],\\n    \\\"explicacion\\\": \\\"Guion del motor falso: dos líneas para comprobar el camino completo.\\\",\\n    \\\"sello\\\": null,\\n    \\\"aprobadoPor\\\": null,\\n    \\\"updatedAt\\\": \\\"2026-11-08T07:50:39.227Z\\\"\\n  },\\n  \\\"lineas\\\": [\\n    {\\n      \\\"id\\\": \\\"fba80f87-c3b7-4b2e-a076-b5ecba98ba6d\\\",\\n      \\\"planId\\\": \\\"31b26ac1-db37-4eff-ba39-75681e38deee\\\",\\n      \\\"tipo\\\": \\\"farmaco\\\",\\n      \\\"texto\\\": \\\"Paracetamol\\\",\\n      \\\"dosis\\\": \\\"1 g\\\",\\n      \\\"frecuencia\\\": \\\"cada 8 h\\\",\\n      \\\"duracion\\\": \\\"5 días\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"ok\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Dolor lumbar mecánico.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 0,\\n      \\\"updatedAt\\\": \\\"2026-11-08T07:50:39.225Z\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"529f45a7-e965-4862-8c27-06a95bdc6f13\\\",\\n      \\\"planId\\\": \\\"31b26ac1-db37-4eff-ba39-75681e38deee\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": null,\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 1,\\n      \\\"updatedAt\\\": \\\"2026-11-08T07:50:39.220Z\\\"\\n    }\\n  ],\\n  \\\"resumen\\\": {\\n    \\\"bloqueos\\\": 0,\\n    \\\"advertencias\\\": 0,\\n    \\\"bloqueadas\\\": 0,\\n    \\\"vigentes\\\": 2\\n  },\\n  \\\"message\\\": \\\"Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.\\\",\\n  \\\"change\\\": {\\n    \\\"verb\\\": \\\"created\\\",\\n    \\\"kind\\\": \\\"plan\\\",\\n    \\\"title\\\": \\\"Plan listo para revisión médica\\\",\\n    \\\"detail\\\": \\\"Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.\\\",\\n    \\\"url\\\": \\\"/_agent-native/open?view=revision&to=%2Frevision%2Fdemo-c2&consultaId=demo-c2&agentSidebar=closed\\\"\\n  }\\n}\",\"completedSideEffect\":true,\"chatUI\":{\"renderer\":\"core.record-change\"},\"chatUIResult\":{\"id\":\"31b26ac1-db37-4eff-ba39-75681e38deee\",\"plan\":{\"id\":\"31b26ac1-db37-4eff-ba39-75681e38deee\",\"consultaId\":\"demo-c2\"},\"change\":{\"verb\":\"created\",\"kind\":\"plan\",\"title\":\"Plan listo para revisión médica\",\"detail\":\"Plan creado con 2 líneas: 0 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.\",\"url\":\"/_agent-native/open?view=revision&to=%2Frevision%2Fdemo-c2&consultaId=demo-c2&agentSidebar=closed\"}},\"argumentsHash\":\"00346a9101b2f7c2c05a57e0a6b2e520dd9ddfe9a6a672cf449d31c723c8b451\",\"executionStepId\":\"model-step:1173c2fcb2192909594e82cefe9651534b1636c56b06254bd26db271d526936b\",\"approvalPause\":false,\"seq\":9,\"eventId\":\"run-1794124239004-d9d7jh:9\"}\n\ndata: {\"type\":\"text\",\"text\":\"Waiting for your answer before continuing.\",\"seq\":10,\"eventId\":\"run-1794124239004-d9d7jh:10\"}\n\ndata: {\"type\":\"done\",\"seq\":11,\"eventId\":\"run-1794124239004-d9d7jh:11\"}\n\n"
+  },
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 732 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+}

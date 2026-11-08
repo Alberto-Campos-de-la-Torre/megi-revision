@@ -1,0 +1,101 @@
+{
+  "cuando": "2026-11-08T07:50:28.421Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": null,
+  "modelo": null,
+  "fuenteClave": "ninguna",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": false,
+        "chatEligible": false,
+        "clave": "ninguna"
+      }
+    },
+    {
+      "id": "i9-sin-motor-el-chat-lo-dice-en-el-acto",
+      "passed": true,
+      "detail": {
+        "status": 403,
+        "code": "AGENT_CHAT_AI_SETUP_REQUIRED",
+        "error": "Use Builder.io or a provider API key before chatting."
+      }
+    }
+  ],
+  "turno": null,
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 816 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n[db] Applying 5 migration(s) on Postgres...\n[db] Applied 2 migration(s) to store \"extensions\"\n[db] Applied 1 migration(s) to store \"better_auth\"\n[db] Applied migration \"mesa-de-revision\" (v1) (6 statements)\n[db] Applied migration \"revision-trazable-y-conciliacion\" (v2) (8 statements)\n[db] Applied migration \"resultado-de-mediciones-exploratorias\" (v3) (1 statement)\n[db] Applied 2 migration(s) to store \"org\"\n[db] Applied migration \"medicacion-viva-y-sugerencias-supervisadas\" (v4) (3 statements)\n[db] Applied migration \"vincular-version-con-turno-medido-del-agente\" (v5) (1 statement)\n{\"event\":\"agent-native.slow_request\",\"deployment_environment\":\"local\",\"method\":\"GET\",\"path\":\"/_agent-native/auth/local-dev\",\"status\":200,\"duration_ms\":2458,\"cold_start\":true,\"request_sequence\":1,\"boot_to_module_ms\":2454,\"module_to_request_ms\":1091,\"process_age_ms\":3545,\"framework_ready_wait_ms\":2416,\"db_measured\":true,\"db_ms\":736,\"db_connect_ms\":0,\"db_operation_count\":679,\"db_error_count\":0,\"db_timeout_count\":0,\"startup_db_ms\":892,\"shared_cacheable\":false,\"runtime_provider\":\"node\",\"request_id\":\"dc7e34eb-85eb-4f09-b8a4-d94ce876cd91\"}\n[db] Applying 1 migration(s) on Postgres...\n[terminal] If node-pty is installed but PTY fails to spawn, try `pnpm rebuild node-pty` (common after switching Node versions via fnm/nvm).\n"
+}

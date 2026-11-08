@@ -11,6 +11,46 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > arreglos de esta fase siguen haciendo falta sobre ese código** (ver la tabla
 > final de [`ANALISIS-PARA_EL_100.md`](ANALISIS-PARA_EL_100.md)) y ya se pueden
 > rebasar, porque la base por fin compila.
+>
+> **Rebasados y verificados el 7-nov**: los cinco arreglos están sobre `6543854`
+> y pasan todo lo del proyecto más lo propio —typecheck, doctor, build y
+> `pnpm test` (30) en cero; 195/195 del proyecto; 49/49 de la app en marcha;
+> 29/29 del adaptador; 29/29 de requisitos—. Qué cambió de forma, qué hubo que
+> arreglar en mis propias baterías —y la corrección del hallazgo que di por
+> bueno sobre la versión del plan, que era falso— en
+> [`REBASE-6543854.md`](REBASE-6543854.md). Los parches, en
+> [`parches/`](parches/).
+>
+> **Y una prueba nueva, lista para correr y aún sin correr con modelo**:
+> [`agente-version.mts`](agente-version.mts) mide si el agente usa el contrato
+> de versión —lee antes de escribir, manda `versionEsperada`, se recupera de un
+> 409—. Tiene atajo para Grok (`--motor grok`) y entrada de clave por teclado o
+> archivo, nunca por argumento. Su modo `--arnes` comprueba el montaje sin
+> gastar nada: **3/3**, y es lo único que he ejecutado. El cableado hasta xAI
+> está comprobado con una clave falsa.
+
+> **8-nov · la interfaz y la conexión del modelo, con el servidor de verdad.**
+> [`interfaz-y-modelo.mts`](interfaz-y-modelo.mts) levanta `agent-native dev` con
+> una base desechable y habla con él por donde habla el navegador: sesión real,
+> lecturas que pintan la pantalla, escritura por HTTP pelado, estado del motor y
+> un turno por el endpoint del chat. **9/9** sin clave y sin coste.
+> [`motor-falso.mts`](motor-falso.mts) añade un proveedor local que habla el
+> protocolo de OpenAI con un guion fijo, así que el camino completo —chat →
+> bucle → acción → plan → la lectura que lee la interfaz— se recorre **gratis**:
+> **16/17** con el guion que trabaja y **11/11** con el guion que miente.
+>
+> Dos cosas salieron de ahí. Una: **la guarda de la respuesta final funciona**, y
+> el «turno que afirma y desmiente» que creí ver en la tanda del 7-nov era mío:
+> el framework manda `{type:"clear"}` antes de reintentar y antes del mensaje de
+> respaldo, y mis dos analizadores sumaban los `text` sin mirarlo. Medido ahora
+> por el transporte real, el médico lee solo «No se guardó nada en el plan en
+> este turno…». Corregido en los dos, con el caso en sus arneses. Dos: **el
+> catálogo que viaja al modelo trae siete herramientas que la mesa no necesita**
+> —`web-request`, `web-search`, `call-agent`, `connect-file-storage`,
+> `connect-builder`, `describe-workspace-apps`, `read-attachment`—, más
+> `tool-search`, que alcanza el resto del registro. Es el hallazgo que
+> `catalogo.mts` dejó abierto, ahora medido en la petición real y no deducido.
+> Se cierra con `resolveActionSurface`; no está aplicado.
 
 La fase 1 llamó a las acciones **como funciones**, con un `ctx` escrito a mano. Eso prueba
 las reglas, pero no prueba quién puede llamarlas: `ctx.caller` lo decide el transporte, y
@@ -59,7 +99,29 @@ megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
   --motor grok --pedir-clave --repeticiones 3
 megi-revision/node_modules/.bin/tsx pruebas-hackathon/fase2/agente-version.mts \
   --motor grok --clave-archivo ~/.config/xai.key
+
+# 6 · la interfaz y la conexión del modelo, con la aplicación en marcha.
+#     Arranca su propio servidor, abre sesión como el navegador y mide por la
+#     frontera de datos que consume la pantalla. Sin clave no gasta nada.
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --solo-interfaz
+
+#     El camino completo del chat sin pagar: un proveedor local con guion fijo.
+#     `trabajo` llama a proponer-plan; `mentira` afirma haber guardado sin
+#     llamar a nada, para comprobar la guarda de la respuesta final.
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario mentira
+
+#     Y con el modelo de verdad, por el endpoint del chat:
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor grok --pedir-clave
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --arnes   # solo el analizador
 ```
+
+La sexta corre con `node` ≥ 22.22 directamente (no necesita `tsx`) y pone ese
+`node` al principio del `PATH` del servidor: los hijos de vite y nitro invocan
+`node` del `PATH`, y con uno viejo el arranque muere con «Unknown file extension
+".ts"» en `agent-native.config.ts`, que parece un fallo del producto y es solo el
+`PATH`. Opciones: `--app`, `--puerto`, `--consulta`, `--servidor` (usa uno ya
+levantado), `--escenario`, `--espera`, `--conserva`, `--eventos-crudos`.
 
 La quinta necesita la clave del proveedor en el entorno o en `megi-revision/.env`;
 las guardadas en Ajustes de la app no sirven, porque corre contra una base
@@ -92,6 +154,9 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 | `fase2/adaptador.mts` · MEGI hostil, paridad, entradas | 26/29 | **29/29** |
 | `fase2/catalogo.mts` · alcance real del agente | 4/7 | 4/7 · *hallazgo abierto* |
 | `fase2/requisitos.mjs` · requisitos del envío | 26/28 | **29/29** |
+| `fase2/interfaz-y-modelo.mts --solo-interfaz` · la pantalla por su frontera de datos | — | **9/9** |
+| `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | 16/17 · *catálogo* |
+| `fase2/interfaz-y-modelo.mts --motor falso --escenario mentira` · la guarda | — | **11/11** |
 | `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **29 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |

@@ -230,7 +230,12 @@ const MOTOR = ATAJO?.motor ?? MOTOR_PEDIDO;
 const MODELO = opcion("modelo") ?? process.env.AGENT_MODEL ?? ATAJO?.modelo;
 
 const aquí = new URL(".", import.meta.url);
-const APP = new URL("../../megi-revision/", aquí);
+// La copia del producto: por defecto la hermana del repo, pero `--app` o
+// `APP_MEGI_REVISION` permiten apuntar a otra, como hacen las demás baterías.
+const APP_DIR = opcion("app") ?? process.env.APP_MEGI_REVISION;
+const APP = APP_DIR
+  ? pathToFileURL(APP_DIR.endsWith("/") ? APP_DIR : `${APP_DIR}/`)
+  : new URL("../../megi-revision/", aquí);
 const req = createRequire(new URL("package.json", APP));
 const baseDir = mkdtempSync(join(tmpdir(), "fase2-agente-"));
 const DATABASE_URL = `pglite:${join(baseDir, "db")}`;
@@ -296,6 +301,19 @@ async function abreBase() {
   }
   cerrar = async () => { await closePgliteClients(); cerrar = null; };
 }
+/**
+ * El texto que el médico acaba leyendo, reconstruido de los eventos igual que
+ * lo hace la pantalla: cada `clear` tira lo anterior.
+ */
+export function textoEntregado(eventos: Array<Record<string, any>>): string {
+  let t = "";
+  for (const e of eventos) {
+    if (e?.type === "clear") t = "";
+    else if (e?.type === "text") t += e.text ?? "";
+  }
+  return t.trim();
+}
+
 const CORREO = "fase2-agente@prueba.local";
 const comoAgente = { caller: "tool", userEmail: CORREO, orgId: null } as any;
 const llama = (n: string, args: unknown) => acciones[n].run(args, comoAgente);
@@ -587,7 +605,17 @@ async function turnoDelAgente(mensaje: string) {
         finalResponseGuard: ({ text, toolResults, receipts }: any) =>
           revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
         maxIterations: Number(ITERACIONES),
-        send(e: any) { eventos.push(e); if (e?.type === "text") responseText += e.text ?? ""; },
+        // El texto ENTREGADO, no la suma de todo lo que pasó por el flujo. Cuando
+        // la guarda devuelve un borrador, el framework manda `{type:"clear"}`
+        // antes de reintentar y antes del mensaje de respaldo: la pantalla borra
+        // lo anterior y el médico solo lee lo último. Sumar los `text` sin
+        // atender al `clear` hacía aparecer respuestas que se contradicen
+        // —«Plan guardado: 5 líneas… No se guardó nada»— que nadie vio nunca.
+        send(e: any) {
+          eventos.push(e);
+          if (e?.type === "clear") responseText = "";
+          else if (e?.type === "text") responseText += e.text ?? "";
+        },
       }),
     );
   } catch (e: any) {
@@ -695,6 +723,23 @@ try {
       escrituras[2]!.error === null &&
       escrituras[2]!.args.versionEsperada === 3 &&
       l.filter((x) => LECTURAS.has(x.tool)).length === 2;
+    // El borrador que la guarda devuelve se BORRA antes del mensaje de respaldo.
+    // Sumar los `text` sin mirar el `clear` inventaba una respuesta que afirma y
+    // desmiente a la vez, y me llevó a dar por defectuosa una guarda que
+    // funcionaba. Cuarta vez que un fallo mío de medición se disfraza de fallo
+    // del producto; por eso está aquí como caso.
+    const flujoConGuarda = [
+      { type: "text", text: "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias." },
+      { type: "clear" },
+      { type: "text", text: "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias." },
+      { type: "clear" },
+      { type: "text", text: "No se guardó nada en el plan en este turno." },
+      { type: "done" },
+    ];
+    anota("j0d-el-texto-entregado-respeta-el-borrado-de-la-guarda",
+      textoEntregado(flujoConGuarda) === "No se guardó nada en el plan en este turno.",
+      { entregado: textoEntregado(flujoConGuarda) });
+
     anota("j0b-el-analizador-de-eventos-lee-un-flujo-con-409-y-recuperacion", ok, {
       llamadas: l.map((x) => `${x.tool}${x.error ? `!${x.error}` : ""}`),
     });

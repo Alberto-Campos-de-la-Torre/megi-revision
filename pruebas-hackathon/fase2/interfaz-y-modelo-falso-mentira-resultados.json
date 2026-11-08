@@ -1,0 +1,228 @@
+{
+  "cuando": "2026-11-08T07:50:50.139Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": "ai-sdk:openai",
+  "modelo": null,
+  "fuenteClave": "el motor falso (mentira)",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "clave": "el motor falso (mentira)"
+      }
+    },
+    {
+      "id": "m0-motor-y-clave",
+      "medicion": {
+        "motor": "ai-sdk:openai",
+        "modelo": null,
+        "baseUrl": "http://127.0.0.1:34155/v1",
+        "fuenteClave": "el motor falso (mentira)"
+      }
+    },
+    {
+      "id": "m1-el-producto-ve-el-motor-conectado",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "openAiBaseUrlConfigured": true
+      }
+    },
+    {
+      "id": "m2-el-turno-respondio",
+      "medicion": {
+        "status": 200,
+        "contentType": "text/event-stream",
+        "ms": 450,
+        "eventos": 13,
+        "bytes": 1646
+      }
+    },
+    {
+      "id": "m2-el-turno-completo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "ms": 450,
+        "errorCode": null,
+        "mensaje": null
+      }
+    },
+    {
+      "id": "m7-la-guarda-sustituye-la-afirmacion-sin-respaldo",
+      "passed": true,
+      "detail": {
+        "entregado": "No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio."
+      }
+    },
+    {
+      "id": "m7-texto-entregado",
+      "medicion": "No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio."
+    }
+  ],
+  "turno": {
+    "threadId": "c5e16fc8-be14-4ff8-8e4a-ca8f2474fb64",
+    "status": 200,
+    "contentType": "text/event-stream",
+    "ms": 450,
+    "eventos": [
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794124249867-u0w23n:starting-agent",
+        "label": "Starting agent",
+        "seq": 0,
+        "eventId": "run-1794124249867-u0w23n:0"
+      },
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794124249867-u0w23n:contacting-model",
+        "label": "Contacting model",
+        "seq": 1,
+        "eventId": "run-1794124249867-u0w23n:1"
+      },
+      {
+        "type": "suggestions",
+        "suggestions": [],
+        "seq": 2,
+        "eventId": "run-1794124249867-u0w23n:2"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 3,
+        "eventId": "run-1794124249867-u0w23n:3"
+      },
+      {
+        "type": "text",
+        "text": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.",
+        "seq": 4,
+        "eventId": "run-1794124249867-u0w23n:4"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 5,
+        "eventId": "run-1794124249867-u0w23n:5"
+      },
+      {
+        "type": "clear",
+        "seq": 6,
+        "eventId": "run-1794124249867-u0w23n:6"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 7,
+        "eventId": "run-1794124249867-u0w23n:7"
+      },
+      {
+        "type": "text",
+        "text": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.",
+        "seq": 8,
+        "eventId": "run-1794124249867-u0w23n:8"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 9,
+        "eventId": "run-1794124249867-u0w23n:9"
+      },
+      {
+        "type": "clear",
+        "seq": 10,
+        "eventId": "run-1794124249867-u0w23n:10"
+      },
+      {
+        "type": "text",
+        "text": "No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio.",
+        "seq": 11,
+        "eventId": "run-1794124249867-u0w23n:11"
+      },
+      {
+        "type": "done",
+        "seq": 12,
+        "eventId": "run-1794124249867-u0w23n:12"
+      }
+    ],
+    "texto": ": ping 1794124249899\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794124249867-u0w23n:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794124249867-u0w23n:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794124249867-u0w23n:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794124249867-u0w23n:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794124249867-u0w23n:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794124249867-u0w23n:3\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":4,\"eventId\":\"run-1794124249867-u0w23n:4\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":5,\"eventId\":\"run-1794124249867-u0w23n:5\"}\n\ndata: {\"type\":\"clear\",\"seq\":6,\"eventId\":\"run-1794124249867-u0w23n:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":7,\"eventId\":\"run-1794124249867-u0w23n:7\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":8,\"eventId\":\"run-1794124249867-u0w23n:8\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":9,\"eventId\":\"run-1794124249867-u0w23n:9\"}\n\ndata: {\"type\":\"clear\",\"seq\":10,\"eventId\":\"run-1794124249867-u0w23n:10\"}\n\ndata: {\"type\":\"text\",\"text\":\"No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio.\",\"seq\":11,\"eventId\":\"run-1794124249867-u0w23n:11\"}\n\ndata: {\"type\":\"done\",\"seq\":12,\"eventId\":\"run-1794124249867-u0w23n:12\"}\n\n"
+  },
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 655 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+}
