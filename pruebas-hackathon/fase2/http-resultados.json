@@ -1,21 +1,22 @@
 {
   "bateria": "fase 2 · bloque HTTP (superficie real de la app)",
-  "cuando": "2026-11-07T23:36:56.603Z",
+  "cuando": "2026-11-08T03:19:04.257Z",
   "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision",
   "base": "http://127.0.0.1:8186",
   "megi": "http://127.0.0.1:8020",
   "siembra": "Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
   "node": "v22.22.2",
-  "appCommit": "3e404d2",
-  "segundos": 13,
-  "total": 47,
-  "pasan": 47,
+  "appCommit": "0e49b30",
+  "segundos": 14,
+  "total": 49,
+  "pasan": 49,
   "fallan": 0,
   "medidas": {
     "b4-verificacion-del-ibuprofeno": "advertencia",
     "b8-bloqueos-antes-de-aprobar": 0,
     "b10-farmacos-en-megi": 2,
     "b10-farmacos-vigentes-en-el-plan": 2,
+    "c3-preparacion-conciliacion": "200 2 decidida(s)",
     "d4-cabeceras-que-no-trae-una-ruta-del-framework-en-dev": [
       "x-content-type-options",
       "referrer-policy",
@@ -32,7 +33,7 @@
     "siembra: Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
     "en `agent-native dev` el HTML lo sirve Vite y no pasa por el middleware de nitro: le faltan x-content-type-options, referrer-policy, cross-origin-opener-policy. En producción el middleware sí va montado sobre nitro, pero `agent-native start` no arranca con PGlite (503 DEPLOY_SETTINGS_REQUIRED), así que no se pudo medir."
   ],
-  "registro": "/tmp/fase2-gvoEmi/dev-server.log",
+  "registro": "/tmp/fase2-xCK6E1/dev-server.log",
   "checks": [
     {
       "id": "pre-megi-de-demo-en-pie",
@@ -52,7 +53,7 @@
     {
       "id": "a1-sin-sesion-no-ejecuta-nada",
       "pasa": true,
-      "detalle": "actualizar-linea:401 agregar-linea:401 aprobar-plan:401 listar-consultas:401 obtener-plan:401 proponer-plan:401 reajustar-plan:401 ver-contexto-consulta:401"
+      "detalle": "actualizar-linea:401 agregar-linea:401 aprobar-plan:401 conciliar-medicacion:401 definir-alcance:401 historial-plan:401 listar-consultas:401 medir-revision:401 metricas-revision:401 obtener-plan:401 preparar-aprobacion:401 proponer-plan:401 reajustar-plan:401 resolver-sugerencia:401 restaurar-demo:401 sugerir-reemplazo:401 ver-contexto-consulta:401"
     },
     {
       "id": "a1b-la-cabecera-sola-no-autentica",
@@ -62,7 +63,7 @@
     {
       "id": "a2-escritura-sin-capacidad-ui-no-corre",
       "pasa": true,
-      "detalle": "proponer-plan:ui_capability_required · reajustar-plan:ui_capability_required · agregar-linea:Invalid action parameters — Missing required parameter: texto. tipo: Invalid option: expected one of \"farmaco\"|\"pendiente\". Received: {\"planId\":\"x\",\"linea\":{\"tipo\":\"pendiente\",\"texto\":\"t\"},\"origen\":\"medico\"}. Expected: { tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). · actualizar-linea:ui_capability_required"
+      "detalle": "proponer-plan:ui_capability_required · reajustar-plan:ui_capability_required · agregar-linea:ui_capability_required · actualizar-linea:ui_capability_required"
     },
     {
       "id": "a3-aprobar-exige-interfaz-probada",
@@ -117,7 +118,7 @@
     {
       "id": "b3-propuesta-creada-y-verificada",
       "pasa": true,
-      "detalle": "plan 7ade4df1-1130-4962-9588-44d4e3c43644 · bloqueos 0 advertencias 1"
+      "detalle": "plan 71e5c53c-0cf3-45a3-9b11-514b6a189cfa · bloqueos 0 advertencias 1"
     },
     {
       "id": "b4-el-aine-sale-marcado-con-motivo",
@@ -148,6 +149,16 @@
       "id": "b8-no-se-aprueba-con-alertas-sin-confirmar",
       "pasa": true,
       "detalle": "el plan no quedó con bloqueos: comprobación no aplicable"
+    },
+    {
+      "id": "b8b-el-medico-concilia-la-medicacion-historica",
+      "pasa": true,
+      "detalle": "200 1 decidida(s) HTTP 200"
+    },
+    {
+      "id": "b8c-y-queda-marcada-como-confirmada",
+      "pasa": true,
+      "detalle": "true"
     },
     {
       "id": "b9-aprobacion-sella-y-firma",
@@ -182,7 +193,7 @@
     {
       "id": "b13-la-bitacora-registra-todo-el-recorrido",
       "pasa": true,
-      "detalle": "proponer → bloquear → reajustar → editar → agregar → aprobar"
+      "detalle": "proponer → bloquear → reajustar → editar → agregar → conciliar → aprobar"
     },
     {
       "id": "b13b-cada-evento-dice-quien-lo-hizo",
@@ -192,7 +203,7 @@
     {
       "id": "c1-dos-propuestas-a-la-vez-dejan-un-plan",
       "pasa": true,
-      "detalle": "ok 1 · plan_existente 1 · plan 08b94cbd-aaff-441f-8fbb-76f3f778c6f7"
+      "detalle": "ok 1 · plan_existente 1 · plan 21b5f16a-8aa3-4527-a4e8-008451144910"
     },
     {
       "id": "c2-dos-cambios-a-la-vez-dejan-un-estado-valido",
@@ -237,7 +248,7 @@
     {
       "id": "d5-el-registro-no-guarda-la-contrasena",
       "pasa": true,
-      "detalle": "3749 bytes de registro revisados"
+      "detalle": "4342 bytes de registro revisados"
     },
     {
       "id": "e1-sin-megi-la-lista-da-error-legible",

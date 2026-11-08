@@ -359,7 +359,7 @@ async function bloqueA(anon, sesion, ui, uiCli) {
         : n === "reajustar-plan"
           ? { planId: "x", cambios: [{ accion: "quitar", lineaId: "y", motivo: "m" }], explicacion: "x", origen: "medico" }
           : n === "agregar-linea"
-            ? { planId: "x", linea: { tipo: "pendiente", texto: "t" }, origen: "medico" }
+            ? { planId: "x", tipo: "pendiente", texto: "t", origen: "medico" }
             : { lineaId: "x", estado: "bloqueada", motivo: "m", origen: "medico" },
       { frontend: true },
     );
@@ -645,6 +645,43 @@ async function bloqueB(ui, token) {
   );
   mide("b8-bloqueos-antes-de-aprobar", estado.json?.resumen?.bloqueos ?? null);
 
+  // B8b · conciliar la medicación histórica, que desde el cierre del 7-nov es
+  // requisito para aprobar: con un solo candidato `sin_confirmar` el plan
+  // responde 409 `medicacion_sin_conciliar`. Es el paso que da el médico en la
+  // pantalla de conciliación, y aquí se da por el mismo camino: leer los
+  // candidatos de `obtener-plan`, la versión de `historial-plan` —la única
+  // lectura que la trae— y decidir sobre todos.
+  const porConciliar = (estado.json?.conciliacion ?? []).filter(
+    (m) => m.estado === "sin_confirmar",
+  );
+  const hist = await ui("historial-plan", { planId: plan.id }, { lectura: true });
+  const versionActual = hist.json?.versiones?.[0]?.version;
+  const conciliado = porConciliar.length
+    ? await ui("conciliar-medicacion", {
+        planId: plan.id,
+        versionEsperada: versionActual,
+        decisiones: porConciliar.map((m) => ({ id: m.id, estado: "activo" })),
+        adicionales: [],
+      })
+    : { status: 200, json: { version: versionActual }, omitido: true };
+  anota(
+    "b8b-el-medico-concilia-la-medicacion-historica",
+    conciliado.status === 200,
+    conciliado.omitido
+      ? "no había medicación sin confirmar"
+      : `${conciliado.status} ${porConciliar.length} decidida(s) ${código(conciliado)}`,
+  );
+  const trasConciliar = await ui(
+    "obtener-plan",
+    { consultaId: "demo-c2" },
+    { lectura: true },
+  );
+  anota(
+    "b8c-y-queda-marcada-como-confirmada",
+    trasConciliar.json?.conciliacionConfirmada === true,
+    String(trasConciliar.json?.conciliacionConfirmada),
+  );
+
   // B9 · aprobación con confirmación: sello y firma.
   const aprobado = await ui("aprobar-plan", {
     planId: plan.id,
@@ -789,6 +826,29 @@ async function bloqueC(ui, token) {
       ["bloqueada", "rechazada"].includes(estadoFinal),
       `${r1.status}/${r2.status} → estado final "${estadoFinal}"`,
     );
+  }
+
+  // Preparación de C3: aprobar exige la medicación histórica conciliada (desde
+  // el cierre del 7-nov). No es una comprobación, es el paso que da el médico
+  // antes de la confirmación final; se apunta como medida para que, si falla,
+  // se vea aquí y no disfrazado de fallo de la carrera.
+  if (planId) {
+    const previo = await ui("obtener-plan", { consultaId: "demo-c3" }, { lectura: true });
+    const pendientes = (previo.json?.conciliacion ?? []).filter(
+      (m) => m.estado === "sin_confirmar",
+    );
+    let resultado = "no había medicación sin confirmar";
+    if (pendientes.length) {
+      const h = await ui("historial-plan", { planId }, { lectura: true });
+      const c = await ui("conciliar-medicacion", {
+        planId,
+        versionEsperada: h.json?.versiones?.[0]?.version,
+        decisiones: pendientes.map((m) => ({ id: m.id, estado: "activo" })),
+        adicionales: [],
+      });
+      resultado = `${c.status} ${pendientes.length} decidida(s)`;
+    }
+    mide("c3-preparacion-conciliacion", resultado);
   }
 
   // C3 · dos aprobaciones simultáneas: una sola exportación.
