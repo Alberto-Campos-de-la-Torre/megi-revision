@@ -31,6 +31,8 @@ All patients shown are fictitious. The app is decision support; the final approv
 
 ## Preparación local de una futura grabación
 
+El guion ejecutable —preparación, caso elegido, tomas con narración, contingencias y chuleta— está en [GUION-GRABACION.md](GUION-GRABACION.md). Lo de abajo es el procedimiento; el guion es el detalle.
+
 1. Trabajar en una copia de ensayo con datos ficticios. Arrancar el backend de demo con `megi-demo/backend/start_demo.sh`; sembrar solo esa copia con `seed_demo.py`. Con la app detenida, iniciar una base de ensayo nueva mediante `DATABASE_URL=pglite:./data/ensayo pnpm dev` desde `megi-revision/`. Conservar la carpeta `data/` anterior; no borrarla. La siembra vuelve a abrir las consultas ficticias y debe acompañarse de una base de planes nueva para evitar estados desincronizados.
 2. Abrir `http://localhost:8080/revision` y seguir el guion de `PLAN_HACKATHON_AGENT_NATIVE.md` §10 con la consulta de Mateo (demo-c2): propuesta → bloquear una línea → pedir reajuste que la toque → el agente la respeta → aprobar y exportar.
 3. Cuando David autorice reanudar la publicación: grabar la versión corregida con Clips, publicar el enlace y comprobar en ventana privada que abre sin iniciar sesión. No realizar estos pasos mientras siga vigente la pausa.
