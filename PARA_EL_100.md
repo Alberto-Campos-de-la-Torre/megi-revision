@@ -10,7 +10,7 @@ Actualizado: **7 nov 2026**. Calificación independiente vigente: **94/100**, tr
 | Uso de Agent-Native | 20/20 | 0 | Mantener la continuidad UI–agente y las garantías ya acreditadas; no hace falta añadir funciones del framework para perseguir puntos |
 | **Total** | **94/100** | **6** | Seis puntos de valoración, no seis requisitos oficiales ni puntos garantizados por tarea |
 
-Alcance de esta actualización: dejar las iteraciones listas para ejecutar. **No autoriza publicación, despliegue, GitHub, Clips, envío del formulario o commits.** La publicación y el envío siguen detenidos según [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md). Se conserva el histórico al final; sus instrucciones no son el plan vigente.
+Alcance de esta actualización: dejar las iteraciones listas para ejecutar. **No autoriza publicación, despliegue, Clips ni envío del formulario.** Los commits al repo privado del equipo (`NGZeggers/hackathons`, rama `bluiders.io`) sí fueron autorizados por David el 7 nov; ver ESTADO.md. La publicación y el envío siguen detenidos según [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md). Se conserva el histórico al final; sus instrucciones no son el plan vigente.
 
 ## Investigación de antecedentes y plan 94 → 100 · 7 nov 2026
 
