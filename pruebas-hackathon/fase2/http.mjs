@@ -359,7 +359,7 @@ async function bloqueA(anon, sesion, ui, uiCli) {
         : n === "reajustar-plan"
           ? { planId: "x", cambios: [{ accion: "quitar", lineaId: "y", motivo: "m" }], explicacion: "x", origen: "medico" }
           : n === "agregar-linea"
-            ? { planId: "x", tipo: "pendiente", texto: "t", origen: "medico" }
+            ? { planId: "x", lineas: [{ tipo: "pendiente", texto: "t" }], origen: "medico" }
             : { lineaId: "x", estado: "bloqueada", motivo: "m", origen: "medico" },
       { frontend: true },
     );

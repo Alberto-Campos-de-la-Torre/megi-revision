@@ -30,14 +30,21 @@ export default defineAction({
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
-    "Añade una o VARIAS líneas (fármacos o pendientes) a un plan existente, en una sola transacción y una sola versión, y vuelve a verificar los fármacos del plan completo. Si el médico pide más de una línea, mándalas todas juntas en `lineas`: una llamada por línea gasta la versión en la primera y las siguientes se rechazan con version_desactualizada. Para quitar, editar o reemplazar líneas usa reajustar-plan.",
+    'Añade una o VARIAS líneas (fármacos o pendientes) a un plan existente, en una sola transacción y una sola versión, y vuelve a verificar los fármacos del plan completo. TODAS las líneas van en `lineas`, incluso si es una: `lineas: [{"tipo":"pendiente","texto":"Control de presión en 72 h"}]`. Llamar una vez por línea gasta la versión en la primera y las siguientes se rechazan con version_desactualizada. Para quitar, editar o reemplazar líneas usa reajustar-plan.',
+  // Las dos formas: `lineas` para una o varias, y los campos sueltos de una
+  // línea, que es como llaman la auditoría del proyecto (`evidencia/`) y las
+  // baterías. Hacer `lineas` obligatorio le daba al modelo una señal más
+  // fuerte —medido: sin ella llamó dos veces sin ninguna línea—, pero rompería
+  // esos guiones, así que la señal va en la descripción y en el error, y lo que
+  // de verdad arregló el turno fue devolver al prompt la regla de leer antes de
+  // escribir.
   schema: lineaInputSchema.partial().extend({
     lineas: z
       .array(lineaInputSchema)
       .min(1)
       .max(20)
       .optional()
-      .describe("TODAS las líneas que hay que añadir, en esta única llamada. Alternativa a los campos sueltos, que sirven para una sola línea."),
+      .describe("TODAS las líneas que hay que añadir, en esta única llamada: una sola también puede ir aquí, como array de un elemento. Es la forma preferida; los campos sueltos de abajo solo valen para una línea."),
     versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
     planId: z.string().describe("Id del plan"),
     origen: origenSchema,
@@ -72,7 +79,7 @@ export default defineAction({
     const entradas = lineasAAgregar(args);
     if (!entradas)
       fail(
-        "Manda `lineas` con todas las líneas que hay que añadir, o los campos de una sola (tipo y texto son obligatorios).",
+        'Falta el contenido de las líneas: cada una necesita `tipo` ("farmaco" o "pendiente") y `texto`. Manda, por ejemplo, lineas: [{"tipo":"pendiente","texto":"Control de presión en 72 h"}].',
         { errorCode: "invalid_input" },
       );
     const orgId = ctx?.orgId ?? null;

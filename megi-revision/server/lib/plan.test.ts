@@ -144,10 +144,19 @@ describe("el techo de líneas por plan", () => {
 describe("lineasAAgregar", () => {
   const farmaco = { tipo: "farmaco" as const, texto: "Paracetamol", dosis: "1 g", frecuencia: "cada 8 h", duracion: "5 días", justificacion: "Dolor." };
 
-  it("una línea en los campos sueltos sigue valiendo", () => {
-    const r = lineasAAgregar(farmaco);
+  it("una sola línea vale en el array", () => {
+    const r = lineasAAgregar({ lineas: [farmaco] });
     expect(r).toHaveLength(1);
     expect(r![0]!.texto).toBe("Paracetamol");
+  });
+
+  it("y también en los campos sueltos, que es como llaman la auditoría del proyecto y la interfaz", () => {
+    expect(lineasAAgregar(farmaco)?.map((l) => l.texto)).toEqual(["Paracetamol"]);
+  });
+
+  it("`lineas` manda sobre los campos sueltos, sin mezclar", () => {
+    const r = lineasAAgregar({ ...farmaco, lineas: [{ tipo: "pendiente", texto: "Solo esta" } as never] });
+    expect(r?.map((l) => l.texto)).toEqual(["Solo esta"]);
   });
 
   it("varias líneas llegan en orden y completas", () => {
@@ -165,18 +174,16 @@ describe("lineasAAgregar", () => {
     expect(r![0]).toMatchObject({ dosis: "", frecuencia: "", duracion: "", justificacion: "" });
   });
 
-  it("`lineas` manda sobre los campos sueltos, sin mezclar", () => {
-    const r = lineasAAgregar({ ...farmaco, lineas: [{ tipo: "pendiente", texto: "Solo esta" } as never] });
-    expect(r?.map((l) => l.texto)).toEqual(["Solo esta"]);
-  });
-
   it("una línea sin texto invalida la llamada entera", () => {
     // Nada a medias: o entran todas o responde `invalid_input`. Un plan con la
     // mitad de lo pedido y un recibo que dice otra cosa es peor que un fallo.
     expect(lineasAAgregar({ lineas: [farmaco, { tipo: "pendiente", texto: "   " } as never] })).toBeNull();
   });
 
-  it("sin líneas y sin campos no hay nada que añadir", () => {
+  it("sin líneas no hay nada que añadir", () => {
+    // Medido con un modelo real: llamó dos veces con solo planId, versión y
+    // origen, y se comió el turno. La acción responde `invalid_input` con el
+    // JSON que tenía que mandar, en vez de insertar una línea vacía.
     expect(lineasAAgregar({})).toBeNull();
     expect(lineasAAgregar({ lineas: [] })).toBeNull();
     expect(lineasAAgregar({ tipo: "farmaco" })).toBeNull();

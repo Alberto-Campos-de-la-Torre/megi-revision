@@ -926,7 +926,7 @@ async function chequeaModelo() {
       { status: previo.status, llamadas: herramientasDe(previo.eventos) });
     if (creado.length !== 1) return previo;
   }
-  const turno = await turnoPorElChat(
+  let turno = await turnoPorElChat(
     SEGUNDO_TURNO[ESCENARIO] ?? `Prepara la receta y los pendientes de la consulta ${CONSULTA}.`,
     hilo,
   );
@@ -939,6 +939,32 @@ async function chequeaModelo() {
       ? `el proveedor rechazó la petición (${veredicto.errorCode ?? "sin código"}): revisa la clave, el modelo pedido (${MODELO ?? "sin modelo"}) y ${entornoDelModelo.OPENAI_BASE_URL ?? "la URL del motor"}. Se detiene aquí para no gastar más llamadas.`
       : `el turno murió con ${veredicto.errorCode ?? "sin código"}; lo que sigue no se afirma sin turno.`);
     return turno;
+  }
+
+  // Si el agente PREGUNTÓ en vez de escribir, eso no es un fallo: la ficha de
+  // esta consulta no tiene alergias registradas y el prompt le prohíbe omitir
+  // una pregunta clínica pendiente. Medido con Grok: leyó la habilidad, leyó la
+  // consulta y preguntó «¿Confirmas que no tiene alergias conocidas?». Dar por
+  // malo ese turno medía otra cosa; lo que hay que medir es el intercambio
+  // completo, que es el de la demo. Así que se le contesta y se sigue.
+  const llamadasPrimerTurno = llamadasDe(turno.eventos);
+  const preguntó = llamadasPrimerTurno.some((l) => l.tool === "ask-question" && l.hecha);
+  const escribió = llamadasPrimerTurno.some((l) => ESCRITURAS_DEL_PLAN.has(l.tool) && l.conRecibo);
+  if (preguntó && !escribió) {
+    const pregunta = turno.eventos
+      .map((e: any) => (e?.type === "tool_start" && e.tool === "ask-question" ? e.input?.question : null))
+      .find((q: unknown) => typeof q === "string");
+    anota("m2b-pregunto-antes-de-escribir-en-vez-de-inventar", true, { pregunta: pregunta ?? null });
+    turno = await turnoPorElChat(
+      "Confirmado: no tiene alergias conocidas. Prepara ya la receta y los pendientes.",
+      hilo,
+    );
+    const veredicto2 = veredictoDelTurno(turno.eventos);
+    mide("m2c-el-turno-tras-contestar", { status: turno.status, ms: turno.ms, eventos: turno.eventos.length });
+    anota("m2c-el-turno-tras-contestar-completo",
+      turno.status >= 200 && turno.status < 300 && veredicto2.completo,
+      { status: turno.status, errorCode: veredicto2.errorCode, mensaje: veredicto2.mensaje });
+    if (!veredicto2.completo) return turno;
   }
 
   // Propuesta 4 · varias líneas en una sola llamada y una sola versión.

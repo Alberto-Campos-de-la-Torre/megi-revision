@@ -135,7 +135,14 @@ export default function RevisionConsultaRoute() {
   function enviarNueva(e: React.FormEvent) {
     e.preventDefault();
     if (!planId || !nueva.texto.trim()) return;
-    agregar.mutate({ versionEsperada: plan.data?.plan.version, planId, origen: "medico", justificacion: "Añadida por el médico", ...nueva, texto: nueva.texto.trim() });
+    // Una sola línea también va en `lineas`: la acción pide el array siempre,
+    // porque dejarlo opcional le costó al agente dos turnos sin contenido.
+    agregar.mutate({
+      versionEsperada: plan.data?.plan.version,
+      planId,
+      origen: "medico",
+      lineas: [{ ...nueva, texto: nueva.texto.trim(), justificacion: "Añadida por el médico" }],
+    });
   }
 
   return (

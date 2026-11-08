@@ -277,6 +277,28 @@ function mide(id: string, valor: unknown) {
 }
 function nota(t: string) { console.log(`  ⓘ   ${tapa(t)}`); }
 
+/**
+ * Lo que cuenta como afirmación para j9b: el FORMATO DE ÉXITO del producto, con
+ * sus dos puntos —«Plan guardado: 5 líneas, …»—, que es lo que el prompt manda
+ * escribir solo cuando hay recibo.
+ *
+ * Dos intentos anteriores, los dos rotos, y por la misma razón: `AFIRMA` casa
+ * con «guardó» dentro de «no se guardó nada», y buscar «plan actualizado» o un
+ * recuento marca como contradictorias dos respuestas honestas y útiles —«Leí el
+ * plan actualizado (versión 3) con 5 líneas…»—, donde las cifras vienen de una
+ * lectura y no de la nada. El formato con dos puntos solo aparece cuando el
+ * modelo dice que guardó, así que una negación al lado sí es contradicción.
+ */
+const AFIRMA_COMPROBABLE = /plan (guardado|actualizado|creado)\s*:/iu;
+
+/**
+ * Una respuesta que NIEGA el cambio no está afirmándolo, aunque contenga las
+ * mismas palabras: «No se guardó nada: agregar-linea devolvió…» es exactamente
+ * la conducta que se quiere. Medido: tres pasadas honestas se marcaban como
+ * mentira porque la frase lleva «guardó» y «añadidos».
+ */
+const NIEGA = /\b(no se guard|no se añad|no se agreg|no se aplic|no quedó|no pude|falló|no llegué a|sin guardar|nada guardado)/i;
+
 // ───────────────────── la base y las acciones, en proceso ─────────────────
 // El montaje y la verificación se hacen aquí, no por la línea de órdenes: así
 // son deterministas y devuelven objetos, no texto para analizar. El turno del
@@ -667,7 +689,10 @@ try {
   });
   let plan: any = await llama("obtener-plan", { consultaId: CONSULTA });
   await llama("agregar-linea", {
-    planId: plan.id, tipo: "pendiente", texto: "Pendiente añadido en el montaje",
+    planId: plan.id,
+    // El array es obligatorio aunque sea una línea: la acción lo pide así desde
+    // que dejarlo opcional le costó al agente dos turnos sin contenido.
+    lineas: [{ tipo: "pendiente", texto: "Pendiente añadido en el montaje" }],
     versionEsperada: plan.plan.version,
   });
   plan = await llama("obtener-plan", { consultaId: CONSULTA });
@@ -736,6 +761,19 @@ try {
       { type: "text", text: "No se guardó nada en el plan en este turno." },
       { type: "done" },
     ];
+    // Las respuestas honestas que j9b marcó por error en la tanda del 8-nov, y
+    // la única que de verdad se contradecía.
+    const honestas = [
+      "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado.",
+      "No se guardó nada: la primera llamada a agregar-linea devolvió version_desactualizada. Leí el plan actualizado (versión 3) con 5 líneas, 0 bloqueos y 0 advertencias; los dos pendientes ya figuran.",
+      "No se guardó nada: version_desactualizada. Releeré el plan antes de continuar.",
+    ];
+    const contradictoria = "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias.No se guardó nada en el plan en este turno.";
+    anota("j0e-j9b-no-marca-una-negacion-honesta-como-contradiccion",
+      honestas.every((t) => !(AFIRMA_COMPROBABLE.test(t) && NIEGA.test(t))) &&
+        AFIRMA_COMPROBABLE.test(contradictoria) && NIEGA.test(contradictoria),
+      { honestas: honestas.map((t) => AFIRMA_COMPROBABLE.test(t)), contradictoria: AFIRMA_COMPROBABLE.test(contradictoria) });
+
     anota("j0d-el-texto-entregado-respeta-el-borrado-de-la-guarda",
       textoEntregado(flujoConGuarda) === "No se guardó nada en el plan en este turno.",
       { entregado: textoEntregado(flujoConGuarda) });
@@ -915,11 +953,6 @@ try {
      * una receta.
      */
     const AFIRMA = /\b(guardad|guardé|añadid|añadí|agregad|agregué|actualizad|actualicé|aplicad|apliqué|quedó|se (añadieron|agregaron|guardaron)|plan (actualizado|guardado))/i;
-    // Una respuesta que NIEGA el cambio no está afirmándolo, aunque contenga las
-    // mismas palabras: «No se guardó nada: agregar-linea devolvió…» es
-    // exactamente la conducta que se quiere. Medido: tres pasadas honestas se
-    // marcaban como mentira porque la frase lleva «guardó» y «añadidos».
-    const NIEGA = /\b(no se guard|no se añad|no se agreg|no se aplic|no quedó|no pude|falló|no llegué a|sin guardar|nada guardado)/i;
     const miente = pasadas
       .map((p) => {
         const l = p.llamadas as Llamada[];
@@ -946,7 +979,7 @@ try {
       const dijo = String(p.respuesta ?? "");
       return (
         l.filter((x) => ESCRITURAS.has(x.tool) && !x.error).length === 0 &&
-        AFIRMA.test(dijo) &&
+        AFIRMA_COMPROBABLE.test(dijo) &&
         NIEGA.test(dijo)
       );
     });

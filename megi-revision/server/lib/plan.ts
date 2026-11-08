@@ -139,36 +139,32 @@ export const lineaInputSchema = z.object({
 export type LineaInput = z.infer<typeof lineaInputSchema>;
 
 /**
- * Las líneas que pide una llamada a `agregar-linea`: varias en `lineas`, o una
- * sola en los campos sueltos de siempre.
+ * Las líneas que pide una llamada a `agregar-linea`, con los huecos rellenos.
  *
- * Por qué acepta las dos formas. Medido con un modelo real: cuando el médico
- * pedía dos pendientes, el agente llamaba a `agregar-linea` una vez por línea,
- * gastaba la versión en la primera y la segunda salía rechazada con
- * `version_desactualizada`; el turno acababa con la mitad del trabajo hecho.
- * Devolver la versión nueva en el recibo lo arregló a medias —el modelo tenía
- * que encadenar bien dos llamadas—, y pedirlo por prompt es una petición, no
- * una garantía. Con `lineas`, la forma natural de la herramienta hace lo
+ * Por qué `lineas` es un array obligatorio incluso para una sola línea. Medido
+ * con un modelo real: cuando el médico pedía dos pendientes, el agente llamaba
+ * una vez por línea, gastaba la versión en la primera y la segunda salía
+ * rechazada con `version_desactualizada`; el turno acababa con la mitad del
+ * trabajo hecho. Con `lineas`, la forma natural de la herramienta hace lo
  * correcto: una llamada, una transacción, una versión y UNA verificación del
  * conjunto, que además es la clínicamente honesta —dos fármacos que
  * interaccionan entre sí solo se ven mirando el resultado completo—.
  *
- * Devuelve `null` si no hay nada utilizable, para que quien llama responda con
- * su propio código de error en vez de lanzar aquí.
+ * Y por qué obligatorio y no opcional: al dejar `tipo` y `texto` opcionales
+ * para hacerle sitio, el mismo modelo llamó dos veces sin ninguna línea y se
+ * comió el turno. Lo que el esquema marca como obligatorio es información que
+ * el modelo usa, no decoración.
+ *
+ * Acepta las dos formas —`lineas`, o los campos de una sola línea— porque así
+ * la llaman la auditoría del proyecto y la interfaz. Devuelve `null` si alguna
+ * línea no es utilizable: o entran todas o ninguna, porque un plan a medias con
+ * un recibo que dice otra cosa es peor que un fallo.
  */
-export function lineasAAgregar(args: {
-  // Con `exactOptionalPropertyTypes` hay que admitir `undefined` a la cara: los
-  // argumentos de una acción llegan así cuando el modelo omite un campo.
-  lineas?: readonly LineaInput[] | undefined;
-  tipo?: LineaInput["tipo"] | undefined;
-  texto?: string | undefined;
-  dosis?: string | undefined;
-  frecuencia?: string | undefined;
-  duracion?: string | undefined;
-  justificacion?: string | undefined;
-}): LineaInput[] | null {
-  type Suelta = { [K in keyof LineaInput]?: LineaInput[K] | undefined };
-  const completa = (l: Suelta): LineaInput | null =>
+type LineaSuelta = { [K in keyof LineaInput]?: LineaInput[K] | undefined };
+export function lineasAAgregar(
+  args: LineaSuelta & { lineas?: readonly LineaInput[] | undefined },
+): LineaInput[] | null {
+  const completa = (l: LineaSuelta): LineaInput | null =>
     l.tipo && typeof l.texto === "string" && l.texto.trim()
       ? {
           tipo: l.tipo,

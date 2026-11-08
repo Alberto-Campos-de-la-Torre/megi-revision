@@ -1,8 +1,8 @@
 {
   "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
-  "cuando": "2026-11-08T08:58:34.550Z",
+  "cuando": "2026-11-08T10:55:02.802Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
-  "appCommit": "02f6ff2",
+  "appCommit": "b2756a2",
   "node": "v22.22.2",
   "total": 29,
   "pasan": 29,
@@ -73,7 +73,7 @@
       "passed": true,
       "detail": {
         "filas": 50,
-        "ms": 5
+        "ms": 3
       }
     },
     {
@@ -89,7 +89,7 @@
     {
       "bloque": "F · el adaptador frente a un MEGI hostil",
       "id": "f7-milisegundos",
-      "medicion": 5
+      "medicion": 3
     },
     {
       "bloque": "F · el adaptador frente a un MEGI hostil",

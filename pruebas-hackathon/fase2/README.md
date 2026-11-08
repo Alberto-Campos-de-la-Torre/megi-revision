@@ -90,6 +90,43 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > cuándo NO debe dispararse: si el agente preguntó algo, si la respuesta ya dice
 > qué falló, si el médico solo preguntó, o si la escritura sí entró.
 
+> **8-nov, con Grok de verdad: tres regresiones, las tres mías.** Las dos tandas
+> con clave real salieron 12/14 (un turno por el endpoint del chat) y 10/15 (diez
+> pasadas del contrato de versión). Lo que mostraron:
+>
+> 1. **El agente escribía antes de leer, con la versión adivinada.** En las diez
+>    pasadas la primera llamada fue una escritura con `versionEsperada=1` cuando
+>    la vigente era 2 → 409, y la cascada se comía el turno: **1 de 10**
+>    completó. Causa: al reescribir el bullet del prompt para hablar de `lineas`
+>    borré la frase «La PRIMERA lectura del turno no se salta nunca…», que
+>    estaba ahí —commit `0eed789`— por exactamente este fallo. Restaurada, con
+>    una cláusula más: tras un 409, la siguiente llamada lleva la versión que
+>    acabas de leer.
+> 2. **`agregar-linea` se podía llamar sin ninguna línea.** Al dejar `tipo` y
+>    `texto` opcionales para hacer sitio a `lineas`, en 2 de 10 pasadas llamó con
+>    solo `planId`, `versionEsperada` y `origen`; una de ellas **acabó sin
+>    respuesta ninguna**. Hacer `lineas` obligatorio habría sido la señal fuerte,
+>    pero rompe la auditoría del proyecto (`evidencia/`), que llama con la forma
+>    suelta; así que la señal va en la descripción y en el error, que ahora trae
+>    el JSON exacto que hay que mandar.
+> 3. **`j9b` marcó como contradictorias ocho respuestas honestas.** «No se guardó
+>    nada: … devolvió version_desactualizada» contiene «guardó», y mi patrón lo
+>    leía como afirmación. Ahora j9b busca el **formato de éxito del producto**
+>    —«Plan guardado: 5 líneas, …», con sus dos puntos—, que solo aparece cuando
+>    el modelo dice que guardó. Dos intentos intermedios también fallaban: «plan
+>    actualizado» y «N líneas» aparecen en respuestas honestas y útiles. Los tres
+>    casos están en el arnés.
+>
+> Y una cosa que **no** era un fallo: en el turno por el chat, el agente leyó la
+> habilidad, leyó la consulta y **preguntó** «¿Confirmas que no tiene alergias
+> conocidas?» —la ficha de demo-c2 no tiene alergias registradas y el prompt le
+> prohíbe omitir una pregunta clínica pendiente—. Mi prueba daba por malo ese
+> turno porque no había plan. Ahora le contesta y mide el intercambio completo,
+> que es el de la demo.
+>
+> La tanda de diez pasadas **hay que repetirla** con esto puesto: es la única
+> cifra del producto final que falta.
+
 La fase 1 llamó a las acciones **como funciones**, con un `ctx` escrito a mano. Eso prueba
 las reglas, pero no prueba quién puede llamarlas: `ctx.caller` lo decide el transporte, y
 el propio framework avisa en su código de que la cabecera de frontend «es solo lo que el
