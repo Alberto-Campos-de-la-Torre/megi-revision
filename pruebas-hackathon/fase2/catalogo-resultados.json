@@ -1,9 +1,9 @@
 {
   "bateria": "fase 2 · bloque I (qué puede llamar el agente)",
-  "cuando": "2026-11-08T10:54:59.115Z",
+  "cuando": "2026-11-08T17:38:56.078Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
-  "total": 7,
-  "pasan": 7,
+  "total": 10,
+  "pasan": 10,
   "fallan": 0,
   "registro": [
     {
@@ -1079,6 +1079,36 @@
         "obtener-plan",
         "ver-contexto-consulta"
       ]
+    },
+    {
+      "id": "i6-lo-que-el-modelo-ve-en-agregar-linea",
+      "medicion": {
+        "requeridos": [
+          "lineas",
+          "planId"
+        ],
+        "propiedades": [
+          "lineas",
+          "versionEsperada",
+          "planId",
+          "origen"
+        ]
+      }
+    },
+    {
+      "id": "i6-el-modelo-ve-lineas-como-obligatorio",
+      "passed": true,
+      "detail": "lineas, planId"
+    },
+    {
+      "id": "i6b-el-modelo-no-ve-los-campos-sueltos-de-una-linea",
+      "passed": true,
+      "detail": "lineas, versionEsperada, planId, origen"
+    },
+    {
+      "id": "i6c-la-validacion-sigue-aceptando-la-forma-suelta",
+      "passed": true,
+      "detail": "acepta la línea suelta de la auditoría"
     }
   ]
 }

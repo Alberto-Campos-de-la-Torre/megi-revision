@@ -60,7 +60,7 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > nombres cerrados, uno a uno y exactos, y el framework responde que no existen
 > «in the current mode»; lo único que carga son acciones de la mesa. `catalogo.mts`,
 > que medía el registro a secas, mide ahora las dos caras —lo que el registro
-> ofrece y lo que el recorte deja pasar— y pasa de **4/7 a 7/7**: el recorte
+> ofrece y lo que el recorte deja pasar— y pasa de **4/7 a 10/10**: el recorte
 > cierra 86 de las 91, las 5 que quedan son de la mesa, ninguna delicada y todas
 > con freno. Diez pruebas unitarias nuevas fijan la lista, incluida una que
 > falla si alguien añade una acción al producto y no decide si entra o no.
@@ -105,10 +105,10 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > 2. **`agregar-linea` se podía llamar sin ninguna línea.** Al dejar `tipo` y
 >    `texto` opcionales para hacer sitio a `lineas`, en 2 de 10 pasadas llamó con
 >    solo `planId`, `versionEsperada` y `origen`; una de ellas **acabó sin
->    respuesta ninguna**. Hacer `lineas` obligatorio habría sido la señal fuerte,
->    pero rompe la auditoría del proyecto (`evidencia/`), que llama con la forma
->    suelta; así que la señal va en la descripción y en el error, que ahora trae
->    el JSON exacto que hay que mandar.
+>    respuesta ninguna**. Puse la señal en la descripción y en el error, y no en
+>    el esquema, para no romper la auditoría del proyecto (`evidencia/`), que
+>    llama con la forma suelta. **La tanda siguiente demostró que eso no basta**
+>    —ver abajo—.
 > 3. **`j9b` marcó como contradictorias ocho respuestas honestas.** «No se guardó
 >    nada: … devolvió version_desactualizada» contiene «guardó», y mi patrón lo
 >    leía como afirmación. Ahora j9b busca el **formato de éxito del producto**
@@ -117,6 +117,34 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 >    actualizado» y «N líneas» aparecen en respuestas honestas y útiles. Los tres
 >    casos están en el arnés.
 >
+> **8-nov, segunda tanda (12/16): lo que el esquema deja opcional, el modelo lo
+> omite.** Con la regla de leer antes de escribir restaurada, el agente ya leía
+> primero y mandaba `versionEsperada` —24 escrituras, 23 con versión—, pero
+> **20 de esas 24 llegaron sin ninguna línea**: `agregar-linea` con solo
+> `planId`, `versionEsperada` y `origen`. Ninguna de las diez pasadas completó
+> el trabajo, y 6 de 10 acabaron sin respuesta. La descripción y el mensaje de
+> error no sirvieron: la única señal que el modelo respetó fue el esquema.
+>
+> El arreglo tiene una pieza que el framework ya traía: **`agentInputSchema`**.
+> `defineAction` convierte a JSON Schema *ese* esquema para lo que ve el modelo
+> (`action.js`: `const agentSchema = options.agentInputSchema ?? options.schema`)
+> y **valida con `schema`**. Así que `agregar-linea` declara los dos: `schema`
+> sigue aceptando las dos formas —el array y los campos sueltos— porque `run`
+> valida también a quien lo llama directamente, que es como llaman la auditoría
+> del proyecto y las baterías; y `agentInputSchema` solo tiene `lineas`, y
+> obligatorio. Medido, no deducido: `catalogo.mts` bloque I6 lee
+> `action.tool.parameters` y comprueba las dos caras —el modelo ve
+> `required: ["lineas","planId"]` y cuatro propiedades, sin `tipo` ni `texto`;
+> la validación sigue aceptando la línea suelta de la auditoría—, y la auditoría
+> del proyecto sigue en 102 PASS / 0 FAIL.
+>
+> Dos cosas más de esa tanda. El prompt tenía **el párrafo de la primera lectura
+> dos veces** (mi restauración lo pegó duplicado): eliminado, y con una regla
+> nueva, «toda llamada a agregar-linea lleva LAS DOS COSAS juntas». Y la segunda
+> llamada idéntica no devuelve `invalid_input` sino un `error` sin mensaje: es el
+> freno del framework a la escritura repetida, y el modelo se queda sin saber qué
+> le pasó. Con el contenido obligatorio ese camino ya no se pisa.
+
 > Y una cosa que **no** era un fallo: en el turno por el chat, el agente leyó la
 > habilidad, leyó la consulta y **preguntó** «¿Confirmas que no tiene alergias
 > conocidas?» —la ficha de demo-c2 no tiene alergias registradas y el prompt le
@@ -235,7 +263,7 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 |---|---|---|
 | `fase2/http.mjs` · la app en marcha | 43/47 | **47/47** |
 | `fase2/adaptador.mts` · MEGI hostil, paridad, entradas | 26/29 | **29/29** |
-| `fase2/catalogo.mts` · alcance real del agente | 4/7 | **7/7** |
+| `fase2/catalogo.mts` · alcance real del agente y la forma que ve el modelo | 4/7 | **10/10** |
 | `fase2/requisitos.mjs` · requisitos del envío | 26/28 | **29/29** |
 | `fase2/interfaz-y-modelo.mts --solo-interfaz` · la pantalla por su frontera de datos | — | **9/9** |
 | `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | **17/17** |
@@ -243,7 +271,7 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda` · el recorte, por donde se rodea | — | **13/13** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario varias` · tres líneas en una llamada | — | **14/14** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario promesa` · el turno que promete sin hacer | — | **15/15** |
-| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **73 pruebas** |
+| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **78 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |
 | `typecheck` · `doctor` · `build` | limpios | **limpios** |

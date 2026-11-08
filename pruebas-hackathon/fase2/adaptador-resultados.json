@@ -1,8 +1,8 @@
 {
   "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
-  "cuando": "2026-11-08T10:55:02.802Z",
+  "cuando": "2026-11-08T17:39:06.904Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
-  "appCommit": "b2756a2",
+  "appCommit": "a9f523d",
   "node": "v22.22.2",
   "total": 29,
   "pasan": 29,
@@ -102,7 +102,7 @@
       "id": "f9-sin-respuesta-corta-por-tiempo",
       "passed": true,
       "detail": {
-        "ms": 802,
+        "ms": 801,
         "mensaje": "MEGI no responde en http://megi.invalido (tiempo de espera agotado). ¿Está arrancado el backend?"
       }
     },

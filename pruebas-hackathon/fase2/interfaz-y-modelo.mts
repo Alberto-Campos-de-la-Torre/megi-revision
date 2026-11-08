@@ -576,9 +576,11 @@ const GUIONES: Record<string, Guion> = {
       argumentos: {
         planId: CONSULTA,
         versionEsperada: 1,
-        tipo: "pendiente",
-        texto: "Control de tensión arterial en 7 días",
-        justificacion: "Control de HTA.",
+        // El array, no los campos sueltos: el esquema de la acción solo admite
+        // `lineas` desde que se midió que lo opcional el modelo lo omite.
+        lineas: [
+          { tipo: "pendiente", texto: "Control de tensión arterial en 7 días", justificacion: "Control de HTA." },
+        ],
       },
     },
     { texto: "Añadido el control de tensión arterial en 7 días." },

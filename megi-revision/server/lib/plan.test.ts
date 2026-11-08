@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import {
   exigirMedico,
   lineaInputSchema,
+  lineasAAgregarSchema,
   lineasAAgregar,
   limpiaControles,
   MAX_LINEAS,
@@ -102,6 +103,32 @@ describe("limpiaControles", () => {
 
   it("deja en paz los saltos de línea, los acentos y los emoji", () => {
     expect(limpiaControles("dos\nlíneas 💊")).toBe("dos\nlíneas 💊");
+  });
+});
+
+describe("el contenido obligatorio de agregar-linea", () => {
+  // Esto es lo que midieron dos tandas con un modelo real: con el array
+  // opcional, 20 de 24 escrituras llegaron sin ninguna línea. El esquema es la
+  // única señal que el modelo respetó.
+  it("no admite una llamada sin líneas", () => {
+    expect(lineasAAgregarSchema.safeParse(undefined).success).toBe(false);
+    expect(lineasAAgregarSchema.safeParse([]).success).toBe(false);
+  });
+
+  it("no admite líneas a medias", () => {
+    expect(lineasAAgregarSchema.safeParse([{ tipo: "pendiente" }]).success).toBe(false);
+    expect(lineasAAgregarSchema.safeParse([{ texto: "Control" }]).success).toBe(false);
+  });
+
+  it("admite una sola línea, como array de un elemento", () => {
+    const r = lineasAAgregarSchema.parse([{ tipo: "pendiente", texto: "Control en 72 h" }]);
+    expect(r).toHaveLength(1);
+    expect(r[0]?.dosis).toBe("");
+  });
+
+  it("corta de raíz una tanda desmedida", () => {
+    const muchas = Array.from({ length: 21 }, (_, i) => ({ tipo: "pendiente", texto: `P${i}` }));
+    expect(lineasAAgregarSchema.safeParse(muchas).success).toBe(false);
   });
 });
 

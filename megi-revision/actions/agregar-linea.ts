@@ -11,6 +11,7 @@ import {
   exigirAbierto,
   exigirEspacio,
   lineaInputSchema,
+  lineasAAgregarSchema,
   lineasAAgregar,
   lineasDe,
   lineasOut,
@@ -25,28 +26,43 @@ import {
   limpiaControles,
 } from "../server/lib/plan.js";
 
+/** La versión vigente del plan; compartida por los dos esquemas de la acción. */
+const VERSION_ESPERADA = z
+  .number()
+  .int()
+  .nonnegative()
+  .optional()
+  .describe(
+    "Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva.",
+  );
+const PLAN_ID = z.string().describe("Id del plan");
+
 export default defineAction({
   changeResource: (_input, result) => ({ resourceType: `plan:${result.linea.planId}`, resourceId: result.linea.planId }),
   // El framework exige sesión, mismo origen y capacidad UI para HTTP.
   needsApproval: (_args, ctx) => ctx?.caller === "http",
   description:
-    'Añade una o VARIAS líneas (fármacos o pendientes) a un plan existente, en una sola transacción y una sola versión, y vuelve a verificar los fármacos del plan completo. TODAS las líneas van en `lineas`, incluso si es una: `lineas: [{"tipo":"pendiente","texto":"Control de presión en 72 h"}]`. Llamar una vez por línea gasta la versión en la primera y las siguientes se rechazan con version_desactualizada. Para quitar, editar o reemplazar líneas usa reajustar-plan.',
-  // Las dos formas: `lineas` para una o varias, y los campos sueltos de una
-  // línea, que es como llaman la auditoría del proyecto (`evidencia/`) y las
-  // baterías. Hacer `lineas` obligatorio le daba al modelo una señal más
-  // fuerte —medido: sin ella llamó dos veces sin ninguna línea—, pero rompería
-  // esos guiones, así que la señal va en la descripción y en el error, y lo que
-  // de verdad arregló el turno fue devolver al prompt la regla de leer antes de
-  // escribir.
+    'Añade una o VARIAS líneas (fármacos o pendientes) a un plan existente, en una sola transacción y una sola versión, y vuelve a verificar los fármacos del plan completo. TODAS las líneas van en `lineas`, incluso si es una: `lineas: [{"tipo":"pendiente","texto":"Control de presión en 72 h"}]`, y cada llamada lleva además `versionEsperada` con la versión que acabas de leer. Llamar una vez por línea gasta la versión en la primera y las siguientes se rechazan con version_desactualizada. Para quitar, editar o reemplazar líneas usa reajustar-plan.',
+  // Dos esquemas a propósito, y esta es la razón medida. `schema` es el que
+  // valida, y acepta las dos formas —`lineas`, o los campos sueltos de una
+  // línea— porque así llaman la auditoría del proyecto (`evidencia/`) y las
+  // baterías, y `run` valida también a quien lo llama directamente.
+  // `agentInputSchema` es solo lo que VE el modelo, y ahí `lineas` es
+  // obligatorio y los campos sueltos no existen. Medido con un modelo real en
+  // dos tandas seguidas: lo que el esquema deja opcional, el modelo lo omite.
+  // Con `lineas` opcional, 20 de 24 escrituras llegaron sin ninguna línea
+  // —solo planId, versionEsperada y origen— y ninguna de las diez pasadas
+  // completó el trabajo; la descripción y el mensaje de error no bastaron.
   schema: lineaInputSchema.partial().extend({
-    lineas: z
-      .array(lineaInputSchema)
-      .min(1)
-      .max(20)
-      .optional()
-      .describe("TODAS las líneas que hay que añadir, en esta única llamada: una sola también puede ir aquí, como array de un elemento. Es la forma preferida; los campos sueltos de abajo solo valen para una línea."),
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
-    planId: z.string().describe("Id del plan"),
+    lineas: lineasAAgregarSchema.optional(),
+    versionEsperada: VERSION_ESPERADA,
+    planId: PLAN_ID,
+    origen: origenSchema,
+  }),
+  agentInputSchema: z.object({
+    lineas: lineasAAgregarSchema,
+    versionEsperada: VERSION_ESPERADA,
+    planId: PLAN_ID,
     origen: origenSchema,
   }),
   outputSchema: z.object({

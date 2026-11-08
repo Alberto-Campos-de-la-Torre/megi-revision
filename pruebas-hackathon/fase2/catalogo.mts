@@ -207,6 +207,48 @@ anota(
   propias.filter((e) => e.readOnly).map((e) => e.nombre),
 );
 
+// I6 · la forma que ve el modelo para `agregar-linea`.
+//
+// Esto es una cifra pagada dos veces. `agregar-linea` acepta dos formas —el
+// array `lineas` y los campos sueltos de una línea— porque la auditoría del
+// proyecto y las baterías llaman con la suelta, y `run` valida también a quien
+// lo llama directamente. Pero mientras `lineas` fue opcional en el esquema que
+// ve el modelo, el modelo lo omitió: 20 de 24 escrituras de una tanda con Grok
+// llegaron sin ninguna línea. La acción declara ahora `agentInputSchema`, que
+// es solo lo que viaja al proveedor, con `lineas` obligatorio y sin los campos
+// sueltos. Este bloque mide las dos caras de eso, porque la divergencia entre
+// el esquema que valida y el que ve el modelo es precisamente lo que hay que
+// vigilar.
+{
+  const accion = (registro["agregar-linea"]?.default ?? registro["agregar-linea"]) as any;
+  const vistos = accion?.tool?.parameters ?? {};
+  const requeridos: string[] = vistos?.required ?? [];
+  const propiedades = Object.keys(vistos?.properties ?? {});
+  mide("i6-lo-que-el-modelo-ve-en-agregar-linea", { requeridos, propiedades });
+  anota(
+    "i6-el-modelo-ve-lineas-como-obligatorio",
+    requeridos.includes("lineas"),
+    requeridos.includes("lineas") ? requeridos.join(", ") : `obligatorios: ${requeridos.join(", ") || "ninguno"}`,
+  );
+  anota(
+    "i6b-el-modelo-no-ve-los-campos-sueltos-de-una-linea",
+    !propiedades.includes("tipo") && !propiedades.includes("texto"),
+    propiedades.join(", "),
+  );
+  // Y la otra cara: la forma suelta sigue valiendo para quien llama a `run`.
+  const suelta = accion?.schema?.safeParse?.({
+    planId: "p",
+    tipo: "pendiente",
+    texto: "Control en 72 h",
+    versionEsperada: 1,
+  });
+  anota(
+    "i6c-la-validacion-sigue-aceptando-la-forma-suelta",
+    suelta?.success === true,
+    suelta?.success === true ? "acepta la línea suelta de la auditoría" : JSON.stringify(suelta?.error?.issues ?? suelta),
+  );
+}
+
 const checks = resultados.filter((r) => "passed" in r);
 const fallos = checks.filter((r) => !r.passed);
 const salida = {

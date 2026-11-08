@@ -155,11 +155,27 @@ export type LineaInput = z.infer<typeof lineaInputSchema>;
  * comió el turno. Lo que el esquema marca como obligatorio es información que
  * el modelo usa, no decoración.
  *
- * Acepta las dos formas —`lineas`, o los campos de una sola línea— porque así
- * la llaman la auditoría del proyecto y la interfaz. Devuelve `null` si alguna
+ * Acepta las dos formas —`lineas`, o los campos de una sola línea— porque la
+ * auditoría del proyecto y las baterías llaman a `run` directamente, sin pasar
+ * por el esquema; el esquema que ve el modelo solo admite `lineas`, que es por
+ * donde llamaba sin contenido. Devuelve `null` si alguna
  * línea no es utilizable: o entran todas o ninguna, porque un plan a medias con
  * un recibo que dice otra cosa es peor que un fallo.
  */
+/**
+ * El contenido de `agregar-linea` tal y como lo ve el modelo: obligatorio y con
+ * al menos una línea. Medido en dos tandas con un modelo real: lo que el
+ * esquema deja opcional, el modelo lo omite, y con `lineas` opcional llamó 20
+ * veces de 24 sin ninguna línea.
+ */
+export const lineasAAgregarSchema = z
+  .array(lineaInputSchema)
+  .min(1)
+  .max(20)
+  .describe(
+    'TODAS las líneas que hay que añadir, en esta única llamada. Obligatorio: una llamada sin líneas no añade nada y se rechaza. Una sola línea también va aquí, como array de un elemento: [{"tipo":"pendiente","texto":"Control de presión en 72 h"}].',
+  );
+
 type LineaSuelta = { [K in keyof LineaInput]?: LineaInput[K] | undefined };
 export function lineasAAgregar(
   args: LineaSuelta & { lineas?: readonly LineaInput[] | undefined },

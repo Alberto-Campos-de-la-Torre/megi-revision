@@ -1,6 +1,6 @@
 {
   "bateria": "fase 2 · bloque J (el contrato de versión, con el agente)",
-  "cuando": "2026-11-08T10:45:51.994Z",
+  "cuando": "2026-11-08T17:24:49.257Z",
   "modo": "con modelo",
   "modeloPedido": "grok-4.20-0309-non-reasoning",
   "motorPedido": "ai-sdk:openai",
@@ -9,8 +9,8 @@
   "iteracionesMax": 14,
   "repeticiones": 10,
   "advertencia": "El turno corre el bucle del framework en proceso, con el prompt de sistema del producto y sus acciones reales, pero ofreciendo de golpe todas las acciones alcanzables y sin `<current-screen>` ni las herramientas del framework. Vale como medida del contrato de las acciones bajo las reglas del producto, no de la interfaz.",
-  "total": 15,
-  "pasan": 10,
+  "total": 16,
+  "pasan": 12,
   "resultados": [
     {
       "id": "j0-version-al-empezar",
@@ -20,6 +20,18 @@
       "id": "j0-el-montaje-dejo-la-version-por-encima-de-la-inicial",
       "passed": true,
       "detail": 2
+    },
+    {
+      "id": "j0e-j9b-no-marca-una-negacion-honesta-como-contradiccion",
+      "passed": true,
+      "detail": {
+        "honestas": [
+          false,
+          false,
+          false
+        ],
+        "contradictoria": true
+      }
     },
     {
       "id": "j0d-el-texto-entregado-respeta-el-borrado-de-la-guarda",
@@ -49,7 +61,7 @@
     },
     {
       "id": "j-reglas-del-producto-caracteres",
-      "medicion": 6848
+      "medicion": 7455
     },
     {
       "id": "j-motor",
@@ -81,53 +93,53 @@
       "medicion": [
         {
           "pasada": 1,
-          "ms": 5924,
-          "llamadas": 5
-        },
-        {
-          "pasada": 2,
-          "ms": 5710,
-          "llamadas": 5
-        },
-        {
-          "pasada": 3,
-          "ms": 4850,
-          "llamadas": 5
-        },
-        {
-          "pasada": 4,
-          "ms": 3629,
+          "ms": 2497,
           "llamadas": 3
         },
         {
+          "pasada": 2,
+          "ms": 7463,
+          "llamadas": 8
+        },
+        {
+          "pasada": 3,
+          "ms": 1903,
+          "llamadas": 3
+        },
+        {
+          "pasada": 4,
+          "ms": 3945,
+          "llamadas": 5
+        },
+        {
           "pasada": 5,
-          "ms": 2344,
-          "llamadas": 2
+          "ms": 4109,
+          "llamadas": 4
         },
         {
           "pasada": 6,
-          "ms": 2303,
-          "llamadas": 2
+          "ms": 1888,
+          "llamadas": 3
         },
         {
           "pasada": 7,
-          "ms": 1961,
+          "ms": 1914,
           "llamadas": 3
         },
         {
           "pasada": 8,
-          "ms": 2026,
-          "llamadas": 2
+          "ms": 3230,
+          "llamadas": 4
         },
         {
           "pasada": 9,
-          "ms": 2044,
-          "llamadas": 2
+          "ms": 2305,
+          "llamadas": 3
         },
         {
           "pasada": 10,
-          "ms": 2112,
-          "llamadas": 2
+          "ms": 2034,
+          "llamadas": 3
         }
       ]
     },
@@ -137,7 +149,7 @@
       "detail": {
         "pasadas": 10,
         "arrancaron": 10,
-        "llamadas": 31,
+        "llamadas": 39,
         "fallos": []
       }
     },
@@ -146,18 +158,18 @@
       "medicion": [
         "agregar-linea",
         "obtener-plan",
-        "reajustar-plan"
+        "ver-contexto-consulta"
       ]
     },
     {
       "id": "j2-leyo-el-plan-antes-de-escribir",
-      "passed": false,
+      "passed": true,
       "detail": {
         "primeras": [
-          "agregar-linea",
           "obtener-plan",
-          "reajustar-plan",
-          "reajustar-plan"
+          "agregar-linea",
+          "agregar-linea",
+          "agregar-linea"
         ]
       }
     },
@@ -165,10 +177,10 @@
       "id": "j3-toda-escritura-llevo-versionEsperada",
       "passed": false,
       "detail": {
-        "cuantas": 3,
-        "de": 18,
+        "cuantas": 1,
+        "de": 24,
         "ejemplos": [
-          "reajustar-plan(cambios,explicacion,planId) → version_desactualizada"
+          "agregar-linea(lineas,planId) → version_desactualizada"
         ]
       }
     },
@@ -179,91 +191,85 @@
     },
     {
       "id": "j5-409-version_desactualizada",
-      "medicion": 11
+      "medicion": 1
     },
     {
       "id": "j5-tras-un-409-releyo-y-volvio-con-version",
       "passed": false,
       "detail": [
-        "pasada 1: tras el 409 → obtener-plan, reajustar-plan, reajustar-plan",
-        "pasada 1: tras el 409 → reajustar-plan, obtener-plan (con versión)",
-        "pasada 2: tras el 409 → obtener-plan, reajustar-plan, reajustar-plan",
-        "pasada 2: tras el 409 → reajustar-plan, obtener-plan (con versión)",
-        "pasada 3: tras el 409 → obtener-plan, reajustar-plan, reajustar-plan",
-        "pasada 3: tras el 409 → reajustar-plan, obtener-plan (con versión)",
-        "pasada 4: tras el 409 → obtener-plan, reajustar-plan (con versión)",
-        "pasada 5: tras el 409 → obtener-plan",
-        "pasada 6: tras el 409 → obtener-plan",
-        "pasada 8: tras el 409 → obtener-plan",
-        "pasada 10: tras el 409 → obtener-plan"
+        "pasada 4: tras el 409 → agregar-linea, obtener-plan, agregar-linea (con versión)"
       ]
     },
     {
       "id": "j5b-no-se-encadenaron-mas-de-dos-409",
       "passed": true,
-      "detail": 11
+      "detail": 1
     },
     {
       "id": "j8-por-pasada",
       "medicion": [
         {
           "pasada": 1,
-          "llamadas": 5,
-          "escrituras": 3,
+          "llamadas": 3,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada",
-            "version_desactualizada",
+            "invalid_input",
             "error"
           ]
         },
         {
           "pasada": 2,
-          "llamadas": 5,
-          "escrituras": 3,
+          "llamadas": 8,
+          "escrituras": 4,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada",
-            "version_desactualizada",
+            "invalid_input",
+            "error",
+            "error",
             "error"
           ]
         },
         {
           "pasada": 3,
-          "llamadas": 5,
-          "escrituras": 3,
+          "llamadas": 3,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada",
-            "version_desactualizada",
+            "invalid_input",
             "error"
           ]
         },
         {
           "pasada": 4,
-          "llamadas": 3,
-          "escrituras": 2,
-          "aplicadas": 1,
+          "llamadas": 5,
+          "escrituras": 4,
+          "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada"
+            "version_desactualizada",
+            "error",
+            "error",
+            "error"
           ]
         },
         {
           "pasada": 5,
-          "llamadas": 2,
-          "escrituras": 1,
+          "llamadas": 4,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada"
+            "invalid_input",
+            "error"
           ]
         },
         {
           "pasada": 6,
-          "llamadas": 2,
-          "escrituras": 1,
+          "llamadas": 3,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada"
+            "invalid_input",
+            "error"
           ]
         },
         {
@@ -278,29 +284,32 @@
         },
         {
           "pasada": 8,
-          "llamadas": 2,
-          "escrituras": 1,
+          "llamadas": 4,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada"
+            "invalid_input",
+            "error"
           ]
         },
         {
           "pasada": 9,
-          "llamadas": 2,
-          "escrituras": 1,
+          "llamadas": 3,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "invalid_input"
+            "invalid_input",
+            "error"
           ]
         },
         {
           "pasada": 10,
-          "llamadas": 2,
-          "escrituras": 1,
+          "llamadas": 3,
+          "escrituras": 2,
           "aplicadas": 0,
           "rechazos": [
-            "version_desactualizada"
+            "invalid_input",
+            "error"
           ]
         }
       ]
@@ -320,34 +329,19 @@
         "(sin mensaje)",
         "(sin mensaje)",
         "(sin mensaje)",
+        "(sin mensaje)",
+        "(sin mensaje)",
         "(sin mensaje)"
       ]
     },
     {
       "id": "j9-pasadas-que-dijeron-la-verdad-al-no-guardar",
-      "medicion": "8 de 10"
+      "medicion": "4 de 10"
     },
     {
       "id": "j9b-ninguna-respuesta-afirma-y-desmiente-a-la-vez",
-      "passed": false,
-      "detail": [
-        {
-          "pasada": 1,
-          "dijo": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado."
-        },
-        {
-          "pasada": 2,
-          "dijo": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado."
-        },
-        {
-          "pasada": 3,
-          "dijo": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado."
-        },
-        {
-          "pasada": 6,
-          "dijo": "No se guardó nada: la primera llamada a agregar-linea devolvió version_desactualizada. Leí el plan actualizado (versión 3) con 5 líneas, 0 bloqueos y "
-        }
-      ]
+      "passed": true,
+      "detail": "ninguna respuesta se contradice"
     },
     {
       "id": "j9-no-afirma-haber-guardado-lo-que-no-guardo",
@@ -356,18 +350,13 @@
     },
     {
       "id": "j6-los-dos-pendientes-pedidos-estan-en-el-plan",
-      "passed": true,
+      "passed": false,
       "detail": {
-        "puestos": [
-          "Control de presión en 72 h",
-          "Revisar adherencia en la próxima cita"
-        ],
+        "puestos": [],
         "textos": [
           "Paracetamol",
           "Control en una semana",
-          "Pendiente añadido en el montaje",
-          "Control de presión en 72 h",
-          "Revisar adherencia en la próxima cita"
+          "Pendiente añadido en el montaje"
         ]
       }
     },
@@ -376,423 +365,28 @@
       "passed": true,
       "detail": {
         "antes": 3,
-        "ahora": 5
+        "ahora": 3
       }
     },
     {
       "id": "j-version-al-terminar",
-      "medicion": 3
+      "medicion": 2
     }
   ],
   "pasadas": [
     {
       "pasada": 1,
-      "ms": 5924,
+      "ms": 2497,
       "fallo": null,
       "usage": {
-        "inputTokens": 42548,
-        "outputTokens": 392,
-        "cacheReadTokens": 25984,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 6,
-        "firstEngineEventAtMs": 1794134719934,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir control solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir revisión solicitada",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes. Plan verificado, 0 bloqueos, 0 advertencias, aprobación médica pendiente."
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir control solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir revisión solicitada",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes. Plan verificado, 0 bloqueos, 0 advertencias, aprobación médica pendiente.",
-            "versionEsperada": 2
-          },
-          "error": "error"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2"
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 2,
-      "ms": 5710,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 42458,
-        "outputTokens": 356,
-        "cacheReadTokens": 25856,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 6,
-        "firstEngineEventAtMs": 1794134725914,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir control solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir revisión solicitada",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes."
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir control solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir revisión solicitada",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes.",
-            "versionEsperada": 2
-          },
-          "error": "error"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2"
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 3,
-      "ms": 4850,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 42453,
-        "outputTokens": 354,
-        "cacheReadTokens": 33152,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 6,
-        "firstEngineEventAtMs": 1794134731489,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: reajustar-plan devolvió version_desactualizada. Leo el plan actualizado y confirmo el estado.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes."
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes.",
-            "versionEsperada": 2
-          },
-          "error": "error"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2"
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 4,
-      "ms": 3629,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 27355,
-        "outputTokens": 213,
-        "cacheReadTokens": 25600,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794134736061,
-        "usageReported": true
-      },
-      "respuesta": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Confirmación médica pendiente.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        },
-        {
-          "tool": "reajustar-plan",
-          "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "cambios": [
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Control de presión en 72 h"
-              },
-              {
-                "accion": "agregar",
-                "motivo": "Añadir pendiente solicitado",
-                "tipo": "pendiente",
-                "texto": "Revisar adherencia en la próxima cita"
-              }
-            ],
-            "explicacion": "Añadidos dos pendientes nuevos sin tocar líneas existentes. Plan verificado, sin bloqueos ni advertencias. Confirmación médica pendiente.",
-            "versionEsperada": 2
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 5,
-      "ms": 2344,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 27701,
-        "outputTokens": 93,
-        "cacheReadTokens": 13824,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794134739882,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: version_desactualizada. Releeré el plan antes de continuar.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 6,
-      "ms": 2303,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 19372,
-        "outputTokens": 104,
-        "cacheReadTokens": 13568,
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 13056,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
         "llmCalls": 3,
-        "firstEngineEventAtMs": 1794134742419,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: la primera llamada a agregar-linea devolvió version_desactualizada. Leí el plan actualizado (versión 3) con 5 líneas, 0 bloqueos y 0 advertencias; los dos pendientes ya figuran.",
-      "llamadas": [
-        {
-          "tool": "agregar-linea",
-          "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
-          },
-          "error": "version_desactualizada"
-        },
-        {
-          "tool": "obtener-plan",
-          "args": {
-            "planId": "demo-c2"
-          },
-          "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 7,
-      "ms": 1961,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 21644,
-        "outputTokens": 108,
-        "cacheReadTokens": 13568,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 3,
-        "firstEngineEventAtMs": 1794134744422,
+        "firstEngineEventAtMs": 1794158658885,
         "usageReported": true
       },
       "respuesta": null,
@@ -800,15 +394,15 @@
         {
           "tool": "obtener-plan",
           "args": {
-            "consultaId": "demo-c2"
+            "planId": "demo-c2"
           },
           "error": null
         },
         {
           "tool": "agregar-linea",
           "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "versionEsperada": 3,
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
             "origen": "agente"
           },
           "error": "invalid_input"
@@ -816,8 +410,8 @@
         {
           "tool": "agregar-linea",
           "args": {
-            "planId": "ed7d0535-0bd7-4348-9e17-99fcf4858ee2",
-            "versionEsperada": 3,
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
             "origen": "agente"
           },
           "error": "error"
@@ -825,31 +419,175 @@
       ]
     },
     {
-      "pasada": 8,
-      "ms": 2026,
+      "pasada": 2,
+      "ms": 7463,
       "fallo": null,
       "usage": {
-        "inputTokens": 27701,
-        "outputTokens": 93,
-        "cacheReadTokens": 27392,
+        "inputTokens": 61963,
+        "outputTokens": 279,
+        "cacheReadTokens": 54272,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794134746340,
+        "llmCalls": 9,
+        "firstEngineEventAtMs": 1794158661290,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: version_desactualizada. Releeré el plan antes de continuar.",
+      "respuesta": "No se guardó nada: agregar-linea devolvió error por bucle. Relee el plan y confirma el estado actual.",
+      "llamadas": [
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "demo-c2-plan",
+            "versionEsperada": 1,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2-plan"
+          },
+          "error": "not_found"
+        },
+        {
+          "tool": "ver-contexto-consulta",
+          "args": {
+            "consultaId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        },
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        }
+      ]
+    },
+    {
+      "pasada": 3,
+      "ms": 1903,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 13056,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 3,
+        "firstEngineEventAtMs": 1794158668287,
+        "usageReported": true
+      },
+      "respuesta": null,
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        }
+      ]
+    },
+    {
+      "pasada": 4,
+      "ms": 3945,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 36579,
+        "outputTokens": 201,
+        "cacheReadTokens": 32384,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 6,
+        "firstEngineEventAtMs": 1794158670772,
+        "usageReported": true
+      },
+      "respuesta": "No se guardó nada: agregar-linea devolvió version_desactualizada. Leo el plan actual y comunico el estado al médico.",
       "llamadas": [
         {
           "tool": "agregar-linea",
           "args": {
             "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ]
           },
           "error": "version_desactualizada"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "demo-c2",
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2
+          },
+          "error": "error"
         },
         {
           "tool": "obtener-plan",
@@ -857,25 +595,53 @@
             "planId": "demo-c2"
           },
           "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "demo-c2",
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Control de presión en 72 h"
+              }
+            ],
+            "versionEsperada": 2
+          },
+          "error": "error"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "demo-c2",
+            "lineas": [
+              {
+                "tipo": "pendiente",
+                "texto": "Revisar adherencia en la próxima cita"
+              }
+            ],
+            "versionEsperada": 2
+          },
+          "error": "error"
         }
       ]
     },
     {
-      "pasada": 9,
-      "ms": 2044,
+      "pasada": 5,
+      "ms": 4109,
       "fallo": null,
       "usage": {
-        "inputTokens": 27677,
-        "outputTokens": 87,
-        "cacheReadTokens": 19328,
+        "inputTokens": 33918,
+        "outputTokens": 137,
+        "cacheReadTokens": 19200,
         "cacheWriteTokens": 0,
         "engineName": "ai-sdk:openai",
         "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794134748293,
+        "llmCalls": 5,
+        "firstEngineEventAtMs": 1794158674403,
         "usageReported": true
       },
-      "respuesta": "No se guardó nada: invalid_input devolvió error. Leeré el plan actual antes de reintentar.",
+      "respuesta": "No se guardó nada: agregar-linea devolvió invalid_input. No añadí los pendientes porque falta la versión y el array correcto; releo y reajusto en el siguiente turno.",
       "llamadas": [
         {
           "tool": "agregar-linea",
@@ -892,35 +658,15 @@
             "planId": "demo-c2"
           },
           "error": null
-        }
-      ]
-    },
-    {
-      "pasada": 10,
-      "ms": 2112,
-      "fallo": null,
-      "usage": {
-        "inputTokens": 27701,
-        "outputTokens": 93,
-        "cacheReadTokens": 27392,
-        "cacheWriteTokens": 0,
-        "engineName": "ai-sdk:openai",
-        "model": "grok-4.20-0309-non-reasoning",
-        "llmCalls": 4,
-        "firstEngineEventAtMs": 1794134750429,
-        "usageReported": true
-      },
-      "respuesta": "No se guardó nada: version_desactualizada. Releeré el plan antes de continuar.",
-      "llamadas": [
+        },
         {
           "tool": "agregar-linea",
           "args": {
-            "planId": "demo-c2",
-            "tipo": "pendiente",
-            "texto": "Control de presión en 72 h",
-            "versionEsperada": 1
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
           },
-          "error": "version_desactualizada"
+          "error": "error"
         },
         {
           "tool": "obtener-plan",
@@ -928,6 +674,233 @@
             "planId": "demo-c2"
           },
           "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 6,
+      "ms": 1888,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 14592,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 3,
+        "firstEngineEventAtMs": 1794158678367,
+        "usageReported": true
+      },
+      "respuesta": null,
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        }
+      ]
+    },
+    {
+      "pasada": 7,
+      "ms": 1914,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 14592,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 3,
+        "firstEngineEventAtMs": 1794158680227,
+        "usageReported": true
+      },
+      "respuesta": null,
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        }
+      ]
+    },
+    {
+      "pasada": 8,
+      "ms": 3230,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 33918,
+        "outputTokens": 135,
+        "cacheReadTokens": 28032,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 5,
+        "firstEngineEventAtMs": 1794158682268,
+        "usageReported": true
+      },
+      "respuesta": "No se guardó nada: agregar-linea devolvió invalid_input. No añadí los pendientes porque falta la versión y el array correcto; releeré y reajustaré.",
+      "llamadas": [
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "demo-c2",
+            "versionEsperada": 1,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        },
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        }
+      ]
+    },
+    {
+      "pasada": 9,
+      "ms": 2305,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 20224,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 3,
+        "firstEngineEventAtMs": 1794158685395,
+        "usageReported": true
+      },
+      "respuesta": null,
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
+        }
+      ]
+    },
+    {
+      "pasada": 10,
+      "ms": 2034,
+      "fallo": null,
+      "usage": {
+        "inputTokens": 20350,
+        "outputTokens": 102,
+        "cacheReadTokens": 20224,
+        "cacheWriteTokens": 0,
+        "engineName": "ai-sdk:openai",
+        "model": "grok-4.20-0309-non-reasoning",
+        "llmCalls": 3,
+        "firstEngineEventAtMs": 1794158687690,
+        "usageReported": true
+      },
+      "respuesta": null,
+      "llamadas": [
+        {
+          "tool": "obtener-plan",
+          "args": {
+            "planId": "demo-c2"
+          },
+          "error": null
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "invalid_input"
+        },
+        {
+          "tool": "agregar-linea",
+          "args": {
+            "planId": "490d9a34-f0ac-4ead-ba05-c059868b7ba0",
+            "versionEsperada": 2,
+            "origen": "agente"
+          },
+          "error": "error"
         }
       ]
     }
