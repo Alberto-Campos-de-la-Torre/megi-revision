@@ -37,9 +37,21 @@ export default createAgentChatPlugin({
    * cierto por construcción. La decisión mira los recibos, no lo que el modelo
    * dice que hizo. El prompt pide lo mismo, pero una petición no es una
    * garantía: medido con un modelo real, fallaba en 5 de 10 turnos.
+   *
+   * Y la cara complementaria: si el médico pidió un cambio y el turno acaba sin
+   * ninguna escritura —prometiéndolo o sin decir nada—, se devuelve el turno
+   * con la instrucción de hacerlo ahora. El framework vuelve al bucle con las
+   * herramientas puestas, así que la continuación es real.
    */
-  finalResponseGuard: ({ text, toolResults, receipts }) =>
-    revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
+  finalResponseGuard: ({ text, requestText, toolResults, receipts }) =>
+    revisaRespuestaFinal({
+      texto: text,
+      // La petición del médico decide si faltaba un cambio: con una pregunta
+      // clínica, acabar sin escribir es lo correcto y la guarda no se mete.
+      peticion: requestText,
+      resultados: toolResults,
+      recibos: receipts ?? [],
+    }),
   /**
    * Lo que el agente puede alcanzar, por lista de permitidos.
    *
@@ -86,7 +98,7 @@ Nunca mandes \`lineas\` vacío ni un plan sin fármacos cuando la nota propone f
 
 Reglas que no se negocian:
 - Antes de editar usa la versión y el alcance vigentes de <current-screen> o view-screen; si faltan, lee obtener-plan. Siempre manda versionEsperada, respeta alcanceAgente y las líneas fijadas. Una selección visual por sí sola no cambia los permisos. Si recibes fuera_de_alcance o version_desactualizada, no reintentes con otros transportes ni omitas la versión; explica y relee.
-- UNA llamada por intención, no por línea. Dos o más cambios en el mismo turno van juntos en reajustar-plan, con un cambio por línea nueva (accion=\"agregar\"); agregar-linea es para un cambio suelto. La PRIMERA lectura del turno no se salta nunca: sin la versión y el alcance vigentes no puedes escribir, y escribir a ciegas se rechaza. Lo que no hace falta es releer ENTRE dos escrituras del mismo turno: cada escritura te devuelve en su respuesta la versión que deja el plan y el recuento de líneas, bloqueos y advertencias; usa esos para el cambio siguiente y para resumir.\n- historial-plan permite comparar versiones y leer autores/motivos; no es una autorización para restaurar ni sobrescribir.
+- UNA llamada por intención, no por línea. Varias líneas nuevas van juntas en UNA llamada a agregar-linea con el array \`lineas\`; si además hay que quitar, editar o reemplazar, todo junto en reajustar-plan. Llamar una vez por línea gasta la versión en la primera y las siguientes se rechazan. La PRIMERA lectura del turno no se salta nunca: sin la versión y el alcance vigentes no puedes escribir, y escribir a ciegas se rechaza. Lo que no hace falta es releer ENTRE dos escrituras del mismo turno: cada escritura te devuelve en su respuesta la versión que deja el plan y el recuento de líneas, bloqueos y advertencias; usa esos para el cambio siguiente y para resumir.\n- historial-plan permite comparar versiones y leer autores/motivos; no es una autorización para restaurar ni sobrescribir.
 - La medicación histórica sin_confirmar no es medicación confirmada ni ausencia. Solo el médico la concilia desde la pantalla.
 - Distingue datos de la nota, alertas del verificador y tu propuesta. Nunca presentes tu explicación como una fuente ni digas que un fármaco es clínicamente seguro por no tener alertas.
 - Lee el contexto antes de proponer. Si alergiasRegistradas=false y el médico aún no respondió en este hilo, DEBES llamar ask-question antes de proponer: question="¿Confirmas que no tiene alergias conocidas?", header="Alergias", options='[{"label":"Sí"},{"label":"No"},{"label":"No sé"}]', allowMultiple="false", allowFreeText="true". Es una decisión clínica faltante, no una confirmación rutinaria. La herramienta termina el turno. Con No pregunta cuáles y espera; con No sé conserva la incertidumbre explícita. Nunca inventes alergias ni conviertas la respuesta en un dato del expediente.

@@ -7,7 +7,13 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { afirmaUnCambio, huboEscritura, revisaRespuestaFinal } from "./guardia-respuesta.js";
+import {
+  afirmaUnCambio,
+  huboEscritura,
+  pidioUnCambio,
+  prometeUnCambio,
+  revisaRespuestaFinal,
+} from "./guardia-respuesta.js";
 
 const escrituraBuena = [{ name: "agregar-linea", isError: false }];
 const escrituraRechazada = [{ name: "agregar-linea", isError: true }];
@@ -105,5 +111,131 @@ describe("revisaRespuestaFinal", () => {
     const r = revisaRespuestaFinal({ texto: "Plan guardado: 5 líneas.", resultados: soloLecturas })!;
     expect(r.fallbackMessage).not.toMatch(/\d+\s+(líneas|bloqueos|advertencias)/);
     expect(afirmaUnCambio(r.fallbackMessage)).toBe(false);
+  });
+});
+
+/**
+ * El turno que acaba sin hacer el trabajo (propuesta 6).
+ *
+ * No miente sobre el pasado —la primera regla no lo ve—, pero el médico pidió
+ * algo, le dijeron que sí y el tablero está igual. Las frases son las que dio un
+ * modelo real.
+ */
+describe("prometeUnCambio", () => {
+  it("reconoce la promesa en futuro y en perífrasis", () => {
+    for (const t of [
+      "Voy a añadir el control de tensión arterial en 7 días.",
+      "Procedo a actualizar la línea de paracetamol.",
+      "Añadiré el pendiente de radiografía.",
+      "Lo hago ahora y te confirmo.",
+      "Enseguida lo preparo.",
+    ]) expect(prometeUnCambio(t)).toBe(true);
+  });
+  it("no confunde el pasado con la promesa", () => {
+    expect(prometeUnCambio("Añadido el control de tensión arterial.")).toBe(false);
+  });
+  it("una promesa que ya avisa del fallo no es una promesa incumplida", () => {
+    expect(prometeUnCambio("Voy a intentarlo otra vez: falló con version_desactualizada.")).toBe(false);
+  });
+});
+
+describe("pidioUnCambio", () => {
+  it("reconoce la petición de cambio del médico", () => {
+    for (const t of [
+      "Añade un control de tensión arterial en 7 días.",
+      "Quita el naproxeno.",
+      "Prepara la receta y los pendientes de la consulta demo-c2.",
+      "Necesito que ajustes la dosis.",
+      "Ponle paracetamol cada 8 horas.",
+    ]) expect(pidioUnCambio(t)).toBe(true);
+  });
+  it("una pregunta clínica no es una petición de cambio", () => {
+    for (const t of [
+      "¿Qué alergias tiene este paciente?",
+      "¿Por qué propusiste el ibuprofeno?",
+      "Resúmeme la nota de la consulta.",
+      undefined,
+    ]) expect(pidioUnCambio(t)).toBe(false);
+  });
+});
+
+describe("revisaRespuestaFinal · el trabajo sin hacer", () => {
+  const peticion = "Añade un control de tensión arterial en 7 días.";
+
+  it("devuelve el turno cuando promete el cambio y no lo hace", () => {
+    const c = revisaRespuestaFinal({
+      texto: "Voy a añadir el control de tensión arterial en 7 días.",
+      peticion,
+      resultados: soloLecturas,
+    });
+    expect(c?.retryMessage).toMatch(/Hazlo AHORA/);
+    expect(c?.fallbackMessage).toMatch(/No he hecho el cambio/);
+  });
+
+  it("y también cuando ni lo intenta ni dice nada", () => {
+    const c = revisaRespuestaFinal({ texto: "De acuerdo, entendido.", peticion, resultados: [] });
+    expect(c).not.toBeNull();
+  });
+
+  it("tras un rechazo, el mensaje enseña el remedio en vez de repetir", () => {
+    const c = revisaRespuestaFinal({
+      texto: "Voy a intentarlo de nuevo.",
+      peticion,
+      resultados: [{ name: "agregar-linea", isError: true }],
+    });
+    expect(c?.retryMessage).toMatch(/relee el plan con obtener-plan/);
+  });
+
+  it("calla si el agente le preguntó algo al médico", () => {
+    // Esperar respuesta es lo correcto; insistir aquí sería empujar al agente a
+    // escribir sin la respuesta que acaba de pedir.
+    expect(
+      revisaRespuestaFinal({
+        texto: "¿Confirmas que no es alérgica a penicilina antes de añadirlo?",
+        peticion,
+        resultados: [{ name: "ask-question" }],
+      }),
+    ).toBeNull();
+  });
+
+  it("calla si la respuesta ya dice qué falló", () => {
+    expect(
+      revisaRespuestaFinal({
+        texto: "No se guardó nada: agregar-linea devolvió version_desactualizada. Releo el plan.",
+        peticion,
+        resultados: [{ name: "agregar-linea", isError: true }],
+      }),
+    ).toBeNull();
+  });
+
+  it("calla si el médico solo preguntó", () => {
+    expect(
+      revisaRespuestaFinal({
+        texto: "Tiene hipertensión arterial y toma losartán 50 mg.",
+        peticion: "¿Qué toma este paciente?",
+        resultados: soloLecturas,
+      }),
+    ).toBeNull();
+  });
+
+  it("calla si la escritura sí entró", () => {
+    expect(
+      revisaRespuestaFinal({
+        texto: "Voy a dejarlo así salvo que me digas otra cosa.",
+        peticion,
+        resultados: escrituraBuena,
+      }),
+    ).toBeNull();
+  });
+
+  it("la mentira sobre el pasado sigue teniendo prioridad", () => {
+    // Afirma y promete a la vez: lo grave es lo que el médico puede comprobar
+    // en el tablero, así que gana la primera regla.
+    const c = revisaRespuestaFinal({
+      texto: "Plan guardado: 5 líneas. Voy a añadir el control después.",
+      peticion,
+      resultados: soloLecturas,
+    });
+    expect(c?.retryMessage).toMatch(/SUSTITUYE tu respuesta entera/);
   });
 });

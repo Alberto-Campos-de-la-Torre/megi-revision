@@ -138,6 +138,55 @@ export const lineaInputSchema = z.object({
 });
 export type LineaInput = z.infer<typeof lineaInputSchema>;
 
+/**
+ * Las líneas que pide una llamada a `agregar-linea`: varias en `lineas`, o una
+ * sola en los campos sueltos de siempre.
+ *
+ * Por qué acepta las dos formas. Medido con un modelo real: cuando el médico
+ * pedía dos pendientes, el agente llamaba a `agregar-linea` una vez por línea,
+ * gastaba la versión en la primera y la segunda salía rechazada con
+ * `version_desactualizada`; el turno acababa con la mitad del trabajo hecho.
+ * Devolver la versión nueva en el recibo lo arregló a medias —el modelo tenía
+ * que encadenar bien dos llamadas—, y pedirlo por prompt es una petición, no
+ * una garantía. Con `lineas`, la forma natural de la herramienta hace lo
+ * correcto: una llamada, una transacción, una versión y UNA verificación del
+ * conjunto, que además es la clínicamente honesta —dos fármacos que
+ * interaccionan entre sí solo se ven mirando el resultado completo—.
+ *
+ * Devuelve `null` si no hay nada utilizable, para que quien llama responda con
+ * su propio código de error en vez de lanzar aquí.
+ */
+export function lineasAAgregar(args: {
+  // Con `exactOptionalPropertyTypes` hay que admitir `undefined` a la cara: los
+  // argumentos de una acción llegan así cuando el modelo omite un campo.
+  lineas?: readonly LineaInput[] | undefined;
+  tipo?: LineaInput["tipo"] | undefined;
+  texto?: string | undefined;
+  dosis?: string | undefined;
+  frecuencia?: string | undefined;
+  duracion?: string | undefined;
+  justificacion?: string | undefined;
+}): LineaInput[] | null {
+  type Suelta = { [K in keyof LineaInput]?: LineaInput[K] | undefined };
+  const completa = (l: Suelta): LineaInput | null =>
+    l.tipo && typeof l.texto === "string" && l.texto.trim()
+      ? {
+          tipo: l.tipo,
+          texto: l.texto,
+          dosis: l.dosis ?? "",
+          frecuencia: l.frecuencia ?? "",
+          duracion: l.duracion ?? "",
+          justificacion: l.justificacion ?? "",
+        }
+      : null;
+  if (args.lineas?.length) {
+    const lista = args.lineas.map(completa).filter((l): l is LineaInput => l !== null);
+    return lista.length === args.lineas.length ? lista : null;
+  }
+  const sola = completa(args);
+  return sola ? [sola] : null;
+}
+
 export const lineaOutputSchema = z.object({
   id: z.string(),
   planId: z.string(),

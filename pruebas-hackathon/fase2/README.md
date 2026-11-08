@@ -67,6 +67,28 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 >
 > Solo afecta al agente: la interfaz llama a las acciones por HTTP con la sesión
 > del médico y sigue viendo todas las suyas, lo que comprueba la propia batería.
+>
+> **Y las otras dos de la lista, también medidas.** `agregar-linea` acepta ahora
+> `lineas`: varias líneas en UNA llamada, UNA transacción, UNA versión y UNA
+> verificación del conjunto —que además es la clínicamente honesta, porque dos
+> fármacos que interaccionan entre sí solo se ven mirando el plan completo—.
+> Medido con el motor falso: tres pendientes entran de golpe y el plan pasa de
+> la versión 1 a la **2**, no a la 4, que es lo que costaban tres llamadas con
+> dos rechazos de versión en medio.
+>
+> Y la guarda de la respuesta final tiene una segunda regla para la cara
+> complementaria de la mentira: el turno que **promete** el cambio sin hacerlo.
+> No miente sobre el pasado, así que la primera regla no lo veía, pero el médico
+> pidió algo, le contestaron que sí y el tablero está igual. Si no entró ninguna
+> escritura, el médico pedía un cambio, el agente no le preguntó nada y la
+> respuesta no dice qué falló, la guarda devuelve el turno con la instrucción de
+> hacerlo ahora; el framework vuelve al bucle con las herramientas puestas, así
+> que la continuación es real. Medido con el motor falso (`--escenario promesa`):
+> el modelo promete, la guarda devuelve el turno, la llamada entra, la línea
+> queda en el plan y **lo que el médico lee es «Añadido el control de tensión
+> arterial en 7 días»**, no la promesa. Trece pruebas unitarias nuevas fijan
+> cuándo NO debe dispararse: si el agente preguntó algo, si la respuesta ya dice
+> qué falló, si el médico solo preguntó, o si la escritura sí entró.
 
 La fase 1 llamó a las acciones **como funciones**, con un `ctx` escrito a mano. Eso prueba
 las reglas, pero no prueba quién puede llamarlas: `ctx.caller` lo decide el transporte, y
@@ -131,6 +153,10 @@ node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario men
 #     nombres exactos que la lista de permitidos cerró.
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda
 
+#     Varias líneas en una sola llamada, y el turno que promete sin hacer:
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario varias
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario promesa
+
 #     Y con el modelo de verdad, por el endpoint del chat:
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor grok --pedir-clave
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --arnes   # solo el analizador
@@ -178,7 +204,9 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 | `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | **17/17** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario mentira` · la guarda | — | **11/11** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda` · el recorte, por donde se rodea | — | **13/13** |
-| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **54 pruebas** |
+| `fase2/interfaz-y-modelo.mts --motor falso --escenario varias` · tres líneas en una llamada | — | **14/14** |
+| `fase2/interfaz-y-modelo.mts --motor falso --escenario promesa` · el turno que promete sin hacer | — | **15/15** |
+| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **73 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |
 | `typecheck` · `doctor` · `build` | limpios | **limpios** |

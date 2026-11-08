@@ -29,7 +29,7 @@ export type MotorFalso = {
   url: string;
   puerto: number;
   /** Cada petición que llegó: útil para ver qué herramientas se le ofrecieron. */
-  peticiones: Array<{ modelo: string; herramientas: string[]; mensajes: number; conResultado: boolean }>;
+  peticiones: Array<{ modelo: string; herramientas: string[]; mensajes: number; conResultado: boolean; conGuarda: boolean; roles: string[] }>;
   cierra: () => Promise<void>;
 };
 
@@ -45,13 +45,39 @@ const trozo = (delta: unknown, finish: string | null, modelo: string) =>
 /**
  * El paso del guion que toca.
  *
- * Se decide por lo que trae la conversación, no por un contador: el framework
- * puede reintentar un turno, y un contador haría que el reintento recibiera el
- * paso siguiente y el guion se desordenara sin que se note.
+ * Se decide por la conversación, no por un contador de peticiones: el framework
+ * puede reintentar una llamada, y un contador haría que el reintento recibiera
+ * el paso siguiente y el guion se desordenara sin que se note.
+ *
+ * Avanza con tres cosas: cada petición nueva del médico, cada resultado de
+ * herramienta y cada corrección de la guarda de la respuesta final. Las tres
+ * hacen falta, y lo sé porque me faltaba la primera: en el segundo turno de un
+ * hilo, el historial que llega al proveedor **no trae** la llamada ni el
+ * resultado del turno anterior —solo `system user assistant user`—, así que
+ * contar resultados dejaba el guion en el paso cero y el modelo falso volvía a
+ * crear un plan que ya existía (`plan_existente`).
  */
-export function pasoDelGuion(guion: Guion, mensajes: Array<{ role?: string }>): Guion[number] {
+export function pasoDelGuion(
+  guion: Guion,
+  mensajes: Array<{ role?: string; content?: unknown }>,
+): Guion[number] {
+  const esGuarda = (m: { role?: string; content?: unknown }) =>
+    m?.role === "user" && textoDelMensaje(m.content).includes("<response-guard>");
+  const peticiones = mensajes.filter((m) => m?.role === "user" && !esGuarda(m)).length;
   const resultados = mensajes.filter((m) => m?.role === "tool").length;
-  return guion[Math.min(resultados, guion.length - 1)]!;
+  const guardas = mensajes.filter(esGuarda).length;
+  const paso = Math.max(0, peticiones - 1) + resultados + guardas;
+  return guion[Math.min(paso, guion.length - 1)]!;
+}
+
+/** El contenido de un mensaje puede ser texto o trozos; aquí se aplana. */
+function textoDelMensaje(contenido: unknown): string {
+  if (typeof contenido === "string") return contenido;
+  if (Array.isArray(contenido))
+    return contenido
+      .map((c) => (c && typeof c === "object" && typeof (c as any).text === "string" ? (c as any).text : ""))
+      .join(" ");
+  return "";
 }
 
 export async function arrancaMotorFalso(opciones: { guion: Guion; puerto?: number } ): Promise<MotorFalso> {
@@ -73,13 +99,23 @@ export async function arrancaMotorFalso(opciones: { guion: Guion; puerto?: numbe
     req.on("end", () => {
       let cuerpo: any = {};
       try { cuerpo = JSON.parse(crudo || "{}"); } catch { return responde(400, { error: { message: "cuerpo ilegible" } }); }
-      const mensajes: Array<{ role?: string }> = Array.isArray(cuerpo.messages) ? cuerpo.messages : [];
+      const mensajes: Array<{ role?: string; content?: unknown }> = Array.isArray(cuerpo.messages) ? cuerpo.messages : [];
       const modelo = String(cuerpo.model ?? "falso");
       peticiones.push({
         modelo,
         herramientas: (Array.isArray(cuerpo.tools) ? cuerpo.tools : []).map((t: any) => t?.function?.name).filter((n: unknown): n is string => typeof n === "string"),
         mensajes: mensajes.length,
         conResultado: mensajes.some((m) => m?.role === "tool"),
+        // La guarda de la respuesta final devolvió el turno antes de esta
+        // petición: se ve porque el framework empuja `<response-guard>`.
+        // La forma de la conversación tal como llega: sirve para entender por
+        // qué el guion está en el paso que está, que es donde me equivoqué.
+        roles: mensajes.map((m: any) =>
+          `${m?.role ?? "?"}${Array.isArray(m?.tool_calls) && m.tool_calls.length ? "+llamada" : ""}`,
+        ),
+        conGuarda: mensajes.some(
+          (m) => m?.role === "user" && textoDelMensaje((m as any).content).includes("<response-guard>"),
+        ),
       });
       const paso = pasoDelGuion(opciones.guion, mensajes);
       const esLlamada = "herramienta" in paso;

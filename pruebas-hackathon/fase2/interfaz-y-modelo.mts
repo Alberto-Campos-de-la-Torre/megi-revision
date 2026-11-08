@@ -54,7 +54,10 @@
  *                          `mentira` (afirma haber guardado sin llamar a nada,
  *                          para comprobar la guarda de la respuesta final) o
  *                          `busqueda` (pide por `tool-search` lo que el alcance
- *                          del agente cerró, para ver si se puede rodear)
+ *                          del agente cerró, para ver si se puede rodear),
+ *                          `varias` (tres líneas en una sola llamada) o
+ *                          `promesa` (promete el cambio sin hacerlo, para ver
+ *                          si la guarda devuelve el turno y acaba entrando)
  *   --modelo <id>          modelo concreto
  *   --pedir-clave          pide la clave por teclado, sin eco
  *   --clave-archivo <f>    lee la clave de la primera línea de un archivo
@@ -75,7 +78,7 @@ import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { arrancaMotorFalso, type Guion, type MotorFalso } from "./motor-falso.mts";
+import { arrancaMotorFalso, pasoDelGuion, type Guion, type MotorFalso } from "./motor-falso.mts";
 
 // ─────────────────────────────── argumentos ───────────────────────────────
 const argv = process.argv.slice(2);
@@ -522,6 +525,65 @@ const GUIONES: Record<string, Guion> = {
     },
     { texto: "Plan guardado. Pendiente de confirmación médica." },
   ],
+  // Varias líneas en UNA llamada (propuesta 4). Dos turnos: el primero crea el
+  // plan —proponer-plan termina el turno— y el segundo añade tres líneas de
+  // golpe, que es lo que antes costaba tres llamadas y dos rechazos.
+  varias: [
+    {
+      herramienta: "proponer-plan",
+      argumentos: {
+        consultaId: CONSULTA,
+        explicacion: "Guion del motor falso: plan inicial con dos líneas.",
+        lineas: [
+          { tipo: "farmaco", texto: "Paracetamol", dosis: "1 g", frecuencia: "cada 8 h", duracion: "5 días", justificacion: "Dolor lumbar mecánico." },
+          { tipo: "pendiente", texto: "Reposo relativo 48 h" },
+        ],
+      },
+    },
+    {
+      herramienta: "agregar-linea",
+      argumentos: {
+        planId: CONSULTA,
+        versionEsperada: 1,
+        lineas: [
+          { tipo: "pendiente", texto: "Control de tensión arterial en 7 días", justificacion: "Control de HTA." },
+          { tipo: "pendiente", texto: "Química sanguínea", justificacion: "Valoración metabólica." },
+          { tipo: "pendiente", texto: "Examen general de orina", justificacion: "Descartar afección renal." },
+        ],
+      },
+    },
+    { texto: "Listo." },
+  ],
+
+  // El turno que promete y no hace (propuesta 6). El primer paso crea el plan;
+  // el segundo PROMETE el cambio sin llamar a nada; la guarda devuelve el turno
+  // y el tercer paso ya hace la llamada. Mide que la continuación es real.
+  promesa: [
+    {
+      herramienta: "proponer-plan",
+      argumentos: {
+        consultaId: CONSULTA,
+        explicacion: "Guion del motor falso: plan inicial con dos líneas.",
+        lineas: [
+          { tipo: "farmaco", texto: "Paracetamol", dosis: "1 g", frecuencia: "cada 8 h", duracion: "5 días", justificacion: "Dolor lumbar mecánico." },
+          { tipo: "pendiente", texto: "Reposo relativo 48 h" },
+        ],
+      },
+    },
+    { texto: "Voy a añadir el control de tensión arterial en 7 días." },
+    {
+      herramienta: "agregar-linea",
+      argumentos: {
+        planId: CONSULTA,
+        versionEsperada: 1,
+        tipo: "pendiente",
+        texto: "Control de tensión arterial en 7 días",
+        justificacion: "Control de HTA.",
+      },
+    },
+    { texto: "Añadido el control de tensión arterial en 7 días." },
+  ],
+
   // Pedir por nombre exacto lo que la lista de permitidos cerró: si el recorte
   // funciona, `tool-search` no puede traerlas, y eso es lo que mide el guion.
   busqueda: [
@@ -723,6 +785,19 @@ function arnes() {
   caso("un fallo del producto no se disfraza de credencial",
     !veredictoDelTurno([{ type: "error", error: "linea_bloqueada", errorCode: "linea_bloqueada" }]).credencial);
 
+  // Dónde está el guion del motor falso. El caso que me faltaba: en el segundo
+  // turno de un hilo, el historial no trae la llamada del turno anterior.
+  const guionito: Guion = [{ herramienta: "proponer-plan", argumentos: {} }, { herramienta: "agregar-linea", argumentos: {} }, { texto: "listo" }];
+  const u = (text: string) => ({ role: "user", content: text });
+  caso("primer turno: paso cero",
+    (pasoDelGuion(guionito, [{ role: "system" }, u("prepara")]) as any).herramienta === "proponer-plan");
+  caso("segundo turno del hilo: avanza aunque el historial no traiga la llamada",
+    (pasoDelGuion(guionito, [{ role: "system" }, u("prepara"), { role: "assistant" }, u("añade")]) as any).herramienta === "agregar-linea");
+  caso("tras el resultado de la herramienta: el texto final",
+    (pasoDelGuion(guionito, [{ role: "system" }, u("prepara"), { role: "assistant" }, u("añade"), { role: "assistant" }, { role: "tool" }]) as any).texto === "listo");
+  caso("la corrección de la guarda también avanza el guion",
+    (pasoDelGuion(guionito, [{ role: "system" }, u("prepara"), u("<response-guard>\nhazlo ahora")]) as any).herramienta === "agregar-linea");
+
   caso("la clave se tapa en texto", tapa("Bearer xai-secretísima-1234", ["xai-secretísima-1234"]) === "Bearer «clave tapada»");
   caso("la clave se tapa dentro de un objeto", JSON.stringify(tapa({ h: { auth: "xai-secretísima-1234" } }, ["xai-secretísima-1234"])).includes("«clave tapada»"));
   caso("un valor corto no se trata como clave", tapa("abc", ["abc"]) === "abc");
@@ -807,8 +882,8 @@ async function chequeaInterfaz() {
  * como JSON o como flujo; se guarda tal cual y se leen los eventos del turno,
  * porque lo que importa es el recibo, no la prosa.
  */
-async function turnoPorElChat(mensaje: string) {
-  const threadId = crypto.randomUUID();
+async function turnoPorElChat(mensaje: string, hilo?: string) {
+  const threadId = hilo ?? crypto.randomUUID();
   const t0 = Date.now();
   const r = await pide("/_agent-native/agent-chat", { method: "POST", body: JSON.stringify({ message: mensaje, threadId }) });
   const ms = Date.now() - t0;
@@ -824,6 +899,15 @@ async function turnoPorElChat(mensaje: string) {
   return { threadId, status: r.status, tipo, ms, eventos, texto: r.texto };
 }
 
+/**
+ * Escenarios que necesitan dos turnos: el primero crea el plan —`proponer-plan`
+ * termina el turno por diseño— y el segundo es el que se mide.
+ */
+const SEGUNDO_TURNO: Record<string, string> = {
+  varias: "Añade tres pendientes: control de tensión arterial en 7 días, química sanguínea y examen general de orina.",
+  promesa: "Añade un control de tensión arterial en 7 días.",
+};
+
 async function chequeaModelo() {
   mide("m0-motor-y-clave", { motor: MOTOR, modelo: MODELO ?? null, baseUrl: entornoDelModelo.OPENAI_BASE_URL ?? null, fuenteClave });
 
@@ -834,7 +918,18 @@ async function chequeaModelo() {
     { configured: estado.cuerpo?.configured, chatEligible: estado.cuerpo?.chatEligible, openAiBaseUrlConfigured: estado.cuerpo?.openAiBaseUrlConfigured });
 
   // m2 · un turno real, el del vídeo: crear el plan de la consulta.
-  const turno = await turnoPorElChat(`Prepara la receta y los pendientes de la consulta ${CONSULTA}.`);
+  const hilo = crypto.randomUUID();
+  if (SEGUNDO_TURNO[ESCENARIO]) {
+    const previo = await turnoPorElChat(`Prepara la receta y los pendientes de la consulta ${CONSULTA}.`, hilo);
+    const creado = llamadasDe(previo.eventos).filter((l) => l.tool === "proponer-plan" && l.conRecibo);
+    anota("m1b-el-primer-turno-dejo-el-plan-creado", creado.length === 1,
+      { status: previo.status, llamadas: herramientasDe(previo.eventos) });
+    if (creado.length !== 1) return previo;
+  }
+  const turno = await turnoPorElChat(
+    SEGUNDO_TURNO[ESCENARIO] ?? `Prepara la receta y los pendientes de la consulta ${CONSULTA}.`,
+    hilo,
+  );
   mide("m2-el-turno-respondio", { status: turno.status, contentType: turno.tipo, ms: turno.ms, eventos: turno.eventos.length, bytes: turno.texto.length });
   const veredicto = veredictoDelTurno(turno.eventos);
   anota("m2-el-turno-completo", turno.status >= 200 && turno.status < 300 && veredicto.completo,
@@ -843,6 +938,46 @@ async function chequeaModelo() {
     nota(veredicto.credencial
       ? `el proveedor rechazó la petición (${veredicto.errorCode ?? "sin código"}): revisa la clave, el modelo pedido (${MODELO ?? "sin modelo"}) y ${entornoDelModelo.OPENAI_BASE_URL ?? "la URL del motor"}. Se detiene aquí para no gastar más llamadas.`
       : `el turno murió con ${veredicto.errorCode ?? "sin código"}; lo que sigue no se afirma sin turno.`);
+    return turno;
+  }
+
+  // Propuesta 4 · varias líneas en una sola llamada y una sola versión.
+  if (ESCENARIO === "varias" && motorFalso) {
+    const llamadas = llamadasDe(turno.eventos);
+    const escrituras = llamadas.filter((l) => ESCRITURAS_DEL_PLAN.has(l.tool));
+    mide("m9-llamadas-del-segundo-turno", llamadas.map((l) => ({ tool: l.tool, recibo: l.conRecibo, errorCode: l.errorCode })));
+    anota("m9-tres-lineas-en-UNA-escritura",
+      escrituras.length === 1 && escrituras[0]!.tool === "agregar-linea" && escrituras[0]!.conRecibo,
+      { escrituras: escrituras.map((l) => l.tool), rechazos: escrituras.filter((l) => l.fallo).map((l) => l.errorCode) });
+    const plan = await lee("obtener-plan", { planId: CONSULTA });
+    const lineas: any[] = plan.cuerpo?.lineas ?? plan.cuerpo?.plan?.lineas ?? [];
+    anota("m9b-las-tres-lineas-estan-en-el-plan",
+      plan.status === 200 && lineas.length === 5 && plan.cuerpo?.plan?.version === 2,
+      { lineas: lineas.length, version: plan.cuerpo?.plan?.version ?? null, textos: lineas.map((l) => l.texto) });
+    // Una sola versión para las tres: es lo que evitaba los rechazos en cadena.
+    anota("m9c-una-sola-version-para-las-tres",
+      plan.cuerpo?.plan?.version === 2,
+      { version: plan.cuerpo?.plan?.version ?? null, nota: "crear dejó la 1; las tres líneas dejan la 2, no la 4" });
+    return turno;
+  }
+
+  // Propuesta 6 · el turno que promete y, devuelto por la guarda, lo hace.
+  if (ESCENARIO === "promesa" && motorFalso) {
+    const llamadas = llamadasDe(turno.eventos);
+    const entregado = textoFinalDe(turno.eventos);
+    const guardas = motorFalso.peticiones.filter((p) => p.conGuarda).length;
+    mide("m10-el-turno-tras-la-promesa", { llamadas: llamadas.map((l) => l.tool), guardas, entregado });
+    anota("m10-la-guarda-devolvio-el-turno", guardas >= 1, { guardas });
+    anota("m10b-el-cambio-acabo-entrando",
+      llamadas.some((l) => l.tool === "agregar-linea" && l.conRecibo),
+      { llamadas: llamadas.map((l) => ({ tool: l.tool, recibo: l.conRecibo })) });
+    anota("m10c-el-medico-no-se-queda-con-la-promesa",
+      !/voy a a[ñn]adir/i.test(entregado), { entregado });
+    const plan = await lee("obtener-plan", { planId: CONSULTA });
+    const lineas: any[] = plan.cuerpo?.lineas ?? plan.cuerpo?.plan?.lineas ?? [];
+    anota("m10d-la-linea-prometida-esta-en-el-plan",
+      lineas.some((l) => /tensi[óo]n arterial/i.test(l.texto ?? "")),
+      { lineas: lineas.map((l) => l.texto), version: plan.cuerpo?.plan?.version ?? null });
     return turno;
   }
 
@@ -981,6 +1116,10 @@ async function main() {
       consulta: CONSULTA,
       node: process.versions.node,
       resultados,
+      // Lo que el motor falso vio llegar: el catálogo ofrecido y la forma de la
+      // conversación en cada paso. Sin esto, un guion que avanza mal parece un
+      // fallo del producto.
+      peticionesAlMotorFalso: motorFalso?.peticiones ?? null,
       turno: turno ? { threadId: turno.threadId, status: turno.status, contentType: turno.tipo, ms: turno.ms, eventos: turno.eventos, texto: turno.texto.slice(0, 200_000) } : null,
       logServidor: logServidor.slice(-20_000),
     });

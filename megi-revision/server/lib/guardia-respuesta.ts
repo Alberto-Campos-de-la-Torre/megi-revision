@@ -14,6 +14,16 @@
  * devuelve para que lo corrija; si insiste, el framework entrega el
  * `fallbackMessage`, que es cierto por construcción. La decisión no mira lo que
  * el modelo dice que hizo, sino los recibos.
+ *
+ * Y la cara complementaria del mismo problema: un turno que acaba PROMETIENDO
+ * el cambio —«voy a añadir el control de tensión»— sin haberlo hecho. No miente
+ * sobre el pasado, así que la primera regla no lo ve, pero para el médico el
+ * efecto es el mismo: pidió algo, le contestaron que sí, y el tablero está
+ * igual. Medido con un modelo real: pasaba en 1 de cada 10 turnos. Cuando el
+ * médico pidió un cambio y el turno termina sin ninguna escritura, sin haberle
+ * preguntado nada y sin decir qué falló, la guarda devuelve el turno con una
+ * instrucción: hazlo ahora. El framework vuelve al bucle con las herramientas
+ * puestas, así que la continuación es real y no una petición más de prompt.
  */
 
 /** Acciones que escriben en el plan y por tanto dejan recibo. */
@@ -28,6 +38,8 @@ export const ESCRITURAS_DEL_PLAN = new Set([
   "resolver-sugerencia",
   "sugerir-reemplazo",
 ]);
+
+export type ResultadoDeHerramienta = { name: string; isError?: boolean };
 
 /** Dice que algo quedó hecho, o da un recuento del plan. */
 // `\b` de JavaScript no sirve aquí: se apoya en [A-Za-z0-9_], así que «Añadí»
@@ -68,7 +80,48 @@ export function afirmaUnCambio(texto: string): boolean {
   return AFIRMA.test(texto) && !NIEGA.test(texto);
 }
 
-export type ResultadoDeHerramienta = { name: string; isError?: boolean };
+/**
+ * Anuncia el cambio como algo pendiente de hacer. Enumeradas, no por raíz:
+ * «añadido» es pasado y lo ve `AFIRMA`; «añadiré» es una promesa.
+ */
+const PROMETE = new RegExp(
+  [
+    `${LIM_I}(voy|vamos) a${LIM_F}`,
+    `${LIM_I}(proced[oe]|proceder[ée]|proceder[ée]mos)${LIM_F}`,
+    `${LIM_I}(a[ñn]adir[ée]|agregar[ée]|actualizar[ée]|guardar[ée]|preparar[ée]|propondr[ée]|reajustar[ée]|har[ée])${LIM_F}`,
+    `${LIM_I}lo (a[ñn]ado|agrego|hago|actualizo|preparo|guardo) (ahora|en seguida|enseguida|ya)${LIM_F}`,
+    `${LIM_I}(en seguida|enseguida|ahora mismo|a continuaci[óo]n)${LIM_F}`,
+    `${LIM_I}(d[ée]jame|dame un momento|permíteme)${LIM_F}`,
+  ].join("|"),
+  "iu",
+);
+export const prometeUnCambio = (texto: string) => PROMETE.test(texto) && !NIEGA.test(texto);
+
+/**
+ * ¿Lo que pidió el médico era un cambio en el plan?
+ *
+ * Sin esto la regla se dispararía con una pregunta clínica —«¿qué tiene este
+ * paciente?»—, donde terminar sin escribir es exactamente lo correcto. Se mira
+ * la petición del médico, no la respuesta del modelo.
+ */
+const PIDE_CAMBIO = new RegExp(
+  [
+    `${LIM_I}(a[ñn]ade|a[ñn]adir|a[ñn][áa]dele|agrega|agregar|ag[ré]galo)${LIM_F}`,
+    `${LIM_I}(quita|quitar|elimina|eliminar|borra|borrar)${LIM_F}`,
+    `${LIM_I}(cambia|cambiar|ajusta|ajustar|actualiza|actualizar|corrige|corregir)${LIM_F}`,
+    `${LIM_I}(sustituye|sustituir|reemplaza|reemplazar|cambi[áa]selo)${LIM_F}`,
+    `${LIM_I}(pon|poner|p[óo]nle|sube|subir|baja|bajar)${LIM_F}`,
+    `${LIM_I}(prepara|preparar|propon|prop[óo]n|proponer|crea|crear|reajusta|reajustar|guarda|guardar|aplica|aplicar|apl[íi]calo|h[áa]zlo)${LIM_F}`,
+    `${LIM_I}necesito que${LIM_F}`,
+  ].join("|"),
+  "iu",
+);
+export const pidioUnCambio = (peticion: string | undefined) => PIDE_CAMBIO.test(peticion ?? "");
+
+/** Si el agente le preguntó algo al médico, acabar sin escribir es correcto. */
+const PREGUNTAS = new Set(["ask-question"]);
+export const huboPregunta = (resultados: readonly ResultadoDeHerramienta[] = []) =>
+  resultados.some((r) => PREGUNTAS.has(r.name) && r.isError !== true);
 
 /** ¿Hubo alguna escritura del plan que de verdad entrara en este turno? */
 export function huboEscritura(
@@ -91,13 +144,15 @@ export type Correccion = {
  */
 export function revisaRespuestaFinal(ctx: {
   texto: string;
+  /** Lo que pidió el médico en este turno; decide si faltaba un cambio. */
+  peticion?: string | undefined;
   resultados?: readonly ResultadoDeHerramienta[];
   recibos?: readonly { tool?: string }[];
 }): Correccion | null {
   const texto = (ctx.texto ?? "").trim();
   if (!texto) return null; // sin texto no hay nada que corregir
   if (huboEscritura(ctx.resultados, ctx.recibos)) return null;
-  if (!afirmaUnCambio(texto)) return null;
+  if (!afirmaUnCambio(texto)) return trabajoSinHacer(ctx, texto);
   const rechazos = (ctx.resultados ?? [])
     .filter((r) => ESCRITURAS_DEL_PLAN.has(r.name) && r.isError === true)
     .map((r) => r.name);
@@ -117,6 +172,48 @@ export function revisaRespuestaFinal(ctx: {
     fallbackMessage:
       "No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: " +
       "revisa el plan y vuelve a pedirme el cambio.",
+    maxRetries: 1,
+  };
+}
+
+/**
+ * Segunda regla: el turno acaba sin el cambio que el médico pidió.
+ *
+ * Solo se dispara cuando las cuatro cosas se cumplen a la vez: no entró ninguna
+ * escritura, el médico pidió un cambio o el borrador lo promete, el agente no le
+ * preguntó nada —si preguntó, esperar es lo correcto— y el borrador no dice ya
+ * que algo falló. Con cualquiera de ellas fuera, callar es lo correcto y la
+ * guarda no se mete.
+ */
+function trabajoSinHacer(
+  ctx: { peticion?: string | undefined; resultados?: readonly ResultadoDeHerramienta[] },
+  texto: string,
+): Correccion | null {
+  if (huboPregunta(ctx.resultados)) return null;
+  if (NIEGA.test(texto)) return null;
+  const promete = prometeUnCambio(texto);
+  if (!promete && !pidioUnCambio(ctx.peticion)) return null;
+  const rechazadas = [
+    ...new Set(
+      (ctx.resultados ?? [])
+        .filter((r) => ESCRITURAS_DEL_PLAN.has(r.name) && r.isError === true)
+        .map((r) => r.name),
+    ),
+  ];
+  return {
+    retryMessage:
+      "En este turno NO entró ninguna escritura en el plan y el médico pedía un cambio. " +
+      (promete
+        ? "Tu borrador anuncia que lo vas a hacer; para el médico eso es un sí, y el tablero está igual. "
+        : "Tu borrador no lo hace ni dice qué lo impidió. ") +
+      (rechazadas.length
+        ? `Ya lo intentaste y ${rechazadas.join(", ")} fue rechazada: relee el plan con obtener-plan, toma \`plan.version\` y vuelve a llamar con esa versionEsperada. `
+        : "Hazlo AHORA, en este mismo turno: llama a la acción que corresponda con el planId y la versionEsperada vigente. Si hay varias líneas, mándalas juntas en UNA llamada. ") +
+      "No describas lo que vas a hacer: hazlo y responde con las cifras del recibo. " +
+      "Si de verdad no puedes, di exactamente qué lo impide, con el código que devolvió la herramienta copiado literal.",
+    fallbackMessage:
+      "No he hecho el cambio que me pediste: este turno terminó sin ninguna escritura en el plan, " +
+      "así que el tablero sigue como estaba. Vuelve a pedírmelo y lo aplico.",
     maxRetries: 1,
   };
 }

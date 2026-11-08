@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import {
   exigirMedico,
   lineaInputSchema,
+  lineasAAgregar,
   limpiaControles,
   MAX_LINEAS,
   normalizaNombre,
@@ -129,5 +130,55 @@ describe("el esquema de una línea", () => {
 describe("el techo de líneas por plan", () => {
   it("está declarado y es holgado pero finito", () => {
     expect(MAX_LINEAS).toBe(400);
+  });
+});
+
+/**
+ * Varias líneas en una llamada (propuesta 4).
+ *
+ * El caso que lo motivó, medido con un modelo real: el médico pedía dos
+ * pendientes, el agente llamaba una vez por línea, gastaba la versión en la
+ * primera y la segunda salía rechazada. La forma natural de la herramienta
+ * tiene que hacer lo correcto.
+ */
+describe("lineasAAgregar", () => {
+  const farmaco = { tipo: "farmaco" as const, texto: "Paracetamol", dosis: "1 g", frecuencia: "cada 8 h", duracion: "5 días", justificacion: "Dolor." };
+
+  it("una línea en los campos sueltos sigue valiendo", () => {
+    const r = lineasAAgregar(farmaco);
+    expect(r).toHaveLength(1);
+    expect(r![0]!.texto).toBe("Paracetamol");
+  });
+
+  it("varias líneas llegan en orden y completas", () => {
+    const r = lineasAAgregar({
+      lineas: [farmaco, { tipo: "pendiente", texto: "Control de TA en 7 días", dosis: "", frecuencia: "", duracion: "", justificacion: "" }],
+    });
+    expect(r?.map((l) => l.texto)).toEqual(["Paracetamol", "Control de TA en 7 días"]);
+  });
+
+  it("los campos opcionales de una línea se rellenan vacíos, no undefined", () => {
+    // La inserción hace `.trim()` sobre dosis, frecuencia y duración: si llegan
+    // sin definir, la escritura revienta con un error del motor en vez de un
+    // código del producto.
+    const r = lineasAAgregar({ lineas: [{ tipo: "pendiente", texto: "Radiografía" } as never] });
+    expect(r![0]).toMatchObject({ dosis: "", frecuencia: "", duracion: "", justificacion: "" });
+  });
+
+  it("`lineas` manda sobre los campos sueltos, sin mezclar", () => {
+    const r = lineasAAgregar({ ...farmaco, lineas: [{ tipo: "pendiente", texto: "Solo esta" } as never] });
+    expect(r?.map((l) => l.texto)).toEqual(["Solo esta"]);
+  });
+
+  it("una línea sin texto invalida la llamada entera", () => {
+    // Nada a medias: o entran todas o responde `invalid_input`. Un plan con la
+    // mitad de lo pedido y un recibo que dice otra cosa es peor que un fallo.
+    expect(lineasAAgregar({ lineas: [farmaco, { tipo: "pendiente", texto: "   " } as never] })).toBeNull();
+  });
+
+  it("sin líneas y sin campos no hay nada que añadir", () => {
+    expect(lineasAAgregar({})).toBeNull();
+    expect(lineasAAgregar({ lineas: [] })).toBeNull();
+    expect(lineasAAgregar({ tipo: "farmaco" })).toBeNull();
   });
 });

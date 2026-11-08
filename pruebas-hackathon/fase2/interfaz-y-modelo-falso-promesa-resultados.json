@@ -1,0 +1,524 @@
+{
+  "cuando": "2026-11-08T08:57:08.427Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": "ai-sdk:openai",
+  "modelo": null,
+  "fuenteClave": "el motor falso (promesa)",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "clave": "el motor falso (promesa)"
+      }
+    },
+    {
+      "id": "m0-motor-y-clave",
+      "medicion": {
+        "motor": "ai-sdk:openai",
+        "modelo": null,
+        "baseUrl": "http://127.0.0.1:35989/v1",
+        "fuenteClave": "el motor falso (promesa)"
+      }
+    },
+    {
+      "id": "m1-el-producto-ve-el-motor-conectado",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "openAiBaseUrlConfigured": true
+      }
+    },
+    {
+      "id": "m1b-el-primer-turno-dejo-el-plan-creado",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "llamadas": [
+          "proponer-plan"
+        ]
+      }
+    },
+    {
+      "id": "m2-el-turno-respondio",
+      "medicion": {
+        "status": 200,
+        "contentType": "text/event-stream",
+        "ms": 327,
+        "eventos": 23,
+        "bytes": 7409
+      }
+    },
+    {
+      "id": "m2-el-turno-completo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "ms": 327,
+        "errorCode": null,
+        "mensaje": null
+      }
+    },
+    {
+      "id": "m10-el-turno-tras-la-promesa",
+      "medicion": {
+        "llamadas": [
+          "agregar-linea"
+        ],
+        "guardas": 2,
+        "entregado": "Añadido el control de tensión arterial en 7 días."
+      }
+    },
+    {
+      "id": "m10-la-guarda-devolvio-el-turno",
+      "passed": true,
+      "detail": {
+        "guardas": 2
+      }
+    },
+    {
+      "id": "m10b-el-cambio-acabo-entrando",
+      "passed": true,
+      "detail": {
+        "llamadas": [
+          {
+            "tool": "agregar-linea",
+            "recibo": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "m10c-el-medico-no-se-queda-con-la-promesa",
+      "passed": true,
+      "detail": {
+        "entregado": "Añadido el control de tensión arterial en 7 días."
+      }
+    },
+    {
+      "id": "m10d-la-linea-prometida-esta-en-el-plan",
+      "passed": true,
+      "detail": {
+        "lineas": [
+          "Paracetamol",
+          "Reposo relativo 48 h",
+          "Control de tensión arterial en 7 días"
+        ],
+        "version": 2
+      }
+    }
+  ],
+  "peticionesAlMotorFalso": [
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 2,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 4,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 6,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "conGuarda": true
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 9,
+      "conResultado": true,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant",
+        "user",
+        "assistant+llamada",
+        "tool",
+        "tool"
+      ],
+      "conGuarda": true
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups"
+      ],
+      "mensajes": 4,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "conGuarda": false
+    }
+  ],
+  "turno": {
+    "threadId": "4c8e0197-6f7c-430a-a67d-7ea1d68c33b9",
+    "status": 200,
+    "contentType": "text/event-stream",
+    "ms": 327,
+    "eventos": [
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794128228154-43lz6g:starting-agent",
+        "label": "Starting agent",
+        "seq": 0,
+        "eventId": "run-1794128228154-43lz6g:0"
+      },
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794128228154-43lz6g:contacting-model",
+        "label": "Contacting model",
+        "seq": 1,
+        "eventId": "run-1794128228154-43lz6g:1"
+      },
+      {
+        "type": "suggestions",
+        "suggestions": [],
+        "seq": 2,
+        "eventId": "run-1794128228154-43lz6g:2"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 3,
+        "eventId": "run-1794128228154-43lz6g:3"
+      },
+      {
+        "type": "text",
+        "text": "Voy a añadir el control de tensión arterial en 7 días.",
+        "seq": 4,
+        "eventId": "run-1794128228154-43lz6g:4"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 5,
+        "eventId": "run-1794128228154-43lz6g:5"
+      },
+      {
+        "type": "clear",
+        "seq": 6,
+        "eventId": "run-1794128228154-43lz6g:6"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 7,
+        "eventId": "run-1794128228154-43lz6g:7"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "seq": 8,
+        "eventId": "run-1794128228154-43lz6g:8"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing agregar-linea action",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "seq": 9,
+        "eventId": "run-1794128228154-43lz6g:9"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "text": "{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"}",
+        "seq": 10,
+        "eventId": "run-1794128228154-43lz6g:10"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 11,
+        "eventId": "run-1794128228154-43lz6g:11"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_3",
+        "executionStepId": "model-step:07ffedcafa34b332dd07e9f93bfd8ab2963c772c96f347543edf5d8fe4274f83",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "tipo": "pendiente",
+          "texto": "Control de tensión arterial en 7 días",
+          "justificacion": "Control de HTA."
+        },
+        "seq": 12,
+        "eventId": "run-1794128228154-43lz6g:12"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "tipo": "pendiente",
+          "texto": "Control de tensión arterial en 7 días",
+          "justificacion": "Control de HTA."
+        },
+        "result": "{\n  \"id\": \"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\",\n  \"ids\": [\n    \"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\",\n    \"planId\": \"75c856a5-5768-4ce9-8958-031771caa704\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de tensión arterial en 7 días\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T08:57:08.272Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\",\n      \"planId\": \"75c856a5-5768-4ce9-8958-031771caa704\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de tensión arterial en 7 días\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T08:57:08.272Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 3\n  },\n  \"message\": \"Añadida Control de tensión arterial en 7 días (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}",
+        "completedSideEffect": true,
+        "argumentsHash": "f2e50f159677108b33bdc55d759f225885e4b532eb34137d8f003e0e582d415d",
+        "executionStepId": "model-step:07ffedcafa34b332dd07e9f93bfd8ab2963c772c96f347543edf5d8fe4274f83",
+        "approvalPause": false,
+        "seq": 13,
+        "eventId": "run-1794128228154-43lz6g:13"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "tipo": "pendiente",
+          "texto": "Control de tensión arterial en 7 días",
+          "justificacion": "Control de HTA."
+        },
+        "seq": 14,
+        "eventId": "run-1794128228154-43lz6g:14"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "tipo": "pendiente",
+          "texto": "Control de tensión arterial en 7 días",
+          "justificacion": "Control de HTA."
+        },
+        "result": "Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"}. Expected: { tipo?: \"farmaco\"|\"pendiente\", texto?: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string, lineas?: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada?: integer, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.",
+        "isError": true,
+        "completedSideEffect": false,
+        "errorClass": "input_invalid",
+        "approvalPause": false,
+        "seq": 15,
+        "eventId": "run-1794128228154-43lz6g:15"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 16,
+        "eventId": "run-1794128228154-43lz6g:16"
+      },
+      {
+        "type": "text",
+        "text": "Añadido el control de tensión arterial en 7 días.",
+        "seq": 17,
+        "eventId": "run-1794128228154-43lz6g:17"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 18,
+        "eventId": "run-1794128228154-43lz6g:18"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 19,
+        "eventId": "run-1794128228154-43lz6g:19"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 20,
+        "eventId": "run-1794128228154-43lz6g:20"
+      },
+      {
+        "type": "rich_event",
+        "event": {
+          "namespace": "agent-native.follow-up-suggestions",
+          "name": "generation_failed",
+          "version": 1,
+          "data": {
+            "code": "invalid_or_missing",
+            "runId": "run-1794128228154-43lz6g"
+          }
+        },
+        "seq": 21,
+        "eventId": "run-1794128228154-43lz6g:21"
+      },
+      {
+        "type": "done",
+        "seq": 22,
+        "eventId": "run-1794128228154-43lz6g:22"
+      }
+    ],
+    "texto": ": ping 1794128228168\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794128228154-43lz6g:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794128228154-43lz6g:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794128228154-43lz6g:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794128228154-43lz6g:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794128228154-43lz6g:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794128228154-43lz6g:3\"}\n\ndata: {\"type\":\"text\",\"text\":\"Voy a añadir el control de tensión arterial en 7 días.\",\"seq\":4,\"eventId\":\"run-1794128228154-43lz6g:4\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":5,\"eventId\":\"run-1794128228154-43lz6g:5\"}\n\ndata: {\"type\":\"clear\",\"seq\":6,\"eventId\":\"run-1794128228154-43lz6g:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":7,\"eventId\":\"run-1794128228154-43lz6g:7\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"seq\":8,\"eventId\":\"run-1794128228154-43lz6g:8\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing agregar-linea action\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"seq\":9,\"eventId\":\"run-1794128228154-43lz6g:9\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"text\":\"{\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}\",\"seq\":10,\"eventId\":\"run-1794128228154-43lz6g:10\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":11,\"eventId\":\"run-1794128228154-43lz6g:11\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_3\",\"executionStepId\":\"model-step:07ffedcafa34b332dd07e9f93bfd8ab2963c772c96f347543edf5d8fe4274f83\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},\"seq\":12,\"eventId\":\"run-1794128228154-43lz6g:12\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},\"result\":\"{\\n  \\\"id\\\": \\\"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\\\",\\n  \\\"ids\\\": [\\n    \\\"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\\\"\\n  ],\\n  \\\"version\\\": 2,\\n  \\\"linea\\\": {\\n    \\\"id\\\": \\\"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\\\",\\n    \\\"planId\\\": \\\"75c856a5-5768-4ce9-8958-031771caa704\\\",\\n    \\\"tipo\\\": \\\"pendiente\\\",\\n    \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n    \\\"dosis\\\": \\\"\\\",\\n    \\\"frecuencia\\\": \\\"\\\",\\n    \\\"duracion\\\": \\\"\\\",\\n    \\\"estado\\\": \\\"propuesta\\\",\\n    \\\"verificacion\\\": \\\"pendiente\\\",\\n    \\\"motivoVerificacion\\\": null,\\n    \\\"alternativas\\\": [],\\n    \\\"origen\\\": \\\"agente\\\",\\n    \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n    \\\"fuentes\\\": [\\n      {\\n        \\\"tipo\\\": \\\"sin_respaldo\\\",\\n        \\\"referencia\\\": \\\"demo-c2\\\",\\n        \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n        \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n      }\\n    ],\\n    \\\"orden\\\": 2,\\n    \\\"updatedAt\\\": \\\"2026-11-08T08:57:08.272Z\\\"\\n  },\\n  \\\"lineas\\\": [\\n    {\\n      \\\"id\\\": \\\"c18d45f1-0c27-4c58-b8f8-1e6b995a6730\\\",\\n      \\\"planId\\\": \\\"75c856a5-5768-4ce9-8958-031771caa704\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 2,\\n      \\\"updatedAt\\\": \\\"2026-11-08T08:57:08.272Z\\\"\\n    }\\n  ],\\n  \\\"resumen\\\": {\\n    \\\"bloqueos\\\": 0,\\n    \\\"advertencias\\\": 0,\\n    \\\"bloqueadas\\\": 0,\\n    \\\"vigentes\\\": 3\\n  },\\n  \\\"message\\\": \\\"Añadida Control de tensión arterial en 7 días (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\\\"\\n}\",\"completedSideEffect\":true,\"argumentsHash\":\"f2e50f159677108b33bdc55d759f225885e4b532eb34137d8f003e0e582d415d\",\"executionStepId\":\"model-step:07ffedcafa34b332dd07e9f93bfd8ab2963c772c96f347543edf5d8fe4274f83\",\"approvalPause\":false,\"seq\":13,\"eventId\":\"run-1794128228154-43lz6g:13\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},\"seq\":14,\"eventId\":\"run-1794128228154-43lz6g:14\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},\"result\":\"Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}. Expected: { tipo?: \\\"farmaco\\\"|\\\"pendiente\\\", texto?: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string, lineas?: array<{ tipo*: \\\"farmaco\\\"|\\\"pendiente\\\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada?: integer, planId*: string, origen?: \\\"agente\\\"|\\\"medico\\\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.\",\"isError\":true,\"completedSideEffect\":false,\"errorClass\":\"input_invalid\",\"approvalPause\":false,\"seq\":15,\"eventId\":\"run-1794128228154-43lz6g:15\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":16,\"eventId\":\"run-1794128228154-43lz6g:16\"}\n\ndata: {\"type\":\"text\",\"text\":\"Añadido el control de tensión arterial en 7 días.\",\"seq\":17,\"eventId\":\"run-1794128228154-43lz6g:17\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":18,\"eventId\":\"run-1794128228154-43lz6g:18\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":19,\"eventId\":\"run-1794128228154-43lz6g:19\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":20,\"eventId\":\"run-1794128228154-43lz6g:20\"}\n\ndata: {\"type\":\"rich_event\",\"event\":{\"namespace\":\"agent-native.follow-up-suggestions\",\"name\":\"generation_failed\",\"version\":1,\"data\":{\"code\":\"invalid_or_missing\",\"runId\":\"run-1794128228154-43lz6g\"}},\"seq\":21,\"eventId\":\"run-1794128228154-43lz6g:21\"}\n\ndata: {\"type\":\"done\",\"seq\":22,\"eventId\":\"run-1794128228154-43lz6g:22\"}\n\n"
+  },
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 558 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+}
