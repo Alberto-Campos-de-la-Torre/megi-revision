@@ -349,6 +349,25 @@ export function llamadasDe(eventos: unknown[]): Llamada[] {
       }
       continue;
     }
+    // El modelo entrega los argumentos por partes: el bucle emite varios eventos
+    // de apertura para la MISMA llamada, los primeros con los argumentos a medias
+    // o vacíos y el último completo. Medido con un modelo real: cada llamada
+    // aparecía cuatro veces y las tres primeras, sin `versionEsperada`, se
+    // contaban como escrituras que omitían la versión. Eran fragmentos de una
+    // sola llamada que sí la llevaba.
+    const previa = salida[salida.length - 1];
+    const esFragmentoDeLaPrevia =
+      previa &&
+      previa.tool === tool &&
+      !previa.cerrada &&
+      previa.error === null &&
+      Object.keys(args).length >= Object.keys(previa.args).length &&
+      Object.entries(previa.args).every(([k, v]) => JSON.stringify(args[k]) === JSON.stringify(v));
+    if (esFragmentoDeLaPrevia) {
+      previa.args = args;         // se queda el fragmento más completo
+      previa.crudo.push(e);
+      continue;
+    }
     salida.push({ tool, args, error: m?.[1] ?? (esError ? "error" : null), cerrada: false, crudo: [e] });
   }
   return salida;
@@ -592,6 +611,9 @@ try {
   // abajo saben leer lo que el bucle emite.
   {
     const fabricado = [
+      // Los tres primeros son fragmentos de UNA llamada: así llega del modelo.
+      { type: "tool_start", tool: "obtener-plan", input: {} },
+      { type: "tool_start", tool: "obtener-plan", input: {} },
       { type: "tool_start", tool: "obtener-plan", input: { consultaId: CONSULTA } },
       { type: "tool_done", tool: "obtener-plan", result: { ok: true } },
       { type: "tool_start", tool: "agregar-linea", input: { planId: "p", tipo: "pendiente", texto: "x" } },
@@ -747,6 +769,24 @@ try {
       anota("j5-tras-un-409-releyo-y-volvio-con-version", bien, detalle);
       anota("j5b-no-se-encadenaron-mas-de-dos-409", desactualizadas.length <= 2 * pasadas.length, desactualizadas.length);
     }
+
+    // Cuántas pasadas llegaron a terminar. j6 mira el estado final, que es
+    // acumulado: con que una pasada haga el trabajo, queda en verde. Esto
+    // enseña la tasa, que es lo que importa de una conducta que varía.
+    const porPasada = pasadas.map((p) => {
+      const l = p.llamadas as Llamada[];
+      const esc = l.filter((x) => ESCRITURAS.has(x.tool));
+      return {
+        pasada: p.pasada,
+        llamadas: l.length,
+        escrituras: esc.length,
+        aplicadas: esc.filter((x) => !x.error).length,
+        rechazos: esc.filter((x) => x.error).map((x) => x.error),
+      };
+    });
+    mide("j8-por-pasada", porPasada);
+    const completas = porPasada.filter((x) => x.aplicadas >= 2).length;
+    mide("j8-pasadas-que-aplicaron-los-dos-pendientes", `${completas} de ${porPasada.length}`);
 
     // Lo que de verdad importa: el cambio pedido está en el plan y lo anterior sigue.
     await abreBase();
