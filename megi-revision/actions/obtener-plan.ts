@@ -37,9 +37,18 @@ export default defineAction({
     url: buildDeepLink({ view: "revision", to: `/revision/${encodeURIComponent(result.plan.consultaId)}`, params: { consultaId: result.plan.consultaId } }),
     label: "Abrir plan",
   }),
-  run: async ({ planId, consultaId }, ctx) => enPeticionMegi(async () => {
+  run: async ({ planId, consultaId: consultaPedida }, ctx) => enPeticionMegi(async () => {
+    let consultaId = consultaPedida;
     const email = requireEmail(ctx);
     let id = planId;
+    // El id de la consulta en el campo `planId` no es un callejón sin salida.
+    // Medido con un modelo real: en 6 de 10 turnos el agente manda
+    // `{"planId": "demo-c2"}` y recibía un 404 que le costaba dos llamadas más
+    // remontar. Los dos campos aceptan lo mismo, así que si el valor no tiene
+    // forma de id de plan se prueba como consulta antes de rendirse. Un id de
+    // plan que no existe sigue dando 404.
+    const formaDePlan = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (id && !formaDePlan.test(id)) { consultaId = consultaId ?? id; id = undefined; }
     if (!id) {
       if (!consultaId) fail("Indica planId o consultaId.", { errorCode: "invalid_input" });
       // El plan se guarda con el id lógico; aceptar también el id real de MEGI.

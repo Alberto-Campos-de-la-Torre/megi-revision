@@ -9,7 +9,9 @@
  * versión en cada escritura, si se recupera de un 409 releyendo en vez de
  * reintentar a ciegas, si respeta las decisiones que son del médico y —lo más
  * grave si falla— si NO le dice al médico que el plan quedó guardado cuando no
- * se guardó nada (j9).
+ * se guardó nada (j9). El turno corre con la MISMA guarda de respuesta final
+ * que el chat del producto (`server/lib/guardia-respuesta.ts`), para medir lo
+ * que el médico vería de verdad y no una versión sin frenos.
  *
  * Nada de esto se puede medir con un mock: hace falta un modelo. Por eso esta
  * prueba se separa de las otras cuatro de la fase 2, que no gastan nada.
@@ -557,6 +559,11 @@ function capturaRegistro() {
   };
 }
 
+/** La guarda del producto, tal cual, desde su módulo. */
+const { revisaRespuestaFinal } = (await import(
+  new URL("server/lib/guardia-respuesta.ts", APP).href
+)) as { revisaRespuestaFinal: (c: any) => any };
+
 async function turnoDelAgente(mensaje: string) {
   const f = await cargaBucle();
   const acciones = await accionesDeLaApp();
@@ -578,6 +585,10 @@ async function turnoDelAgente(mensaje: string) {
         messages: [{ role: "user", content: [{ type: "text", text: mensaje }] }],
         signal: new AbortController().signal,
         ownerEmail: CORREO, orgId: null,
+        // La misma guarda que el chat del producto, cargada de su propio módulo
+        // para que esto mida lo que corre en producción y no una copia.
+        finalResponseGuard: ({ text, toolResults, receipts }: any) =>
+          revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
         maxIterations: Number(ITERACIONES),
         send(e: any) { eventos.push(e); if (e?.type === "text") responseText += e.text ?? ""; },
       }),

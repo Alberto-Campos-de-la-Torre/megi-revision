@@ -1,12 +1,12 @@
 {
   "bateria": "fase 2 · bloque HTTP (superficie real de la app)",
-  "cuando": "2026-11-08T04:17:26.680Z",
+  "cuando": "2026-11-08T05:14:15.418Z",
   "app": "/tmp/claude-1000/-home-ttech-main-canvas-megi-ia/e4b95dcb-9d3e-41cc-b0fd-e3085803c082/scratchpad/envio/repo/megi-revision",
   "base": "http://127.0.0.1:8186",
   "megi": "http://127.0.0.1:8020",
   "siembra": "Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
   "node": "v22.22.2",
-  "appCommit": "9953513",
+  "appCommit": "9a349ba",
   "segundos": 14,
   "total": 49,
   "pasan": 49,
@@ -33,7 +33,7 @@
     "siembra: Demo sembrada: usuario demo_medico · 4 pacientes · 4 consultas a revisar · 2 previas · 13 fármacos · 6 interacciones",
     "en `agent-native dev` el HTML lo sirve Vite y no pasa por el middleware de nitro: le faltan x-content-type-options, referrer-policy, cross-origin-opener-policy. En producción el middleware sí va montado sobre nitro, pero `agent-native start` no arranca con PGlite (503 DEPLOY_SETTINGS_REQUIRED), así que no se pudo medir."
   ],
-  "registro": "/tmp/fase2-zCa0aT/dev-server.log",
+  "registro": "/tmp/fase2-OAvefq/dev-server.log",
   "checks": [
     {
       "id": "pre-megi-de-demo-en-pie",
@@ -118,7 +118,7 @@
     {
       "id": "b3-propuesta-creada-y-verificada",
       "pasa": true,
-      "detalle": "plan 13e9fb58-6c91-4d72-ba99-7596f36e80f4 · bloqueos 0 advertencias 1"
+      "detalle": "plan cfc3907d-47bb-4fe1-a783-fe9ab931bbad · bloqueos 0 advertencias 1"
     },
     {
       "id": "b4-el-aine-sale-marcado-con-motivo",
@@ -203,7 +203,7 @@
     {
       "id": "c1-dos-propuestas-a-la-vez-dejan-un-plan",
       "pasa": true,
-      "detalle": "ok 1 · plan_existente 1 · plan fa9beb82-7ef5-44a8-9be5-a5a6c987b7b8"
+      "detalle": "ok 1 · plan_existente 1 · plan 1385317e-e205-4330-b7fc-ee71d8d9e7ca"
     },
     {
       "id": "c2-dos-cambios-a-la-vez-dejan-un-estado-valido",

@@ -5,6 +5,7 @@ import {
 } from "@agent-native/core/server";
 
 import actionsRegistry from "../../.generated/actions-registry.js";
+import { revisaRespuestaFinal } from "../lib/guardia-respuesta.js";
 
 const INITIAL_TOOL_NAMES = [
   "docs-search",
@@ -28,6 +29,16 @@ export default createAgentChatPlugin({
   skipFilesContext: true,
   actions: loadActionsFromStaticRegistry(actionsRegistry),
   mcp: { connectorCatalog: [], appApprovalPage: true, keyToolNames: ["listar-consultas", "ver-contexto-consulta", "obtener-plan", "proponer-plan", "reajustar-plan", "historial-plan", "metricas-revision"] },
+  /**
+   * Lo último que ve el médico no puede contradecir al tablero. Si el borrador
+   * afirma un cambio del que no hay recibo en este turno, se devuelve para que
+   * lo corrija; si insiste, el framework entrega el `fallbackMessage`, que es
+   * cierto por construcción. La decisión mira los recibos, no lo que el modelo
+   * dice que hizo. El prompt pide lo mismo, pero una petición no es una
+   * garantía: medido con un modelo real, fallaba en 5 de 10 turnos.
+   */
+  finalResponseGuard: ({ text, toolResults, receipts }) =>
+    revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
   initialToolNames: INITIAL_TOOL_NAMES,
   resolveOrgId: async (event) => (await getOrgContext(event)).orgId,
   systemPrompt: `Eres el agente de MEGI Revisión: preparas, junto con el médico, la receta y los pendientes de una consulta ya consolidada en MEGI. Responde siempre en español, con frases cortas.

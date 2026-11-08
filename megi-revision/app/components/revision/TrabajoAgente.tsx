@@ -18,7 +18,6 @@ export function TrabajoAgente({ version, esperandoPropuesta = false, onReintenta
   const [turnoSinCambios, setTurnoSinCambios] = useState<number | null>(null);
   const trabajando = useRef(false);
   const guardoPlan = useRef(false);
-  const escribio = useRef(false);
   // ask-question termina el turno a propósito: el agente espera la respuesta
   // del médico. No es un turno fallido ni «sin cambios».
   const pregunto = useRef(false);
@@ -28,19 +27,28 @@ export function TrabajoAgente({ version, esperandoPropuesta = false, onReintenta
       if (d.isError) return;
       if (d.tool === "ask-question") pregunto.current = true;
       if (d.tool === "proponer-plan") guardoPlan.current = true;
-      if (["proponer-plan", "reajustar-plan", "actualizar-linea", "agregar-linea", "sugerir-reemplazo"].includes(String(d.tool))) escribio.current = true;
     };
     window.addEventListener("agent-native:tool-done", fin);
     return () => window.removeEventListener("agent-native:tool-done", fin);
   }, []);
   useEffect(() => {
-    if (enCurso && !trabajando.current) { setInicioVersion(version); guardoPlan.current = false; escribio.current = false; pregunto.current = false; setTerminoSinPlan(false); setTurnoSinCambios(null); }
+    if (enCurso && !trabajando.current) { setInicioVersion(version); guardoPlan.current = false; pregunto.current = false; setTerminoSinPlan(false); setTurnoSinCambios(null); }
     if (!enCurso && trabajando.current && !pregunto.current) {
       if (esperandoPropuesta && !guardoPlan.current) setTerminoSinPlan(true);
       // El modelo puede describir cambios que el servidor rechazó (p. ej. un
       // reajuste atómico que tocaba una línea fijada). Se deja constancia de
       // que este turno no escribió nada: lo guardado es lo que muestra el tablero.
-      else if (version > 0 && !escribio.current && version === inicioVersion) setTurnoSinCambios(version);
+      //
+      // La condición mira SOLO la versión, que es la verdad del servidor. Antes
+      // exigía además `!escribio.current`, y eso abría el hueco justo donde más
+      // importa: ese indicador se pone con el evento `tool-done` descartando los
+      // que traen `isError`, así que una escritura RECHAZADA que no marque ese
+      // campo lo pondría en true y taparía el aviso. Medido con un modelo real:
+      // en 5 de 10 turnos el chat afirmó haber guardado sin guardar nada, y en
+      // varios de ellos la escritura había salido y vuelto rechazada. Si la
+      // versión no se movió, no se guardó nada, con independencia de qué
+      // herramientas se llamaran o de cómo venga etiquetado su resultado.
+      else if (version > 0 && version === inicioVersion) setTurnoSinCambios(version);
     }
     trabajando.current = enCurso;
   }, [enCurso, version, esperandoPropuesta, inicioVersion]);
