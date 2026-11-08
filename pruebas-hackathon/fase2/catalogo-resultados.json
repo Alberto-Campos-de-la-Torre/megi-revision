@@ -1,9 +1,9 @@
 {
   "bateria": "fase 2 · bloque I (qué puede llamar el agente)",
-  "cuando": "2026-11-08T17:38:56.078Z",
+  "cuando": "2026-11-08T18:15:57.306Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
-  "total": 10,
-  "pasan": 10,
+  "total": 13,
+  "pasan": 13,
   "fallan": 0,
   "registro": [
     {
@@ -1085,6 +1085,7 @@
       "medicion": {
         "requeridos": [
           "lineas",
+          "versionEsperada",
           "planId"
         ],
         "propiedades": [
@@ -1098,7 +1099,7 @@
     {
       "id": "i6-el-modelo-ve-lineas-como-obligatorio",
       "passed": true,
-      "detail": "lineas, planId"
+      "detail": "lineas, versionEsperada, planId"
     },
     {
       "id": "i6b-el-modelo-no-ve-los-campos-sueltos-de-una-linea",
@@ -1109,6 +1110,24 @@
       "id": "i6c-la-validacion-sigue-aceptando-la-forma-suelta",
       "passed": true,
       "detail": "acepta la línea suelta de la auditoría"
+    },
+    {
+      "id": "i7-el-modelo-ve-la-version-como-obligatoria-en-toda-escritura",
+      "passed": true,
+      "detail": "agregar-linea, reajustar-plan, actualizar-linea, sugerir-reemplazo"
+    },
+    {
+      "id": "i7b-el-reintento-con-version-no-lo-frena-el-bucle",
+      "passed": true,
+      "detail": "agregar-linea, reajustar-plan, actualizar-linea, sugerir-reemplazo"
+    },
+    {
+      "id": "i7c-el-reintento-seguro-depende-de-la-version-y-no-es-un-si-a-todo",
+      "passed": true,
+      "detail": {
+        "conVersion": true,
+        "sinVersion": false
+      }
     }
   ]
 }

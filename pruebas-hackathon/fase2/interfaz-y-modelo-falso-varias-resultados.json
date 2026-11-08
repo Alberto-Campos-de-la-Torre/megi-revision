@@ -1,5 +1,5 @@
 {
-  "cuando": "2026-11-08T17:40:18.158Z",
+  "cuando": "2026-11-08T18:14:47.904Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
   "servidor": "http://localhost:8099",
   "motor": "ai-sdk:openai",
@@ -91,7 +91,7 @@
       "medicion": {
         "motor": "ai-sdk:openai",
         "modelo": null,
-        "baseUrl": "http://127.0.0.1:35819/v1",
+        "baseUrl": "http://127.0.0.1:42077/v1",
         "fuenteClave": "el motor falso (varias)"
       }
     },
@@ -119,7 +119,7 @@
       "medicion": {
         "status": 200,
         "contentType": "text/event-stream",
-        "ms": 205,
+        "ms": 195,
         "eventos": 19,
         "bytes": 10182
       }
@@ -129,7 +129,7 @@
       "passed": true,
       "detail": {
         "status": 200,
-        "ms": 205,
+        "ms": 195,
         "errorCode": null,
         "mensaje": null
       }
@@ -280,43 +280,43 @@
     }
   ],
   "turno": {
-    "threadId": "d5a6e01f-ef3b-4d81-8186-193383504a91",
+    "threadId": "64bd59c8-2535-4c7a-ae6c-bc8cc27b2cc9",
     "status": 200,
     "contentType": "text/event-stream",
-    "ms": 205,
+    "ms": 195,
     "eventos": [
       {
         "type": "activity",
-        "id": "agentkit:internal:run-1794159617988-ge70jf:starting-agent",
+        "id": "agentkit:internal:run-1794161687743-v3phmz:starting-agent",
         "label": "Starting agent",
         "seq": 0,
-        "eventId": "run-1794159617988-ge70jf:0"
+        "eventId": "run-1794161687743-v3phmz:0"
       },
       {
         "type": "activity",
-        "id": "agentkit:internal:run-1794159617988-ge70jf:contacting-model",
+        "id": "agentkit:internal:run-1794161687743-v3phmz:contacting-model",
         "label": "Contacting model",
         "seq": 1,
-        "eventId": "run-1794159617988-ge70jf:1"
+        "eventId": "run-1794161687743-v3phmz:1"
       },
       {
         "type": "suggestions",
         "suggestions": [],
         "seq": 2,
-        "eventId": "run-1794159617988-ge70jf:2"
+        "eventId": "run-1794161687743-v3phmz:2"
       },
       {
         "type": "model_stream",
         "status": "start",
         "seq": 3,
-        "eventId": "run-1794159617988-ge70jf:3"
+        "eventId": "run-1794161687743-v3phmz:3"
       },
       {
         "type": "tool_input_start",
         "tool": "agregar-linea",
         "id": "call_falso_2",
         "seq": 4,
-        "eventId": "run-1794159617988-ge70jf:4"
+        "eventId": "run-1794161687743-v3phmz:4"
       },
       {
         "type": "activity",
@@ -324,7 +324,7 @@
         "tool": "agregar-linea",
         "id": "call_falso_2",
         "seq": 5,
-        "eventId": "run-1794159617988-ge70jf:5"
+        "eventId": "run-1794161687743-v3phmz:5"
       },
       {
         "type": "tool_input_delta",
@@ -332,19 +332,19 @@
         "id": "call_falso_2",
         "text": "{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]}",
         "seq": 6,
-        "eventId": "run-1794159617988-ge70jf:6"
+        "eventId": "run-1794161687743-v3phmz:6"
       },
       {
         "type": "model_stream",
         "status": "end",
         "reason": "tool_use",
         "seq": 7,
-        "eventId": "run-1794159617988-ge70jf:7"
+        "eventId": "run-1794161687743-v3phmz:7"
       },
       {
         "type": "tool_start",
         "id": "call_falso_2",
-        "executionStepId": "model-step:f39dbe48b6faa5b8db17b2768504a3425b4692bb31ee88e6e3952a7cff260b98",
+        "executionStepId": "model-step:a0ad348c2339bd2f770a040baf58b9692abd5c9286b32c27b0c9deb1a283a15f",
         "tool": "agregar-linea",
         "input": {
           "planId": "demo-c2",
@@ -368,7 +368,7 @@
           ]
         },
         "seq": 8,
-        "eventId": "run-1794159617988-ge70jf:8"
+        "eventId": "run-1794161687743-v3phmz:8"
       },
       {
         "type": "tool_done",
@@ -395,13 +395,13 @@
             }
           ]
         },
-        "result": "{\n  \"id\": \"a7d5b90f-1f0e-4317-bf76-edc939219c51\",\n  \"ids\": [\n    \"a7d5b90f-1f0e-4317-bf76-edc939219c51\",\n    \"6559d521-6014-469b-b17e-2e4fdde9d672\",\n    \"6337ee83-7354-4877-8228-c6a20418f63c\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"a7d5b90f-1f0e-4317-bf76-edc939219c51\",\n    \"planId\": \"dd7860d0-94de-40de-b3b6-887edb3aad08\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de tensión arterial en 7 días\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T17:40:18.051Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"a7d5b90f-1f0e-4317-bf76-edc939219c51\",\n      \"planId\": \"dd7860d0-94de-40de-b3b6-887edb3aad08\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de tensión arterial en 7 días\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T17:40:18.051Z\"\n    },\n    {\n      \"id\": \"6559d521-6014-469b-b17e-2e4fdde9d672\",\n      \"planId\": \"dd7860d0-94de-40de-b3b6-887edb3aad08\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Química sanguínea\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Valoración metabólica.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"nota\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"Naproxeno 250 mg cada 12 h por 5 días para el dolor. Calor local y ejercicios. Continuar losartán; valorar ajuste si TA persiste alta. Solicitar química sanguínea y EGO. Control en 2 semanas.\"\n        }\n      ],\n      \"orden\": 3,\n      \"updatedAt\": \"2026-11-08T17:40:18.051Z\"\n    },\n    {\n      \"id\": \"6337ee83-7354-4877-8228-c6a20418f63c\",\n      \"planId\": \"dd7860d0-94de-40de-b3b6-887edb3aad08\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Examen general de orina\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Descartar afección renal.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 4,\n      \"updatedAt\": \"2026-11-08T17:40:18.051Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 5\n  },\n  \"message\": \"Añadidas 3 líneas: Control de tensión arterial en 7 días (verificación pendiente); Química sanguínea (verificación pendiente); Examen general de orina (verificación pendiente). El plan queda en la versión 2 con 5 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}",
+        "result": "{\n  \"id\": \"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\",\n  \"ids\": [\n    \"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\",\n    \"3f70580f-a246-4519-8fd0-81c4abdef001\",\n    \"c2f59539-9709-4928-b29e-38f4ca79a1ce\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\",\n    \"planId\": \"780ed336-d59c-41c5-903d-e8362115f326\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de tensión arterial en 7 días\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T18:14:47.802Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\",\n      \"planId\": \"780ed336-d59c-41c5-903d-e8362115f326\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de tensión arterial en 7 días\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T18:14:47.802Z\"\n    },\n    {\n      \"id\": \"3f70580f-a246-4519-8fd0-81c4abdef001\",\n      \"planId\": \"780ed336-d59c-41c5-903d-e8362115f326\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Química sanguínea\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Valoración metabólica.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"nota\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"Naproxeno 250 mg cada 12 h por 5 días para el dolor. Calor local y ejercicios. Continuar losartán; valorar ajuste si TA persiste alta. Solicitar química sanguínea y EGO. Control en 2 semanas.\"\n        }\n      ],\n      \"orden\": 3,\n      \"updatedAt\": \"2026-11-08T18:14:47.802Z\"\n    },\n    {\n      \"id\": \"c2f59539-9709-4928-b29e-38f4ca79a1ce\",\n      \"planId\": \"780ed336-d59c-41c5-903d-e8362115f326\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Examen general de orina\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Descartar afección renal.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 4,\n      \"updatedAt\": \"2026-11-08T18:14:47.802Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 5\n  },\n  \"message\": \"Añadidas 3 líneas: Control de tensión arterial en 7 días (verificación pendiente); Química sanguínea (verificación pendiente); Examen general de orina (verificación pendiente). El plan queda en la versión 2 con 5 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}",
         "completedSideEffect": true,
         "argumentsHash": "72d3b1446488c935ed00aea6d677b5b24465bf3efd76f6770645ed5e6d609b98",
-        "executionStepId": "model-step:f39dbe48b6faa5b8db17b2768504a3425b4692bb31ee88e6e3952a7cff260b98",
+        "executionStepId": "model-step:a0ad348c2339bd2f770a040baf58b9692abd5c9286b32c27b0c9deb1a283a15f",
         "approvalPause": false,
         "seq": 9,
-        "eventId": "run-1794159617988-ge70jf:9"
+        "eventId": "run-1794161687743-v3phmz:9"
       },
       {
         "type": "tool_start",
@@ -429,7 +429,7 @@
           ]
         },
         "seq": 10,
-        "eventId": "run-1794159617988-ge70jf:10"
+        "eventId": "run-1794161687743-v3phmz:10"
       },
       {
         "type": "tool_done",
@@ -456,45 +456,45 @@
             }
           ]
         },
-        "result": "Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]}. Expected: { lineas*: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada?: integer, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.",
+        "result": "Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]}. Expected: { lineas*: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.",
         "isError": true,
         "completedSideEffect": false,
         "errorClass": "input_invalid",
         "approvalPause": false,
         "seq": 11,
-        "eventId": "run-1794159617988-ge70jf:11"
+        "eventId": "run-1794161687743-v3phmz:11"
       },
       {
         "type": "model_stream",
         "status": "start",
         "seq": 12,
-        "eventId": "run-1794159617988-ge70jf:12"
+        "eventId": "run-1794161687743-v3phmz:12"
       },
       {
         "type": "text",
         "text": "Listo.",
         "seq": 13,
-        "eventId": "run-1794159617988-ge70jf:13"
+        "eventId": "run-1794161687743-v3phmz:13"
       },
       {
         "type": "model_stream",
         "status": "end",
         "reason": "end_turn",
         "seq": 14,
-        "eventId": "run-1794159617988-ge70jf:14"
+        "eventId": "run-1794161687743-v3phmz:14"
       },
       {
         "type": "model_stream",
         "status": "start",
         "seq": 15,
-        "eventId": "run-1794159617988-ge70jf:15"
+        "eventId": "run-1794161687743-v3phmz:15"
       },
       {
         "type": "model_stream",
         "status": "end",
         "reason": "tool_use",
         "seq": 16,
-        "eventId": "run-1794159617988-ge70jf:16"
+        "eventId": "run-1794161687743-v3phmz:16"
       },
       {
         "type": "rich_event",
@@ -504,19 +504,19 @@
           "version": 1,
           "data": {
             "code": "invalid_or_missing",
-            "runId": "run-1794159617988-ge70jf"
+            "runId": "run-1794161687743-v3phmz"
           }
         },
         "seq": 17,
-        "eventId": "run-1794159617988-ge70jf:17"
+        "eventId": "run-1794161687743-v3phmz:17"
       },
       {
         "type": "done",
         "seq": 18,
-        "eventId": "run-1794159617988-ge70jf:18"
+        "eventId": "run-1794161687743-v3phmz:18"
       }
     ],
-    "texto": ": ping 1794159617999\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794159617988-ge70jf:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794159617988-ge70jf:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794159617988-ge70jf:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794159617988-ge70jf:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794159617988-ge70jf:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794159617988-ge70jf:3\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":4,\"eventId\":\"run-1794159617988-ge70jf:4\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing agregar-linea action\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":5,\"eventId\":\"run-1794159617988-ge70jf:5\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"text\":\"{\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Química sanguínea\\\",\\\"justificacion\\\":\\\"Valoración metabólica.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Examen general de orina\\\",\\\"justificacion\\\":\\\"Descartar afección renal.\\\"}]}\",\"seq\":6,\"eventId\":\"run-1794159617988-ge70jf:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":7,\"eventId\":\"run-1794159617988-ge70jf:7\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"executionStepId\":\"model-step:f39dbe48b6faa5b8db17b2768504a3425b4692bb31ee88e6e3952a7cff260b98\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"seq\":8,\"eventId\":\"run-1794159617988-ge70jf:8\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"result\":\"{\\n  \\\"id\\\": \\\"a7d5b90f-1f0e-4317-bf76-edc939219c51\\\",\\n  \\\"ids\\\": [\\n    \\\"a7d5b90f-1f0e-4317-bf76-edc939219c51\\\",\\n    \\\"6559d521-6014-469b-b17e-2e4fdde9d672\\\",\\n    \\\"6337ee83-7354-4877-8228-c6a20418f63c\\\"\\n  ],\\n  \\\"version\\\": 2,\\n  \\\"linea\\\": {\\n    \\\"id\\\": \\\"a7d5b90f-1f0e-4317-bf76-edc939219c51\\\",\\n    \\\"planId\\\": \\\"dd7860d0-94de-40de-b3b6-887edb3aad08\\\",\\n    \\\"tipo\\\": \\\"pendiente\\\",\\n    \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n    \\\"dosis\\\": \\\"\\\",\\n    \\\"frecuencia\\\": \\\"\\\",\\n    \\\"duracion\\\": \\\"\\\",\\n    \\\"estado\\\": \\\"propuesta\\\",\\n    \\\"verificacion\\\": \\\"pendiente\\\",\\n    \\\"motivoVerificacion\\\": null,\\n    \\\"alternativas\\\": [],\\n    \\\"origen\\\": \\\"agente\\\",\\n    \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n    \\\"fuentes\\\": [\\n      {\\n        \\\"tipo\\\": \\\"sin_respaldo\\\",\\n        \\\"referencia\\\": \\\"demo-c2\\\",\\n        \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n        \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n      }\\n    ],\\n    \\\"orden\\\": 2,\\n    \\\"updatedAt\\\": \\\"2026-11-08T17:40:18.051Z\\\"\\n  },\\n  \\\"lineas\\\": [\\n    {\\n      \\\"id\\\": \\\"a7d5b90f-1f0e-4317-bf76-edc939219c51\\\",\\n      \\\"planId\\\": \\\"dd7860d0-94de-40de-b3b6-887edb3aad08\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 2,\\n      \\\"updatedAt\\\": \\\"2026-11-08T17:40:18.051Z\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"6559d521-6014-469b-b17e-2e4fdde9d672\\\",\\n      \\\"planId\\\": \\\"dd7860d0-94de-40de-b3b6-887edb3aad08\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Química sanguínea\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Valoración metabólica.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"nota\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"Naproxeno 250 mg cada 12 h por 5 días para el dolor. Calor local y ejercicios. Continuar losartán; valorar ajuste si TA persiste alta. Solicitar química sanguínea y EGO. Control en 2 semanas.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 3,\\n      \\\"updatedAt\\\": \\\"2026-11-08T17:40:18.051Z\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"6337ee83-7354-4877-8228-c6a20418f63c\\\",\\n      \\\"planId\\\": \\\"dd7860d0-94de-40de-b3b6-887edb3aad08\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Examen general de orina\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Descartar afección renal.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 4,\\n      \\\"updatedAt\\\": \\\"2026-11-08T17:40:18.051Z\\\"\\n    }\\n  ],\\n  \\\"resumen\\\": {\\n    \\\"bloqueos\\\": 0,\\n    \\\"advertencias\\\": 0,\\n    \\\"bloqueadas\\\": 0,\\n    \\\"vigentes\\\": 5\\n  },\\n  \\\"message\\\": \\\"Añadidas 3 líneas: Control de tensión arterial en 7 días (verificación pendiente); Química sanguínea (verificación pendiente); Examen general de orina (verificación pendiente). El plan queda en la versión 2 con 5 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\\\"\\n}\",\"completedSideEffect\":true,\"argumentsHash\":\"72d3b1446488c935ed00aea6d677b5b24465bf3efd76f6770645ed5e6d609b98\",\"executionStepId\":\"model-step:f39dbe48b6faa5b8db17b2768504a3425b4692bb31ee88e6e3952a7cff260b98\",\"approvalPause\":false,\"seq\":9,\"eventId\":\"run-1794159617988-ge70jf:9\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"seq\":10,\"eventId\":\"run-1794159617988-ge70jf:10\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"result\":\"Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Química sanguínea\\\",\\\"justificacion\\\":\\\"Valoración metabólica.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Examen general de orina\\\",\\\"justificacion\\\":\\\"Descartar afección renal.\\\"}]}. Expected: { lineas*: array<{ tipo*: \\\"farmaco\\\"|\\\"pendiente\\\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada?: integer, planId*: string, origen?: \\\"agente\\\"|\\\"medico\\\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.\",\"isError\":true,\"completedSideEffect\":false,\"errorClass\":\"input_invalid\",\"approvalPause\":false,\"seq\":11,\"eventId\":\"run-1794159617988-ge70jf:11\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":12,\"eventId\":\"run-1794159617988-ge70jf:12\"}\n\ndata: {\"type\":\"text\",\"text\":\"Listo.\",\"seq\":13,\"eventId\":\"run-1794159617988-ge70jf:13\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":14,\"eventId\":\"run-1794159617988-ge70jf:14\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":15,\"eventId\":\"run-1794159617988-ge70jf:15\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":16,\"eventId\":\"run-1794159617988-ge70jf:16\"}\n\ndata: {\"type\":\"rich_event\",\"event\":{\"namespace\":\"agent-native.follow-up-suggestions\",\"name\":\"generation_failed\",\"version\":1,\"data\":{\"code\":\"invalid_or_missing\",\"runId\":\"run-1794159617988-ge70jf\"}},\"seq\":17,\"eventId\":\"run-1794159617988-ge70jf:17\"}\n\ndata: {\"type\":\"done\",\"seq\":18,\"eventId\":\"run-1794159617988-ge70jf:18\"}\n\n"
+    "texto": ": ping 1794161687753\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161687743-v3phmz:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794161687743-v3phmz:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161687743-v3phmz:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794161687743-v3phmz:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794161687743-v3phmz:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794161687743-v3phmz:3\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":4,\"eventId\":\"run-1794161687743-v3phmz:4\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing agregar-linea action\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":5,\"eventId\":\"run-1794161687743-v3phmz:5\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"text\":\"{\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Química sanguínea\\\",\\\"justificacion\\\":\\\"Valoración metabólica.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Examen general de orina\\\",\\\"justificacion\\\":\\\"Descartar afección renal.\\\"}]}\",\"seq\":6,\"eventId\":\"run-1794161687743-v3phmz:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":7,\"eventId\":\"run-1794161687743-v3phmz:7\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"executionStepId\":\"model-step:a0ad348c2339bd2f770a040baf58b9692abd5c9286b32c27b0c9deb1a283a15f\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"seq\":8,\"eventId\":\"run-1794161687743-v3phmz:8\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"result\":\"{\\n  \\\"id\\\": \\\"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\\\",\\n  \\\"ids\\\": [\\n    \\\"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\\\",\\n    \\\"3f70580f-a246-4519-8fd0-81c4abdef001\\\",\\n    \\\"c2f59539-9709-4928-b29e-38f4ca79a1ce\\\"\\n  ],\\n  \\\"version\\\": 2,\\n  \\\"linea\\\": {\\n    \\\"id\\\": \\\"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\\\",\\n    \\\"planId\\\": \\\"780ed336-d59c-41c5-903d-e8362115f326\\\",\\n    \\\"tipo\\\": \\\"pendiente\\\",\\n    \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n    \\\"dosis\\\": \\\"\\\",\\n    \\\"frecuencia\\\": \\\"\\\",\\n    \\\"duracion\\\": \\\"\\\",\\n    \\\"estado\\\": \\\"propuesta\\\",\\n    \\\"verificacion\\\": \\\"pendiente\\\",\\n    \\\"motivoVerificacion\\\": null,\\n    \\\"alternativas\\\": [],\\n    \\\"origen\\\": \\\"agente\\\",\\n    \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n    \\\"fuentes\\\": [\\n      {\\n        \\\"tipo\\\": \\\"sin_respaldo\\\",\\n        \\\"referencia\\\": \\\"demo-c2\\\",\\n        \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n        \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n      }\\n    ],\\n    \\\"orden\\\": 2,\\n    \\\"updatedAt\\\": \\\"2026-11-08T18:14:47.802Z\\\"\\n  },\\n  \\\"lineas\\\": [\\n    {\\n      \\\"id\\\": \\\"2d08ce3c-c428-44a1-87d2-28f9a5c80a1a\\\",\\n      \\\"planId\\\": \\\"780ed336-d59c-41c5-903d-e8362115f326\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Control de tensión arterial en 7 días\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 2,\\n      \\\"updatedAt\\\": \\\"2026-11-08T18:14:47.802Z\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"3f70580f-a246-4519-8fd0-81c4abdef001\\\",\\n      \\\"planId\\\": \\\"780ed336-d59c-41c5-903d-e8362115f326\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Química sanguínea\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Valoración metabólica.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"nota\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"Naproxeno 250 mg cada 12 h por 5 días para el dolor. Calor local y ejercicios. Continuar losartán; valorar ajuste si TA persiste alta. Solicitar química sanguínea y EGO. Control en 2 semanas.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 3,\\n      \\\"updatedAt\\\": \\\"2026-11-08T18:14:47.802Z\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"c2f59539-9709-4928-b29e-38f4ca79a1ce\\\",\\n      \\\"planId\\\": \\\"780ed336-d59c-41c5-903d-e8362115f326\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Examen general de orina\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Descartar afección renal.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 4,\\n      \\\"updatedAt\\\": \\\"2026-11-08T18:14:47.802Z\\\"\\n    }\\n  ],\\n  \\\"resumen\\\": {\\n    \\\"bloqueos\\\": 0,\\n    \\\"advertencias\\\": 0,\\n    \\\"bloqueadas\\\": 0,\\n    \\\"vigentes\\\": 5\\n  },\\n  \\\"message\\\": \\\"Añadidas 3 líneas: Control de tensión arterial en 7 días (verificación pendiente); Química sanguínea (verificación pendiente); Examen general de orina (verificación pendiente). El plan queda en la versión 2 con 5 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\\\"\\n}\",\"completedSideEffect\":true,\"argumentsHash\":\"72d3b1446488c935ed00aea6d677b5b24465bf3efd76f6770645ed5e6d609b98\",\"executionStepId\":\"model-step:a0ad348c2339bd2f770a040baf58b9692abd5c9286b32c27b0c9deb1a283a15f\",\"approvalPause\":false,\"seq\":9,\"eventId\":\"run-1794161687743-v3phmz:9\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"seq\":10,\"eventId\":\"run-1794161687743-v3phmz:10\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de tensión arterial en 7 días\",\"justificacion\":\"Control de HTA.\"},{\"tipo\":\"pendiente\",\"texto\":\"Química sanguínea\",\"justificacion\":\"Valoración metabólica.\"},{\"tipo\":\"pendiente\",\"texto\":\"Examen general de orina\",\"justificacion\":\"Descartar afección renal.\"}]},\"result\":\"Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de tensión arterial en 7 días\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Química sanguínea\\\",\\\"justificacion\\\":\\\"Valoración metabólica.\\\"},{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Examen general de orina\\\",\\\"justificacion\\\":\\\"Descartar afección renal.\\\"}]}. Expected: { lineas*: array<{ tipo*: \\\"farmaco\\\"|\\\"pendiente\\\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \\\"agente\\\"|\\\"medico\\\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.\",\"isError\":true,\"completedSideEffect\":false,\"errorClass\":\"input_invalid\",\"approvalPause\":false,\"seq\":11,\"eventId\":\"run-1794161687743-v3phmz:11\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":12,\"eventId\":\"run-1794161687743-v3phmz:12\"}\n\ndata: {\"type\":\"text\",\"text\":\"Listo.\",\"seq\":13,\"eventId\":\"run-1794161687743-v3phmz:13\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":14,\"eventId\":\"run-1794161687743-v3phmz:14\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":15,\"eventId\":\"run-1794161687743-v3phmz:15\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":16,\"eventId\":\"run-1794161687743-v3phmz:16\"}\n\ndata: {\"type\":\"rich_event\",\"event\":{\"namespace\":\"agent-native.follow-up-suggestions\",\"name\":\"generation_failed\",\"version\":1,\"data\":{\"code\":\"invalid_or_missing\",\"runId\":\"run-1794161687743-v3phmz\"}},\"seq\":17,\"eventId\":\"run-1794161687743-v3phmz:17\"}\n\ndata: {\"type\":\"done\",\"seq\":18,\"eventId\":\"run-1794161687743-v3phmz:18\"}\n\n"
   },
-  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 450 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 440 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
 }

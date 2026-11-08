@@ -9,27 +9,24 @@ import { getDb, schema } from "../server/db/index.js";
 import {
   ahora,
   exigirAbierto,
+  limpiaControles,
+  lineaOutputSchema,
   lineasDe,
   lineasOut,
-  lineaOutputSchema,
   origenAutorizado,
   origenSchema,
   planDe,
   registrarEvento,
+  reintentoSeguroPorVersion,
   requireEmail,
   resumenVerificacion,
   verificarPlan,
-  limpiaControles,
+  versionEsperadaDelAgente,
+  versionEsperadaSchema,
 } from "../server/lib/plan.js";
 
-export default defineAction({
-  changeResource: (_input, result) => ({ resourceType: `plan:${result.linea.planId}`, resourceId: result.linea.planId }),
-  // El framework exige sesión, mismo origen y capacidad UI para HTTP.
-  needsApproval: (_args, ctx) => ctx?.caller === "http",
-  description:
-    "Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insistir; solo el médico la desbloquea desde la interfaz. Tras editar un fármaco se vuelve a verificar todo el plan.",
-  schema: z.object({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
+const ESQUEMA = z.object({
+    versionEsperada: versionEsperadaSchema,
     lineaId: z.string().describe("Id de la línea (de obtener-plan)"),
     texto: z.string().trim().min(1).optional().describe("Nuevo fármaco o texto"),
     dosis: z.string().optional(),
@@ -46,7 +43,22 @@ export default defineAction({
       .default("")
       .describe("Por qué se cambia (obligatorio al rechazar)"),
     origen: origenSchema,
-  }),
+  });
+
+export default defineAction({
+  changeResource: (_input, result) => ({ resourceType: `plan:${result.linea.planId}`, resourceId: result.linea.planId }),
+  // El framework exige sesión, mismo origen y capacidad UI para HTTP.
+  needsApproval: (_args, ctx) => ctx?.caller === "http",
+  description:
+    "Cambia UNA línea del plan: edita texto/dosis/frecuencia/duración, o cambia su estado (bloquear, desbloquear, rechazar, reactivar). Una línea bloqueada es intocable: el agente recibe linea_bloqueada (409) y NO debe insistir; solo el médico la desbloquea desde la interfaz. Tras editar un fármaco se vuelve a verificar todo el plan.",
+  schema: ESQUEMA,
+  // Lo único que ve el modelo: la versión no es opcional ahí. Medido con Grok:
+  // 1 de 15 escrituras llegó sin ella y se fue en un 409 evitable.
+  agentInputSchema: ESQUEMA.extend({ versionEsperada: versionEsperadaDelAgente }),
+  // Un reintento con la versión vigente no puede duplicar nada: si la primera
+  // llamada entró, la versión ya cambió y este reintento se rechaza. Sin
+  // versión, el freno del framework se queda.
+  retrySafe: reintentoSeguroPorVersion,
   outputSchema: z.object({
     id: z.string(),
     version: z.number(),

@@ -162,6 +162,34 @@ export type LineaInput = z.infer<typeof lineaInputSchema>;
  * línea no es utilizable: o entran todas o ninguna, porque un plan a medias con
  * un recibo que dice otra cosa es peor que un fallo.
  */
+const VERSION_DESCRIPCION =
+  "Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva.";
+/** Como la pide el esquema que valida: opcional, porque el médico puede editar sin ella. */
+export const versionEsperadaSchema = z.number().int().nonnegative().optional().describe(VERSION_DESCRIPCION);
+/** Como la ve el modelo: obligatoria. Medido: lo que es opcional, lo omite. */
+export const versionEsperadaDelAgente = z.number().int().nonnegative().describe(VERSION_DESCRIPCION);
+
+/**
+ * Si este reintento puede repetirse sin duplicar nada.
+ *
+ * El bucle del framework frena la segunda llamada a una acción de escritura
+ * cuando el resultado de la primera quedó en «desconocido» («Not run: an
+ * earlier … call in this turn may have already applied»), y con razón: repetir
+ * un alta a ciegas duplicaría la línea. Pero `versionEsperada` es justo la
+ * clave de idempotencia que el framework pide para la excepción: si la primera
+ * llamada sí entró, el plan ya está en la versión siguiente y el reintento se
+ * rechaza con `version_desactualizada`; si no entró, la versión sigue siendo la
+ * misma y el reintento aplica una sola vez.
+ *
+ * Esto no es teoría: medido con Grok, 3 de 10 pasadas abrieron el turno con una
+ * escritura a ciegas, se llevaron el 409, releyeron el plan y volvieron con la
+ * versión correcta —lo que hay que hacer— y el framework les frenó ese
+ * reintento, así que el turno acabó sin cambio y sin explicación. Sin
+ * `versionEsperada` no hay clave y el freno se queda, que es lo prudente.
+ */
+export const reintentoSeguroPorVersion = (input: unknown): boolean =>
+  Number.isInteger((input as { versionEsperada?: unknown } | null)?.versionEsperada);
+
 /**
  * El contenido de `agregar-linea` tal y como lo ve el modelo: obligatorio y con
  * al menos una línea. Medido en dos tandas con un modelo real: lo que el

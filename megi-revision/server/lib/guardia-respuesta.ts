@@ -89,13 +89,31 @@ const PROMETE = new RegExp(
     `${LIM_I}(voy|vamos) a${LIM_F}`,
     `${LIM_I}(proced[oe]|proceder[ée]|proceder[ée]mos)${LIM_F}`,
     `${LIM_I}(a[ñn]adir[ée]|agregar[ée]|actualizar[ée]|guardar[ée]|preparar[ée]|propondr[ée]|reajustar[ée]|har[ée])${LIM_F}`,
-    `${LIM_I}lo (a[ñn]ado|agrego|hago|actualizo|preparo|guardo) (ahora|en seguida|enseguida|ya)${LIM_F}`,
+    `${LIM_I}lo (a[ñn]ado|agrego|hago|actualizo|preparo|guardo)${LIM_F}`,
+    // El presente con valor de futuro, que es como lo escribió el modelo de
+    // verdad: «Llamo a agregar-linea dos veces con versionEsperada=4» era el
+    // final de tres turnos de diez, y el plan se quedaba igual.
+    `${LIM_I}(llamo|llamar[ée]|invoco|invocar[ée]) a${LIM_F}`,
     `${LIM_I}(en seguida|enseguida|ahora mismo|a continuaci[óo]n)${LIM_F}`,
     `${LIM_I}(d[ée]jame|dame un momento|permíteme)${LIM_F}`,
   ].join("|"),
   "iu",
 );
 export const prometeUnCambio = (texto: string) => PROMETE.test(texto) && !NIEGA.test(texto);
+/**
+ * El anuncio a secas, aunque venga envuelto en una negación.
+ *
+ * «No se guardó nada: … Llamo a agregar-linea ahora» niega Y promete, y la
+ * negación le daba el indulto: medido con Grok, tres pasadas de diez acabaron
+ * así, sin haber intentado ni una escritura, y la guarda se callaba. Negar es
+ * la conducta correcta cuando hay un fallo real que contar; anunciar lo que no
+ * se hizo, no.
+ */
+export const anunciaUnCambio = (texto: string) => PROMETE.test(texto);
+
+/** ¿Se intentó siquiera una escritura del plan, aunque saliera rechazada? */
+export const intentoDeEscritura = (resultados: readonly ResultadoDeHerramienta[] = []) =>
+  resultados.some((r) => ESCRITURAS_DEL_PLAN.has(r.name));
 
 /**
  * ¿Lo que pidió el médico era un cambio en el plan?
@@ -179,19 +197,27 @@ export function revisaRespuestaFinal(ctx: {
 /**
  * Segunda regla: el turno acaba sin el cambio que el médico pidió.
  *
- * Solo se dispara cuando las cuatro cosas se cumplen a la vez: no entró ninguna
- * escritura, el médico pidió un cambio o el borrador lo promete, el agente no le
- * preguntó nada —si preguntó, esperar es lo correcto— y el borrador no dice ya
- * que algo falló. Con cualquiera de ellas fuera, callar es lo correcto y la
- * guarda no se mete.
+ * Calla cuando callar es lo correcto: si el agente le preguntó algo al médico
+ * —esperar la respuesta es lo que toca—, si el médico no pidió ningún cambio, o
+ * si hubo una escritura rechazada y el borrador cuenta ese fallo sin prometer
+ * nada: ahí el agente está informando, no escurriéndose.
+ *
+ * Y se dispara en el caso que esa última excepción dejaba pasar: **negar sin
+ * haber intentado nada**. Medido con Grok, tres pasadas de diez leyeron el plan,
+ * no llamaron a ninguna escritura y cerraron con «No se guardó nada… Llamo a
+ * agregar-linea ahora». Decir «no se guardó» es verdad, pero no es un informe
+ * de nada: no hubo fallo que contar, hubo un turno sin hacer el trabajo.
  */
 function trabajoSinHacer(
   ctx: { peticion?: string | undefined; resultados?: readonly ResultadoDeHerramienta[] },
   texto: string,
 ): Correccion | null {
   if (huboPregunta(ctx.resultados)) return null;
-  if (NIEGA.test(texto)) return null;
-  const promete = prometeUnCambio(texto);
+  const promete = anunciaUnCambio(texto);
+  const seIntento = intentoDeEscritura(ctx.resultados);
+  // Contar un fallo real es la conducta que se quiere. Pero solo es un informe
+  // si de verdad se intentó algo: negar sin intentar nada es el turno sin hacer.
+  if (NIEGA.test(texto) && !promete && seIntento) return null;
   if (!promete && !pidioUnCambio(ctx.peticion)) return null;
   const rechazadas = [
     ...new Set(
@@ -208,7 +234,9 @@ function trabajoSinHacer(
         : "Tu borrador no lo hace ni dice qué lo impidió. ") +
       (rechazadas.length
         ? `Ya lo intentaste y ${rechazadas.join(", ")} fue rechazada: relee el plan con obtener-plan, toma \`plan.version\` y vuelve a llamar con esa versionEsperada. `
-        : "Hazlo AHORA, en este mismo turno: llama a la acción que corresponda con el planId y la versionEsperada vigente. Si hay varias líneas, mándalas juntas en UNA llamada. ") +
+        : seIntento
+          ? "Hazlo AHORA, en este mismo turno, con el planId y la versionEsperada vigente. "
+          : "No has llamado a ninguna escritura en este turno: ya leíste el plan, así que tienes el planId y la versión. Hazlo AHORA con esa versionEsperada, llamando a la acción que corresponda. Si hay varias líneas, mándalas juntas en UNA llamada. ") +
       "No describas lo que vas a hacer: hazlo y responde con las cifras del recibo. " +
       "Si de verdad no puedes, di exactamente qué lo impide, con el código que devolvió la herramienta copiado literal.",
     fallbackMessage:

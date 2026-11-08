@@ -220,7 +220,29 @@ function hayRecibo(o: Record<string, any>): boolean {
   return false;
 }
 
-export type Llamada = { tool: string; hecha: boolean; fallo: boolean; errorCode: string | null; conRecibo: boolean };
+/**
+ * El texto de un resultado, venga como cadena o dentro del objeto. Sin esto un
+ * rechazo se queda en su código y el código a veces es solo «error».
+ */
+function mensajeDe(o: Record<string, any>): string | null {
+  const r = o.result ?? o.error ?? o.message;
+  if (typeof r === "string" && r.trim()) return r.trim();
+  if (r && typeof r === "object") {
+    for (const k of ["message", "mensaje", "error", "detail"]) {
+      const v = (r as Record<string, unknown>)[k];
+      if (typeof v === "string" && v.trim()) return v.trim();
+    }
+  }
+  return null;
+}
+
+/**
+ * `mensaje` es el texto con el que el framework o la acción explican un
+ * rechazo. Se guarda porque su ausencia escondió una causa: tres turnos de la
+ * tanda con Grok murieron en una escritura cuyo error quedó anotado como
+ * «(sin mensaje)», y sin el texto no había manera de saber quién lo frenaba.
+ */
+export type Llamada = { tool: string; hecha: boolean; fallo: boolean; errorCode: string | null; conRecibo: boolean; mensaje: string | null };
 export function llamadasDe(eventos: unknown[]): Llamada[] {
   const porId = new Map<string, Llamada>();
   let anonimas = 0;
@@ -231,13 +253,14 @@ export function llamadasDe(eventos: unknown[]): Llamada[] {
     const tool = typeof o.tool === "string" ? o.tool : null;
     if (!tool) continue;
     const clave = typeof o.id === "string" ? o.id : `${tool}#${++anonimas}`;
-    const previa = porId.get(clave) ?? { tool, hecha: false, fallo: false, errorCode: null, conRecibo: false };
+    const previa = porId.get(clave) ?? { tool, hecha: false, fallo: false, errorCode: null, conRecibo: false, mensaje: null };
     porId.set(clave, {
       tool,
       hecha: previa.hecha || o.type === "tool_done",
       fallo: previa.fallo || o.isError === true,
       errorCode: previa.errorCode ?? (typeof o.errorCode === "string" ? o.errorCode : null),
       conRecibo: previa.conRecibo || (o.isError !== true && hayRecibo(o)),
+      mensaje: previa.mensaje ?? mensajeDe(o),
     });
   }
   return [...porId.values()];
@@ -586,6 +609,44 @@ const GUIONES: Record<string, Guion> = {
     { texto: "Añadido el control de tensión arterial en 7 días." },
   ],
 
+  // El reintento corregido tras un 409 (medido con Grok, 8-nov). Tres pasadas de
+  // diez abrieron el turno con una escritura a ciegas, se llevaron el 409,
+  // releyeron el plan y volvieron a llamar con la versión buena —lo correcto— y
+  // esa segunda llamada murió con un error que mi arnés no sabía leer. Este
+  // guion reproduce exactamente esa secuencia: escritura con versión caduca,
+  // lectura, y la MISMA escritura con la versión vigente.
+  reintento: [
+    {
+      herramienta: "proponer-plan",
+      argumentos: {
+        consultaId: CONSULTA,
+        explicacion: "Guion del motor falso: plan inicial con dos líneas.",
+        lineas: [
+          { tipo: "farmaco", texto: "Paracetamol", dosis: "1 g", frecuencia: "cada 8 h", duracion: "5 días", justificacion: "Dolor lumbar mecánico." },
+          { tipo: "pendiente", texto: "Reposo relativo 48 h" },
+        ],
+      },
+    },
+    {
+      herramienta: "agregar-linea",
+      argumentos: {
+        planId: CONSULTA,
+        versionEsperada: 0,
+        lineas: [{ tipo: "pendiente", texto: "Control de presión en 72 h", justificacion: "Control de HTA." }],
+      },
+    },
+    { herramienta: "obtener-plan", argumentos: { planId: CONSULTA } },
+    {
+      herramienta: "agregar-linea",
+      argumentos: {
+        planId: CONSULTA,
+        versionEsperada: 1,
+        lineas: [{ tipo: "pendiente", texto: "Control de presión en 72 h", justificacion: "Control de HTA." }],
+      },
+    },
+    { texto: "Plan guardado: 3 líneas, 0 bloqueos y 0 advertencias." },
+  ],
+
   // Pedir por nombre exacto lo que la lista de permitidos cerró: si el recorte
   // funciona, `tool-search` no puede traerlas, y eso es lo que mide el guion.
   busqueda: [
@@ -908,6 +969,7 @@ async function turnoPorElChat(mensaje: string, hilo?: string) {
 const SEGUNDO_TURNO: Record<string, string> = {
   varias: "Añade tres pendientes: control de tensión arterial en 7 días, química sanguínea y examen general de orina.",
   promesa: "Añade un control de tensión arterial en 7 días.",
+  reintento: "Añade un pendiente de control de presión en 72 h.",
 };
 
 async function chequeaModelo() {
@@ -1005,6 +1067,30 @@ async function chequeaModelo() {
     const lineas: any[] = plan.cuerpo?.lineas ?? plan.cuerpo?.plan?.lineas ?? [];
     anota("m10d-la-linea-prometida-esta-en-el-plan",
       lineas.some((l) => /tensi[óo]n arterial/i.test(l.texto ?? "")),
+      { lineas: lineas.map((l) => l.texto), version: plan.cuerpo?.plan?.version ?? null });
+    return turno;
+  }
+
+  // El reintento corregido tras un 409: ¿llega a aplicarse?
+  if (ESCENARIO === "reintento" && motorFalso) {
+    const escrituras = llamadasDe(turno.eventos).filter((l) => ESCRITURAS_DEL_PLAN.has(l.tool));
+    mide("m11-las-dos-escrituras-del-turno",
+      escrituras.map((l) => ({ tool: l.tool, recibo: l.conRecibo, errorCode: l.errorCode, mensaje: l.mensaje ?? null })));
+    anota("m11-la-primera-escritura-se-rechazo-por-version",
+      escrituras[0]?.errorCode === "version_desactualizada",
+      { errorCode: escrituras[0]?.errorCode ?? null, mensaje: escrituras[0]?.mensaje ?? null });
+    anota("m11b-el-reintento-con-la-version-buena-si-se-aplica",
+      escrituras.length >= 2 && escrituras[1]!.conRecibo === true,
+      { segunda: escrituras[1] ? { recibo: escrituras[1].conRecibo, errorCode: escrituras[1].errorCode, mensaje: escrituras[1].mensaje ?? null } : null });
+    // Y si el framework lo frena, que al menos el modelo sepa por qué: un
+    // rechazo sin mensaje es lo que dejó tres turnos muertos sin explicación.
+    anota("m11c-ningun-rechazo-llega-sin-mensaje",
+      escrituras.filter((l) => l.fallo).every((l) => typeof l.mensaje === "string" && l.mensaje.trim().length > 0),
+      escrituras.filter((l) => l.fallo).map((l) => ({ errorCode: l.errorCode, mensaje: l.mensaje ?? null })));
+    const plan = await lee("obtener-plan", { planId: CONSULTA });
+    const lineas: any[] = plan.cuerpo?.lineas ?? plan.cuerpo?.plan?.lineas ?? [];
+    anota("m11d-el-pendiente-acabo-en-el-plan",
+      lineas.some((l) => /presi[óo]n en 72/i.test(l.texto ?? "")),
       { lineas: lineas.map((l) => l.texto), version: plan.cuerpo?.plan?.version ?? null });
     return turno;
   }

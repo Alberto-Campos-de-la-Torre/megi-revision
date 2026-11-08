@@ -5,12 +5,16 @@ import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
 import type { Verificacion } from "../server/lib/megi/types.js";
 import { enPeticionMegi } from "../server/lib/megi/peticion.js";
-import { conectarMegi, exigirAbierto, limpiaControles, lineaInputSchema, lineasDe, origenAutorizado, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
+import { conectarMegi, exigirAbierto, limpiaControles, lineaInputSchema, reintentoSeguroPorVersion, lineasDe, origenAutorizado, planDe, registrarEvento, requireEmail } from "../server/lib/plan.js";
 import { comprobarVersion, guardarVersion, leerJson, fusionarConciliacion, medicacionParaVerificar } from "../server/lib/revision.js";
 import { pautaOriginal, sugerenciaSchema, type Sugerencia } from "../server/lib/sugerencias.js";
 export default defineAction({
   description: "Propone una alternativa para una línea autorizada en alcanceSugerencias. Guarda una sugerencia revisable sin tocar la receta, aunque la línea esté fijada o rechazada. Solo el médico puede aceptarla; una fijada debe desbloquearse primero.",
   needsApproval: (_args, ctx) => ctx?.caller === "http",
+  // Un reintento con la versión vigente no puede duplicar nada: si la primera
+  // llamada entró, la versión ya cambió y este reintento se rechaza. Sin
+  // versión, el freno del framework se queda.
+  retrySafe: reintentoSeguroPorVersion,
   schema: lineaInputSchema.extend({ planId: z.string(), lineaId: z.string(), versionEsperada: z.number().int() }),
   outputSchema: z.object({ planId: z.string(), version: z.number(), sugerencia: sugerenciaSchema }),
   changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),

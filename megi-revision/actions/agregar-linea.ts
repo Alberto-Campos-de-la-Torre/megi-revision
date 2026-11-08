@@ -12,6 +12,9 @@ import {
   exigirEspacio,
   lineaInputSchema,
   lineasAAgregarSchema,
+  reintentoSeguroPorVersion,
+  versionEsperadaDelAgente,
+  versionEsperadaSchema,
   lineasAAgregar,
   lineasDe,
   lineasOut,
@@ -26,15 +29,6 @@ import {
   limpiaControles,
 } from "../server/lib/plan.js";
 
-/** La versión vigente del plan; compartida por los dos esquemas de la acción. */
-const VERSION_ESPERADA = z
-  .number()
-  .int()
-  .nonnegative()
-  .optional()
-  .describe(
-    "Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva.",
-  );
 const PLAN_ID = z.string().describe("Id del plan");
 
 export default defineAction({
@@ -53,15 +47,19 @@ export default defineAction({
   // Con `lineas` opcional, 20 de 24 escrituras llegaron sin ninguna línea
   // —solo planId, versionEsperada y origen— y ninguna de las diez pasadas
   // completó el trabajo; la descripción y el mensaje de error no bastaron.
+  // Un reintento con la versión vigente no puede duplicar nada: si la primera
+  // llamada entró, la versión ya cambió y este reintento se rechaza. Sin
+  // versión, el freno del framework se queda.
+  retrySafe: reintentoSeguroPorVersion,
   schema: lineaInputSchema.partial().extend({
     lineas: lineasAAgregarSchema.optional(),
-    versionEsperada: VERSION_ESPERADA,
+    versionEsperada: versionEsperadaSchema,
     planId: PLAN_ID,
     origen: origenSchema,
   }),
   agentInputSchema: z.object({
     lineas: lineasAAgregarSchema,
-    versionEsperada: VERSION_ESPERADA,
+    versionEsperada: versionEsperadaDelAgente,
     planId: PLAN_ID,
     origen: origenSchema,
   }),

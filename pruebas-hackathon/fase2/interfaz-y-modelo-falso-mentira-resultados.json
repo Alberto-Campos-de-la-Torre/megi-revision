@@ -1,5 +1,5 @@
 {
-  "cuando": "2026-11-08T17:40:02.976Z",
+  "cuando": "2026-11-08T18:14:32.783Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
   "servidor": "http://localhost:8099",
   "motor": "ai-sdk:openai",
@@ -91,7 +91,7 @@
       "medicion": {
         "motor": "ai-sdk:openai",
         "modelo": null,
-        "baseUrl": "http://127.0.0.1:45999/v1",
+        "baseUrl": "http://127.0.0.1:38997/v1",
         "fuenteClave": "el motor falso (mentira)"
       }
     },
@@ -109,7 +109,7 @@
       "medicion": {
         "status": 200,
         "contentType": "text/event-stream",
-        "ms": 282,
+        "ms": 285,
         "eventos": 13,
         "bytes": 1646
       }
@@ -119,7 +119,7 @@
       "passed": true,
       "detail": {
         "status": 200,
-        "ms": 282,
+        "ms": 285,
         "errorCode": null,
         "mensaje": null
       }
@@ -191,92 +191,92 @@
     }
   ],
   "turno": {
-    "threadId": "afca9e0e-0e7f-46c0-904c-4cee4f93319a",
+    "threadId": "aa450eeb-d895-4889-8dfe-0da3920fecaf",
     "status": 200,
     "contentType": "text/event-stream",
-    "ms": 282,
+    "ms": 285,
     "eventos": [
       {
         "type": "activity",
-        "id": "agentkit:internal:run-1794159602778-dp8ny8:starting-agent",
+        "id": "agentkit:internal:run-1794161672579-ham223:starting-agent",
         "label": "Starting agent",
         "seq": 0,
-        "eventId": "run-1794159602778-dp8ny8:0"
+        "eventId": "run-1794161672579-ham223:0"
       },
       {
         "type": "activity",
-        "id": "agentkit:internal:run-1794159602778-dp8ny8:contacting-model",
+        "id": "agentkit:internal:run-1794161672579-ham223:contacting-model",
         "label": "Contacting model",
         "seq": 1,
-        "eventId": "run-1794159602778-dp8ny8:1"
+        "eventId": "run-1794161672579-ham223:1"
       },
       {
         "type": "suggestions",
         "suggestions": [],
         "seq": 2,
-        "eventId": "run-1794159602778-dp8ny8:2"
+        "eventId": "run-1794161672579-ham223:2"
       },
       {
         "type": "model_stream",
         "status": "start",
         "seq": 3,
-        "eventId": "run-1794159602778-dp8ny8:3"
+        "eventId": "run-1794161672579-ham223:3"
       },
       {
         "type": "text",
         "text": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.",
         "seq": 4,
-        "eventId": "run-1794159602778-dp8ny8:4"
+        "eventId": "run-1794161672579-ham223:4"
       },
       {
         "type": "model_stream",
         "status": "end",
         "reason": "end_turn",
         "seq": 5,
-        "eventId": "run-1794159602778-dp8ny8:5"
+        "eventId": "run-1794161672579-ham223:5"
       },
       {
         "type": "clear",
         "seq": 6,
-        "eventId": "run-1794159602778-dp8ny8:6"
+        "eventId": "run-1794161672579-ham223:6"
       },
       {
         "type": "model_stream",
         "status": "start",
         "seq": 7,
-        "eventId": "run-1794159602778-dp8ny8:7"
+        "eventId": "run-1794161672579-ham223:7"
       },
       {
         "type": "text",
         "text": "Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.",
         "seq": 8,
-        "eventId": "run-1794159602778-dp8ny8:8"
+        "eventId": "run-1794161672579-ham223:8"
       },
       {
         "type": "model_stream",
         "status": "end",
         "reason": "end_turn",
         "seq": 9,
-        "eventId": "run-1794159602778-dp8ny8:9"
+        "eventId": "run-1794161672579-ham223:9"
       },
       {
         "type": "clear",
         "seq": 10,
-        "eventId": "run-1794159602778-dp8ny8:10"
+        "eventId": "run-1794161672579-ham223:10"
       },
       {
         "type": "text",
         "text": "No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio.",
         "seq": 11,
-        "eventId": "run-1794159602778-dp8ny8:11"
+        "eventId": "run-1794161672579-ham223:11"
       },
       {
         "type": "done",
         "seq": 12,
-        "eventId": "run-1794159602778-dp8ny8:12"
+        "eventId": "run-1794161672579-ham223:12"
       }
     ],
-    "texto": ": ping 1794159602795\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794159602778-dp8ny8:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794159602778-dp8ny8:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794159602778-dp8ny8:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794159602778-dp8ny8:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794159602778-dp8ny8:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794159602778-dp8ny8:3\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":4,\"eventId\":\"run-1794159602778-dp8ny8:4\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":5,\"eventId\":\"run-1794159602778-dp8ny8:5\"}\n\ndata: {\"type\":\"clear\",\"seq\":6,\"eventId\":\"run-1794159602778-dp8ny8:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":7,\"eventId\":\"run-1794159602778-dp8ny8:7\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":8,\"eventId\":\"run-1794159602778-dp8ny8:8\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":9,\"eventId\":\"run-1794159602778-dp8ny8:9\"}\n\ndata: {\"type\":\"clear\",\"seq\":10,\"eventId\":\"run-1794159602778-dp8ny8:10\"}\n\ndata: {\"type\":\"text\",\"text\":\"No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio.\",\"seq\":11,\"eventId\":\"run-1794159602778-dp8ny8:11\"}\n\ndata: {\"type\":\"done\",\"seq\":12,\"eventId\":\"run-1794159602778-dp8ny8:12\"}\n\n"
+    "texto": ": ping 1794161672596\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161672579-ham223:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794161672579-ham223:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161672579-ham223:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794161672579-ham223:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794161672579-ham223:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794161672579-ham223:3\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":4,\"eventId\":\"run-1794161672579-ham223:4\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":5,\"eventId\":\"run-1794161672579-ham223:5\"}\n\ndata: {\"type\":\"clear\",\"seq\":6,\"eventId\":\"run-1794161672579-ham223:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":7,\"eventId\":\"run-1794161672579-ham223:7\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias. Todo pendiente de confirmación médica.\",\"seq\":8,\"eventId\":\"run-1794161672579-ham223:8\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":9,\"eventId\":\"run-1794161672579-ham223:9\"}\n\ndata: {\"type\":\"clear\",\"seq\":10,\"eventId\":\"run-1794161672579-ham223:10\"}\n\ndata: {\"type\":\"text\",\"text\":\"No se guardó nada en el plan en este turno. Lo que yo haya escrito antes no está en el tablero: revisa el plan y vuelve a pedirme el cambio.\",\"seq\":11,\"eventId\":\"run-1794161672579-ham223:11\"}\n\ndata: {\"type\":\"done\",\"seq\":12,\"eventId\":\"run-1794161672579-ham223:12\"}\n\n"
   },
-  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 448 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 437 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
 }

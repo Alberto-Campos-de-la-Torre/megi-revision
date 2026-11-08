@@ -1,0 +1,654 @@
+{
+  "cuando": "2026-11-08T18:15:03.282Z",
+  "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision",
+  "servidor": "http://localhost:8099",
+  "motor": "ai-sdk:openai",
+  "modelo": null,
+  "fuenteClave": "el motor falso (reintento)",
+  "consulta": "demo-c2",
+  "node": "22.22.2",
+  "resultados": [
+    {
+      "id": "i1-sin-sesion-no-hay-expedientes",
+      "passed": true,
+      "detail": {
+        "status": 401,
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "id": "i2-sesion-de-desarrollo-concedida",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cookies": [
+          "an_session_megi_revision",
+          "an_session_megi_revision_hint",
+          "an_org_selection",
+          "agent-native-first-run"
+        ]
+      }
+    },
+    {
+      "id": "i3-el-tablero-lista-las-consultas-de-demo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "cuantas": 4,
+        "pacientes": [
+          "Luis Modelo Simulado",
+          "Rosa Ficticia Muestra",
+          "Mateo Ejemplo Demo",
+          "Alba Prueba Ficticia"
+        ]
+      }
+    },
+    {
+      "id": "i4-la-consulta-trae-SOAP-y-ficha",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "motivo": "Control de presión y dolor lumbar",
+        "paciente": "Mateo Ejemplo Demo",
+        "alergiasRegistradas": false
+      }
+    },
+    {
+      "id": "i5-una-escritura-por-HTTP-pelado-pide-aprobacion",
+      "passed": true,
+      "detail": {
+        "status": 409,
+        "errorCode": "approval_required"
+      }
+    },
+    {
+      "id": "i6-la-escritura-rechazada-no-dejo-plan",
+      "passed": true,
+      "detail": {
+        "status": 404,
+        "errorCode": "not_found"
+      }
+    },
+    {
+      "id": "i7-las-pantallas-del-recorrido-responden",
+      "passed": true,
+      "detail": {
+        "probadas": 7,
+        "malas": []
+      }
+    },
+    {
+      "id": "i8-el-estado-del-motor-no-miente",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "clave": "el motor falso (reintento)"
+      }
+    },
+    {
+      "id": "m0-motor-y-clave",
+      "medicion": {
+        "motor": "ai-sdk:openai",
+        "modelo": null,
+        "baseUrl": "http://127.0.0.1:43735/v1",
+        "fuenteClave": "el motor falso (reintento)"
+      }
+    },
+    {
+      "id": "m1-el-producto-ve-el-motor-conectado",
+      "passed": true,
+      "detail": {
+        "configured": true,
+        "chatEligible": true,
+        "openAiBaseUrlConfigured": true
+      }
+    },
+    {
+      "id": "m1b-el-primer-turno-dejo-el-plan-creado",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "llamadas": [
+          "proponer-plan"
+        ]
+      }
+    },
+    {
+      "id": "m2-el-turno-respondio",
+      "medicion": {
+        "status": 200,
+        "contentType": "text/event-stream",
+        "ms": 233,
+        "eventos": 28,
+        "bytes": 10495
+      }
+    },
+    {
+      "id": "m2-el-turno-completo",
+      "passed": true,
+      "detail": {
+        "status": 200,
+        "ms": 233,
+        "errorCode": null,
+        "mensaje": null
+      }
+    },
+    {
+      "id": "m11-las-dos-escrituras-del-turno",
+      "medicion": [
+        {
+          "tool": "agregar-linea",
+          "recibo": false,
+          "errorCode": "version_desactualizada",
+          "mensaje": "Error running agregar-linea: El plan cambió: mandaste versionEsperada=0 y la vigente es 1. Tu escritura anterior dejó el plan en la versión 1 y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion=\"agregar\" por cada línea nueva) en vez de una llamada por línea. (errorCode: version_desactualizada)"
+        },
+        {
+          "tool": "agregar-linea",
+          "recibo": true,
+          "errorCode": null,
+          "mensaje": "{\n  \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n  \"ids\": [\n    \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n    \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de presión en 72 h\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n      \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de presión en 72 h\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 3\n  },\n  \"message\": \"Añadida Control de presión en 72 h (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}"
+        }
+      ]
+    },
+    {
+      "id": "m11-la-primera-escritura-se-rechazo-por-version",
+      "passed": true,
+      "detail": {
+        "errorCode": "version_desactualizada",
+        "mensaje": "Error running agregar-linea: El plan cambió: mandaste versionEsperada=0 y la vigente es 1. Tu escritura anterior dejó el plan en la versión 1 y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion=\"agregar\" por cada línea nueva) en vez de una llamada por línea. (errorCode: version_desactualizada)"
+      }
+    },
+    {
+      "id": "m11b-el-reintento-con-la-version-buena-si-se-aplica",
+      "passed": true,
+      "detail": {
+        "segunda": {
+          "recibo": true,
+          "errorCode": null,
+          "mensaje": "{\n  \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n  \"ids\": [\n    \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n    \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de presión en 72 h\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n      \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de presión en 72 h\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 3\n  },\n  \"message\": \"Añadida Control de presión en 72 h (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}"
+        }
+      }
+    },
+    {
+      "id": "m11c-ningun-rechazo-llega-sin-mensaje",
+      "passed": true,
+      "detail": [
+        {
+          "errorCode": "version_desactualizada",
+          "mensaje": "Error running agregar-linea: El plan cambió: mandaste versionEsperada=0 y la vigente es 1. Tu escritura anterior dejó el plan en la versión 1 y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion=\"agregar\" por cada línea nueva) en vez de una llamada por línea. (errorCode: version_desactualizada)"
+        },
+        {
+          "errorCode": null,
+          "mensaje": "{\n  \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n  \"ids\": [\n    \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n    \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de presión en 72 h\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n      \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de presión en 72 h\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 3\n  },\n  \"message\": \"Añadida Control de presión en 72 h (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}"
+        }
+      ]
+    },
+    {
+      "id": "m11d-el-pendiente-acabo-en-el-plan",
+      "passed": true,
+      "detail": {
+        "lineas": [
+          "Paracetamol",
+          "Reposo relativo 48 h",
+          "Control de presión en 72 h"
+        ],
+        "version": 2
+      }
+    }
+  ],
+  "peticionesAlMotorFalso": [
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 2,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 4,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 7,
+      "conResultado": true,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant+llamada",
+        "tool",
+        "tool"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups",
+        "ver-contexto-consulta",
+        "obtener-plan",
+        "proponer-plan",
+        "reajustar-plan",
+        "sugerir-reemplazo",
+        "view-screen",
+        "docs-search",
+        "ask-question",
+        "tool-search",
+        "resources",
+        "framework-search",
+        "get-framework-context"
+      ],
+      "mensajes": 10,
+      "conResultado": true,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user",
+        "assistant+llamada",
+        "tool",
+        "tool",
+        "assistant+llamada",
+        "tool",
+        "tool"
+      ],
+      "conGuarda": false
+    },
+    {
+      "modelo": "falso",
+      "herramientas": [
+        "suggest-follow-ups"
+      ],
+      "mensajes": 4,
+      "conResultado": false,
+      "roles": [
+        "system",
+        "user",
+        "assistant",
+        "user"
+      ],
+      "conGuarda": false
+    }
+  ],
+  "turno": {
+    "threadId": "8a8f4e91-31f7-464f-b9a6-209922f5b12e",
+    "status": 200,
+    "contentType": "text/event-stream",
+    "ms": 233,
+    "eventos": [
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794161703082-hp79wy:starting-agent",
+        "label": "Starting agent",
+        "seq": 0,
+        "eventId": "run-1794161703082-hp79wy:0"
+      },
+      {
+        "type": "activity",
+        "id": "agentkit:internal:run-1794161703082-hp79wy:contacting-model",
+        "label": "Contacting model",
+        "seq": 1,
+        "eventId": "run-1794161703082-hp79wy:1"
+      },
+      {
+        "type": "suggestions",
+        "suggestions": [],
+        "seq": 2,
+        "eventId": "run-1794161703082-hp79wy:2"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 3,
+        "eventId": "run-1794161703082-hp79wy:3"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "agregar-linea",
+        "id": "call_falso_2",
+        "seq": 4,
+        "eventId": "run-1794161703082-hp79wy:4"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing agregar-linea action",
+        "tool": "agregar-linea",
+        "id": "call_falso_2",
+        "seq": 5,
+        "eventId": "run-1794161703082-hp79wy:5"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "agregar-linea",
+        "id": "call_falso_2",
+        "text": "{\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]}",
+        "seq": 6,
+        "eventId": "run-1794161703082-hp79wy:6"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 7,
+        "eventId": "run-1794161703082-hp79wy:7"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_2",
+        "executionStepId": "model-step:66ae411179104fc610c55076a760beeeaae2cc0ea35f8899b329fa665d96ac7d",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 0,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "seq": 8,
+        "eventId": "run-1794161703082-hp79wy:8"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_2",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 0,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "result": "Error running agregar-linea: El plan cambió: mandaste versionEsperada=0 y la vigente es 1. Tu escritura anterior dejó el plan en la versión 1 y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion=\"agregar\" por cada línea nueva) en vez de una llamada por línea. (errorCode: version_desactualizada)",
+        "isError": true,
+        "errorCode": "version_desactualizada",
+        "errorClass": "rejected",
+        "completedSideEffect": false,
+        "argumentsHash": "64d5746a0034b80414d0c5bb7bae92cf9bbef81fd374478f4598377ff3863de4",
+        "executionStepId": "model-step:66ae411179104fc610c55076a760beeeaae2cc0ea35f8899b329fa665d96ac7d",
+        "approvalPause": false,
+        "seq": 9,
+        "eventId": "run-1794161703082-hp79wy:9"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_2",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 0,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "seq": 10,
+        "eventId": "run-1794161703082-hp79wy:10"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_2",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 0,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "result": "Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]}. Expected: { lineas*: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.",
+        "isError": true,
+        "completedSideEffect": false,
+        "errorClass": "input_invalid",
+        "approvalPause": false,
+        "seq": 11,
+        "eventId": "run-1794161703082-hp79wy:11"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 12,
+        "eventId": "run-1794161703082-hp79wy:12"
+      },
+      {
+        "type": "tool_input_start",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "seq": 13,
+        "eventId": "run-1794161703082-hp79wy:13"
+      },
+      {
+        "type": "activity",
+        "label": "Preparing agregar-linea action",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "seq": 14,
+        "eventId": "run-1794161703082-hp79wy:14"
+      },
+      {
+        "type": "tool_input_delta",
+        "tool": "agregar-linea",
+        "id": "call_falso_3",
+        "text": "{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]}",
+        "seq": 15,
+        "eventId": "run-1794161703082-hp79wy:15"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 16,
+        "eventId": "run-1794161703082-hp79wy:16"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_3",
+        "executionStepId": "model-step:504c57e86adaafd25129650f0e7c35fe5e4901434a006d1263ca5cc9cc432c8d",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "seq": 17,
+        "eventId": "run-1794161703082-hp79wy:17"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "result": "{\n  \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n  \"ids\": [\n    \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\"\n  ],\n  \"version\": 2,\n  \"linea\": {\n    \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n    \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n    \"tipo\": \"pendiente\",\n    \"texto\": \"Control de presión en 72 h\",\n    \"dosis\": \"\",\n    \"frecuencia\": \"\",\n    \"duracion\": \"\",\n    \"estado\": \"propuesta\",\n    \"verificacion\": \"pendiente\",\n    \"motivoVerificacion\": null,\n    \"alternativas\": [],\n    \"origen\": \"agente\",\n    \"justificacion\": \"Control de HTA.\",\n    \"fuentes\": [\n      {\n        \"tipo\": \"sin_respaldo\",\n        \"referencia\": \"demo-c2\",\n        \"fecha\": \"2026-11-08T10:00:00.000Z\",\n        \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n      }\n    ],\n    \"orden\": 2,\n    \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n  },\n  \"lineas\": [\n    {\n      \"id\": \"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\",\n      \"planId\": \"a7babbd8-9b9c-488a-8bd6-f90e967588fa\",\n      \"tipo\": \"pendiente\",\n      \"texto\": \"Control de presión en 72 h\",\n      \"dosis\": \"\",\n      \"frecuencia\": \"\",\n      \"duracion\": \"\",\n      \"estado\": \"propuesta\",\n      \"verificacion\": \"pendiente\",\n      \"motivoVerificacion\": null,\n      \"alternativas\": [],\n      \"origen\": \"agente\",\n      \"justificacion\": \"Control de HTA.\",\n      \"fuentes\": [\n        {\n          \"tipo\": \"sin_respaldo\",\n          \"referencia\": \"demo-c2\",\n          \"fecha\": \"2026-11-08T10:00:00.000Z\",\n          \"fragmento\": \"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\"\n        }\n      ],\n      \"orden\": 2,\n      \"updatedAt\": \"2026-11-08T18:15:03.186Z\"\n    }\n  ],\n  \"resumen\": {\n    \"bloqueos\": 0,\n    \"advertencias\": 0,\n    \"bloqueadas\": 0,\n    \"vigentes\": 3\n  },\n  \"message\": \"Añadida Control de presión en 72 h (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\"\n}",
+        "completedSideEffect": true,
+        "argumentsHash": "34eb0b62cd5bc5c51208c2154be9b96c250a3280aef6d90f17e3b9a6cc87b7e8",
+        "executionStepId": "model-step:504c57e86adaafd25129650f0e7c35fe5e4901434a006d1263ca5cc9cc432c8d",
+        "approvalPause": false,
+        "seq": 18,
+        "eventId": "run-1794161703082-hp79wy:18"
+      },
+      {
+        "type": "tool_start",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "seq": 19,
+        "eventId": "run-1794161703082-hp79wy:19"
+      },
+      {
+        "type": "tool_done",
+        "id": "call_falso_3",
+        "tool": "agregar-linea",
+        "input": {
+          "planId": "demo-c2",
+          "versionEsperada": 1,
+          "lineas": [
+            {
+              "tipo": "pendiente",
+              "texto": "Control de presión en 72 h",
+              "justificacion": "Control de HTA."
+            }
+          ]
+        },
+        "result": "Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]}. Expected: { lineas*: array<{ tipo*: \"farmaco\"|\"pendiente\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \"agente\"|\"medico\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.",
+        "isError": true,
+        "completedSideEffect": false,
+        "errorClass": "input_invalid",
+        "approvalPause": false,
+        "seq": 20,
+        "eventId": "run-1794161703082-hp79wy:20"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 21,
+        "eventId": "run-1794161703082-hp79wy:21"
+      },
+      {
+        "type": "text",
+        "text": "Plan guardado: 3 líneas, 0 bloqueos y 0 advertencias.",
+        "seq": 22,
+        "eventId": "run-1794161703082-hp79wy:22"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "end_turn",
+        "seq": 23,
+        "eventId": "run-1794161703082-hp79wy:23"
+      },
+      {
+        "type": "model_stream",
+        "status": "start",
+        "seq": 24,
+        "eventId": "run-1794161703082-hp79wy:24"
+      },
+      {
+        "type": "model_stream",
+        "status": "end",
+        "reason": "tool_use",
+        "seq": 25,
+        "eventId": "run-1794161703082-hp79wy:25"
+      },
+      {
+        "type": "rich_event",
+        "event": {
+          "namespace": "agent-native.follow-up-suggestions",
+          "name": "generation_failed",
+          "version": 1,
+          "data": {
+            "code": "invalid_or_missing",
+            "runId": "run-1794161703082-hp79wy"
+          }
+        },
+        "seq": 26,
+        "eventId": "run-1794161703082-hp79wy:26"
+      },
+      {
+        "type": "done",
+        "seq": 27,
+        "eventId": "run-1794161703082-hp79wy:27"
+      }
+    ],
+    "texto": ": ping 1794161703092\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161703082-hp79wy:starting-agent\",\"label\":\"Starting agent\",\"seq\":0,\"eventId\":\"run-1794161703082-hp79wy:0\"}\n\ndata: {\"type\":\"activity\",\"id\":\"agentkit:internal:run-1794161703082-hp79wy:contacting-model\",\"label\":\"Contacting model\",\"seq\":1,\"eventId\":\"run-1794161703082-hp79wy:1\"}\n\ndata: {\"type\":\"suggestions\",\"suggestions\":[],\"seq\":2,\"eventId\":\"run-1794161703082-hp79wy:2\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":3,\"eventId\":\"run-1794161703082-hp79wy:3\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":4,\"eventId\":\"run-1794161703082-hp79wy:4\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing agregar-linea action\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"seq\":5,\"eventId\":\"run-1794161703082-hp79wy:5\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_2\",\"text\":\"{\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":0,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de presión en 72 h\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}]}\",\"seq\":6,\"eventId\":\"run-1794161703082-hp79wy:6\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":7,\"eventId\":\"run-1794161703082-hp79wy:7\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"executionStepId\":\"model-step:66ae411179104fc610c55076a760beeeaae2cc0ea35f8899b329fa665d96ac7d\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"seq\":8,\"eventId\":\"run-1794161703082-hp79wy:8\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"result\":\"Error running agregar-linea: El plan cambió: mandaste versionEsperada=0 y la vigente es 1. Tu escritura anterior dejó el plan en la versión 1 y te la devolvió en su respuesta: usa esa. Y si te quedan varios cambios, mándalos juntos en UNA llamada a reajustar-plan (un cambio con accion=\\\"agregar\\\" por cada línea nueva) en vez de una llamada por línea. (errorCode: version_desactualizada)\",\"isError\":true,\"errorCode\":\"version_desactualizada\",\"errorClass\":\"rejected\",\"completedSideEffect\":false,\"argumentsHash\":\"64d5746a0034b80414d0c5bb7bae92cf9bbef81fd374478f4598377ff3863de4\",\"executionStepId\":\"model-step:66ae411179104fc610c55076a760beeeaae2cc0ea35f8899b329fa665d96ac7d\",\"approvalPause\":false,\"seq\":9,\"eventId\":\"run-1794161703082-hp79wy:9\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"seq\":10,\"eventId\":\"run-1794161703082-hp79wy:10\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_2\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":0,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"result\":\"Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":0,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de presión en 72 h\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}]}. Expected: { lineas*: array<{ tipo*: \\\"farmaco\\\"|\\\"pendiente\\\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \\\"agente\\\"|\\\"medico\\\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.\",\"isError\":true,\"completedSideEffect\":false,\"errorClass\":\"input_invalid\",\"approvalPause\":false,\"seq\":11,\"eventId\":\"run-1794161703082-hp79wy:11\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":12,\"eventId\":\"run-1794161703082-hp79wy:12\"}\n\ndata: {\"type\":\"tool_input_start\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"seq\":13,\"eventId\":\"run-1794161703082-hp79wy:13\"}\n\ndata: {\"type\":\"activity\",\"label\":\"Preparing agregar-linea action\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"seq\":14,\"eventId\":\"run-1794161703082-hp79wy:14\"}\n\ndata: {\"type\":\"tool_input_delta\",\"tool\":\"agregar-linea\",\"id\":\"call_falso_3\",\"text\":\"{\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de presión en 72 h\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}]}\",\"seq\":15,\"eventId\":\"run-1794161703082-hp79wy:15\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":16,\"eventId\":\"run-1794161703082-hp79wy:16\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_3\",\"executionStepId\":\"model-step:504c57e86adaafd25129650f0e7c35fe5e4901434a006d1263ca5cc9cc432c8d\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"seq\":17,\"eventId\":\"run-1794161703082-hp79wy:17\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"result\":\"{\\n  \\\"id\\\": \\\"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\\\",\\n  \\\"ids\\\": [\\n    \\\"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\\\"\\n  ],\\n  \\\"version\\\": 2,\\n  \\\"linea\\\": {\\n    \\\"id\\\": \\\"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\\\",\\n    \\\"planId\\\": \\\"a7babbd8-9b9c-488a-8bd6-f90e967588fa\\\",\\n    \\\"tipo\\\": \\\"pendiente\\\",\\n    \\\"texto\\\": \\\"Control de presión en 72 h\\\",\\n    \\\"dosis\\\": \\\"\\\",\\n    \\\"frecuencia\\\": \\\"\\\",\\n    \\\"duracion\\\": \\\"\\\",\\n    \\\"estado\\\": \\\"propuesta\\\",\\n    \\\"verificacion\\\": \\\"pendiente\\\",\\n    \\\"motivoVerificacion\\\": null,\\n    \\\"alternativas\\\": [],\\n    \\\"origen\\\": \\\"agente\\\",\\n    \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n    \\\"fuentes\\\": [\\n      {\\n        \\\"tipo\\\": \\\"sin_respaldo\\\",\\n        \\\"referencia\\\": \\\"demo-c2\\\",\\n        \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n        \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n      }\\n    ],\\n    \\\"orden\\\": 2,\\n    \\\"updatedAt\\\": \\\"2026-11-08T18:15:03.186Z\\\"\\n  },\\n  \\\"lineas\\\": [\\n    {\\n      \\\"id\\\": \\\"98e0fe3b-0dfa-44b1-8978-1cfeda611d93\\\",\\n      \\\"planId\\\": \\\"a7babbd8-9b9c-488a-8bd6-f90e967588fa\\\",\\n      \\\"tipo\\\": \\\"pendiente\\\",\\n      \\\"texto\\\": \\\"Control de presión en 72 h\\\",\\n      \\\"dosis\\\": \\\"\\\",\\n      \\\"frecuencia\\\": \\\"\\\",\\n      \\\"duracion\\\": \\\"\\\",\\n      \\\"estado\\\": \\\"propuesta\\\",\\n      \\\"verificacion\\\": \\\"pendiente\\\",\\n      \\\"motivoVerificacion\\\": null,\\n      \\\"alternativas\\\": [],\\n      \\\"origen\\\": \\\"agente\\\",\\n      \\\"justificacion\\\": \\\"Control de HTA.\\\",\\n      \\\"fuentes\\\": [\\n        {\\n          \\\"tipo\\\": \\\"sin_respaldo\\\",\\n          \\\"referencia\\\": \\\"demo-c2\\\",\\n          \\\"fecha\\\": \\\"2026-11-08T10:00:00.000Z\\\",\\n          \\\"fragmento\\\": \\\"No se encontró una mención literal en las fuentes conservadas. Propuesta o modificación que requiere confirmación.\\\"\\n        }\\n      ],\\n      \\\"orden\\\": 2,\\n      \\\"updatedAt\\\": \\\"2026-11-08T18:15:03.186Z\\\"\\n    }\\n  ],\\n  \\\"resumen\\\": {\\n    \\\"bloqueos\\\": 0,\\n    \\\"advertencias\\\": 0,\\n    \\\"bloqueadas\\\": 0,\\n    \\\"vigentes\\\": 3\\n  },\\n  \\\"message\\\": \\\"Añadida Control de presión en 72 h (verificación pendiente). El plan queda en la versión 2 con 3 línea(s) vigente(s), 0 bloqueo(s) y 0 advertencia(s). Usa la versión 2 como versionEsperada si vas a hacer otro cambio, y estas cifras si tienes que resumir.\\\"\\n}\",\"completedSideEffect\":true,\"argumentsHash\":\"34eb0b62cd5bc5c51208c2154be9b96c250a3280aef6d90f17e3b9a6cc87b7e8\",\"executionStepId\":\"model-step:504c57e86adaafd25129650f0e7c35fe5e4901434a006d1263ca5cc9cc432c8d\",\"approvalPause\":false,\"seq\":18,\"eventId\":\"run-1794161703082-hp79wy:18\"}\n\ndata: {\"type\":\"tool_start\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"seq\":19,\"eventId\":\"run-1794161703082-hp79wy:19\"}\n\ndata: {\"type\":\"tool_done\",\"id\":\"call_falso_3\",\"tool\":\"agregar-linea\",\"input\":{\"planId\":\"demo-c2\",\"versionEsperada\":1,\"lineas\":[{\"tipo\":\"pendiente\",\"texto\":\"Control de presión en 72 h\",\"justificacion\":\"Control de HTA.\"}]},\"result\":\"Invalid action parameters for agregar-linea: Model tried to call unavailable tool 'agregar-linea'. Available tools: suggest-follow-ups, ver-contexto-consulta, obtener-plan, proponer-plan, reajustar-plan, sugerir-reemplazo, view-screen, docs-search, ask-question, tool-search, resources, framework-search, get-framework-context.. Received: {\\\"planId\\\":\\\"demo-c2\\\",\\\"versionEsperada\\\":1,\\\"lineas\\\":[{\\\"tipo\\\":\\\"pendiente\\\",\\\"texto\\\":\\\"Control de presión en 72 h\\\",\\\"justificacion\\\":\\\"Control de HTA.\\\"}]}. Expected: { lineas*: array<{ tipo*: \\\"farmaco\\\"|\\\"pendiente\\\", texto*: string, dosis?: string, frecuencia?: string, duracion?: string, justificacion?: string }>, versionEsperada*: integer, planId*: string, origen?: \\\"agente\\\"|\\\"medico\\\" } (where * = required, ? = optional). The tool was not executed; retry with arguments that match the tool schema.\",\"isError\":true,\"completedSideEffect\":false,\"errorClass\":\"input_invalid\",\"approvalPause\":false,\"seq\":20,\"eventId\":\"run-1794161703082-hp79wy:20\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":21,\"eventId\":\"run-1794161703082-hp79wy:21\"}\n\ndata: {\"type\":\"text\",\"text\":\"Plan guardado: 3 líneas, 0 bloqueos y 0 advertencias.\",\"seq\":22,\"eventId\":\"run-1794161703082-hp79wy:22\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"end_turn\",\"seq\":23,\"eventId\":\"run-1794161703082-hp79wy:23\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"start\",\"seq\":24,\"eventId\":\"run-1794161703082-hp79wy:24\"}\n\ndata: {\"type\":\"model_stream\",\"status\":\"end\",\"reason\":\"tool_use\",\"seq\":25,\"eventId\":\"run-1794161703082-hp79wy:25\"}\n\ndata: {\"type\":\"rich_event\",\"event\":{\"namespace\":\"agent-native.follow-up-suggestions\",\"name\":\"generation_failed\",\"version\":1,\"data\":{\"code\":\"invalid_or_missing\",\"runId\":\"run-1794161703082-hp79wy\"}},\"seq\":26,\"eventId\":\"run-1794161703082-hp79wy:26\"}\n\ndata: {\"type\":\"done\",\"seq\":27,\"eventId\":\"run-1794161703082-hp79wy:27\"}\n\n"
+  },
+  "logServidor": "[agent-native] MEGI Revisión listening on http://127.0.0.1:8099/ (root: /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision)\n\n  VITE v8.1.0  ready in 445 ms\n\n  ➜  Local:   http://127.0.0.1:8099/\n[h3] rules: compiler: preMerge could not be applied — falling back to plain compilation.\n  [h3] rules: preMerge: `/icon-*.svg` and `/agent-native-*.svg` partially overlap — the most specific match is ambiguous. Split the overlap into explicit rules or disable preMerge.\n[db] Installed schema snapshot (239 migration(s))\n[terminal] Failed to start PTY server: Error: Failed to load native module: pty.node, checked: build/Release, build/Debug, prebuilds/linux-x64: Error: Cannot find module './prebuilds/linux-x64//pty.node'\nRequire stack:\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js\n- /home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/index.js\n    at Object.loadNativeModule (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/utils.js:36:11)\n    at Object.<anonymous> (/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/node_modules/.pnpm/node-pty@1.1.0/node_modules/node-pty/lib/unixTerminal.js:27:22)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n"
+}

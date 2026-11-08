@@ -249,6 +249,47 @@ anota(
   );
 }
 
+// I7 · la versión, en las dos caras, y el reintento que sí puede repetirse.
+//
+// Dos cifras pagadas más. Con `versionEsperada` opcional en lo que ve el
+// modelo, 1 de 15 escrituras de una tanda llegó sin ella y se fue en un 409
+// evitable. Y cuando el modelo hacía lo correcto —409, releer, volver con la
+// versión buena—, el bucle del framework le frenaba ese reintento («Not run: an
+// earlier … call in this turn may have already applied»): 3 de 10 pasadas
+// acabaron así, sin cambio y sin explicación. `retrySafe` con predicado es la
+// excepción que el propio framework documenta para una clave de idempotencia, y
+// `versionEsperada` lo es: si la primera llamada entró, la versión ya cambió y
+// el reintento se rechaza solo.
+{
+  const CON_VERSION = ["agregar-linea", "reajustar-plan", "actualizar-linea", "sugerir-reemplazo"];
+  const sinVersionObligatoria: string[] = [];
+  const sinReintentoSeguro: string[] = [];
+  for (const n of CON_VERSION) {
+    const a = (registro[n]?.default ?? registro[n]) as any;
+    const requeridos: string[] = a?.tool?.parameters?.required ?? [];
+    if (!requeridos.includes("versionEsperada")) sinVersionObligatoria.push(n);
+    if (a?.retrySafe === undefined) sinReintentoSeguro.push(n);
+  }
+  anota(
+    "i7-el-modelo-ve-la-version-como-obligatoria-en-toda-escritura",
+    sinVersionObligatoria.length === 0,
+    sinVersionObligatoria.length ? `opcional todavía en: ${sinVersionObligatoria.join(", ")}` : CON_VERSION.join(", "),
+  );
+  anota(
+    "i7b-el-reintento-con-version-no-lo-frena-el-bucle",
+    sinReintentoSeguro.length === 0,
+    sinReintentoSeguro.length ? `sin retrySafe: ${sinReintentoSeguro.join(", ")}` : CON_VERSION.join(", "),
+  );
+  // Y que el predicado sea el que es: con versión sí, sin versión no.
+  const agregar = (registro["agregar-linea"]?.default ?? registro["agregar-linea"]) as any;
+  const f = agregar?.retrySafe;
+  anota(
+    "i7c-el-reintento-seguro-depende-de-la-version-y-no-es-un-si-a-todo",
+    typeof f === "function" && f({ versionEsperada: 3 }) === true && f({}) === false,
+    typeof f === "function" ? { conVersion: f({ versionEsperada: 3 }), sinVersion: f({}) } : `retrySafe es ${typeof f}`,
+  );
+}
+
 const checks = resultados.filter((r) => "passed" in r);
 const fallos = checks.filter((r) => !r.passed);
 const salida = {

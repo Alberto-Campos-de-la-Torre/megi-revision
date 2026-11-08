@@ -10,6 +10,7 @@ import {
   ahora,
   exigirAbierto,
   exigirEspacio,
+  limpiaControles,
   lineaOut, lineasOut,
   lineaOutputSchema,
   lineasDe,
@@ -17,10 +18,12 @@ import {
   origenSchema,
   planDe,
   registrarEvento,
+  reintentoSeguroPorVersion,
   requireEmail,
   resumenVerificacion,
   verificarPlan,
-  limpiaControles,
+  versionEsperadaDelAgente,
+  versionEsperadaSchema,
 } from "../server/lib/plan.js";
 
 const cambioSchema = z.object({
@@ -49,14 +52,8 @@ const cambioSchema = z.object({
     .describe("Una frase: por qué este cambio (se muestra al médico)"),
 });
 
-export default defineAction({
-  changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
-  // El framework exige sesión, mismo origen y capacidad UI para HTTP.
-  needsApproval: (_args, ctx) => ctx?.caller === "http",
-  description:
-    "Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médico, NO se aplica nada y responde linea_bloqueada (409) con los ids; explícaselo al médico en vez de reintentar. Las líneas rechazadas tampoco se tocan (reactívalas con actualizar-linea).",
-  schema: z.object({
-    versionEsperada: z.number().int().nonnegative().optional().describe("Versión vigente del plan, la que devuelve obtener-plan en `plan.version`. OBLIGATORIA en toda edición del agente: sin ella la llamada se rechaza con `version_desactualizada` y no se aplica nada. Tras un conflicto, relee el plan y manda la nueva."),
+const ESQUEMA = z.object({
+    versionEsperada: versionEsperadaSchema,
     planId: z.string().describe("Id del plan"),
     cambios: z
       .array(cambioSchema)
@@ -68,7 +65,22 @@ export default defineAction({
       .min(1)
       .describe("Resumen de dos o tres frases de lo que cambiaste y por qué"),
     origen: origenSchema,
-  }),
+  });
+
+export default defineAction({
+  changeResource: input => ({ resourceType: `plan:${input.planId}`, resourceId: input.planId }),
+  // El framework exige sesión, mismo origen y capacidad UI para HTTP.
+  needsApproval: (_args, ctx) => ctx?.caller === "http",
+  description:
+    "Aplica VARIOS cambios al plan en una sola transacción y vuelve a verificar: reemplazar, quitar, editar o agregar líneas, cada uno con su motivo. Respeta lo bloqueado: si algún cambio toca una línea bloqueada por el médico, NO se aplica nada y responde linea_bloqueada (409) con los ids; explícaselo al médico en vez de reintentar. Las líneas rechazadas tampoco se tocan (reactívalas con actualizar-linea).",
+  schema: ESQUEMA,
+  // Lo único que ve el modelo: la versión no es opcional ahí. Medido con Grok:
+  // 1 de 15 escrituras llegó sin ella y se fue en un 409 evitable.
+  agentInputSchema: ESQUEMA.extend({ versionEsperada: versionEsperadaDelAgente }),
+  // Un reintento con la versión vigente no puede duplicar nada: si la primera
+  // llamada entró, la versión ya cambió y este reintento se rechaza. Sin
+  // versión, el freno del framework se queda.
+  retrySafe: reintentoSeguroPorVersion,
   outputSchema: z.object({
     id: z.string(),
     /** La versión que deja este reajuste; úsala para el cambio siguiente. */

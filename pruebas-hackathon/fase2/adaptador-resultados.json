@@ -1,8 +1,8 @@
 {
   "bateria": "fase 2 · adaptador hostil, paridad y entradas hostiles",
-  "cuando": "2026-11-08T17:39:06.904Z",
+  "cuando": "2026-11-08T18:15:25.232Z",
   "app": "/home/ttech-main/hackathons-review/fase2-ui-20261108/megi-revision/",
-  "appCommit": "a9f523d",
+  "appCommit": "4c6d349",
   "node": "v22.22.2",
   "total": 29,
   "pasan": 29,

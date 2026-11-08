@@ -60,7 +60,7 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > nombres cerrados, uno a uno y exactos, y el framework responde que no existen
 > «in the current mode»; lo único que carga son acciones de la mesa. `catalogo.mts`,
 > que medía el registro a secas, mide ahora las dos caras —lo que el registro
-> ofrece y lo que el recorte deja pasar— y pasa de **4/7 a 10/10**: el recorte
+> ofrece y lo que el recorte deja pasar— y pasa de **4/7 a 13/13**: el recorte
 > cierra 86 de las 91, las 5 que quedan son de la mesa, ninguna delicada y todas
 > con freno. Diez pruebas unitarias nuevas fijan la lista, incluida una que
 > falla si alguien añade una acción al producto y no decide si entra o no.
@@ -145,6 +145,44 @@ Segunda vuelta sobre `NGZeggers/hackathons`, rama `bluiders.io`, partiendo del c
 > freno del framework a la escritura repetida, y el modelo se queda sin saber qué
 > le pasó. Con el contenido obligatorio ese camino ya no se pisa.
 
+> **8-nov, tercera tanda (12/16): el contenido ya entra, y aparecen dos cosas
+> que estaban debajo.** Con `lineas` obligatorio en lo que ve el modelo, cuatro
+> pasadas de diez hicieron el trabajo perfecto —leer, dos escrituras con su
+> versión, y el recibo contado de verdad— y los dos pendientes acabaron en el
+> plan (j6 y j7 en verde por primera vez). Las otras seis se reparten en dos
+> causas, las dos del producto:
+>
+> 1. **El reintento correcto tras un 409 lo frenaba el bucle.** Tres pasadas
+>    abrieron el turno con una escritura a ciegas, se llevaron el 409, releyeron
+>    el plan y volvieron con la versión buena —exactamente lo que hay que
+>    hacer— y esa segunda llamada murió. El mensaje, que mi arnés tiraba, lo
+>    explicaba: «Not run: an earlier agregar-linea call in this turn may have
+>    already applied, and its result is unknown». El freno es sensato en
+>    general: repetir un alta a ciegas duplicaría la línea. Pero el framework
+>    documenta la excepción —una clave de idempotencia— y `versionEsperada` lo
+>    es: si la primera llamada entró, la versión ya cambió y el reintento se
+>    rechaza solo. Las cuatro escrituras del plan declaran ahora
+>    `retrySafe: reintentoSeguroPorVersion`, y la versión es obligatoria en
+>    `agentInputSchema`. Medido en `--escenario reintento`, que reproduce la
+>    secuencia entera: antes 13/15, ahora **15/15**, con la línea en el plan.
+> 2. **La guarda se callaba ante «no se guardó nada… llamo ahora».** Tres
+>    pasadas leyeron el plan, NO llamaron a ninguna escritura y cerraron
+>    negando y prometiendo a la vez. La negación les daba el indulto, porque
+>    contar un fallo real es la conducta que se quiere. Pero solo es un informe
+>    si de verdad se intentó algo: negar sin haber intentado nada es el turno
+>    sin hacer. La regla mira ahora si hubo intento de escritura, y el presente
+>    con valor de futuro («Llamo a agregar-linea…») cuenta como anuncio. Cinco
+>    pruebas unitarias nuevas, y las cuatro de «aquí hay que callar» siguen.
+>
+> Y tres arreglos del medidor, porque dos de esas causas las escondió él: el
+> mensaje de un rechazo ya viaja con la llamada —el analizador lo capturaba y el
+> volcado lo tiraba, de ahí los «(sin mensaje)»—; la guarda recibe la petición
+> del médico, como en el chat del producto; y **cada pasada empieza igual**, con
+> el plan borrado y vuelto a montar, porque antes la primera que acertaba dejaba
+> el trabajo hecho para las siguientes (la versión subió de 1 a 11 y el mismo
+> texto quedó cuatro veces). Además, el JSON canónico ya no lo pisa una pasada
+> sin modelo: tres veces se perdió así la evidencia de una tanda pagada.
+
 > Y una cosa que **no** era un fallo: en el turno por el chat, el agente leyó la
 > habilidad, leyó la consulta y **preguntó** «¿Confirmas que no tiene alergias
 > conocidas?» —la ficha de demo-c2 no tiene alergias registradas y el prompt le
@@ -221,6 +259,8 @@ node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario bus
 #     Varias líneas en una sola llamada, y el turno que promete sin hacer:
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario varias
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario promesa
+# el reintento corregido tras un conflicto de versión
+node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor falso --escenario reintento
 
 #     Y con el modelo de verdad, por el endpoint del chat:
 node pruebas-hackathon/fase2/interfaz-y-modelo.mts --motor grok --pedir-clave
@@ -263,7 +303,7 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 |---|---|---|
 | `fase2/http.mjs` · la app en marcha | 43/47 | **47/47** |
 | `fase2/adaptador.mts` · MEGI hostil, paridad, entradas | 26/29 | **29/29** |
-| `fase2/catalogo.mts` · alcance real del agente y la forma que ve el modelo | 4/7 | **10/10** |
+| `fase2/catalogo.mts` · alcance real del agente y la forma que ve el modelo | 4/7 | **13/13** |
 | `fase2/requisitos.mjs` · requisitos del envío | 26/28 | **29/29** |
 | `fase2/interfaz-y-modelo.mts --solo-interfaz` · la pantalla por su frontera de datos | — | **9/9** |
 | `fase2/interfaz-y-modelo.mts --motor falso` · el camino completo del chat, gratis | — | **17/17** |
@@ -271,7 +311,8 @@ volviéndolos a poner, para que las dos cifras salgan del mismo sitio.
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario busqueda` · el recorte, por donde se rodea | — | **13/13** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario varias` · tres líneas en una llamada | — | **14/14** |
 | `fase2/interfaz-y-modelo.mts --motor falso --escenario promesa` · el turno que promete sin hacer | — | **15/15** |
-| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **78 pruebas** |
+| `fase2/interfaz-y-modelo.mts --motor falso --escenario reintento` · el reintento corregido tras un 409 | 13/15 | **15/15** |
+| `megi-revision` · pruebas propias (`pnpm test`) | 0 pruebas | **83 pruebas** |
 | `pruebas-hackathon/bateria.mts` (fase 1, `--http`) | 33/33 | **33/33** |
 | `evidencia/auditoria-hackathon.mts --http` (del proyecto) | 57/57 | **57/57** |
 | `typecheck` · `doctor` · `build` | limpios | **limpios** |

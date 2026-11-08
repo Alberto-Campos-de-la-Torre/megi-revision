@@ -11,6 +11,7 @@ import {
   afirmaUnCambio,
   huboEscritura,
   pidioUnCambio,
+  anunciaUnCambio,
   prometeUnCambio,
   revisaRespuestaFinal,
 } from "./guardia-respuesta.js";
@@ -139,6 +140,24 @@ describe("prometeUnCambio", () => {
   });
 });
 
+describe("anunciaUnCambio", () => {
+  it("reconoce el presente con valor de futuro", () => {
+    for (const x of [
+      "Llamo a agregar-linea dos veces con versionEsperada=4.",
+      "Lo añado y te confirmo.",
+      "Voy a reajustar el plan.",
+    ]) expect(anunciaUnCambio(x), x).toBe(true);
+  });
+  it("no toma por anuncio el trabajo ya hecho", () => {
+    expect(anunciaUnCambio("Plan guardado: 5 líneas, 0 bloqueos y 0 advertencias.")).toBe(false);
+  });
+  it("ve el anuncio aunque venga envuelto en una negación", () => {
+    const x = "No se guardó nada. Llamo a agregar-linea ahora.";
+    expect(prometeUnCambio(x)).toBe(false);
+    expect(anunciaUnCambio(x)).toBe(true);
+  });
+});
+
 describe("pidioUnCambio", () => {
   it("reconoce la petición de cambio del médico", () => {
     for (const t of [
@@ -184,6 +203,26 @@ describe("revisaRespuestaFinal · el trabajo sin hacer", () => {
       resultados: [{ name: "agregar-linea", isError: true }],
     });
     expect(c?.retryMessage).toMatch(/relee el plan con obtener-plan/);
+  });
+
+  it("devuelve el turno cuando niega Y promete sin haber intentado nada", () => {
+    // El caso que la excepción por negación dejaba pasar: medido con Grok, tres
+    // pasadas de diez acabaron así, con el plan intacto.
+    const c = revisaRespuestaFinal({
+      texto: "No se guardó nada: obtener-plan devolvió éxito pero no añadí pendientes. Llamo a agregar-linea ahora.",
+      peticion,
+      resultados: soloLecturas,
+    });
+    expect(c?.retryMessage).toMatch(/No has llamado a ninguna escritura/);
+  });
+
+  it("devuelve el turno cuando se excusa sin haber intentado nada", () => {
+    const c = revisaRespuestaFinal({
+      texto: "No se guardó nada: no añado nada sin versionEsperada.",
+      peticion,
+      resultados: soloLecturas,
+    });
+    expect(c).not.toBeNull();
   });
 
   it("calla si el agente le preguntó algo al médico", () => {

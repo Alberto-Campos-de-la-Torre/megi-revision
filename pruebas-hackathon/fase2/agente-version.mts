@@ -96,7 +96,7 @@
  * No necesita MEGI: corre con `MEGI_MODE=mock` y una base PGlite desechable.
  * No toca ninguna base ni ninguna demo existente.
  */
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -306,6 +306,46 @@ const NIEGA = /\b(no se guard|no se añad|no se agreg|no se aplic|no quedó|no p
 let cerrar: null | (() => Promise<void>) = null;
 let acciones: Record<string, any> = {};
 
+/** La conexión, para poder devolver la base al mismo punto antes de cada pasada. */
+let cliente: any = null;
+
+/**
+ * Borra el plan de la consulta: las diez pasadas tienen que empezar iguales.
+ *
+ * Sin esto, la primera pasada que acierta deja los dos pendientes puestos y la
+ * versión más alta, así que las siguientes ya no miden lo mismo: unas añaden
+ * duplicados y otras se encuentran el trabajo hecho. Medido en la tanda del
+ * 8-nov: la versión subió de 1 a 11 y el plan acabó con los mismos textos
+ * cuatro veces. Las comprobaciones de abajo cuentan pasadas, así que las
+ * pasadas tienen que ser comparables.
+ */
+async function montaElPlan() {
+  await llama("proponer-plan", {
+    consultaId: CONSULTA,
+    lineas: [
+      { tipo: "farmaco", texto: "Paracetamol", dosis: "500 mg", frecuencia: "cada 8 h", duracion: "3 días", justificacion: "Dolor leve" },
+      { tipo: "pendiente", texto: "Control en una semana" },
+    ],
+    explicacion: "Plan de partida del montaje de la prueba.",
+  });
+  const p: any = await llama("obtener-plan", { consultaId: CONSULTA });
+  await llama("agregar-linea", {
+    planId: p.id,
+    // El array es obligatorio aunque sea una línea: la acción lo pide así desde
+    // que dejarlo opcional le costó al agente dos turnos sin contenido.
+    lineas: [{ tipo: "pendiente", texto: "Pendiente añadido en el montaje" }],
+    versionEsperada: p.plan.version,
+  });
+}
+
+async function borraElPlan() {
+  if (!cliente) return;
+  await cliente.query("DELETE FROM lineas_plan WHERE plan_id IN (SELECT id FROM planes WHERE consulta_id = $1)", [CONSULTA]);
+  await cliente.query("DELETE FROM versiones_plan WHERE plan_id IN (SELECT id FROM planes WHERE consulta_id = $1)", [CONSULTA]);
+  await cliente.query("DELETE FROM eventos_revision WHERE plan_id IN (SELECT id FROM planes WHERE consulta_id = $1)", [CONSULTA]);
+  await cliente.query("DELETE FROM planes WHERE consulta_id = $1", [CONSULTA]);
+}
+
 async function abreBase() {
   process.env.DATABASE_URL = DATABASE_URL;
   process.env.MEGI_MODE = "mock";
@@ -313,6 +353,7 @@ async function abreBase() {
     new URL("client.js", pathToFileURL(req.resolve("@agent-native/core/db"))).href
   );
   const client = await getPgliteClient(DATABASE_URL);
+  cliente = client;
   const migraciones = [
     ...readFileSync(new URL("server/plugins/db.ts", APP), "utf8").matchAll(/sql: `([\s\S]*?)`,/g),
   ];
@@ -624,8 +665,11 @@ async function turnoDelAgente(mensaje: string) {
         ownerEmail: CORREO, orgId: null,
         // La misma guarda que el chat del producto, cargada de su propio módulo
         // para que esto mida lo que corre en producción y no una copia.
-        finalResponseGuard: ({ text, toolResults, receipts }: any) =>
-          revisaRespuestaFinal({ texto: text, resultados: toolResults, recibos: receipts ?? [] }),
+        // `requestText` también: la segunda regla de la guarda mira lo que pidió
+        // el médico para no dispararse con una pregunta clínica. Sin pasarlo,
+        // esto medía una guarda más sorda que la del producto.
+        finalResponseGuard: ({ text, requestText, toolResults, receipts }: any) =>
+          revisaRespuestaFinal({ texto: text, peticion: requestText ?? mensaje, resultados: toolResults, recibos: receipts ?? [] }),
         maxIterations: Number(ITERACIONES),
         // El texto ENTREGADO, no la suma de todo lo que pasó por el flujo. Cuando
         // la guarda devuelve un borrador, el framework manda `{type:"clear"}`
@@ -679,22 +723,8 @@ try {
   // Montaje: un plan existente, y una escritura más para que la versión no sea
   // la inicial. Así, si el modelo manda una versión, tiene que ser la que leyó
   // y no un 1 adivinado.
-  await llama("proponer-plan", {
-    consultaId: CONSULTA,
-    lineas: [
-      { tipo: "farmaco", texto: "Paracetamol", dosis: "500 mg", frecuencia: "cada 8 h", duracion: "3 días", justificacion: "Dolor leve" },
-      { tipo: "pendiente", texto: "Control en una semana" },
-    ],
-    explicacion: "Plan de partida del montaje de la prueba.",
-  });
+  await montaElPlan();
   let plan: any = await llama("obtener-plan", { consultaId: CONSULTA });
-  await llama("agregar-linea", {
-    planId: plan.id,
-    // El array es obligatorio aunque sea una línea: la acción lo pide así desde
-    // que dejarlo opcional le costó al agente dos turnos sin contenido.
-    lineas: [{ tipo: "pendiente", texto: "Pendiente añadido en el montaje" }],
-    versionEsperada: plan.plan.version,
-  });
   plan = await llama("obtener-plan", { consultaId: CONSULTA });
   const versionAntes = plan.plan.version as number;
   const lineasAntes = plan.lineas.length as number;
@@ -823,10 +853,16 @@ try {
         '2) "Revisar adherencia en la próxima cita"',
         "No toques las líneas que ya existen. Cuando termines, dilo en una frase.",
       ].join("\n");
+      // Mismo punto de partida para todas: plan con tres líneas, versión 2.
+      if (i > 1) { await borraElPlan(); await montaElPlan(); }
       const t = await turnoDelAgente(mensaje);
       const llamadas = llamadasDe(t.eventos);
       if (i === 1) { mide("j-motor", { motor: t.motor, modelo: t.modelo, claveTomadaDe: fuenteClave }); mide("j-herramientas-ofrecidas", t.ofrecidas); }
-      pasadas.push({ pasada: i, ms: t.ms, llamadas: llamadas.map((x) => ({ tool: x.tool, args: x.args, error: x.error })), respuesta: t.responseText || null, fallo: t.fallo, usage: t.usage, eventos: t.eventos });
+      // `mensaje` tiene que viajar con la llamada: el analizador lo capturaba y
+      // este volcado lo tiraba, así que tres rechazos de la tanda con Grok
+      // quedaron anotados como «(sin mensaje)» y escondieron su causa —era el
+      // freno del framework a la escritura repetida, que sí venía explicado—.
+      pasadas.push({ pasada: i, ms: t.ms, llamadas: llamadas.map((x) => ({ tool: x.tool, args: x.args, error: x.error, ...(x.mensaje ? { mensaje: x.mensaje } : {}) })), respuesta: t.responseText || null, fallo: t.fallo, usage: t.usage, eventos: t.eventos });
       nota(`pasada ${i}: ${t.ms} ms, ${llamadas.length} llamada(s)${t.fallo ? " · con fallo" : ""}`);
       // Si el proveedor rechaza la credencial o el modelo, repetir no aporta
       // nada: se corta y se dice qué pasa, en vez de gastar tres veces lo mismo.
@@ -1036,14 +1072,27 @@ try {
     // eventos del bucle, solo con `--eventos-crudos`, porque abultan mucho.
     pasadas: tapa(crudas),
   }, null, 2) + "\n";
-  writeFileSync(destino, informe);
+  // Y el canónico se defiende solo: una pasada sin turno de modelo —el arnés, o
+  // una tanda que el proveedor rechazó— no lo pisa. Tres veces se perdió así la
+  // evidencia de una tanda pagada, recuperable solo desde `historico/`, y una
+  // evidencia que hay que rescatar a mano no es evidencia.
+  const hubóTurno = (crudas as any[]).some((p) => (p?.llamadas?.length ?? 0) > 0);
+  const pisaríaUnaTandaConModelo =
+    !hubóTurno && existsSync(destino) && (() => {
+      try { return JSON.parse(readFileSync(destino, "utf8"))?.modo === "con modelo"; } catch { return false; }
+    })();
+  if (pisaríaUnaTandaConModelo) {
+    console.log(`\nno se sobrescribe ${destino.pathname}: guarda una tanda con modelo y esta pasada no llamó a ninguna herramienta.`);
+  } else {
+    writeFileSync(destino, informe);
+  }
   try {
     mkdirSync(new URL("historico/", aquí), { recursive: true });
     writeFileSync(copia, informe);
   } catch { /* si no se puede archivar, al menos queda el canónico */ }
   try { rmSync(baseDir, { recursive: true, force: true }); } catch { /* da igual */ }
-  console.log(`\n${checks.length - fallos.length}/${checks.length} · ${fallos.length} FALLA · ${destino.pathname}`);
-  if (!SOLO_ARNES) console.log(`copia sin sobrescribir: ${copia.pathname}`);
+  console.log(`\n${checks.length - fallos.length}/${checks.length} · ${fallos.length} FALLA · ${pisaríaUnaTandaConModelo ? copia.pathname : destino.pathname}`);
+  console.log(`copia sin sobrescribir: ${copia.pathname}`);
   if (fallos.length) console.log(`fallan: ${fallos.map((f) => f.id).join(", ")}`);
   process.exitCode = fallo ? 1 : 0;
 }
