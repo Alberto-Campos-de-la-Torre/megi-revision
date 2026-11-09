@@ -48,7 +48,7 @@ written, with every line counted.
 
 11
 00:00:59,300 --> 00:01:05,500
-Four lines. One safety block.
+One safety block.
 Physician review pending.
 
 12

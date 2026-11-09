@@ -72,7 +72,7 @@ desechable), no supuesto:
 | Línea **Paracetamol** → | `ok` |
 | Pendientes → | `verificacion: pendiente` (no son fármacos: no se verifican) |
 | Conciliación | Warfarina y Metoprolol **sin confirmar** → la aprobación queda deshabilitada |
-| Recibo de la propuesta, literal | «Plan creado con 4 líneas: 1 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.» |
+| Recibo de la propuesta, literal | «Plan creado con **N** líneas: 1 bloqueo(s), 0 advertencia(s). Revisión médica pendiente: confirma las fuentes y concilia la medicación antes de aprobar.» · N son **cuatro o cinco** según si el agente copia también «Fisioterapia» de la nota; con el modelo real, el 8-nov, fueron cinco. El bloqueo es siempre uno: el ibuprofeno |
 
 Lo que esto cuenta solo: **el agente propone lo que el médico dictó, y la capa de acciones
 lo bloquea.** No hay que forzar nada ni escribir un fármaco a mano para provocarlo.
@@ -107,16 +107,26 @@ metoprolol. En la nota, el médico dictó ibuprofeno.»
 and on metoprolol. In the note, the physician dictated ibuprofen.”
 
 ### Toma 3 · 0:35–1:10 · La propuesta · *Cleverness · Innovation*
-**En pantalla:** en el chat, escribe *«Prepara la receta y los pendientes de esta
-consulta»*. Se ven los pasos reales del agente; el plan aparece en el tablero; el chat
-cierra con el recibo contado. Abre **«Motivo del último cambio»**.
+**En pantalla:** en el chat, **escribe a mano** *«Prepara la receta y los pendientes de esta
+consulta»*. Se ven los pasos reales del agente; el plan aparece en el tablero; el recibo
+contado sale como tarjeta de cambio. Abre **«Motivo del último cambio»**.
+
+**No uses el botón «Pedir propuesta al agente» para esta toma.** Abre un hilo nuevo y manda
+un mensaje largo de instrucciones; probado el 8-nov, en ese hilo el modelo leyó la habilidad
+y cerró el turno sin escribir. La frase escrita a mano, en el hilo donde el contexto de
+pantalla ya está, llamó a `proponer-plan` a la primera.
 **ES:** «El agente lee la nota y el expediente, pasa cada fármaco por el verificador de
 MEGI y guarda el plan en una sola operación. Lo que contesta no es un resumen: es el recibo
 de lo que quedó escrito, con las líneas y los bloqueos contados.»
 **EN:** “The agent reads the note and the record, runs every drug through MEGI's checker and
 writes the plan in one atomic operation. What it says back is not a summary: it is a receipt
-of what was actually written, with every line counted. Four lines. One safety block. Physician review pending.”
-**Debe aparecer:** el recibo con «1 bloqueo(s)» y «Revisión médica pendiente».
+of what was actually written, with every line counted. One safety block. Physician review pending.”
+**Debe aparecer:** la tarjeta **«Plan listo para revisión médica»** con «1 bloqueo(s)» y
+«Revisión médica pendiente».
+**Y debajo saldrá esto, que no es del producto:** «Waiting for your answer before
+continuing.» La pone el framework cuando una acción marcada `endsTurn` devuelve el turno al
+médico —para `ask-question` es correcta; aquí es una frase hecha—. No te detengas en ella:
+narra la tarjeta, que es el recibo, y pasa a la toma 4.
 
 ### Toma 4 · 1:10–1:40 · El bloqueo y la alternativa · *Usefulness · Innovation*
 **En pantalla:** la línea de Ibuprofeno en rojo con su motivo. Pulsa **«Rechazar»** (o
@@ -230,6 +240,7 @@ Es un modelo: varía. Lo que sigue ya se ha visto, y casi todo **conviene** que 
 | Pregunta algo clínico («¿confirmas que no tiene alergias conocidas?») | El prompt le prohíbe omitir una pregunta pendiente | Contéstale y sigue. Es la demo, no un tropiezo: enséñalo |
 | Una escritura se va en `version_desactualizada` | Alguien cambió el plan antes; el 409 es la protección | Déjalo: relee y vuelve con la versión nueva. Nárralo en una frase |
 | Dice que guardó algo y no hay recibo | La guarda de respuesta reescribe ese turno | Es una función; muéstrala si ocurre |
+| El turno acaba sin escribir nada | Visto el 8-nov con el botón: el modelo leyó la habilidad y cerró. La guarda contesta «No he hecho el cambio que me pediste: este turno terminó sin ninguna escritura en el plan…» y el tablero ofrece **«Volver a pedir la propuesta»** | Pulsa ese botón: manda una instrucción más dura. En cámara es un buen plano —la app se da cuenta de que el modelo no hizo su trabajo—, pero si buscas la toma limpia, repítela |
 | Intenta tocar una línea bloqueada o fuera del alcance | El servidor lo rechaza dentro de la transacción | Es la toma 5; aprovéchala |
 | El proveedor del modelo falla (429, timeout) | Nada que ver con la app | Corta la toma y repite. No la narres como si hubiera funcionado |
 | El tablero no refresca | Respaldo de 60 s / foco | Vuelve a la lista y entra otra vez; si pasa dos veces, reinicia `pnpm demo` |

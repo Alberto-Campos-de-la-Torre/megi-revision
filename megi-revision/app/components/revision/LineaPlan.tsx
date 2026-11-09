@@ -56,6 +56,12 @@ export function LineaPlan({
   const bloqueada = linea.estado === "bloqueada";
   const rechazada = linea.estado === "rechazada";
   const esFarmaco = linea.tipo === "farmaco";
+  const hayDetalle = Boolean(
+    (esFarmaco && linea.motivoVerificacion && !rechazada) ||
+    linea.justificacion ||
+    linea.fuentes ||
+    (esFarmaco && linea.verificacion === "bloqueado" && linea.alternativas.length && !rechazada),
+  );
 
   function guardar(e: React.FormEvent) {
     e.preventDefault();
@@ -89,22 +95,6 @@ export function LineaPlan({
             {esFarmaco && !rechazada ? <ChipVerificacion v={linea.verificacion} /> : null}
             <ChipEstado estado={linea.estado} origen={linea.origen} />
           </div>
-          {esFarmaco && linea.motivoVerificacion && !rechazada ? (
-            <p className={cn("text-xs", linea.verificacion === "bloqueado" ? "text-red-700 dark:text-red-400" : "text-amber-700 dark:text-amber-400")}>
-              {linea.motivoVerificacion}
-            </p>
-          ) : null}
-          {linea.justificacion ? (
-            <p className="text-xs text-muted-foreground">
-              {rechazada ? "Motivo: " : ""}{linea.justificacion}
-            </p>
-          ) : null}
-          {linea.fuentes && <details className="text-xs"><summary className="cursor-pointer text-muted-foreground">Fuentes y alcance de la verificación</summary><div className="mt-2 space-y-2 rounded-md border border-border p-2">{linea.fuentes.map((f, i) => <div key={i}><p className="font-medium">{f.tipo === "nota" ? "Mención literal en la nota" : f.tipo === "medicacion" ? "Medicación histórica" : "Requiere confirmación"}{f.referencia ? ` · ${f.referencia}` : ""}{f.fecha ? ` · ${new Date(f.fecha).toLocaleDateString("es-MX")}` : ""}</p><p className="mt-1">{f.fragmento}</p></div>)}<p className="text-muted-foreground">La justificación es una explicación del autor. La verificación contrasta las reglas y datos disponibles; no valida por sí sola la indicación ni la dosis.</p></div></details>}
-          {esFarmaco && linea.verificacion === "bloqueado" && linea.alternativas.length && !rechazada ? (
-            <p className="text-xs text-muted-foreground">
-              Alternativas sugeridas: {linea.alternativas.join(" · ")}
-            </p>
-          ) : null}
         </div>
 
         {!cerrado ? (
@@ -138,6 +128,31 @@ export function LineaPlan({
           </div>
         ) : null}
       </div>
+
+      {/* Los textos largos van a todo el ancho, debajo de la cabecera y los
+          botones. En la columna izquierda, el motivo de un bloqueo —tres
+          frases en la línea del ibuprofeno— se partía en una columna estrecha
+          y dejaba a su derecha un hueco vacío tan alto como la línea. */}
+      {hayDetalle ? (
+        <div className="mt-2 space-y-1.5">
+            {esFarmaco && linea.motivoVerificacion && !rechazada ? (
+              <p className={cn("text-xs", linea.verificacion === "bloqueado" ? "text-red-700 dark:text-red-400" : "text-amber-700 dark:text-amber-400")}>
+                {linea.motivoVerificacion}
+              </p>
+            ) : null}
+            {linea.justificacion ? (
+              <p className="text-xs text-muted-foreground">
+                {rechazada ? "Motivo: " : ""}{linea.justificacion}
+              </p>
+            ) : null}
+            {linea.fuentes && <details className="text-xs"><summary className="cursor-pointer text-muted-foreground">Fuentes y alcance de la verificación</summary><div className="mt-2 space-y-2 rounded-md border border-border p-2">{linea.fuentes.map((f, i) => <div key={i}><p className="font-medium">{f.tipo === "nota" ? "Mención literal en la nota" : f.tipo === "medicacion" ? "Medicación histórica" : "Requiere confirmación"}{f.referencia ? ` · ${f.referencia}` : ""}{f.fecha ? ` · ${new Date(f.fecha).toLocaleDateString("es-MX")}` : ""}</p><p className="mt-1">{f.fragmento}</p></div>)}<p className="text-muted-foreground">La justificación es una explicación del autor. La verificación contrasta las reglas y datos disponibles; no valida por sí sola la indicación ni la dosis.</p></div></details>}
+            {esFarmaco && linea.verificacion === "bloqueado" && linea.alternativas.length && !rechazada ? (
+              <p className="text-xs text-muted-foreground">
+                Alternativas sugeridas: {linea.alternativas.join(" · ")}
+              </p>
+            ) : null}
+        </div>
+      ) : null}
 
       {editando && !cerrado && !bloqueada && !rechazada ? (
         <form onSubmit={guardar} className="mt-3 grid gap-2 rounded-lg border border-border bg-background p-3 sm:grid-cols-[2fr_1fr_1fr_1fr_auto] sm:items-end">
