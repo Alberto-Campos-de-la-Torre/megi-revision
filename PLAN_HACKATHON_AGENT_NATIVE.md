@@ -174,7 +174,7 @@ Las reglas aceptan "trabajo original o desarrollo nuevo significativo realizado 
 | Parte | Procedencia | Aportación en el hackatón |
 |---|---|---|
 | Estructura de app, auth, chat, base de datos | Plantilla Chat de Agent-Native (MIT) | Configuración y adaptación |
-| Backend clínico, expediente, SOAP, verificador FDA | MEGI, trabajo previo propio | Sin cambios; se consume por HTTP |
+| Backend clínico, expediente, SOAP, verificador de recetas sobre la tabla de contraindicaciones FDA (paquete FDA_movil, 2 248 fármacos) | MEGI, trabajo previo propio | Sin cambios; se consume por HTTP. **En la demo del hackatón ese verificador no se ejercita**: exige `MEGI_REAL_ASR=true` y, sin él, responde 503. La demo corre con `MEGI_MODE=mock` y el rx-check determinista del adaptador —alergia, crónico, interacción— sobre pacientes ficticios |
 | Acciones `actions/*.ts` | Nuevo | Todas |
 | Tablas `planes`, `lineas_plan`, `eventos_revision` | Nuevo | Todas |
 | Interfaz de revisión (tablero, edición, bloqueo) | Nuevo | Todas |

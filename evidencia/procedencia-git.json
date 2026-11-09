@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-03T05:21:02.779444+00:00",
+  "exportedAt": "2026-11-08T23:28:33.868605-06:00",
   "sourceRepositories": {
     ".": [
       "d86372d4f11823e9cab726a89e7e5969d40245bc\t2026-11-02T11:54:03-06:00\tPlanes del hackatón Agent-Native, reparto de trabajo y adaptador MEGI",
@@ -36,5 +36,50 @@
       "file": "megi-demo/docs/api_samples/01_login.json",
       "field": "token"
     }
-  ]
+  ],
+  "integrationSnapshot": {
+    "commit": "90085a5163c1f638a9ddb3d384b8df3ac35f2024",
+    "subject": "MEGI Revisión: proyecto Agent-Native y auditoría corregida",
+    "nota": "Estado del equipo en la rama bluiders.io. Las listas de sourceRepositories son las historias de los repositorios de origen tal como estaban al integrarse en carpetas; no se tocan."
+  },
+  "repositoryHead": {
+    "commit": "baf9d44a2b35eb8de23efaa569ccc4d45c354284",
+    "branch": "fase2-verificada-sobre-6543854",
+    "date": "2026-11-08T22:54:58-06:00"
+  },
+  "commitsAfterIntegration": [
+    "3d3ecb87b2f89b5c4150cd7fd41a8d8b7e293fca\t2026-11-05T00:01:08-06:00\tArreglos de la revisión independiente + batería de pruebas",
+    "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1\t2026-11-05T00:02:54-06:00\tdoc: fecha real de la revisión y referencia al commit de los arreglos",
+    "d03fdf73c0551eb2a54451adc19a4ff8c0216248\t2026-11-05T00:04:09-06:00\tevidencia: las tres ejecuciones sobre el código con los arreglos",
+    "37bb86fec65f1e67b3d38c072e59b38a4c534dd8\t2026-11-07T13:49:22-06:00\tCierre del 7 nov: H1-H3, iteraciones I1-I6, dictámenes UX (90/91) y fricción de interfaz",
+    "6b087ffffc4603ea31e8b8dc769b689bdafdc39e\t2026-11-07T13:59:29-06:00\tPARA_EL_100.md: actualización de David tras el cierre del 7 nov",
+    "65438548a4849332d19c14a5dbb2959302852bcd\t2026-11-07T18:21:24-06:00\tRestaurar los 23 archivos de megi-revision omitidos por el .gitignore copiado",
+    "0e49b30ffa9661a83c425af55e8b1d040bbb072a\t2026-11-07T21:14:30-06:00\tSegunda fase de pruebas sobre el cierre del 7 nov: cinco arreglos y sus pruebas",
+    "0b758ff93e5a78fbac7cd76e750623bea148fc5d\t2026-11-07T21:19:25-06:00\tLa batería en vivo, adaptada al recorrido del 7 nov: 49/49",
+    "755ca82dcef9ce0af4b43a3c350b9d2424330cb2\t2026-11-07T21:47:13-06:00\tPrueba del contrato de versión con el agente, y corrección de un hallazgo falso",
+    "9dac7dc6ebae2e84a1a46c867e3079bd5c66c110\t2026-11-07T22:01:13-06:00\tLa prueba del agente acepta cualquiera de los once motores, no solo dos",
+    "9953513260973817cafd467df98d085b63717d91\t2026-11-07T22:09:29-06:00\tLa prueba del agente, lista para Grok: atajo, entrada de clave y motivo real",
+    "eaa41386d23b2c55fec98275c382ee1a2d50570b\t2026-11-07T22:17:49-06:00\tEl agente omitía versionEsperada porque el esquema la declara opcional",
+    "32c1b2dd3d4a17cded81e658d00e25acc1730741\t2026-11-07T22:25:41-06:00\tLa clave que se pide manda sobre la que ya hubiera, y no se gastan tres pasadas",
+    "f309b200aa92515fe7a00d51c0fd9eaa368bff41\t2026-11-07T22:33:47-06:00\tCon los dos cambios, el agente respeta el contrato: cero omisiones de versión",
+    "dbed060bc04e9cb185ddb70f9657f69dd6202c40\t2026-11-07T22:48:16-06:00\tDiez pasadas: el agente afirma haber guardado lo que no guardó, 8 de 10",
+    "1136e8c7aacd6a5af5b40e19c960e2a52dd28ab6\t2026-11-07T22:54:38-06:00\tEl ejemplo del prompt era la mentira: una afirmación falsa ya redactada",
+    "9a349babec9aae9e8f7c15239d51e7cc6f99b8da\t2026-11-07T23:01:51-06:00\tEl ejemplo con huecos bajó las afirmaciones falsas de 9 a 5 de 10",
+    "3fc7efc8bcbeccf1dc5f32b04b218d84c001ae9e\t2026-11-07T23:15:00-06:00\tLa respuesta final ya no puede contradecir al tablero, y no depende del prompt",
+    "680a0dacc5a04f84a1d530b1d640cf0f687fb638\t2026-11-07T23:22:57-06:00\tLa causa del 0 de 10: una escritura no devolvía la versión que dejaba",
+    "183b260e27750decc0ed9da67cd07a0ad5222119\t2026-11-07T23:30:03-06:00\tEl recibo trae las cifras, las escrituras aceptan los dos ids, y la tasa es objetivo",
+    "0eed78922449b1868ad04a75144dc3893acf71c4\t2026-11-07T23:33:42-06:00\tLa primera lectura del turno no se salta nunca",
+    "1bd36a1b585b1777af9f1ce1cae16e5d7635598a\t2026-11-07T23:42:18-06:00\t18 de 18 escrituras aplicadas y 9 de 10 pasadas completas; dos arreglos del cierre",
+    "150e5472e2fb162fb458ae146aeadfd815e01263\t2026-11-08T01:51:41-06:00\tLa interfaz y la conexión del modelo, medidas con el servidor en marcha",
+    "02f6ff292a09a3d3a56acce672c9f5fa6aa70ff6\t2026-11-08T02:26:36-06:00\tEl agente ya no tiene por dónde sacar el expediente",
+    "b2756a205ec5188be74636a34d38fd1989b2b22e\t2026-11-08T02:59:18-06:00\tVarias líneas en una llamada, y un turno no acaba prometiendo lo que no hizo",
+    "a9f523d9615d78030700c7860d51ff15b8226ea7\t2026-11-08T04:56:28-06:00\tLa tanda con Grok encontró tres regresiones mías y aquí están arregladas",
+    "4c6d349c78e3bc1d47dde7ab5e5ddc2444bda9a2\t2026-11-08T11:41:55-06:00\tEl modelo solo respeta el esquema: `lineas` obligatorio en lo que ve",
+    "4e3f8e28dc11bdd8205cc28ed138962e12b3721a\t2026-11-08T12:16:43-06:00\tEl reintento corregido ya entra, y negar sin intentar no indulta",
+    "331408ac77c65e642531e473f3a07d1407afaeb2\t2026-11-08T15:46:06-06:00\tLa cuarta tanda con Grok: diez de diez, 20 escrituras y ningún 409",
+    "d428f20d46f979c31ad46a30583cd642aee9907c\t2026-11-08T17:26:33-06:00\tGuion de grabación: el caso de Rosa, las diez tomas y lo que se puede afirmar",
+    "b998df505187959c5377780a4b862494d07dbd43\t2026-11-08T22:12:45-06:00\tSubtítulos en inglés cuadrados al guion, y dos tomas recortadas para que quepan",
+    "baf9d44a2b35eb8de23efaa569ccc4d45c354284\t2026-11-08T22:54:58-06:00\tEl motivo del bloqueo ya ocupa todo el ancho de la línea, y el guion dice qué sale de verdad al cerrar el turno"
+  ],
+  "verificationNote": "Los commits posteriores a la integración son la revisión de fase 2: medición con modelo real (Grok 4.20 non-reasoning), arreglos del contrato de las acciones y material de grabación. La batería que lo comprueba es pruebas-hackathon/fase2/requisitos.mjs, bloque R13."
 }

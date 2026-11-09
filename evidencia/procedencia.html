@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procedencia MEGI</title>
+<meta name="description" content="Qué parte de MEGI Revisión es plantilla, qué es trabajo previo del equipo y qué se construyó durante el hackatón.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --fondo: #f7f7f5;
+    --tarjeta: #ffffff;
+    --tinta: #16181d;
+    --tinta-suave: #5b616e;
+    --borde: #e2e2dd;
+    --borde-fuerte: #cfcfc8;
+    --previo: #7a5c12;
+    --previo-fondo: #fdf5e0;
+    --nuevo: #0f5c3f;
+    --nuevo-fondo: #e8f5ee;
+    --plantilla: #2f4b7c;
+    --plantilla-fondo: #eaf0f9;
+    --aviso: #8a2b2b;
+    --aviso-fondo: #fdeceb;
+    --sombra: 0 1px 2px rgba(16,18,24,.06), 0 8px 24px rgba(16,18,24,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fondo: #101216;
+      --tarjeta: #171a20;
+      --tinta: #e9eaec;
+      --tinta-suave: #a0a6b2;
+      --borde: #272b33;
+      --borde-fuerte: #353a44;
+      --previo: #e8c45f;
+      --previo-fondo: #2a2412;
+      --nuevo: #6fd6a4;
+      --nuevo-fondo: #10291f;
+      --plantilla: #9bbcf0;
+      --plantilla-fondo: #141d2b;
+      --aviso: #f08f8a;
+      --aviso-fondo: #2a1514;
+      --sombra: 0 1px 2px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --fondo: #101216;
+    --tarjeta: #171a20;
+    --tinta: #e9eaec;
+    --tinta-suave: #a0a6b2;
+    --borde: #272b33;
+    --borde-fuerte: #353a44;
+    --previo: #e8c45f;
+    --previo-fondo: #2a2412;
+    --nuevo: #6fd6a4;
+    --nuevo-fondo: #10291f;
+    --plantilla: #9bbcf0;
+    --plantilla-fondo: #141d2b;
+    --aviso: #f08f8a;
+    --aviso-fondo: #2a1514;
+    --sombra: 0 1px 2px rgba(0,0,0,.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--tinta);
+    font: 17px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .envoltura { max-width: 60rem; margin: 0 auto; padding: 2.5rem 16px 4rem; }
+
+  header h1 { margin: 0 0 .35rem; font-size: clamp(1.7rem, 1.2rem + 2.2vw, 2.5rem); letter-spacing: -.02em; line-height: 1.15; }
+  header p.entrada { margin: 0 0 1.1rem; max-width: 46rem; color: var(--tinta-suave); font-size: 1.02rem; }
+  .sello {
+    display: flex; flex-wrap: wrap; gap: .4rem .9rem; align-items: baseline;
+    padding: .7rem .9rem; border: 1px solid var(--borde); border-radius: .7rem;
+    background: var(--tarjeta); box-shadow: var(--sombra);
+    font-size: .86rem; color: var(--tinta-suave);
+  }
+  .sello code { font-size: .86rem; color: var(--tinta); }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  /* Una ruta o un nombre de rama sin espacios ensancha la página entera y, en
+     un teléfono, recorta todo lo demás. Que partan donde haga falta. */
+  code, .mono { overflow-wrap: anywhere; }
+  body { overflow-wrap: break-word; }
+
+  .leyenda { display: flex; flex-wrap: wrap; gap: .5rem; margin: 2rem 0 1rem; padding: 0; list-style: none; }
+  .etiqueta {
+    display: inline-flex; align-items: center; gap: .45rem;
+    padding: .22rem .6rem; border-radius: 999px;
+    font-size: .8rem; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
+  }
+  .etiqueta::before { content: ""; width: .5rem; height: .5rem; border-radius: 999px; background: currentColor; }
+  .et-plantilla { color: var(--plantilla); background: var(--plantilla-fondo); }
+  .et-previo { color: var(--previo); background: var(--previo-fondo); }
+  .et-nuevo { color: var(--nuevo); background: var(--nuevo-fondo); }
+
+  h2 { margin: 2.4rem 0 .2rem; font-size: 1.12rem; letter-spacing: .01em; }
+  h2 + p.nota { margin: 0 0 1rem; color: var(--tinta-suave); font-size: .92rem; }
+
+  .filas { display: grid; gap: .7rem; }
+  .fila {
+    display: grid; gap: .35rem .9rem; align-items: start;
+    grid-template-columns: 1fr;
+    padding: .9rem 1rem .9rem 1.1rem;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-left: 4px solid var(--borde-fuerte);
+    border-radius: .7rem;
+    box-shadow: var(--sombra);
+  }
+  .fila[data-tipo="plantilla"] { border-left-color: var(--plantilla); }
+  .fila[data-tipo="previo"] { border-left-color: var(--previo); }
+  .fila[data-tipo="nuevo"] { border-left-color: var(--nuevo); }
+  .parte { margin: 0; font-weight: 650; }
+  .parte .detalle { display: block; margin-top: .15rem; font-weight: 400; font-size: .9rem; color: var(--tinta-suave); }
+  .aporta { margin: 0; font-size: .92rem; color: var(--tinta-suave); }
+  .aporta strong { color: var(--tinta); font-weight: 600; }
+  /* Oculta en estrecho y rejilla en ancho: el orden importa, la regla general
+     va antes que la consulta de medios o la pisa en todos los tamaños. */
+  .cabecera-filas { display: none; }
+  @media (min-width: 46rem) {
+    .fila { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+    .cabecera-filas { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: .9rem; padding: 0 1rem .4rem 1.1rem; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+  }
+
+  .aviso {
+    margin: .55rem 0 0; padding: .6rem .8rem;
+    border-radius: .55rem; background: var(--aviso-fondo); color: var(--aviso);
+    font-size: .88rem; grid-column: 1 / -1;
+  }
+  .aviso strong { color: inherit; }
+
+  .cifras { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin: 1rem 0 0; padding: 0; list-style: none; }
+  .cifras li { padding: .8rem .9rem; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: .7rem; box-shadow: var(--sombra); }
+  .cifras b { display: block; font-size: 1.6rem; line-height: 1.1; letter-spacing: -.02em; }
+  .cifras span { font-size: .84rem; color: var(--tinta-suave); }
+
+  footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--borde); color: var(--tinta-suave); font-size: .88rem; }
+  footer p { margin: .35rem 0; }
+  @media print {
+    body { background: #fff; font-size: 11pt; }
+    .fila, .cifras li, .sello { box-shadow: none; break-inside: avoid; }
+    .envoltura { padding: 0; max-width: none; }
+  }
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+  <header>
+    <h1>Procedencia</h1>
+    <p class="entrada">Qué parte de <strong>MEGI Revisión</strong> viene de una plantilla, qué es trabajo previo del equipo y qué se construyó durante el hackatón Agent-Native. Las bases exigen declararlo y separar lo anterior al 27 de octubre de 2026 de lo hecho durante el evento.</p>
+    <div class="sello">
+      <span>Commit medido <code>baf9d44</code></span>
+      <span>Rama <code>fase2-verificada-sobre-6543854</code></span>
+      <span>8 de noviembre de 2026</span>
+      <span>Evidencia en <code>evidencia/procedencia-git.json</code></span>
+    </div>
+  </header>
+
+  <ul class="leyenda">
+    <li><span class="etiqueta et-plantilla">Plantilla (MIT)</span></li>
+    <li><span class="etiqueta et-previo">Trabajo previo del equipo</span></li>
+    <li><span class="etiqueta et-nuevo">Construido en el hackatón</span></li>
+  </ul>
+
+  <h2>Lo que no es nuestro, o ya existía</h2>
+  <p class="nota">Dos piezas. Ninguna se modificó durante el evento.</p>
+  <div class="filas">
+    <div class="cabecera-filas"><span>Parte</span><span>Aportación en el hackatón</span></div>
+
+    <article class="fila" data-tipo="plantilla">
+      <p class="parte">Estructura de la aplicación, sesión, chat y base de datos
+        <span class="detalle">Plantilla Chat de Agent-Native, licencia MIT · <code>LICENSE.agent-native.txt</code></span>
+      </p>
+      <p class="aporta"><strong>Configuración y adaptación.</strong> La plantilla se conserva reconocible; el historial arranca en ella sin modificar.</p>
+    </article>
+
+    <article class="fila" data-tipo="previo">
+      <p class="parte">Backend clínico de MEGI: expediente, nota SOAP, verificador de recetas y exportación FHIR
+        <span class="detalle">FastAPI (Python), del equipo, anterior al 27-oct-2026. El verificador trabaja sobre la tabla de contraindicaciones FDA del paquete FDA_movil, 2 248 fármacos.</span>
+      </p>
+      <p class="aporta"><strong>Sin cambios.</strong> Se consume por HTTP a través de un adaptador nuevo.</p>
+      <p class="aviso"><strong>En la demo ese verificador no se ejercita.</strong> Exige <code>MEGI_REAL_ASR=true</code> y sin él responde 503. La demo corre con <code>MEGI_MODE=mock</code>: alergia, interacción y contraindicación por crónico las decide el rx-check determinista del adaptador, sobre cuatro pacientes ficticios. No se afirma validación clínica de ningún catálogo.</p>
+    </article>
+  </div>
+
+  <h2>Lo construido durante el hackatón</h2>
+  <p class="nota">Todo lo de esta sección es nuevo, íntegro, y es lo que se ve en la demo.</p>
+  <div class="filas">
+    <div class="cabecera-filas"><span>Parte</span><span>Aportación en el hackatón</span></div>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">Las diecisiete acciones del dominio
+        <span class="detalle"><code>actions/*.ts</code> — una por archivo, con esquema, esquema de salida y códigos de error</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Las reglas viven aquí, no en la pantalla ni en el prompt: bloqueada es intocable, la aprobación es solo del médico, toda escritura del agente lleva la versión que leyó.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">El modelo de datos de la revisión
+        <span class="detalle"><code>planes</code> · <code>lineas_plan</code> · <code>eventos_revision</code> · <code>versiones_plan</code> · <code>mediciones_revision</code>, con migraciones aditivas v1–v5</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Cada cambio es una versión atómica con autor, hora y fuente por línea.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">Los adaptadores a MEGI
+        <span class="detalle">Contrato <code>MegiAdapter</code> con dos implementaciones, <code>mock</code> y <code>http</code>, y paridad medida entre ambas</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Permiten la demo autónoma con datos ficticios y el backend real sin cambiar la aplicación.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">La mesa de revisión
+        <span class="detalle">Tablero, edición de líneas, bloqueo, rechazo, alcance por identificadores, conciliación de medicación, comparación de versiones, bitácora y exportación</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Interfaz y agente llaman a las mismas acciones sobre los mismos registros.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">La habilidad del agente y su prompt
+        <span class="detalle"><code>.agents/skills/revision-clinica/SKILL.md</code> y <code>server/plugins/agent-chat.ts</code>, con el alcance de herramientas recortado a lo que la mesa necesita</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Lo que el prompt pide, las acciones lo garantizan.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">La guarda de la respuesta final
+        <span class="detalle"><code>server/lib/guardia-respuesta.ts</code> — decide mirando los recibos de escritura, no lo que el modelo dice que hizo</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Un turno no puede afirmar un cambio que no ocurrió, ni prometerlo y dejar el tablero igual.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">Los pacientes y las consultas de prueba
+        <span class="detalle">Cuatro casos sintéticos con marca de ficticio, identificadores de relleno y aviso en la interfaz</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> Ningún dato de paciente real entra en la demo.</p>
+    </article>
+
+    <article class="fila" data-tipo="nuevo">
+      <p class="parte">La verificación
+        <span class="detalle">83 pruebas propias, baterías de fase 1 y fase 2, auditoría del proyecto y medición con modelo real (Grok 4.20 non-reasoning)</span>
+      </p>
+      <p class="aporta"><strong>Todas.</strong> El repositorio no tenía ninguna prueba propia antes del evento.</p>
+    </article>
+  </div>
+
+  <h2>Cómo se comprueba, sin creer en esta página</h2>
+  <ul class="cifras">
+    <li><b>32</b><span>commits posteriores a la integración, con hash, fecha y asunto en <code class="mono">procedencia-git.json</code></span></li>
+    <li><b>3</b><span>historias de origen conservadas: la raíz, <code class="mono">megi-revision</code> y <code class="mono">megi-demo</code></span></li>
+    <li><b>R13</b><span>el bloque de <code class="mono">requisitos.mjs</code> que exige que la procedencia esté registrada y deja constancia del <code class="mono">HEAD</code></span></li>
+    <li><b>10 / 10</b><span>pasadas del agente con modelo real completaron el trabajo; 20 escrituras, 20 con versión, ningún rechazo</span></li>
+  </ul>
+
+  <footer>
+    <p>Todos los pacientes mostrados son ficticios. La aplicación es apoyo a la decisión: la aprobación final es siempre del médico.</p>
+    <p>Fuentes de esta página: <code>PLAN_HACKATHON_AGENT_NATIVE.md</code> §7 (la tabla), <code>evidencia/procedencia-git.json</code> (los commits), <code>megi-revision/README.md</code> (la estructura) y <code>pruebas-hackathon/fase2/README.md</code> (las mediciones).</p>
+  </footer>
+
+</div>
+</body>
+</html>
