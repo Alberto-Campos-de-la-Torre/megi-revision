@@ -111,10 +111,6 @@ and on metoprolol. In the note, the physician dictated ibuprofen.”
 consulta»*. Se ven los pasos reales del agente; el plan aparece en el tablero; el recibo
 contado sale como tarjeta de cambio. Abre **«Motivo del último cambio»**.
 
-**No uses el botón «Pedir propuesta al agente» para esta toma.** Abre un hilo nuevo y manda
-un mensaje largo de instrucciones; probado el 8-nov, en ese hilo el modelo leyó la habilidad
-y cerró el turno sin escribir. La frase escrita a mano, en el hilo donde el contexto de
-pantalla ya está, llamó a `proponer-plan` a la primera.
 **ES:** «El agente lee la nota y el expediente, pasa cada fármaco por el verificador de
 MEGI y guarda el plan en una sola operación. Lo que contesta no es un resumen: es el recibo
 de lo que quedó escrito, con las líneas y los bloqueos contados.»
