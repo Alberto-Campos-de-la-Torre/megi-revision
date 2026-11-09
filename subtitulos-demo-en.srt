@@ -1,0 +1,164 @@
+1
+00:00:00,400 --> 00:00:04,800
+After a consultation, someone must turn
+the note into orders and follow-ups.
+
+2
+00:00:05,100 --> 00:00:09,600
+It is minutes of repetitive work,
+and where medication errors slip in.
+
+3
+00:00:09,900 --> 00:00:15,200
+This is the desk where the physician
+and the agent do it together.
+
+4
+00:00:20,500 --> 00:00:25,000
+Rosa is fictitious, like all four cases.
+
+5
+00:00:25,300 --> 00:00:29,500
+She takes warfarin for atrial
+fibrillation, and metoprolol.
+
+6
+00:00:29,800 --> 00:00:34,200
+In the note, the physician
+dictated ibuprofen.
+
+7
+00:00:35,500 --> 00:00:40,200
+The agent reads the note and the record,
+runs every drug through MEGI's checker,
+
+8
+00:00:40,500 --> 00:00:45,000
+and writes the plan
+in one atomic operation.
+
+9
+00:00:48,500 --> 00:00:53,000
+What it says back is not a summary:
+
+10
+00:00:53,300 --> 00:00:59,000
+it is a receipt of what was actually
+written, with every line counted.
+
+11
+00:00:59,300 --> 00:01:05,500
+Four lines. One safety block.
+Physician review pending.
+
+12
+00:01:10,500 --> 00:01:15,800
+The agent proposed what the physician
+dictated, and the action blocked it.
+
+13
+00:01:16,100 --> 00:01:21,000
+Ibuprofen with warfarin means bleeding.
+
+14
+00:01:21,300 --> 00:01:27,200
+By rejecting the line, the physician lets
+the agent suggest for that line only.
+
+15
+00:01:27,500 --> 00:01:34,000
+The alternative stays out of the
+prescription until the physician accepts.
+
+16
+00:01:40,500 --> 00:01:45,500
+Locked means untouchable.
+That rule is not in the prompt:
+
+17
+00:01:45,800 --> 00:01:50,500
+it is in the action,
+inside the transaction.
+
+18
+00:01:50,800 --> 00:01:56,000
+A visual selection grants nothing either.
+
+19
+00:01:56,300 --> 00:02:01,500
+The physician authorises specific ids,
+and the server revalidates them.
+
+20
+00:02:01,800 --> 00:02:08,500
+The physician can do any step by hand,
+and the agent sees the same state.
+
+21
+00:02:10,500 --> 00:02:16,000
+Every change is an atomic version,
+with its author and its time.
+
+22
+00:02:16,300 --> 00:02:24,500
+What was removed, what was added,
+and where each line came from.
+
+23
+00:02:25,500 --> 00:02:31,000
+Drugs coming from the record arrive
+unconfirmed, and they hold the approval.
+
+24
+00:02:31,300 --> 00:02:37,000
+The agent cannot skip this.
+
+25
+00:02:37,300 --> 00:02:44,500
+Reconciliation belongs to the physician,
+and the rule lives in the action.
+
+26
+00:02:45,500 --> 00:02:51,500
+The physician approves and confirms
+the remaining alerts,
+
+27
+00:02:51,800 --> 00:02:57,500
+and the note leaves sealed to MEGI
+as FHIR.
+
+28
+00:02:57,800 --> 00:03:04,500
+Clinical approval exists only here:
+not over HTTP, MCP or the CLI.
+
+29
+00:03:05,500 --> 00:03:11,500
+The UI and the agent call the same
+seventeen actions on the same records.
+
+30
+00:03:11,800 --> 00:03:19,500
+Every agent write carries the version it
+read; if it arrives late, it re-reads.
+
+31
+00:03:20,500 --> 00:03:25,500
+The MEGI clinical backend is prior work
+and was not modified.
+
+32
+00:03:25,800 --> 00:03:30,200
+The whole application was built
+during the hackathon.
+
+33
+00:03:30,500 --> 00:03:33,500
+All patients are fictitious.
+This is decision support:
+
+34
+00:03:33,800 --> 00:03:37,000
+the final approval is always
+the physician's.
