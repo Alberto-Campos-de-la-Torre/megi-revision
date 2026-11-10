@@ -1,2 +1,6 @@
 historico/
 pasadas/
+
+# Salida del bloque R: se regenera con `node pruebas-hackathon/fase2/requisitos.mjs`
+requisitos-resultados.json
+requisitos-antes.json

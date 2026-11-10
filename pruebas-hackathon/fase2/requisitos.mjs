@@ -334,6 +334,12 @@ if (!enlaceClip) {
     "r11-clips-publico",
     "el campo «Public Clips recording URL» de ENVIO_HACKATHON.md sigue vacío: la demo accesible que exigen las bases se acredita con ese enlace",
   );
+} else {
+  anota(
+    "r11-grabacion-publica-declarada",
+    true,
+    `enlace de la grabación en ENVIO_HACKATHON.md: ${/https?:\/\/\S+/.exec(clip)?.[0] ?? ""}`,
+  );
 }
 // El borrador no puede dar por hecho un envío que no esté respaldado: las bases
 // avisan de que grabar el clip no inscribe nada, y el envío solo cuenta con el

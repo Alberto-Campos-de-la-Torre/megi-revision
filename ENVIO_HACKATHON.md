@@ -11,11 +11,11 @@ Este documento reúne los campos del formulario y el texto listo para pegar. Cor
 | Project name | MEGI Revisión |
 | Project description | (bloque de abajo) |
 | Project or GitHub URL | https://github.com/Alberto-Campos-de-la-Torre/megi-revision (público, 9-nov-2026; sin la operación del servidor de MEGI ni las auditorías internas) |
-| Public Clips recording URL | el enlace público de Clips (ver «Grabación») |
+| Public Clips recording URL | https://www.youtube.com/watch?v=-S7_-JKP-xQ — «Agent-Native Hackathon 2026», alojado en YouTube y abierto sin iniciar sesión |
 | Slides URL | vacío |
 | Agreement | pendiente de revisión y aceptación personal al enviar |
 
-## Project description (copiar tal cual, ajustando nombres del equipo)
+## Project description (copiar tal cual)
 
 MEGI Revisión is a post-consultation review desk where a physician and an agent prepare the prescription and follow-ups of a consultation together. The agent proposes a plan verified against the patient's allergies, chronic conditions and active medication; the physician edits, locks or rejects lines from the UI; the agent re-adjusts only what is not locked and explains every change; the physician reconciles historical medication before approving and exporting a sealed FHIR note to MEGI. Every change has an atomic version and a source per line; selection scopes are enforced on the server. Safety-blocked lines trigger an alternative suggestion for physician review while locked lines remain protected. UI and agent call the same Agent-Native actions on the same records: the rules (a locked line is untouchable, a safety block cannot be approved without explicit physician confirmation) live in the actions, not in the prompt or the screen.
 
