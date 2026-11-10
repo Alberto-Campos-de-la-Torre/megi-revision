@@ -28,7 +28,7 @@ fechas originales.
 | `adaptador-megi/` | El cliente HTTP a MEGI aislado, con su prueba. |
 | `pruebas-hackathon/` | Las baterías de verificación: catálogo, adaptador, requisitos, HTTP, y `fase2/agente-version.mts`, que mide al agente real contra la aplicación real. |
 | `evidencia/` | Resultados, capturas, licencias, bases oficiales del hackatón (`bases/`, con su SHA-256 y fecha de descarga) y la procedencia del código. |
-| `megi-demo/` | **Trabajo previo del equipo**, anterior al 27 de octubre de 2026: el backend clínico de MEGI (FastAPI) con expediente, nota SOAP, verificador de recetas, aprobación y exportación FHIR. Aquí no se modificó; se consume por HTTP. |
+| `megi-demo/` | **Trabajo previo del equipo**, anterior al 27 de octubre de 2026: el backend clínico de MEGI (FastAPI) con expediente, nota SOAP, verificador de recetas, aprobación y exportación FHIR. Aquí no se modificó; se consume por HTTP. Se publica el código que el adaptador necesita, no la operación del servidor (ver abajo). |
 | Documentos raíz | `PLAN_HACKATHON_AGENT_NATIVE.md` (plan y procedencia), `ESTADO.md`, `PARA_EL_100.md`, `GUION-GRABACION.md` y los subtítulos de la demo, `ENVIO_HACKATHON.md` (borrador de entrega). |
 
 La procedencia completa —qué es previo, qué es nuevo, qué se tomó de la plantilla
@@ -74,6 +74,22 @@ interfaz no monta. Instala en limpio.
 publicado un Clip ni enviado el formulario. `evidencia/video/` conserva una grabación de
 referencia anterior a la auditoría, que no acredita las correcciones actuales. El detalle
 está en `ENVIO_HACKATHON.md`.
+
+## Qué no se publica aquí
+
+Este repositorio no incluye el material de operación del backend previo, que no hace falta
+para el hackatón y no debe circular: los guiones de instalación, copia, restauración y
+rotación de registros del servidor, las plantillas de despliegue (túnel y servicios), el
+documento de empaquetado con el dominio de producción, las dos auditorías internas de
+seguridad de MEGI y su hoja de ruta comercial. Están fuera de todos los commits, no solo
+del último.
+
+La contraseña `demo-megi-2026` que aparece en los guiones de prueba no es un secreto: es el
+valor por defecto que siembra `megi-demo/backend/seed_demo.py` en una instalación local con
+pacientes ficticios, y `pruebas-hackathon/fase2/requisitos.mjs` comprueba que siga siendo
+ese y no otro. Ninguna clave real —ni de xAI, ni de MEGI, ni de ningún servicio— está en el
+repositorio ni en su historia: `.env` está ignorado y solo se versionan los `.env.example`
+con nombres de variable.
 
 ## Licencias
 
