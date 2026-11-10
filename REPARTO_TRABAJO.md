@@ -224,4 +224,4 @@ OPENAI_API_KEY=...                   # se entrega el día de la integración
 Canal único de coordinación: un archivo `ESTADO.md` en el repo que cada uno actualiza al cerrar el día con "hecho / bloqueado / necesito".
 
 
-Actualización tras la auditoría: los permisos y las transacciones se corrigieron y se ampliaron las pruebas; detalle en `ESTADO.md`. La aprobación final es exclusiva de la interfaz autenticada. Publicación de Clips y envío del formulario están detenidos por instrucción de David; no se han realizado.
+Actualización tras la auditoría: los permisos y las transacciones se corrigieron y se ampliaron las pruebas; detalle en `ESTADO.md`. La aprobación final es exclusiva de la interfaz autenticada. La publicación del Clip y el envío del formulario son pasos de persona, no de código: se registran en `ENVIO_HACKATHON.md`.

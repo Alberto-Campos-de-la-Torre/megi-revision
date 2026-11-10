@@ -2,9 +2,7 @@
 
 Formulario: https://www.builder.io/hackathon/submit · Límite: 9 nov 2026, 11:59 PM PT (10 nov, 01:59 Ciudad de México).
 
-**Estado: publicación y envío detenidos por instrucción expresa de David.** No se ha subido video, publicado un Clip ni enviado el formulario. La cuenta de Clips se abrió únicamente para preparar la demo.
-
-Este documento prepara una entrega futura; no acredita una inscripción. Nombre, correo, integrantes, elegibilidad y reparto del premio deben completarse con datos confirmados por el equipo. No se han inferido ni enviado.
+Este documento reúne los campos del formulario y el texto listo para pegar. Correo, elegibilidad y reparto del premio se completan con datos confirmados por el equipo: no se infieren aquí.
 
 ## Campos
 
@@ -35,7 +33,7 @@ El guion ejecutable —preparación, caso elegido, tomas con narración, conting
 
 1. Trabajar en una copia de ensayo con datos ficticios. Arrancar el backend de demo con `megi-demo/backend/start_demo.sh`; sembrar solo esa copia con `seed_demo.py`. Con la app detenida, iniciar una base de ensayo nueva mediante `DATABASE_URL=pglite:./data/ensayo pnpm dev` desde `megi-revision/`. Conservar la carpeta `data/` anterior; no borrarla. La siembra vuelve a abrir las consultas ficticias y debe acompañarse de una base de planes nueva para evitar estados desincronizados.
 2. Abrir `http://localhost:8080/revision` y seguir el guion de `PLAN_HACKATHON_AGENT_NATIVE.md` §10 con la consulta de Mateo (demo-c2): propuesta → bloquear una línea → pedir reajuste que la toque → el agente la respeta → aprobar y exportar.
-3. Cuando David autorice reanudar la publicación: grabar la versión corregida con Clips, publicar el enlace y comprobar en ventana privada que abre sin iniciar sesión. No realizar estos pasos mientras siga vigente la pausa.
+3. Grabar con Clips la versión corregida, publicar el enlace y comprobar en una ventana privada que abre sin iniciar sesión.
 4. La grabación automática antigua (`demo-grok.webm` y `.mp4`, hecha el 2-nov con Grok 4.7) **ya no está en el repositorio**: se retiró de todos los commits el 9-nov para que nadie la confunda con la entrega. No acreditan las correcciones actuales ni sustituyen el enlace público de Clips exigido por las bases. Los fotogramas de control se conservan en `evidencia/historico/fotogramas-demo-grok-4.7/`, y los ficheros de video siguen en la copia de trabajo local.
 
 ## Antes de enviar

@@ -10,7 +10,7 @@ Actualizado: **7 nov 2026**. Calificación independiente vigente: **94/100**, tr
 | Uso de Agent-Native | 20/20 | 0 | Mantener la continuidad UI–agente y las garantías ya acreditadas; no hace falta añadir funciones del framework para perseguir puntos |
 | **Total** | **94/100** | **6** | Seis puntos de valoración, no seis requisitos oficiales ni puntos garantizados por tarea |
 
-Alcance de esta actualización: dejar las iteraciones listas para ejecutar. **No autoriza publicación, despliegue, Clips ni envío del formulario.** Los commits al repo privado del equipo (`NGZeggers/hackathons`, rama `bluiders.io`) sí fueron autorizados por David el 7 nov; ver ESTADO.md. La publicación y el envío siguen detenidos según [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md). Se conserva el histórico al final; sus instrucciones no son el plan vigente.
+Alcance de esta actualización: dejar las iteraciones listas para ejecutar. **No autoriza publicación, despliegue, Clips ni envío del formulario.** Los commits al repo privado del equipo (`NGZeggers/hackathons`, rama `bluiders.io`) sí fueron autorizados por David el 7 nov; ver ESTADO.md. Al 7 de noviembre, la publicación y el envío todavía no se habían hecho; los campos y los pasos están en [ENVIO_HACKATHON.md](ENVIO_HACKATHON.md). Se conserva el histórico al final; sus instrucciones no son el plan vigente.
 
 ## Investigación de antecedentes y plan 94 → 100 · 7 nov 2026
 
@@ -76,7 +76,7 @@ La narración y el tablero deben coincidir: si el agente solo escribe texto, la 
 
 ## Respuesta al dictamen de 91 · 7 nov 2026
 
-El dictamen cerró UX1–UX3 y dejó cuatro frentes «para aspirar al 100». Dos se han trabajado hoy con evidencia reproducible; los otros dos siguen detenidos por decisión de David (sin participantes, sin cuentas reales, entrega parada). Detalle en [ESTADO.md](ESTADO.md).
+El dictamen cerró UX1–UX3 y dejó cuatro frentes «para aspirar al 100». Dos se trabajaron el 7 de noviembre con evidencia reproducible; los otros dos quedaron parados ese día por decisión del equipo (sin participantes y sin cuentas reales). Detalle en [ESTADO.md](ESTADO.md).
 
 | Frente | Qué pedía el dictamen | Qué hay ahora | Estado |
 |---|---|---|---|
@@ -97,7 +97,7 @@ Ejecutadas sobre la app con cambios sin commit sobre `b631b87` y el backend de e
 | I3 Coste acotado | **Completado** | Endpoints paginados en MEGI y adaptador que los consume; comparación anterior/posterior con 10, 100 y 500 pacientes y expediente de 60 recetas; regresiones con el límite de peticiones por página. |
 | I4 Usuarios | **Pendiente (sin participantes; decisión de David, 7 nov)** | Marcado en [`PENDIENTE_VALIDACION_USUARIOS.md`](PENDIENTE_VALIDACION_USUARIOS.md); protocolo, tareas y criterios en [`evidencia/protocolo-usuarios.md`](evidencia/protocolo-usuarios.md). Sin resultados: no se afirma ahorro. |
 | I5 Interacción | **Completado según su aceptación; abierto lo que dependa de I4** | «Ninguna conocida» ya no va en rojo (registro en verde, distinto de «sin registro» en ámbar); lista paginada con total; 390 px sin desbordamiento y acción principal visible. Capturas antes/después en `evidencia/capturas-comparacion/` y evaluación visual en [`evidencia/evaluacion-visual-i5.md`](evidencia/evaluacion-visual-i5.md); smoke del agente 15/15. Sin observaciones de usuarios. |
-| I6 Cierre | **Cierre local realizado; entrega detenida por decisión de David (7 nov)** | Resultados, capturas, matriz y hashes guardados; documentación actualizada. Publicación, Clips, formulario y commits siguen detenidos (H5). |
+| I6 Cierre | **Cierre local realizado (7 nov)** | Resultados, capturas, matriz y hashes guardados; documentación actualizada. Ese día, publicación, Clips, formulario y commits seguían sin hacerse (H5). |
 
 
 ## Punto de partida verificado
@@ -170,7 +170,7 @@ Ejecutadas sobre la app con cambios sin commit sobre `b631b87` y el backend de e
 
 ## Iteración I6 · Cerrar evidencia y preparar entrega — prioridad P0 al congelar código
 
-**Estado: cierre local realizado el 7 nov;** entrega (H5) detenida. Cierre local ejecutable tras las iteraciones; los pasos de publicación continúan detenidos.
+**Estado: cierre local realizado el 7 nov.** El cierre local es ejecutable tras las iteraciones; los pasos de publicación eran, ese día, trabajo de persona pendiente.
 
 - Repetir I1 y los recorridos de navegador/agente sobre la revisión final, en bases de ensayo. Restaurar únicamente los casos propios con las acciones previstas; conservar bases anteriores, mediciones y datos de otros usuarios.
 - Guardar logs, JSON, capturas, modelo efectivo y limitaciones. Relacionar I1–I6 con sus pruebas y fuentes: la matriz histórica A–E y los verificadores que la consumen no acreditan automáticamente estas iteraciones nuevas.

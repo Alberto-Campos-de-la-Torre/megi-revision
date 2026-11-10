@@ -5,10 +5,9 @@ Material para grabar la demo y el video del hackatón Agent-Native (Builder.io).
 (flujo y guion originales), de los que esto es la versión ejecutable: rótulos reales de la
 pantalla, resultados comprobados y texto para leer en voz alta.
 
-**Este documento no autoriza publicar nada.** La pausa de publicación sigue vigente por
-instrucción expresa de David: no se sube video, no se publica un Clip y no se envía el
-formulario hasta que él lo diga. Grabar en local no publica; publicar un Clip no envía la
-entrada.
+**Dos pasos distintos, y las bases lo dicen expreso:** grabar en local no publica nada, y
+publicar un Clip no envía la entrada. La inscripción solo cuenta con el formulario
+enviado y su confirmación de recepción guardada.
 
 **Plazo** (de las bases guardadas en `evidencia/bases/`): lunes **9 nov 2026, 11:59 PM PT**
 = 10 nov, 01:59 en Ciudad de México. Lo que exigen, literal: *«Record a public Clips

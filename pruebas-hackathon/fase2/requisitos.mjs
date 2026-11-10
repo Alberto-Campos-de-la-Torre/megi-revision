@@ -332,13 +332,29 @@ const enlaceClip = /https?:\/\/\S+/.test(clip);
 if (!enlaceClip) {
   pendiente(
     "r11-clips-publico",
-    "sin enlace de Clips en ENVIO_HACKATHON.md: la demo accesible que exigen las bases está pendiente (publicación detenida por decisión del equipo)",
+    "el campo «Public Clips recording URL» de ENVIO_HACKATHON.md sigue vacío: la demo accesible que exigen las bases se acredita con ese enlace",
   );
 }
+// El borrador no puede dar por hecho un envío que no esté respaldado: las bases
+// avisan de que grabar el clip no inscribe nada, y el envío solo cuenta con el
+// enlace público delante y la confirmación de recepción guardada.
+// Las casillas sin marcar de la lista «Antes de enviar» son tareas, no
+// afirmaciones: se descartan antes de buscar la afirmación.
+const envíoAfirmado = envío
+  .split("\n")
+  .filter((l) => !/^\s*[-*]\s*\[ \]/.test(l))
+  .join("\n");
+const afirmaEnvio =
+  /(formulario (ya )?enviado|entrada (ya )?inscrita|inscripci[óo]n (ya )?confirmada|ya (nos )?inscribimos)/i.test(
+    envíoAfirmado,
+  );
+const respaldaEnvio = enlaceClip && /confirmaci[óo]n de recepci[óo]n/i.test(envío);
 anota(
-  "r11b-el-borrador-no-finge-que-ya-se-envio",
-  /publicación y envío detenidos/i.test(envío) && /no acredita una inscripción/i.test(envío),
-  "el documento dice explícitamente que no se ha enviado",
+  "r11b-no-se-da-por-enviado-sin-respaldo",
+  !afirmaEnvio || respaldaEnvio,
+  afirmaEnvio
+    ? "declara el envío y lo respalda con el enlace del Clip y la confirmación guardada"
+    : "no se afirma ningún envío",
 );
 anota(
   "r11c-el-video-viejo-esta-marcado-como-no-valido",

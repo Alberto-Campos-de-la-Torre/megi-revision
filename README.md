@@ -68,14 +68,6 @@ interfaz no monta. Instala en limpio.
   crónico, interacción— sobre pacientes ficticios.
 - No se afirma validación clínica del catálogo. Todos los pacientes son ficticios.
 
-## Estado de la entrega
-
-**Publicación y envío detenidos por instrucción expresa de David.** No se ha subido video,
-publicado un Clip ni enviado el formulario. La grabación automática antigua, del 2 de
-noviembre y con Grok 4.7, se retiró de todos los commits el 9 de noviembre: era anterior a
-la auditoría y no acredita las correcciones actuales. Quedan sus fotogramas en
-`evidencia/historico/fotogramas-demo-grok-4.7/`. El detalle está en `ENVIO_HACKATHON.md`.
-
 ## Qué no se publica aquí
 
 Este repositorio no incluye el material de operación del backend previo, que no hace falta
@@ -84,6 +76,12 @@ rotación de registros del servidor, las plantillas de despliegue (túnel y serv
 documento de empaquetado con el dominio de producción, las dos auditorías internas de
 seguridad de MEGI y su hoja de ruta comercial. Están fuera de todos los commits, no solo
 del último.
+
+Tampoco está la grabación automática antigua (`demo-grok.webm` y `.mp4`): se hizo el 2 de
+noviembre con Grok 4.7, es anterior a la auditoría y no acredita las correcciones
+actuales, así que se retiró de todos los commits el 9 de noviembre para que no se confunda
+con la demo. Quedan cuatro fotogramas de control en
+`evidencia/historico/fotogramas-demo-grok-4.7/`.
 
 La contraseña `demo-megi-2026` que aparece en los guiones de prueba no es un secreto: es el
 valor por defecto que siembra `megi-demo/backend/seed_demo.py` en una instalación local con
