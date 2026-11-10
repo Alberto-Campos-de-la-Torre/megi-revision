@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-08T23:28:33.868605-06:00",
+  "exportedAt": "2026-11-09T21:05:50-06:00",
   "sourceRepositories": {
     ".": [
       "d86372d4f11823e9cab726a89e7e5969d40245bc\t2026-11-02T11:54:03-06:00\tPlanes del hackatón Agent-Native, reparto de trabajo y adaptador MEGI",
@@ -24,13 +24,20 @@
       "15a03c67b9752bc79672386d7bfad8026b090474\t2026-11-02T11:54:03-06:00\tHackatón: siembra de demo con pacientes ficticios, scripts de arranque y contrato de API"
     ]
   },
-  "packaging": "Snapshot del código de trabajo corregido. Los repositorios locales se integran como carpetas normales, sin gitlinks ni historiales que puedan contener archivos de ejecución.",
+  "packaging": "Snapshot del código de trabajo corregido. Los repositorios locales se integran como carpetas normales, sin gitlinks ni historiales que puedan contener archivos de ejecución. El repositorio público https://github.com/Alberto-Campos-de-la-Torre/megi-revision es ese mismo historial trasplantado a un repositorio propio el 9-nov-2026, reescrito para retirar de todos los commits lo que no debe circular (ver «excluded»). Por esa reescritura los hashes del repositorio público no coinciden con los del repositorio de desarrollo; autores, fechas y asuntos de cada commit sí se conservan.",
   "excluded": [
     "evidencia/.DS_Store",
     "megi-demo/frontend/.env",
-    "megi-demo/frontend/.env.development"
+    "megi-demo/frontend/.env.development",
+    "megi-demo/scripts/ (instalación, copia, restauración, rotación de registros y modelos del servidor)",
+    "megi-demo/deploy/ (plantillas de túnel y servicios del servidor)",
+    "megi-demo/docs/empaquetado.md (despliegue y dominio de producción)",
+    "megi-demo/docs/security_findings_2026-07-26.md y megi-demo/docs/revision_2026-07-12_gaps_y_seguridad.md (auditorías internas de MEGI)",
+    "megi-demo/futuro/ y megi-demo/master_roadmap.md (hoja de ruta del producto previo)",
+    "evidencia/video/demo-grok.mp4 y .webm (grabación del 2-nov con Grok 4.7, anterior a la auditoría; quedan los fotogramas en evidencia/historico/)",
+    "pruebas-hackathon/fase2/requisitos-resultados.json y requisitos-antes.json (salida regenerable del bloque R)"
   ],
-  "publication": "Solo repositorio privado de GitHub; no se publicó Clips ni se envió el formulario del hackatón.",
+  "publication": "Repositorio público en GitHub: https://github.com/Alberto-Campos-de-la-Torre/megi-revision. El enlace de la grabación pública está declarado en ENVIO_HACKATHON.md, campo «Public Clips recording URL».",
   "redactedApiSamples": [
     {
       "file": "megi-demo/docs/api_samples/01_login.json",
@@ -40,46 +47,54 @@
   "integrationSnapshot": {
     "commit": "90085a5163c1f638a9ddb3d384b8df3ac35f2024",
     "subject": "MEGI Revisión: proyecto Agent-Native y auditoría corregida",
-    "nota": "Estado del equipo en la rama bluiders.io. Las listas de sourceRepositories son las historias de los repositorios de origen tal como estaban al integrarse en carpetas; no se tocan."
+    "nota": "Estado del equipo en la rama bluiders.io. Las listas de sourceRepositories son las historias de los repositorios de origen tal como estaban al integrarse en carpetas; no se tocan. Este hash es el del repositorio de desarrollo (NGZeggers/hackathons); en el repositorio público el mismo árbol es el commit raíz 79bc34db4ab2d70036a9d6d37921aaef014a2b32."
   },
   "repositoryHead": {
-    "commit": "baf9d44a2b35eb8de23efaa569ccc4d45c354284",
-    "branch": "fase2-verificada-sobre-6543854",
-    "date": "2026-11-08T22:54:58-06:00"
+    "commit": "838c034ee7e2f8ca58dab25feab8cba5845007af",
+    "branch": "main",
+    "date": "2026-11-09T21:01:36-06:00",
+    "nota": "Cabeza en el momento de exportar; el commit que incorpora este fichero es el siguiente."
   },
   "commitsAfterIntegration": [
-    "3d3ecb87b2f89b5c4150cd7fd41a8d8b7e293fca\t2026-11-05T00:01:08-06:00\tArreglos de la revisión independiente + batería de pruebas",
-    "8fe3677fcb73e35f098c64a5db45e6cddfb9dcc1\t2026-11-05T00:02:54-06:00\tdoc: fecha real de la revisión y referencia al commit de los arreglos",
-    "d03fdf73c0551eb2a54451adc19a4ff8c0216248\t2026-11-05T00:04:09-06:00\tevidencia: las tres ejecuciones sobre el código con los arreglos",
-    "37bb86fec65f1e67b3d38c072e59b38a4c534dd8\t2026-11-07T13:49:22-06:00\tCierre del 7 nov: H1-H3, iteraciones I1-I6, dictámenes UX (90/91) y fricción de interfaz",
-    "6b087ffffc4603ea31e8b8dc769b689bdafdc39e\t2026-11-07T13:59:29-06:00\tPARA_EL_100.md: actualización de David tras el cierre del 7 nov",
-    "65438548a4849332d19c14a5dbb2959302852bcd\t2026-11-07T18:21:24-06:00\tRestaurar los 23 archivos de megi-revision omitidos por el .gitignore copiado",
-    "0e49b30ffa9661a83c425af55e8b1d040bbb072a\t2026-11-07T21:14:30-06:00\tSegunda fase de pruebas sobre el cierre del 7 nov: cinco arreglos y sus pruebas",
-    "0b758ff93e5a78fbac7cd76e750623bea148fc5d\t2026-11-07T21:19:25-06:00\tLa batería en vivo, adaptada al recorrido del 7 nov: 49/49",
-    "755ca82dcef9ce0af4b43a3c350b9d2424330cb2\t2026-11-07T21:47:13-06:00\tPrueba del contrato de versión con el agente, y corrección de un hallazgo falso",
-    "9dac7dc6ebae2e84a1a46c867e3079bd5c66c110\t2026-11-07T22:01:13-06:00\tLa prueba del agente acepta cualquiera de los once motores, no solo dos",
-    "9953513260973817cafd467df98d085b63717d91\t2026-11-07T22:09:29-06:00\tLa prueba del agente, lista para Grok: atajo, entrada de clave y motivo real",
-    "eaa41386d23b2c55fec98275c382ee1a2d50570b\t2026-11-07T22:17:49-06:00\tEl agente omitía versionEsperada porque el esquema la declara opcional",
-    "32c1b2dd3d4a17cded81e658d00e25acc1730741\t2026-11-07T22:25:41-06:00\tLa clave que se pide manda sobre la que ya hubiera, y no se gastan tres pasadas",
-    "f309b200aa92515fe7a00d51c0fd9eaa368bff41\t2026-11-07T22:33:47-06:00\tCon los dos cambios, el agente respeta el contrato: cero omisiones de versión",
-    "dbed060bc04e9cb185ddb70f9657f69dd6202c40\t2026-11-07T22:48:16-06:00\tDiez pasadas: el agente afirma haber guardado lo que no guardó, 8 de 10",
-    "1136e8c7aacd6a5af5b40e19c960e2a52dd28ab6\t2026-11-07T22:54:38-06:00\tEl ejemplo del prompt era la mentira: una afirmación falsa ya redactada",
-    "9a349babec9aae9e8f7c15239d51e7cc6f99b8da\t2026-11-07T23:01:51-06:00\tEl ejemplo con huecos bajó las afirmaciones falsas de 9 a 5 de 10",
-    "3fc7efc8bcbeccf1dc5f32b04b218d84c001ae9e\t2026-11-07T23:15:00-06:00\tLa respuesta final ya no puede contradecir al tablero, y no depende del prompt",
-    "680a0dacc5a04f84a1d530b1d640cf0f687fb638\t2026-11-07T23:22:57-06:00\tLa causa del 0 de 10: una escritura no devolvía la versión que dejaba",
-    "183b260e27750decc0ed9da67cd07a0ad5222119\t2026-11-07T23:30:03-06:00\tEl recibo trae las cifras, las escrituras aceptan los dos ids, y la tasa es objetivo",
-    "0eed78922449b1868ad04a75144dc3893acf71c4\t2026-11-07T23:33:42-06:00\tLa primera lectura del turno no se salta nunca",
-    "1bd36a1b585b1777af9f1ce1cae16e5d7635598a\t2026-11-07T23:42:18-06:00\t18 de 18 escrituras aplicadas y 9 de 10 pasadas completas; dos arreglos del cierre",
-    "150e5472e2fb162fb458ae146aeadfd815e01263\t2026-11-08T01:51:41-06:00\tLa interfaz y la conexión del modelo, medidas con el servidor en marcha",
-    "02f6ff292a09a3d3a56acce672c9f5fa6aa70ff6\t2026-11-08T02:26:36-06:00\tEl agente ya no tiene por dónde sacar el expediente",
-    "b2756a205ec5188be74636a34d38fd1989b2b22e\t2026-11-08T02:59:18-06:00\tVarias líneas en una llamada, y un turno no acaba prometiendo lo que no hizo",
-    "a9f523d9615d78030700c7860d51ff15b8226ea7\t2026-11-08T04:56:28-06:00\tLa tanda con Grok encontró tres regresiones mías y aquí están arregladas",
-    "4c6d349c78e3bc1d47dde7ab5e5ddc2444bda9a2\t2026-11-08T11:41:55-06:00\tEl modelo solo respeta el esquema: `lineas` obligatorio en lo que ve",
-    "4e3f8e28dc11bdd8205cc28ed138962e12b3721a\t2026-11-08T12:16:43-06:00\tEl reintento corregido ya entra, y negar sin intentar no indulta",
-    "331408ac77c65e642531e473f3a07d1407afaeb2\t2026-11-08T15:46:06-06:00\tLa cuarta tanda con Grok: diez de diez, 20 escrituras y ningún 409",
-    "d428f20d46f979c31ad46a30583cd642aee9907c\t2026-11-08T17:26:33-06:00\tGuion de grabación: el caso de Rosa, las diez tomas y lo que se puede afirmar",
-    "b998df505187959c5377780a4b862494d07dbd43\t2026-11-08T22:12:45-06:00\tSubtítulos en inglés cuadrados al guion, y dos tomas recortadas para que quepan",
-    "baf9d44a2b35eb8de23efaa569ccc4d45c354284\t2026-11-08T22:54:58-06:00\tEl motivo del bloqueo ya ocupa todo el ancho de la línea, y el guion dice qué sale de verdad al cerrar el turno"
+    "bf959ad3762fd827561a10d8ef650196b7750c53\t2026-11-05T00:01:08-06:00\tArreglos de la revisión independiente + batería de pruebas",
+    "ff49847767a405a051f7136bca362b9da8f32129\t2026-11-05T00:02:54-06:00\tdoc: fecha real de la revisión y referencia al commit de los arreglos",
+    "b9cc8394b24373e4f9c20545d7b4da3935826be0\t2026-11-05T00:04:09-06:00\tevidencia: las tres ejecuciones sobre el código con los arreglos",
+    "276c25485a5eee98e8b2efd2ccdf44834501a8a1\t2026-11-07T13:49:22-06:00\tCierre del 7 nov: H1-H3, iteraciones I1-I6, dictámenes UX (90/91) y fricción de interfaz",
+    "d2a5c379394ed9557be5172d915b2228afaf91c8\t2026-11-07T13:59:29-06:00\tPARA_EL_100.md: actualización de David tras el cierre del 7 nov",
+    "3c40e37620717735fbd15e7fbfbfdd8769078287\t2026-11-07T18:21:24-06:00\tRestaurar los 23 archivos de megi-revision omitidos por el .gitignore copiado",
+    "7588a86c3aad6a18a51980ad045ac65591166438\t2026-11-07T21:14:30-06:00\tSegunda fase de pruebas sobre el cierre del 7 nov: cinco arreglos y sus pruebas",
+    "912ed82a258d715c666a823121c0cf248fbdc90b\t2026-11-07T21:19:25-06:00\tLa batería en vivo, adaptada al recorrido del 7 nov: 49/49",
+    "a59878d3132432fc545d1938ed12285e3695a491\t2026-11-07T21:47:13-06:00\tPrueba del contrato de versión con el agente, y corrección de un hallazgo falso",
+    "6af451913e5fe5dccb32af0b4f7b45b6bd3a1e23\t2026-11-07T22:01:13-06:00\tLa prueba del agente acepta cualquiera de los once motores, no solo dos",
+    "ab818ecf99611f9b36fb5a7e416de6ac224cf0d6\t2026-11-07T22:09:29-06:00\tLa prueba del agente, lista para Grok: atajo, entrada de clave y motivo real",
+    "4329b430d67cb20a44c7762192b9d1c72405602e\t2026-11-07T22:17:49-06:00\tEl agente omitía versionEsperada porque el esquema la declara opcional",
+    "81c7cde499816c56d797ed2f7f7556a69b01c2a3\t2026-11-07T22:25:41-06:00\tLa clave que se pide manda sobre la que ya hubiera, y no se gastan tres pasadas",
+    "d72afa34003a729409f5cde9d467c9b9a67a3faf\t2026-11-07T22:33:47-06:00\tCon los dos cambios, el agente respeta el contrato: cero omisiones de versión",
+    "14639996dc2e6af369cf6680337fd410c0a911b4\t2026-11-07T22:48:16-06:00\tDiez pasadas: el agente afirma haber guardado lo que no guardó, 8 de 10",
+    "603cfdf990961dd4ae06830adb92b5eb82f5384e\t2026-11-07T22:54:38-06:00\tEl ejemplo del prompt era la mentira: una afirmación falsa ya redactada",
+    "8eb3cb1897273d400982de725f87570e9530ceeb\t2026-11-07T23:01:51-06:00\tEl ejemplo con huecos bajó las afirmaciones falsas de 9 a 5 de 10",
+    "d82f482d60932d4e06f46e560c8d3f82326ebe96\t2026-11-07T23:15:00-06:00\tLa respuesta final ya no puede contradecir al tablero, y no depende del prompt",
+    "6f920caf3ebef378265480a4e9d08910caf308b6\t2026-11-07T23:22:57-06:00\tLa causa del 0 de 10: una escritura no devolvía la versión que dejaba",
+    "58b890695be6044ea9d9c91a1b625bf195bde192\t2026-11-07T23:30:03-06:00\tEl recibo trae las cifras, las escrituras aceptan los dos ids, y la tasa es objetivo",
+    "f40c7fafc5e2f6898c1496b070839c6be32866c0\t2026-11-07T23:33:42-06:00\tLa primera lectura del turno no se salta nunca",
+    "a417b230466685fcab0d40478544635e3e49da0a\t2026-11-07T23:42:18-06:00\t18 de 18 escrituras aplicadas y 9 de 10 pasadas completas; dos arreglos del cierre",
+    "0c45b47710d7c99d91a00cac19b4b7fd07becf87\t2026-11-08T01:51:41-06:00\tLa interfaz y la conexión del modelo, medidas con el servidor en marcha",
+    "ad846c16dff2448e19d039e655045c2899c75f57\t2026-11-08T02:26:36-06:00\tEl agente ya no tiene por dónde sacar el expediente",
+    "35d38fe32e2f148bf14b7e706c3360782ea02e38\t2026-11-08T02:59:18-06:00\tVarias líneas en una llamada, y un turno no acaba prometiendo lo que no hizo",
+    "d9d953704e701adbf9926ee00b86771ed1e5e4fa\t2026-11-08T04:56:28-06:00\tLa tanda con Grok encontró tres regresiones mías y aquí están arregladas",
+    "3812c37e4d350a3e062e8d6723d8a1dd17a7bcc6\t2026-11-08T11:41:55-06:00\tEl modelo solo respeta el esquema: `lineas` obligatorio en lo que ve",
+    "cd384fa699c63c8b620c1c7e40fd662a330f5cbf\t2026-11-08T12:16:43-06:00\tEl reintento corregido ya entra, y negar sin intentar no indulta",
+    "59dc656eba0a9c53118bea1e44111f06c9ded1c1\t2026-11-08T15:46:06-06:00\tLa cuarta tanda con Grok: diez de diez, 20 escrituras y ningún 409",
+    "41ce9fdf6f6480455213fcbcd74eb65bf34a7efa\t2026-11-08T17:26:33-06:00\tGuion de grabación: el caso de Rosa, las diez tomas y lo que se puede afirmar",
+    "b4afc36217b491994267ff668e1009c28a354318\t2026-11-08T22:12:45-06:00\tSubtítulos en inglés cuadrados al guion, y dos tomas recortadas para que quepan",
+    "bdbd58384bcdad810523d72153e5ef2f38467301\t2026-11-08T22:54:58-06:00\tEl motivo del bloqueo ya ocupa todo el ancho de la línea, y el guion dice qué sale de verdad al cerrar el turno",
+    "9e5682b024a9a7e1125135765b3dfabe7d58c304\t2026-11-08T23:32:07-06:00\tLa procedencia: el verificador FDA no se ejercita en la demo, 32 commits nuevos y una página para enseñarla",
+    "65bfd6604c6c27f435017746801ddd6127b27486\t2026-11-09T16:55:59-06:00\tREADME raíz: el mapa del repositorio, el arranque de la demo y lo que está medido",
+    "83154c3f15f5061bc9fd971f1722bf729351f0db\t2026-11-09T19:04:37-06:00\tEl repositorio publicado deja fuera la operación del servidor de MEGI",
+    "a057ff91f982bf179ef0407eeb0f22187dd18a7f\t2026-11-09T19:14:02-06:00\tEl borrador de entrega ya lleva la URL del repositorio público",
+    "7ea79f10369faa52f241c66fe54908ee87375573\t2026-11-09T19:45:42-06:00\tFuera la grabación vieja, y el borrador con el equipo y el modelo de verdad",
+    "5cd250f8d86e19a65344d6aa819d78db6d0eb46c\t2026-11-09T20:17:52-06:00\tEl estado de la entrega sale de los documentos; lo que se comprueba es que nada se dé por enviado",
+    "838c034ee7e2f8ca58dab25feab8cba5845007af\t2026-11-09T21:01:36-06:00\tEl enlace de la grabación entra en el borrador, y el bloque R deja de guardar su salida"
   ],
-  "verificationNote": "Los commits posteriores a la integración son la revisión de fase 2: medición con modelo real (Grok 4.20 non-reasoning), arreglos del contrato de las acciones y material de grabación. La batería que lo comprueba es pruebas-hackathon/fase2/requisitos.mjs, bloque R13."
+  "verificationNote": "Los commits posteriores a la integración son la revisión de fase 2: medición con modelo real (Grok 4.20 non-reasoning), arreglos del contrato de las acciones y material de grabación. La batería que lo comprueba es pruebas-hackathon/fase2/requisitos.mjs, bloque R13. Los hashes de esta lista son los del repositorio público; el historial equivalente, sin reescribir, está en el repositorio de desarrollo del equipo."
 }

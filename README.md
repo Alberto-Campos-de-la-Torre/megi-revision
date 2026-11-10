@@ -19,8 +19,11 @@ en la pantalla. Interfaz y agente llaman a las mismas acciones sobre los mismos 
 ## Qué hay en este repositorio
 
 Este repositorio es **solo el proyecto del hackatón Agent-Native**, separado del clon de
-revisión donde se desarrolló. Conserva los 34 commits de su historia, con sus autores y
-fechas originales.
+revisión donde se desarrolló. Conserva la historia completa de su desarrollo, con los
+autores, las fechas y los asuntos de cada commit. Los hashes no coinciden con los del
+repositorio de desarrollo: la historia se reescribió para que lo que no debe circular
+quedara fuera de todos los commits, no solo del último (ver «Qué no se publica aquí»).
+La correspondencia está registrada en `evidencia/procedencia-git.json`.
 
 | Carpeta | Qué es |
 |---|---|
