@@ -71,9 +71,10 @@ interfaz no monta. Instala en limpio.
 ## Estado de la entrega
 
 **Publicación y envío detenidos por instrucción expresa de David.** No se ha subido video,
-publicado un Clip ni enviado el formulario. `evidencia/video/` conserva una grabación de
-referencia anterior a la auditoría, que no acredita las correcciones actuales. El detalle
-está en `ENVIO_HACKATHON.md`.
+publicado un Clip ni enviado el formulario. La grabación automática antigua, del 2 de
+noviembre y con Grok 4.7, se retiró de todos los commits el 9 de noviembre: era anterior a
+la auditoría y no acredita las correcciones actuales. Quedan sus fotogramas en
+`evidencia/historico/fotogramas-demo-grok-4.7/`. El detalle está en `ENVIO_HACKATHON.md`.
 
 ## Qué no se publica aquí
 

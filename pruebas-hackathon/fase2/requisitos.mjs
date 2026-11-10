@@ -343,7 +343,7 @@ anota(
 anota(
   "r11c-el-video-viejo-esta-marcado-como-no-valido",
   /No acreditan las correcciones actuales/i.test(envío),
-  "evidencia/video/demo-grok.* marcado como anterior a la auditoría",
+  "la grabación vieja (demo-grok.*) queda marcada como anterior a la auditoría",
 );
 
 // R12 · nada de afirmaciones clínicas.

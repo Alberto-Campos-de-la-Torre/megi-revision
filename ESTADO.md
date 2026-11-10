@@ -43,11 +43,11 @@ Cada uno actualiza su bloque al cerrar el día: hecho / bloqueado / necesito.
 - Resumen: el flujo completo de la demo funciona con el motor previsto. El motor local (Ollama) queda como respaldo documentado.
 
 ### Video de la demo con Grok — hecho (2 nov, 20:21)
-- `evidencia/video/demo-grok.mp4` (191 s, también `.webm`): grabación automática del guion completo en la app real con Grok 4.7 y MEGI de demo: lista → ficha y nota SOAP → el agente propone (sustituye el naproxeno por paracetamol, explica, pide confirmar alergias) → el médico bloquea el paracetamol → se pide al agente «quita Paracetamol y agrega tratamiento tópico» → el agente revisa el plan para no tocar lo bloqueado → bitácora → aprobar y exportar a MEGI → pestaña de exportación FHIR. Fotogramas de control en `evidencia/video/fotogramas/`.
+- `evidencia/video/demo-grok.mp4` (191 s, también `.webm`): grabación automática del guion completo en la app real con Grok 4.7 y MEGI de demo: lista → ficha y nota SOAP → el agente propone (sustituye el naproxeno por paracetamol, explica, pide confirmar alergias) → el médico bloquea el paracetamol → se pide al agente «quita Paracetamol y agrega tratamiento tópico» → el agente revisa el plan para no tocar lo bloqueado → bitácora → aprobar y exportar a MEGI → pestaña de exportación FHIR. Fotogramas de control en `evidencia/video/fotogramas/`. **[9-nov: los dos ficheros de video se retiraron del repositorio público —16 MB de una grabación anterior a la auditoría— y los fotogramas pasaron a `evidencia/historico/fotogramas-demo-grok-4.7/`; el video sigue en la copia local.]**
 - `ENVIO_HACKATHON.md`: campos del formulario, descripción en inglés lista para pegar (con trabajo previo y nuevo), pasos para grabar en Clips y lista final.
 
 ### Pendiente (decisión de David, 2 nov por la noche)
-- Grabación pública en Clips y envío del formulario quedan **en espera hasta definir el reparto con el equipo** (nombres y quién envía). Todo lo demás está listo: video de referencia `evidencia/video/demo-grok.mp4`, pasos y texto en `ENVIO_HACKATHON.md`.
+- Grabación pública en Clips y envío del formulario quedan **en espera hasta definir el reparto con el equipo** (nombres y quién envía). Todo lo demás está listo: video de referencia `evidencia/video/demo-grok.mp4` (retirado del repositorio público el 9-nov; sigue en la copia local), pasos y texto en `ENVIO_HACKATHON.md`.
 - Al retomar: `megi-demo/backend/start_demo.sh` → `seed_demo.py` → borrar `megi-revision/data/` → `pnpm dev` → grabar en Clips (día 8) → enviar y guardar la confirmación (día 9, antes de las 6 PM hora de México).
 
 

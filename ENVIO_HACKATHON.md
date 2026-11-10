@@ -21,11 +21,11 @@ Este documento prepara una entrega futura; no acredita una inscripción. Nombre,
 
 MEGI Revisión is a post-consultation review desk where a physician and an agent prepare the prescription and follow-ups of a consultation together. The agent proposes a plan verified against the patient's allergies, chronic conditions and active medication; the physician edits, locks or rejects lines from the UI; the agent re-adjusts only what is not locked and explains every change; the physician reconciles historical medication before approving and exporting a sealed FHIR note to MEGI. Every change has an atomic version and a source per line; selection scopes are enforced on the server. Safety-blocked lines trigger an alternative suggestion for physician review while locked lines remain protected. UI and agent call the same Agent-Native actions on the same records: the rules (a locked line is untouchable, a safety block cannot be approved without explicit physician confirmation) live in the actions, not in the prompt or the screen.
 
-Team: [nombres].
+Team: David Medina and Alberto Campos de la Torre.
 
 Prior work: the MEGI clinical backend (FastAPI, Python) with patient records, SOAP notes, prescription safety checker, approval and FHIR export, built by the team before October 27, 2026. Agent-Native Chat template (MIT).
 
-Built during the hackathon: the Agent-Native application and its domain workflow: data model (plans, plan lines, review log), seventeen domain actions with schemas and error codes (shared clinical actions and read tools, plus physician-only UI decisions), mock and HTTP adapters to MEGI, the review board UI, the agent prompt and skill, demo seed and automated verification (CLI, browser and live agent with Grok 4.7).
+Built during the hackathon: the Agent-Native application and its domain workflow: data model (plans, plan lines, review log), seventeen domain actions with schemas and error codes (shared clinical actions and read tools, plus physician-only UI decisions), mock and HTTP adapters to MEGI, the review board UI, the agent prompt and skill, demo seed and automated verification (CLI, browser and live agent with Grok 4.20).
 
 All patients shown are fictitious. The app is decision support; the final approval is always the physician's.
 
@@ -36,7 +36,7 @@ El guion ejecutable —preparación, caso elegido, tomas con narración, conting
 1. Trabajar en una copia de ensayo con datos ficticios. Arrancar el backend de demo con `megi-demo/backend/start_demo.sh`; sembrar solo esa copia con `seed_demo.py`. Con la app detenida, iniciar una base de ensayo nueva mediante `DATABASE_URL=pglite:./data/ensayo pnpm dev` desde `megi-revision/`. Conservar la carpeta `data/` anterior; no borrarla. La siembra vuelve a abrir las consultas ficticias y debe acompañarse de una base de planes nueva para evitar estados desincronizados.
 2. Abrir `http://localhost:8080/revision` y seguir el guion de `PLAN_HACKATHON_AGENT_NATIVE.md` §10 con la consulta de Mateo (demo-c2): propuesta → bloquear una línea → pedir reajuste que la toque → el agente la respeta → aprobar y exportar.
 3. Cuando David autorice reanudar la publicación: grabar la versión corregida con Clips, publicar el enlace y comprobar en ventana privada que abre sin iniciar sesión. No realizar estos pasos mientras siga vigente la pausa.
-4. `evidencia/video/demo-grok.webm` y `.mp4` son referencias de la versión anterior a la auditoría. No acreditan las correcciones actuales ni sustituyen el enlace público de Clips exigido por las bases. No se han subido.
+4. La grabación automática antigua (`demo-grok.webm` y `.mp4`, hecha el 2-nov con Grok 4.7) **ya no está en el repositorio**: se retiró de todos los commits el 9-nov para que nadie la confunda con la entrega. No acreditan las correcciones actuales ni sustituyen el enlace público de Clips exigido por las bases. Los fotogramas de control se conservan en `evidencia/historico/fotogramas-demo-grok-4.7/`, y los ficheros de video siguen en la copia de trabajo local.
 
 ## Antes de enviar
 

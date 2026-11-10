@@ -255,8 +255,10 @@ casos» entre ellos. Si los dos salen, graba.
    puestos, y el trabajo previo tal como está redactado.
 4. Enviar el formulario (`https://www.builder.io/hackathon/submit`) y **guardar la
    confirmación de recepción**: grabar el clip no envía la entrada.
-5. `evidencia/video/demo-grok.webm` y `.mp4` son de antes de la auditoría: no sirven como
-   entrega ni sustituyen al Clip público.
+5. La grabación vieja (`demo-grok.webm` y `.mp4`, del 2-nov con Grok 4.7) es de antes de la
+   auditoría: no sirve como entrega ni sustituye al Clip público. Está fuera del
+   repositorio público desde el 9-nov; quedan sus fotogramas en
+   `evidencia/historico/fotogramas-demo-grok-4.7/`.
 
 Las tres casillas de `ENVIO_HACKATHON.md` («Antes de enviar») son las mismas de aquí; no
 hacen falta dos listas.
