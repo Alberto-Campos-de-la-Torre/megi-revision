@@ -10,6 +10,9 @@ Las reglas —una línea bloqueada no se toca, un bloqueo de seguridad no se apr
 confirmación explícita del médico— viven en las acciones del servidor, no en el prompt ni
 en la pantalla. Interfaz y agente llaman a las mismas acciones sobre los mismos registros.
 
+**Demo:** https://clips.agent-native.com/share/ZAtbtn2dAvL9 — la aplicación real en uso,
+con los cuatro pacientes ficticios. Abre sin iniciar sesión.
+
 > **In English** — MEGI Revisión is a post-consultation review desk where a physician and an
 > agent prepare the prescription and follow-ups of a consultation together. Every change has
 > an atomic version and a source per line; selection scopes are enforced on the server. UI

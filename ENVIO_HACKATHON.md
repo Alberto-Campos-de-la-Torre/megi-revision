@@ -11,7 +11,7 @@ Este documento reúne los campos del formulario y el texto listo para pegar. Cor
 | Project name | MEGI Revisión |
 | Project description | (bloque de abajo) |
 | Project or GitHub URL | https://github.com/Alberto-Campos-de-la-Torre/megi-revision (público, 9-nov-2026; sin la operación del servidor de MEGI ni las auditorías internas) |
-| Public Clips recording URL | https://www.youtube.com/watch?v=-S7_-JKP-xQ — «Agent-Native Hackathon 2026», alojado en YouTube y abierto sin iniciar sesión |
+| Public Clips recording URL | https://clips.agent-native.com/share/ZAtbtn2dAvL9 — «Agent-Native Hackathon 2026», abierto sin iniciar sesión. Copia en YouTube, solo de respaldo: https://www.youtube.com/watch?v=-S7_-JKP-xQ |
 | Slides URL | vacío |
 | Agreement | pendiente de revisión y aceptación personal al enviar |
 
