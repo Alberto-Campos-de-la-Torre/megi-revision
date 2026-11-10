@@ -12,7 +12,7 @@ Este documento prepara una entrega futura; no acredita una inscripción. Nombre,
 |---|---|
 | Project name | MEGI Revisión |
 | Project description | (bloque de abajo) |
-| Project or GitHub URL | opcional; solo si se crea un remoto privado con acceso para jueces, o se deja vacío |
+| Project or GitHub URL | https://github.com/Alberto-Campos-de-la-Torre/megi-revision (público, 9-nov-2026; sin la operación del servidor de MEGI ni las auditorías internas) |
 | Public Clips recording URL | el enlace público de Clips (ver «Grabación») |
 | Slides URL | vacío |
 | Agreement | pendiente de revisión y aceptación personal al enviar |
